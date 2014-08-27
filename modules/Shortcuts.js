@@ -56,7 +56,7 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 		else {
 			nbPageMax = parseInt($paginationLinks.last().html());
 		}
-		
+
 		if(splitLoca[3] < nbPageMax) {
 
 			splitLoca[3] = parseInt(splitLoca[3]) + 1;
@@ -74,9 +74,9 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 			window.location.href = urlFinale;
 		}
 	}
-    
-        
-  
+
+
+
     /**
      * Analyse des touches utilisées par l'utilisateur et appel de la fonction suivant le raccourci utilisé
      */
@@ -96,5 +96,5 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 };
 
 SK.moduleConstructors.Shortcuts.prototype.shouldBeActivated = function() {
-    SK.Util.currentPageIn([ "topic-read" ]);
+    return SK.Util.currentPageIn([ "topic-read" ]);
 };
