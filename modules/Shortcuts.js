@@ -82,6 +82,12 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
      */
 		$(window).keydown(function(event) {
 
+			// Si l'on se trouve dans un champ de texte, on désactive les raccourcis (voir https://github.com/dorian-marchal/spawnkill/issues/30)
+			var target = event.target || event.srcElement;
+			if (target.tagName === "TEXTAREA" || (target.tagName === "INPUT" && target.type === "text")) {
+				return
+			}
+
 			//Ctrl + fleche gauche -> page précedente
 			if (event.ctrlKey && event.keyCode === 37) {
 				previousPage();
