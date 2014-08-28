@@ -66,7 +66,6 @@ SK.moduleConstructors.Quote.prototype.initPartialQuote = function() {
             //On supprime le bouton après la transition CSS
             $(".partial-quote")
                 .on("transitionend webkitTransitionEnd oTransitionEnd", function() {
-                    console.log("end");
                     $(this).remove();
                 })
                 .removeClass("active");
