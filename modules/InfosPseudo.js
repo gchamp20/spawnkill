@@ -87,7 +87,6 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
 
         });
         if (self.getSetting("enableUserHighlight")) {
-            alert('test');
             self.highlightUser();
         }
 
