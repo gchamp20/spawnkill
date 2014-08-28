@@ -183,6 +183,9 @@ SK.moduleConstructors.StartSpawnKill.prototype.settings = {
     var darkColor = SK.modules.StartSpawnKill.darkColor;
 
     var css = "\
+        .msg {\
+            position: relative;\
+        }\
         .msg .post {\
             overflow: visible !important;\
         }\

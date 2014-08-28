@@ -590,9 +590,6 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
         .ancre > a:first-child {\
           display: none !important;\
         }\
-        .msg {\
-            position: relative;\
-        }\
         .msg li.ancre {\
             min-height: 15px;\
         }\

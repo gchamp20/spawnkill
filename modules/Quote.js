@@ -42,34 +42,113 @@ SK.moduleConstructors.Quote.prototype.init = function() {
     }
 
     //Citations partielles
-    this.initPartialQuote();
+    if(this.getSetting("partialQuote")) {
+        this.initPartialQuote();
+    }
 
 };
 
 
 /**
- * Ajoute une fonction de citation partielle d'un message quand un utilisateur sélectionne
- * une partie du texte d'un post
+ * Ajoute une fonction de citation partielle d'un message quand un utilisateur
+ * sélectionne une partie du texte d'un post
  */
 SK.moduleConstructors.Quote.prototype.initPartialQuote = function() {
 
+    var self = this;
+    
+    //Suppression des boutons de citations existants au mouseup
+    $(document).on("mouseup", function() {
+        // Mise en file pour laisser le temps au click event de s'exécuter
+        // Si vous avez un meilleur moyen de faire ça, faites moi signe :)
+        window.setTimeout(function() {
+
+            //On supprime le bouton après la transition CSS
+            $(".partial-quote")
+                .on("transitionend webkitTransitionEnd oTransitionEnd", function() {
+                    console.log("end");
+                    $(this).remove();
+                })
+                .removeClass("active");
+
+        }, 0);
+    });
+
     //bind de l'evenement au mouse up sur un post
-    $("#col1").on("mouseup", ".post", function() {
+    $("#col1").on("mouseup", ".post", function(event) {
 
-        var selectionText = window.getSelection().toString();
+        // On affiche le bouton de citation partielle.
+        // Le délai permet d'éviter qu'il soit supprimé sur le champ et laisse le navigateur
+        // retirer la sélection 
+        window.setTimeout(function() {
 
-        //si la sélection n'est pas vide
-        if(selectionText !== "") {
+            var selectionText = window.getSelection().toString();
+            var $post = $(this);
+            var message = new SK.Message($post.parents(".msg"));
 
-            console.log(selectionText);
-            //On affiche le bouton de citation
+            // Si la sélection est vide, ou que le texte sélectionné ne fait pas entièrement
+            // partie du post, on n'affiche pas le bouton
+            if (selectionText === "" ||
+                //On retire les espaces pour éviter les problèmes causés par les images
+                message.text.replace(/ /g, "").indexOf(selectionText.replace(/ /g, "")) === -1
+            ) {
+                return;
+            }
 
-            //au clic sur le bouton de citation
+            self.addPartialQuoteButton(message, selectionText, event.pageX, event.pageY);
 
-            //On ajoute la citation au message
+        }.bind(this), 100);
 
+    });
+};
+
+
+/**
+ * Crée et ajoute au message passé en paramètre un bouton de citation partielle.
+ */
+SK.moduleConstructors.Quote.prototype.addPartialQuoteButton = function(message, selectionText, mouseX, mouseY) {
+
+    var self = this;
+
+    var $partialQuoteButton = new SK.Button({
+        class: "quote",
+        index: 100,
+        tooltip: {
+            text: "Citer cette partie du message",
+            position: "bottom"
+        },
+        wrapper: {
+            class: "partial-quote"
+        },
+        click: function() {
+            //On récupère le post de l'auteur et on remplace le texte de son message par la partie
+            //sélectionnée avant de citer le message
+            message.text = selectionText;
+            var citationBlock = self.createCitationBlock(message);
+
+            self.doQuotePost(citationBlock);
         }
     });
+
+    //On ajoute le bouton de citation juste en dessous de la souris
+
+    //On calcule la position relative de la souris par rapport au post
+    var postPosition = message.$msg.offset();
+    var relativeMouseX = mouseX - postPosition.left;
+    var relativeMouseY = mouseY - postPosition.top;
+
+    $partialQuoteButton.css({
+        left: (relativeMouseX - 16) + "px",
+        top: (relativeMouseY + 16) + "px"
+    });
+
+    //On supprime tous les boutons existants avant d'en ajouter un nouveau
+    $(".partial-quote").remove();
+
+    message.$msg.append($partialQuoteButton);
+    SK.Util.fetchStyle($partialQuoteButton);
+    $partialQuoteButton.addClass("active");
+
 };
 
 /*
@@ -158,7 +237,8 @@ SK.moduleConstructors.Quote.prototype.createCitationBlock = function(message) {
             }.bind(this));
             lines.splice(0, 0, "┊");
             lines.splice(0, 0, "┊ " + message.permalink);
-            lines.splice(0, 0, "┊ " + message.authorPseudo + ", le " + message.date + " à " + message.time);
+            lines.splice(0, 0, "┊ " + message.authorPseudo + ", le " +
+                    message.date + " à " + message.time);
             lines.splice(0, 0, "╭");
             //Fin de la citation
             lines.push("╰");
@@ -171,7 +251,8 @@ SK.moduleConstructors.Quote.prototype.createCitationBlock = function(message) {
                 lines[i] = "| " + line;
             }.bind(this));
             lines.splice(0, 0, "| " + message.permalink);
-            lines.splice(0, 0, "| " + message.authorPseudo + " " + SK.Util._(1) + "-" + SK.Util._(1) + " le " + message.date);
+            lines.splice(0, 0, "| " + message.authorPseudo + " " + SK.Util._(1) + "-" +
+                    SK.Util._(1) + " le " + message.date);
             lines.push("");
             lines.push("> ");
             break;
@@ -186,7 +267,8 @@ SK.moduleConstructors.Quote.prototype.createCitationBlock = function(message) {
                 lines[i] = "| " + line;
             }.bind(this));
 
-            lines.splice(0, 0, "| Ecrit par « " + message.authorPseudo + " », " + message.date + " à " + message.time);
+            lines.splice(0, 0, "| Ecrit par « " + message.authorPseudo + " », " +
+                    message.date + " à " + message.time);
             lines.splice(0, 0, "| " + message.permalink);
             lines.push("");
             lines.push("> ");
@@ -437,6 +519,12 @@ SK.moduleConstructors.Quote.prototype.settings = {
         type: "boolean",
         default: true,
     },
+    partialQuote: {
+        title: "Citations partielles",
+        description: "Permet de ne citer qu'une partie d'un post en sélectionnant le texte avec la souris.",
+        type: "boolean",
+        default: true,
+    },
     quoteType: {
         title: "Type de citation",
         description: "Choix du type de citation en mode texte (citations que verront ceux qui n'ont pas SpawnKill).",
@@ -461,6 +549,45 @@ SK.moduleConstructors.Quote.prototype.getCss = function() {
             .sk-button-content.quote {\
                 background-image: url('" + GM_getResourceURL("quote") + "');\
                 background-position: -1px -1px;\
+            }\
+        ";
+    }
+
+    if(this.getSetting("partialQuote")) {
+        css += "\
+            .msg .post::-moz-selection,\
+            .msg .post *::-moz-selection {\
+                background-color: " + mainColor + ";\
+                color: #FFF;\
+            }\
+            .msg .post::selection,\
+            .msg .post *::selection {\
+                background-color: " + mainColor + ";\
+                color: #FFF;\
+            }\
+            .partial-quote {\
+                position: absolute;\
+                opacity: 0.2;\
+                transform: scale(0.2);\
+                transition-duration: 200ms;\
+                transition-property: opacity transform;\
+                box-shadow: 1px 1px 2px -1px rgba(0, 0, 0, 0.5);\
+                z-index: 200;\
+            }\
+            .partial-quote.active {\
+                opacity: 1;\
+                transform: scale(1);\
+            }\
+            .partial-quote::after {\
+                content: \"\";\
+                position: absolute;\
+                top: -15px;\
+                border: solid 8px transparent;\
+                display: block;\
+                border-bottom-color: " + mainColor + ";\
+            }\
+            .partial-quote:active::after {\
+                top: -14px;\
             }\
         ";
     }

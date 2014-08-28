@@ -1,9 +1,1 @@
-### v1.13
-- Citations partielles
-	- Mettre un délai sur le bind de l'événement
-	- Encapsuler le code qui :
-		- Ajoute la citation au formulaire
-		ou
-		- Met la citation dans le localStorage avant de changer de page
-	- Afficher le bouton de citation partielle
-
+Mise à jour du site
