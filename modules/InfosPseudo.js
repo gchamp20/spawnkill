@@ -87,6 +87,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
 
         });
         if (self.getSetting("enableUserHighlight")) {
+            alert('test');
             self.highlightUser();
         }
 
@@ -403,12 +404,15 @@ SK.moduleConstructors.InfosPseudo.prototype.resizeAndCenterAvatar = function($av
 SK.moduleConstructors.InfosPseudo.prototype.highlightUser = function() {
     //Cherche le pseudonyme de l'utilisateur
     var pseudo = $('#compte strong').html();
+    //On teste dans chaque message
+    $(".msg .pseudo").each(function() {
         //Si l'auteur du message correspond à ce pseudonyme
         if ($(this).children('strong').html() == pseudo) {
             //Met en valeur le message
             $(this).children('strong').css('color','blue');
-    } 
-}
+        }
+    }); 
+};
 
 SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
     return SK.Util.currentPageIn([ "topic-read", "topic-response", "post-preview" ]);
