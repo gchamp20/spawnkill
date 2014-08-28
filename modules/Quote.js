@@ -28,11 +28,12 @@ SK.moduleConstructors.Quote.prototype.init = function() {
 
     //Bouton de citation
     if(this.getSetting("quoteButton")) {
-        //Si une citation est prévue, on l'affiche
-        var quoteMessage = SK.Util.getValue("responseContent");
 
-        if(quoteMessage) {
-            this.citeMessage(quoteMessage);
+        //Si une citation est prévue, on l'affiche
+        var quotePending = SK.Util.getValue("responseContent");
+
+        if(quotePending) {
+            this.addToResponseThenFocus(quotePending);
             SK.Util.deleteValue("responseContent");
         }
 
@@ -93,18 +94,7 @@ SK.moduleConstructors.Quote.prototype.addQuoteButtons = function() {
 
                     var citationBlock = self.createCitationBlock(new SK.Message($msg));
 
-                    //Si QuickResponse n'est pas activé et qu'on est sur la page de lecture,
-                    //le bouton de citation dirige vers la page de réponse en remplissant
-                    //le formulaire de réponse
-                    if(!SK.modules.QuickResponse.activated &&
-                        window.location.href.match(/http:\/\/www\.jeuxvideo\.com\/forums\/1/))
-                    {
-                        SK.Util.setValue("responseContent", citationBlock);
-                        window.location.href = $(".bt_repondre").attr("href");
-                    }
-                    else {
-                        self.citeMessage(citationBlock);
-                    }
+                    self.doQuotePost(citationBlock);
                 }
             });
         }, this);
@@ -113,6 +103,23 @@ SK.moduleConstructors.Quote.prototype.addQuoteButtons = function() {
     $(".msg").each(function() {
         queueQuoteButton($(this));
     });
+};
+
+/* Ajoute le bloc de citation passé en paramètre au formulaire de réponse. */
+SK.moduleConstructors.Quote.prototype.doQuotePost = function(citationBlock) {
+
+    //Si QuickResponse n'est pas activé et qu'on est sur la page de lecture,
+    //le bouton de citation dirige vers la page de réponse en remplissant
+    //le formulaire de réponse
+    if(!SK.modules.QuickResponse.activated &&
+        window.location.href.match(/http:\/\/www\.jeuxvideo\.com\/forums\/1/))
+    {
+        SK.Util.setValue("responseContent", citationBlock);
+        window.location.href = $(".bt_repondre").attr("href");
+    }
+    else {
+        this.addToResponseThenFocus(citationBlock);
+    }
 };
 
 /* Ajoute le texte passé en paramètre à la fin de la réponse. */
@@ -194,7 +201,7 @@ SK.moduleConstructors.Quote.prototype.createCitationBlock = function(message) {
 
 /* Crée une citation dans la réponse à partir du texte passé en paramètre
  * et scroll vers la boîte de réponse. */
-SK.moduleConstructors.Quote.prototype.citeMessage = function(citationBlock) {
+SK.moduleConstructors.Quote.prototype.addToResponseThenFocus = function(citationBlock) {
     this.addToResponse(citationBlock);
 
     var $responseBox = $("#newmessage");
