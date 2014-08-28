@@ -120,8 +120,10 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         settingId: "embedVideos",
 
         // http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
+        // http://regex101.com/r/cJ5xN3/1 pour les tests de la regex
         /* $1: youtubeId */
-        regex: /^https?:\/\/(?:(?:www)?m?\.)?youtu.*(?:\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^\s^#\&\?]*).*/,
+        /* $2 (si présent): startTime */
+        regex: /^https?:\/\/(?:(?:www)?m?\.)?youtu.*(?:\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^\s^#\&\?]*)?(?:.*(?:\?|#|&)t=([^\s^#\&\?]*))?/,
 
         addHideButton: true,
         showButtonText: "Afficher les vidéos Youtube",
@@ -132,8 +134,8 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
             /**
              * Retourne une version "embed" du lien, sinon null.
              */
-            var getEmbedUrl = function(youtubeId) {
-                return "http://www.youtube.com/embed/" + youtubeId;
+            var getEmbedUrl = function(youtubeId, start) {
+                return "http://www.youtube.com/embed/" + youtubeId + (start !== 0 ? "?start=" + start : "");
             };
 
             /**
@@ -155,8 +157,46 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                 return $el;
             };
 
+            /**
+             * Prend en paramètre représentant un temps ("24", "1m35s", "1h8m12s", etc.) et la convertit en secondes
+             */
+            var timeToSeconds = function(time) {
+                var tmp = "";
+                var seconds = 0;
+                for (var i = 0, c = time.length; i < c; i++) {
+                    switch (time[i]) {
+                        case 'h':
+                        seconds += parseInt(tmp) * 3600;
+                        tmp = "";
+                        break;
+
+                        case 'm':
+                        seconds += parseInt(tmp) * 60;
+                        tmp = "";
+                        break;
+
+                        case 's':
+                        seconds += parseInt(tmp);
+                        tmp = "";
+                        break;
+
+                        default: // un chiffre
+                        tmp += time[i];
+                        break;
+                    }
+                }
+                if (tmp !== "") { // cas où time ne contenait que des chiffres
+                    seconds += parseInt(tmp);
+                }
+                return seconds;
+            };
+
             if (match[1].length === 11) {
-                var youtubeLink = getEmbedUrl(match[1]);
+                var start = 0;
+                if (typeof match[2] !== "undefined") {
+                    start = timeToSeconds(match[2]);
+                }
+                var youtubeLink = getEmbedUrl(match[1], start);
                 return createVideoElement(youtubeLink);
             }
             else {
@@ -413,7 +453,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
 SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
 
     var self = this;
-    
+
     /**
      * Fonction qui ajoute le bouton afficher/masquer les media d'un post.
      */
@@ -455,7 +495,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
             }
         });
     };
-        
+
     /**
      * Lie un contenu au lien s'il match un type de media
      */
@@ -487,7 +527,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                     }
 
                     if (matchMedia) {
-                        
+
                         //On remplace le lien par l'élément du media
                         var $mediaElement = mediaType.getEmbeddedMedia($a, matchMedia);
 
@@ -533,7 +573,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
 
             //Et on cherche chaque type de media
             queueCheckLinkForMedia($msg, $(a));
-            
+
         });
     });
 };
