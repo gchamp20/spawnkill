@@ -29,7 +29,6 @@
 // @require     modules/AutoUpdate.js?v1.12
 // @require     modules/RefreshScroll.js?v1.12
 // @require     modules/PemtHighlight.js?v1.12
-// @require     modules/UserHighlight.js?v1.12
 // @resource    close                 images/close.png
 // @resource    banImage              images/ban.png
 // @resource    newTopic              images/topic_new.gif
