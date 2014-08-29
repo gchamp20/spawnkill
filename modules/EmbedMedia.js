@@ -341,7 +341,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         id: "spawnkill",
         settingId: "embedSpawnKill",
 
-        regex: /^http:\/\/dl\.spixel\.fr\/get-spawnkill\/?#download-box$/,
+        regex: /^http:\/\/(?:(?:dl\.spixel\.fr\/get-spawnkill)|(?:www\.spawnkill\.fr))\/?#download-box$/,
 
         addHideButton: false,
 
@@ -370,7 +370,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
             $el.append(new SK.Button({
                 class: "spawnkill-button large",
                 text: "Télécharger SpawnKill",
-                href: "http://dl.spixel.fr/get-spawnkill/#download-box",
+                href: "http://www.spawnkill.fr/#download-box",
                 target: "_blank",
                 tooltip: {
                     position: "bottom large",
@@ -666,8 +666,8 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             margin-left: 0px;\
         }\
         .image-media-element {\
-            display: block;\
-            width: calc(100% - 5px);\
+            display: inline-block;\
+            max-width: calc(100% - 5px);\
             margin: 5px;\
             margin-left: 0px;\
         }\

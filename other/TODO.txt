@@ -1,11 +1,4 @@
-Mise à jour du site
-
-v1.13.0.1 - Changelog :
-- Correction d'un bug avec les retours à la ligne dans les citations 
-  partielles
-- Les citations partielles se font quand la souris est relachée sur
-  tout le message.
-- Correction des citations partielles avec les images
-- Correction du module de raccourcis clavier pour éviter qu'ils aient lieu pendant la saisie d'un message. (Contribution de Thift)
-- Ajout de la mise en valeur des posts de l'utilisateur (Contribution de nounoursheureux)
-- Suprpession de deux virgules (Contribution de Kocal)
+v1.13.1.1
+Mettre à jour le site
+Revue de la pull request restante 
+Issue x : cacher les images de la popup par défaut
