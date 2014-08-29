@@ -19,6 +19,14 @@ SK.moduleConstructors.InfosPseudo.prototype.beforeInit = function() {
 
 SK.moduleConstructors.InfosPseudo.prototype.init = function() {
     this.addPostInfos();
+
+    if (this.getSetting("enableUserHighlight")) {
+        //On attend quelques secondes que le pseudo soit chargé en Ajax
+        //Sale mais sera modifié avec l'arrivée de SpawnKill
+        window.setTimeout(function() {
+            this.highlightCurrentUser();
+        }.bind(this), 1000);
+    }
 };
 
 /* Taille des avatars en pixels */
@@ -53,12 +61,13 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
                 //On crée le Message
                 var message = new SK.Message($msg);
 
+                //Ajout du placeholder de l'avatar
                 if(self.getSetting("enableAvatar")) {
 
                     self.addAvatarPlaceholder(message);
                 }
 
-                //On crée l'auteur correspondant
+                //On récupère l'auteur correspondant au post
                 if(typeof authors[message.authorPseudo] === "undefined") {
                     authors[message.authorPseudo] = new SK.Author(message.authorPseudo);
                     authors[message.authorPseudo].loadLocalData();
@@ -69,7 +78,6 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
 
                 //Et on l'ajoute au message
                 message.setAuthor(author);
-
 
                 //On affiche les données des auteurs qu'on a en localStorage
                 if(author.hasLocalData) {
@@ -86,10 +94,8 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
             }, this);
 
         });
-        if (self.getSetting("enableUserHighlight")) {
-            self.highlightCurrentUser();
-        }
 
+        //On récupères les infos des auteurs dont on n'a pas les données
         self.queueFunction(function() {
             var queueInitAuthor = function(author, $cdv) {
                 setTimeout(function() {
@@ -405,13 +411,15 @@ SK.moduleConstructors.InfosPseudo.prototype.resizeAndCenterAvatar = function($av
  */
 SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
     //Cherche le pseudonyme de l'utilisateur
-    var currentUser = $("#compte strong").first().text().trim();
+    var currentUserPseudo = $("#compte strong").first().text().trim();
+
     //On teste dans chaque message
     $(".msg .pseudo").each(function() {
 
-        var $postPseudo = $(this).children("strong").first().text().trim();
-        //Si l'auteur du message correspond à ce pseudonyme
-        if ($postPseudo === currentUser) {
+        var $postPseudo = $(this).find("strong").first();
+        var postTextPseudo = $postPseudo.text().trim();
+        // Si l'auteur du message correspond à ce pseudonyme
+        if (postTextPseudo === currentUserPseudo) {
             //Met en valeur le message
             $postPseudo.addClass("current-user");
         }
