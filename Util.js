@@ -308,17 +308,17 @@ SK.Util = {
         $("body").get(0).dispatchEvent(new Event(eventName));
     },
 
-    getSelectionHtml: function() {
-        var d = "";
-        var e = window.getSelection();
-        if (e.rangeCount) {
-            var b = document.createElement("div");
-            for (var c = 0, a = e.rangeCount; c < a; ++c) {
-                b.appendChild(e.getRangeAt(c).cloneContents());
+    getSelection: function() {
+        var selection = "";
+        var selectionObject = window.getSelection();
+        if (selectionObject.rangeCount) {
+            var selectionWrapper = document.createElement("div");
+            for (var i = 1, rangeCount = selectionObject.rangeCount; i < rangeCount; i++) {
+                selectionWrapper.appendChild(selectionObject.getRangeAt(i).cloneContents());
             }
-            d = b.innerHTML;
+            selection = selectionWrapper.innerHTML;
         }
-        return d;
+        return selection;
     },
 
     /** Bind une fonction à un événement si la condition est vraie, sinon exécute la fonction */
