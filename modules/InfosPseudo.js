@@ -87,7 +87,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
 
         });
         if (self.getSetting("enableUserHighlight")) {
-            self.highlightUser();
+            self.highlightCurrentUser();
         }
 
         self.queueFunction(function() {
@@ -400,15 +400,20 @@ SK.moduleConstructors.InfosPseudo.prototype.resizeAndCenterAvatar = function($av
     }
 };
 
-SK.moduleConstructors.InfosPseudo.prototype.highlightUser = function() {
+/**
+ * Change la couleur du pseudo posts de l'utilisateur courant.
+ */
+SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
     //Cherche le pseudonyme de l'utilisateur
-    var pseudo = $('#compte strong').html();
+    var currentUser = $("#compte strong").first().text().trim();
     //On teste dans chaque message
     $(".msg .pseudo").each(function() {
+
+        var $postPseudo = $(this).children("strong").first().text().trim();
         //Si l'auteur du message correspond à ce pseudonyme
-        if ($(this).children('strong').html() == pseudo) {
+        if ($postPseudo === currentUser) {
             //Met en valeur le message
-            $(this).children('strong').css('color','blue');
+            $postPseudo.addClass("current-user");
         }
     }); 
 };
@@ -481,7 +486,7 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         default: true,
     },
     enableUserHighlight: {
-        title: "Met en valeur vos messages",
+        title: "Mise en valeur de vos messages",
         description: "Affiche votre pseudonyme en bleu pour les messages que vous avez postés.",
         type: "boolean",
         default: false,
@@ -492,6 +497,15 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
 
     var css = "";
     
+    //Si on met en valeur les posts de l'utilisateur
+    if(this.getSetting("enableUserHighlight")) {
+        css += "\
+            .current-user {\
+                color: " + SK.modules.StartSpawnKill.darkColor + ";\
+            }\
+        ";
+    }
+
     //Seulement si les avatars sont affichés
     if(this.getSetting("enableAvatar")) {
         css += "\
