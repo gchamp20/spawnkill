@@ -104,6 +104,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
             $el.html($("<img>", {
                 src: imageLink,
                 title: " ",
+                alt: imageLink, //Obligatoire pour que les citations partielles fonctionnent avec les images
                 "data-popin": imageLink,
                 "data-popin-type": "image"
             }));

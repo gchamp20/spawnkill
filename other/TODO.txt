@@ -1,1 +1,8 @@
 Mise à jour du site
+
+v1.13.0.1 - Changelog :
+- Correction d'un bug avec les retours à la ligne dans les citations 
+  partielles
+- Les citations partielles se font quand la souris est relachée sur
+  tout le message.
+- Correction des citations partielles avec les images

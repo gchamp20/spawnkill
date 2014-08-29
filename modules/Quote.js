@@ -74,7 +74,7 @@ SK.moduleConstructors.Quote.prototype.initPartialQuote = function() {
     });
 
     //bind de l'evenement au mouse up sur un post
-    $("#col1").on("mouseup", ".post", function(event) {
+    $("#col1").on("mouseup", ".msg", function(event) {
 
         // On affiche le bouton de citation partielle.
         // Le délai permet d'éviter qu'il soit supprimé sur le champ et laisse le navigateur
@@ -82,14 +82,14 @@ SK.moduleConstructors.Quote.prototype.initPartialQuote = function() {
         window.setTimeout(function() {
 
             var selectionText = window.getSelection().toString();
-            var $post = $(this);
+            var $post = $(this).find(".post");
             var message = new SK.Message($post.parents(".msg"));
 
             // Si la sélection est vide, ou que le texte sélectionné ne fait pas entièrement
             // partie du post, on n'affiche pas le bouton
             if (selectionText === "" ||
                 //On retire les espaces pour éviter les problèmes causés par les images
-                message.text.replace(/ /g, "").indexOf(selectionText.replace(/ /g, "")) === -1
+                message.text.replace(/\s/g, "").indexOf(selectionText.replace(/\s/g, "")) === -1
             ) {
                 return;
             }

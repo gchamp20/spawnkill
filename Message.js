@@ -26,7 +26,7 @@ SK.Message.prototype.init = function() {
     //On supprime les éventuelles citations
     $message.find(".quote-bloc").remove();
 
-    $message.find("img").each(function() {
+    $message.find("> img").each(function() {
         $(this).replaceWith($(this).attr("alt"));
     });
 
