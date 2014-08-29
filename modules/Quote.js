@@ -81,10 +81,11 @@ SK.moduleConstructors.Quote.prototype.initPartialQuote = function() {
         // retirer la sélection 
         window.setTimeout(function() {
 
-            var selectionText = window.getSelection().toString();
+            var selectionText = SK.Util.getSelectionHtml();
             var $post = $(this).find(".post");
             var message = new SK.Message($post.parents(".msg"));
 
+            console.log(selectionText);
             // Si la sélection est vide, ou que le texte sélectionné ne fait pas entièrement
             // partie du post, on n'affiche pas le bouton
             if (selectionText === "" ||

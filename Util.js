@@ -308,6 +308,19 @@ SK.Util = {
         $("body").get(0).dispatchEvent(new Event(eventName));
     },
 
+    getSelectionHtml: function() {
+        var d = "";
+        var e = window.getSelection();
+        if (e.rangeCount) {
+            var b = document.createElement("div");
+            for (var c = 0, a = e.rangeCount; c < a; ++c) {
+                b.appendChild(e.getRangeAt(c).cloneContents());
+            }
+            d = b.innerHTML;
+        }
+        return d;
+    },
+
     /** Bind une fonction à un événement si la condition est vraie, sinon exécute la fonction */
     bindOrExecute: function(condition, event, fn) {
         if(condition) {
