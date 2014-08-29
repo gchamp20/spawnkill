@@ -86,6 +86,9 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
             }, this);
 
         });
+        if (self.getSetting("enableUserHighlight")) {
+            self.highlightUser();
+        }
 
         self.queueFunction(function() {
             var queueInitAuthor = function(author, $cdv) {
@@ -397,6 +400,19 @@ SK.moduleConstructors.InfosPseudo.prototype.resizeAndCenterAvatar = function($av
     }
 };
 
+SK.moduleConstructors.InfosPseudo.prototype.highlightUser = function() {
+    //Cherche le pseudonyme de l'utilisateur
+    var pseudo = $('#compte strong').html();
+    //On teste dans chaque message
+    $(".msg .pseudo").each(function() {
+        //Si l'auteur du message correspond à ce pseudonyme
+        if ($(this).children('strong').html() == pseudo) {
+            //Met en valeur le message
+            $(this).children('strong').css('color','blue');
+        }
+    }); 
+};
+
 SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
     return SK.Util.currentPageIn([ "topic-read", "topic-response", "post-preview" ]);
 };
@@ -463,6 +479,12 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         description: "Affiche le profil de l'auteur dans une fenêtre modale au clic.",
         type: "boolean",
         default: true,
+    },
+    enableUserHighlight: {
+        title: "Met en valeur vos messages",
+        description: "Affiche votre pseudonyme en bleu pour les messages que vous avez postés.",
+        type: "boolean",
+        default: false,
     }
 };
 
