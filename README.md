@@ -181,7 +181,7 @@ SK.moduleConstructors.LastPage.prototype.settings = {
 	    title: "Ajout d'un indicateur",
 	    description: "Ajout d'une flèche à droite de l'image du topic pour indiquer l'intéractivité.",
 	    type: "boolean",
-	    default: true,
+	    default: true
 	}
 };
 ```
@@ -245,7 +245,7 @@ SK.moduleConstructors.NouveauModule.prototype.settings = {
 	    title: "Titre de l'option",
 	    description: "Description de l'option",
 	    type: "boolean",
-	    default: true,
+	    default: true
 	}
 };
 ```
