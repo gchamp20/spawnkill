@@ -56,7 +56,7 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 		else {
 			nbPageMax = parseInt($paginationLinks.last().html());
 		}
-		
+
 		if(splitLoca[3] < nbPageMax) {
 
 			splitLoca[3] = parseInt(splitLoca[3]) + 1;
@@ -74,13 +74,19 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 			window.location.href = urlFinale;
 		}
 	}
-    
-        
-  
+
+
+
     /**
      * Analyse des touches utilisées par l'utilisateur et appel de la fonction suivant le raccourci utilisé
      */
 		$(window).keydown(function(event) {
+
+			// Si l'on se trouve dans un champ de texte, on désactive les raccourcis (voir https://github.com/dorian-marchal/spawnkill/issues/30)
+			var target = event.target || event.srcElement;
+			if (target.tagName === "TEXTAREA" || (target.tagName === "INPUT" && target.type === "text")) {
+				return;
+			}
 
 			//Ctrl + fleche gauche -> page précedente
 			if (event.ctrlKey && event.keyCode === 37) {
@@ -96,5 +102,5 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 };
 
 SK.moduleConstructors.Shortcuts.prototype.shouldBeActivated = function() {
-    SK.Util.currentPageIn([ "topic-read" ]);
+    return SK.Util.currentPageIn([ "topic-read" ]);
 };
