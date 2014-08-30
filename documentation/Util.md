@@ -1,6 +1,8 @@
 Documentation - Fonctions utilitaires (`Util`)
 ==============================================
 
+Dernière mise à jour : v1.13.1.2
+
 * **SK.Util.jvc** : Effectue une requête sur l'api de JVC
     * `url` (string) : L'URL de la requête
     * `callback` (function) : Fonction appelée avec comme premier paramètre un objet jQuery correspondant à la réponse XML
@@ -108,7 +110,7 @@ SK.Util.addCss("body { background-color: blue }");
 
 ----
 
-* **SK.Util.setValue** : Wrapper de localStorage.setItem();
+* **SK.Util.setValue** : Wrapper de localStorage.setItem(); :warning: Cette fonction supprime toutes les données des auteurs périmées si le localStorage est plein.
 	* `key` (string) : Clé de l'item dans le localStorage (sera prefixée par "SK.")
 	* `value` (mix) : Données correspondantes. Attention, les donnés étant sérialisée, si l'objet a une méthode `toString()`, des informations peuvent être perdues.
 
