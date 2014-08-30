@@ -145,7 +145,8 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     var avertirUrl = message.alertUrl;
     var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + ".html";
     var mpUrl = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + message.authorPseudo;
-    var topicsUrl = "http://www.jeuxvideo.com/forums/0-" + permalink.split("-")[1] + "-0-1-0-1-1-%22" + message.authorPseudo + "%22.htm"
+    var topicsUrl = "http://www.jeuxvideo.com/forums/0-" + permalink.split("-")[1] + "-0-1-0-1-1-%22" +
+            message.authorPseudo + "%22.htm";
 
     //Bouton CDV
     var profileButtonOptions = {
@@ -221,7 +222,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             class: "searchTopics",
             href: topicsUrl,
             tooltip: {
-                text: "Rechercher les topics"
+                text: "Rechercher les topics de" + message.authorPseudo 
             },
             click: function(event) {
                 event.preventDefault();
@@ -513,8 +514,8 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         default: false,
     },
     enableSearchTopics: {
-        title: "Bouton rechercher topics",
-        description: "Ajoute un bouton permettant de rechercher les topics créés par le membre.",
+        title: "Bouton de recherche des topics d'un auteur",
+        description: "Ajoute un bouton permettant de rechercher les topics créés par l'utilisateur dans le forum courant.",
         type: "boolean",
         default: false,
     }
