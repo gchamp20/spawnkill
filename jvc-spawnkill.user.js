@@ -51,6 +51,7 @@
 // @resource    mp                    images/mp.png
 // @resource    alert                 images/alert.png
 // @resource    link-gray             images/link-gray.png
+// @resource    search-topics         images/search-topics.png
 // @resource    calendar              images/calendar.png
 // @resource    clock                 images/clock.png
 // @resource    settings              images/settings.png
