@@ -1,0 +1,232 @@
+Documentation - Fonctions utilitaires (`Util`)
+==============================================
+
+* **SK.Util.jvc** : Effectue une requête sur l'api de JVC
+    * `url` (string) : L'URL de la requête
+    * `callback` (function) : Fonction appelée avec comme premier paramètre un objet jQuery correspondant à la réponse XML
+
+```javascript
+SK.Util.jvc("02.flux_news.xml", function(news) {
+    // On affiche les dernières news du site
+    console.log(news);
+});
+```
+
+----
+
+
+* **SK.Util.api** : Wrapper de l'API JVC permettant de faire des requêtes simplifiées via un serveur distant
+    * `requestAction` (string) : Type de requête à exécuter : "pseudos" ou "topic"
+    * `data` (array<string>): Si `requestAction`== "pseudos", alors `data` est un array de pseudos, sinon, si `requestAction` == "topic", alors `data` est une chaîne de caractères contenant la chaîne d'identification d'un topic dans une URL (`ID_FORUM-ID_TOPIC`)
+    * `callback` (function) : fonction appelée avec un objet jQuery contenant les infos récupérées
+    * `logApiCall` (boolean, default = true) : Si vrai, enregistre l'appel dans la BDD
+    * `forceCacheReload` (boolean, default = false) : Si vrai, alors ne prend pas en compte le cache, et force son rechargement
+
+```javascript
+// Requête vers http://dl.spixel.fr/greasemonkey/jvc-spawnkill/server/api-jvc.php?action=topic&data=%221000021-2267708%22&log=true&forceCacheReload=false
+SK.Util.api("topic", "1000021-2267708", function($topic) {
+    // On affiche les infos du topic retournées par le serveur distant
+    console.log($topic);
+}, false, true);
+```   
+
+----
+
+* **SK.Util.timestamp** : Retourne le timestamp Unix courant (int)
+
+
+* **SK.Util.currentPageIn**  : Retourne vrai si l'utilisateur est sur l'une des pages passée en paramètre
+    * `pages` (array<string>): Un tableau de d'identifiants de page ("topic-list", "topic-read", "topic-form" ou "topic-response" ou "post-preview")
+
+```javascript
+// Est-ce que nous sommes sur la page qui liste les topics ?
+if(SK.Util.currentPageIn(["topic-list"])) {
+    // On fait un truc
+}
+```
+
+----
+
+* **SK.Util.showModal**  : Affiche la fenêtre modale passée en paramètre
+    * `$modal` (SK.Modal) : Modale à afficher
+
+```javascript
+var $modal = new SK.Modal({
+    title : "SpawnKill",
+    content : "Voici un exemple de modal box"
+});
+
+SK.Util.showModal($modal);
+```
+
+----
+
+* **SK.Util.showModalLoader** : Affiche l'écran de chargement des fenêtres modales
+
+----
+
+* **SK.Util.hideModal** : Cache toutes les fenêtres modales ouvertes
+
+----
+
+* **SK.Util.addButton** : Ajoute un bouton au post à l'emplacement indiqué en paramètre dans les options*
+    * `$msg` (jQuery Object) : Objet jQuery qui contient le post (.msg)
+    * `buttonOptions` (object) : **Remarque** : ces paramètres sont les mêmes que ceux de **SK.Button()**
+        * string `location` : "top" (défaut), "right" ou "bottom".
+        * int `index` : position du bouton (de gauche à droite)
+        * Les autres paramètres se trouvent [ici](http://un.lien)
+
+```javascript
+var $msg = $(".msg").first();
+var buttonOptions = {
+    location : "right",
+    index : 3
+}
+
+// On ajout le bouton dans le premier message trouvé
+SK.Util.addButton($msg, buttonOptions)
+```
+
+----
+
+* **SK.Util.addCss** : Permet d'injecter du code CSS dans la page
+	* `css` (string) : Chaîne CSS de la page
+
+```javascript
+SK.Util.addCss("body { background-color: blue }");
+```
+
+----
+
+* **SK.Util.sanitizeXML** : Permet de supprimer les caractères spéciaux pour éviter les erreurs de parsing
+	* `xml` (string) : XML à échapper
+
+----
+
+* **SK.Util.fetchStyle** : Force le navigateur à recalculer le CSS pour les animations
+	* `element` (HTMLElement) : Element à animer
+
+----
+
+* **SK.Util.setValue** : Wrapper de localStorage.setItem();
+	* `key` (string) : Clé de l'item dans le localStorage (sera prefixée par "SK.")
+	* `value` (mix) : Données correspondantes. Attention, les donnés étant sérialisée, si l'objet a une méthode `toString()`, des informations peuvent être perdues.
+
+```javascript
+var key = "Foo";
+var value = ["Bar", "Qux", 123];
+
+SK.Util.setValue(key, value);
+```
+
+----
+
+* **SK.Util.getValue** : Wraper de localStorage.getItem();
+	* `key` (string) : Clé de l'item dans le localStorage (sera prefixée par "SK.")
+
+----
+
+* **SK.Util.deleteValue** : Wrapper de localStorage.deleteItem();
+	* `key` (string) : Clé de l'item dans le localStorage (sera prefixée par "SK.")
+
+----
+
+* **SK.Util._** : Retourne `nbspCount` espaces insécables
+ * `nbspCount` (int) : Nombre d'espaces insécables à retourner
+
+```javascript
+var foo = SK.Util._(10);
+
+// Affiche 10 espaces insécables
+console.log(foo);
+```
+
+----
+
+* **SK.Util.htmlEncode** : Remplace les caractères (&, <, >, ", ', /) par leur entité équivalente
+	* `string` (string) : Chaîne à encoder
+
+```javascript
+var string = "C'est un <b>Test</b>. &";
+var encodedString = SK.Util.htmlEncode(string);
+
+// Affiche "C&#39;est un &lt;b&gt;Test&lt;&#x2F;b&gt;. &amp;"
+console.log(encodedString);
+```
+
+----
+
+* **SK.Util.preload** : Permet de précharger une image
+    * `$img` (HTMLImageElement) : image créé via `new Image()`, `document.createElement("img")`, ou `$("<img>")` 
+    * `callback` (function) : Cette fonction est exécutée lorsque l'image est chargée
+
+```javascript
+var $img = $("<img>", {
+    src : "http://un.lien/image.jpg",
+    alt : "Une image"
+});
+
+SK.Util.preload($img, function() {
+    console.log("L'image est chargée"); 
+});
+```
+
+----
+
+* **SK.Util.dispatch** : Permet de propager l'évènement `eventName` dans le système d'évènements sur <body>
+	* `eventName` (string) : Nom de l'événement à propager
+
+```javascript
+/**
+ * Exemple tiré de la "communication" entre le module "Quote.js" et "EmbedMedia.js"
+ * ----
+ * 
+ * Quote.js - SK.moduleConstructors.Quote.prototype.htmlizeAllQuotes();
+ */
+var $posts = $(".posts");
+var postCount = $posts.length;
+$posts.each(function(i, post)) {
+     
+    // ...
+     
+    if(i === postCount - 1) {
+        // SpawnKill envoie l'évènement "htmlQuoteLoaded" lorsque toutes les quotes ont été "htmlisées"
+        SK.Util.dispatch("htmlQuoteLoaded");
+    }
+}
+ 
+/**
+ * EmbedMedia.js - SK.moduleConstructors.EmbedMedia.prototype.init()
+ */
+ 
+// Si htmlQuote est activé, on a besoin que les citations soient chargées pour calculer la taille des vidéos
+var mustWaitQuote = SK.modules.Quote.activated && SK.modules.Quote.getSetting("htmlQuote");
+
+// Si on doit attendre les quotes, alors on attend que l'évènement "htmlQuoteLoaded" soit envoyé, sinon on éxecute directement la fonction callback
+SK.Util.bindOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
+    this.embedMedia();
+}.bind(this));
+ 
+```
+
+----
+
+* **SK.Util.getPostSelection** : Retourne la sélection texte d'un post, et contourne ainsi .getSelection() qui ne capture pas l'attribut `alt` des `<img>` sous Chrome.
+
+----
+
+* **SK.Util.bindOrExecute** : Bind une fonction à un évènement si la condition est vraie, sinon, elle est directement exécutée
+	* `condition` (boolean) : Condition à tester 
+	* `eventName` (string) : Nom de l'événement
+	* `fn` (function) : Fonction à exécuter
+
+```javascript
+/**
+ * EmbedMedia.js - SK.moduleConstructors.EmbedMedia.prototype.init()
+ */
+ 
+ // Si on doit attendre les quotes, alors on attend que l'évènement "htmlQuoteLoaded" soit envoyé, sinon on éxecute directement la fonction callback
+SK.Util.bindOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
+    this.embedMedia();
+}.bind(this));
+```
