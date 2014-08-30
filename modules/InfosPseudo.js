@@ -218,6 +218,22 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
         });
     }
 
+	//Bouton rechercher topics
+	if(this.getSetting("enableSearchTopics")) {
+        SK.Util.addButton(message.$msg, {
+            class: "searchTopics",
+            href: mpUrl,
+            tooltip: {
+                text: "Rechercher les topics"
+            },
+            click: function(event) {
+                event.preventDefault();
+                var win = window.open(mpUrl, "_blank");
+                win.focus();
+            }
+        });
+    }
+	
     //Bouton permalien
     if(this.getSetting("enablePermalinkAnchor")) {
         SK.Util.addButton(message.$msg, {
@@ -498,6 +514,12 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         description: "Affiche votre pseudonyme en bleu pour les messages que vous avez postés.",
         type: "boolean",
         default: false,
+    },
+	enableSearchTopics: {
+        title: "Bouton rechercher topics",
+        description: "Ajoute un bouton permettant de rechercher les topics créés par le membre.",
+        type: "boolean",
+        default: false,
     }
 };
 
@@ -639,6 +661,11 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
         }\
         .sk-button-content.mp {\
             background-image: url('" + GM_getResourceURL("mp") + "');\
+            background-color: #FCCB0C;\
+            border-bottom-color: #C6860F;\
+        }\
+		.sk-button-content.searchTopics {\
+            background-image: url('" + GM_getResourceURL("search_topics") + "');\
             background-color: #FCCB0C;\
             border-bottom-color: #C6860F;\
         }\
