@@ -102,7 +102,7 @@ SK.Author.prototype.saveLocalData = function() {
         date: new Date()
     };
 
-    SK.Util.setValue(this.pseudo, data);
+    SK.Util.setValue("authors." + this.pseudo, data);
 };
 
 /*
@@ -111,23 +111,15 @@ SK.Author.prototype.saveLocalData = function() {
  */
 SK.Author.prototype.loadLocalData = function() {
 
-    var data = SK.Util.getValue(this.pseudo);
+    var data = SK.Util.getValue("authors." + this.pseudo);
+    var dataLoaded = false;
 
-    if(data !== null) {
-
-        //On ne charge les données que si elles sont encore valables
-        var dataDate = new Date(data.date);
-        var now = new Date();
-        var timeDiff = Math.abs(now.getTime() - dataDate.getTime());
-        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-        if(data.version === SK.Author.VERSION && diffDays < SK.Author.DATA_TTL) {
-            this.initFromData(data);
-            return true;
-        }
+    if(SK.Author.isDataValid(data)) {
+        this.initFromData(data);
+        dataLoaded = true;
     }
-
-    return false;
+    
+    return dataLoaded;
 };
 
 SK.Author.getRankFromColor = function(hexString) {
@@ -162,4 +154,54 @@ SK.Author.getRankFromColor = function(hexString) {
     }
 
     return rank;
+};
+
+/**
+ * Retourne faux si les données passées en paramètre sont obsolètes.
+ */
+SK.Author.isDataValid = function(data) {
+
+    var valid = true;
+
+    if(data === null) {
+        return false;
+    }
+
+    //On ne charge les données que si elles sont encore valables
+    var dataDate = new Date(data.date);
+    var now = new Date();
+    var timeDiff = Math.abs(now.getTime() - dataDate.getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    if(data.version !== SK.Author.VERSION || diffDays >= SK.Author.DATA_TTL) {
+        valid = false;
+    }
+
+    return valid;
+
+};
+
+/**
+ * Supprime les auteurs dont les données sont expirées.
+ */
+SK.Author.removeObsoleteData = function() {
+
+    //On parcourt les données locales
+    Object
+        .keys(localStorage)
+        .forEach(function(key) {
+
+            //SI les données concernent un auteur
+            if (/^(SK.authors.)/.test(key)) {
+
+                var skKey = key.substr(3);
+                var data = SK.Util.getValue(skKey);
+
+                // Et qu'elles sont périmées
+                if (!SK.Author.isDataValid(data)) {
+                    //On les supprime
+                    SK.Util.deleteValue(skKey);
+                }
+            }
+        }); 
 };

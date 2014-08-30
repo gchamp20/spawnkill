@@ -2,10 +2,6 @@
 /* jshint multistr: true */
 /* jshint newcap: false */
 
-/*
-- TODO
-- Ne pas récupérer plusieurs fois les données d'une même personne
-*/
 SK.moduleConstructors.InfosPseudo = SK.Module.new();
 
 SK.moduleConstructors.InfosPseudo.prototype.id = "InfosPseudo";
@@ -365,7 +361,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addAvatar = function(message) {
         });
 
         //Suppression du cache local
-        SK.Util.deleteValue(message.author.pseudo);
+        SK.Util.deleteValue("authors." + message.author.pseudo);
 
         //Rechargement du cache distant
         SK.Util.api("pseudos", [ message.author.pseudo ], false, true, false);
