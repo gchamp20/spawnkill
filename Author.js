@@ -12,7 +12,7 @@ SK.Author = function(pseudo) {
     this.fullSizeAvatar = "";
     this.gender = "";
     this.profileLink = "";
-    //Faux en cas de profile banni/supprimé
+    //Vrai en cas de profil banni/supprimé
     this.profileUnavailable = false;
     //"ban tempo", "ban def", "error" ou "removed"
     this.errorType = "";
@@ -21,7 +21,7 @@ SK.Author = function(pseudo) {
 };
 
 /** Version du modèle. Permet de déprecier le cache si la structure change */
-SK.Author.VERSION = "2.2.1";
+SK.Author.VERSION = "2.3";
 
 /** Durée de validité du localStorage en jours */
 SK.Author.DATA_TTL = 4;
