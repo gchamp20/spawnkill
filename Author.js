@@ -12,7 +12,7 @@ SK.Author = function(pseudo) {
     this.fullSizeAvatar = "";
     this.gender = "";
     this.profileLink = "";
-    //Faux en cas de profile banni/supprimé
+    //Vrai en cas de profil banni/supprimé
     this.profileUnavailable = false;
     //"ban tempo", "ban def", "error" ou "removed"
     this.errorType = "";
@@ -21,7 +21,7 @@ SK.Author = function(pseudo) {
 };
 
 /** Version du modèle. Permet de déprecier le cache si la structure change */
-SK.Author.VERSION = "2.2.1";
+SK.Author.VERSION = "2.3";
 
 /** Durée de validité du localStorage en jours */
 SK.Author.DATA_TTL = 4;
@@ -102,7 +102,7 @@ SK.Author.prototype.saveLocalData = function() {
         date: new Date()
     };
 
-    SK.Util.setValue(this.pseudo, data);
+    SK.Util.setValue("authors." + this.pseudo, data);
 };
 
 /*
@@ -111,23 +111,15 @@ SK.Author.prototype.saveLocalData = function() {
  */
 SK.Author.prototype.loadLocalData = function() {
 
-    var data = SK.Util.getValue(this.pseudo);
+    var data = SK.Util.getValue("authors." + this.pseudo);
+    var dataLoaded = false;
 
-    if(data !== null) {
-
-        //On ne charge les données que si elles sont encore valables
-        var dataDate = new Date(data.date);
-        var now = new Date();
-        var timeDiff = Math.abs(now.getTime() - dataDate.getTime());
-        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
-        if(data.version === SK.Author.VERSION && diffDays < SK.Author.DATA_TTL) {
-            this.initFromData(data);
-            return true;
-        }
+    if(SK.Author.isDataValid(data)) {
+        this.initFromData(data);
+        dataLoaded = true;
     }
-
-    return false;
+    
+    return dataLoaded;
 };
 
 SK.Author.getRankFromColor = function(hexString) {
@@ -162,4 +154,54 @@ SK.Author.getRankFromColor = function(hexString) {
     }
 
     return rank;
+};
+
+/**
+ * Retourne faux si les données passées en paramètre sont obsolètes.
+ */
+SK.Author.isDataValid = function(data) {
+
+    var valid = true;
+
+    if(data === null) {
+        return false;
+    }
+
+    //On ne charge les données que si elles sont encore valables
+    var dataDate = new Date(data.date);
+    var now = new Date();
+    var timeDiff = Math.abs(now.getTime() - dataDate.getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    if(data.version !== SK.Author.VERSION || diffDays >= SK.Author.DATA_TTL) {
+        valid = false;
+    }
+
+    return valid;
+
+};
+
+/**
+ * Supprime les auteurs dont les données sont expirées.
+ */
+SK.Author.removeObsoleteData = function() {
+
+    //On parcourt les données locales
+    Object
+        .keys(localStorage)
+        .forEach(function(key) {
+
+            //SI les données concernent un auteur
+            if (/^(SK.authors.)/.test(key)) {
+
+                var skKey = key.substr(3);
+                var data = SK.Util.getValue(skKey);
+
+                // Et qu'elles sont périmées
+                if (!SK.Author.isDataValid(data)) {
+                    //On les supprime
+                    SK.Util.deleteValue(skKey);
+                }
+            }
+        }); 
 };

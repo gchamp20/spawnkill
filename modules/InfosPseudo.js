@@ -2,10 +2,6 @@
 /* jshint multistr: true */
 /* jshint newcap: false */
 
-/*
-- TODO
-- Ne pas récupérer plusieurs fois les données d'une même personne
-*/
 SK.moduleConstructors.InfosPseudo = SK.Module.new();
 
 SK.moduleConstructors.InfosPseudo.prototype.id = "InfosPseudo";
@@ -149,6 +145,8 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     var avertirUrl = message.alertUrl;
     var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + ".html";
     var mpUrl = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + message.authorPseudo;
+    var topicsUrl = "http://www.jeuxvideo.com/forums/0-" + permalink.split("-")[1] + "-0-1-0-1-1-%22" +
+            message.authorPseudo + "%22.htm";
 
     //Bouton CDV
     var profileButtonOptions = {
@@ -218,6 +216,22 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
         });
     }
 
+    //Bouton rechercher topics
+    if(this.getSetting("enableSearchTopics")) {
+        SK.Util.addButton(message.$msg, {
+            class: "searchTopics",
+            href: topicsUrl,
+            tooltip: {
+                text: "Rechercher les topics de " + message.authorPseudo 
+            },
+            click: function(event) {
+                event.preventDefault();
+                var win = window.open(topicsUrl, "_blank");
+                win.focus();
+            }
+        });
+    }
+    
     //Bouton permalien
     if(this.getSetting("enablePermalinkAnchor")) {
         SK.Util.addButton(message.$msg, {
@@ -365,7 +379,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addAvatar = function(message) {
         });
 
         //Suppression du cache local
-        SK.Util.deleteValue(message.author.pseudo);
+        SK.Util.deleteValue("authors." + message.author.pseudo);
 
         //Rechargement du cache distant
         SK.Util.api("pseudos", [ message.author.pseudo ], false, true, false);
@@ -484,6 +498,12 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
     enablePermalinkAnchor: {
         title: "Bouton ancre Permalien",
         description: "Ajoute un bouton ancre du permalien d'un post.",
+        type: "boolean",
+        default: false,
+    },
+    enableSearchTopics: {
+        title: "Bouton de recherche des topics d'un auteur",
+        description: "Ajoute un bouton permettant de rechercher les topics créés par l'utilisateur dans le forum courant.",
         type: "boolean",
         default: false,
     },
@@ -641,6 +661,11 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
             background-image: url('" + GM_getResourceURL("mp") + "');\
             background-color: #FCCB0C;\
             border-bottom-color: #C6860F;\
+        }\
+        .sk-button-content.searchTopics {\
+            background-image: url('" + GM_getResourceURL("search-topics") + "');\
+            background-color: #FFA500;\
+            border-bottom-color: #8d5b00;\
         }\
         .sk-button-content.minus {\
             background-image: url('" + GM_getResourceURL("minus") + "');\

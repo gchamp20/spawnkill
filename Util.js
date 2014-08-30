@@ -21,11 +21,11 @@ SK.Util = {
     },
 
     /**
-     * Wrapper de l'API JVC permettant de faire des requpetes simplifiées via un serveur distant.
+     * Wrapper de l'API JVC permettant de faire des requêtes simplifiées via un serveur distant.
      * requestAction (string) : Type de requête à exécuter : "pseudos" ou "topic"
      * data (mix) : données de la requête
      *    pseudos : [ "pseudo1",  "pseudo2", "pseudo3"]
-     *    topic : la chaine d'id du topic. Ce qui est entre paraenthèses dans l'url suivante :
+     *    topic : la chaine d'id du topic. Ce qui est entre parenthèses dans l'url suivante :
      *       http://www.jeuxvideo.com/forums/1-(51-65175198)-7-0-1-0-script-jvc-spawnkill-avant-respawn.htm
      * callback : fonction appelée avec un objet jQuery contenant les infos récupérées
      * logApiCall : true (défaut) ou false, si vrai : enregistre l'appel dans la BDD
@@ -240,9 +240,22 @@ SK.Util = {
         }
     },
 
+    /**
+     * Ajoute une valeur dans le localStorage. Fait le ménage dans les auteurs si ce dernier est plein.
+     */
     setValue: function(key, value) {
         key = "SK." + key;
-        localStorage.setItem(key, JSON.stringify(value));
+
+        // Gestion du localStorage plein
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
+        catch(e) {
+            if(e.name === "QUOTA_EXCEEDED_ERR") {
+                // On supprime les données obsolètes des auteurs
+                SK.Author.removeObsoleteData();
+            }
+        }
     },
 
     /* Retourne null si la donnée n'existe pas */
@@ -324,7 +337,7 @@ SK.Util = {
         }
 
         //"Nettoyage" du post.
-        selection = selection.replace(/\n/g, "") //Suppression des line break
+        selection = selection.replace(/\n/g, "") //Suppression des linebreaks
                              .replace(/<br ?\/?>/g, "\n") //<br> -> \n
                              .replace(/<img[^>]*alt="([^"]*)"[^>]*>/g, "$1") //img -> img[alt]
                              .replace(/<a[^>]*href="([^"]*)".*<\/a>/g, "$1") //a -> a[href]
