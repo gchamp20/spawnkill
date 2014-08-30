@@ -222,7 +222,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             class: "searchTopics",
             href: topicsUrl,
             tooltip: {
-                text: "Rechercher les topics de" + message.authorPseudo 
+                text: "Rechercher les topics de " + message.authorPseudo 
             },
             click: function(event) {
                 event.preventDefault();
@@ -501,6 +501,12 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         type: "boolean",
         default: false,
     },
+    enableSearchTopics: {
+        title: "Bouton de recherche des topics d'un auteur",
+        description: "Ajoute un bouton permettant de rechercher les topics créés par l'utilisateur dans le forum courant.",
+        type: "boolean",
+        default: false,
+    },
     modalProfile: {
         title: "Charger la CDV dans une modale",
         description: "Affiche le profil de l'auteur dans une fenêtre modale au clic.",
@@ -510,12 +516,6 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
     enableUserHighlight: {
         title: "Mise en valeur de vos messages",
         description: "Affiche votre pseudonyme en bleu pour les messages que vous avez postés.",
-        type: "boolean",
-        default: false,
-    },
-    enableSearchTopics: {
-        title: "Bouton de recherche des topics d'un auteur",
-        description: "Ajoute un bouton permettant de rechercher les topics créés par l'utilisateur dans le forum courant.",
         type: "boolean",
         default: false,
     }
