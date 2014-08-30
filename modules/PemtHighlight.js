@@ -17,7 +17,7 @@ SK.moduleConstructors.PemtHighlight.prototype.description = "Met en valeur les p
 SK.moduleConstructors.PemtHighlight.prototype.init = function() {
 
     //Crée un tableau contenant les dates du topic
-    var dates = $(".date").text().replace(/via mobile/g, "").split("Posté le");
+    var dates = $(".date").text().replace(/via mobile /g, "").split("Posté le");
     var results = [];
     //Boucle de test de PEMT
     for (var i = 0; i < dates.length; i++) {
