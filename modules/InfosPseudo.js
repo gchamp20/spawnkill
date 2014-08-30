@@ -149,7 +149,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     var avertirUrl = message.alertUrl;
     var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + ".html";
     var mpUrl = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + message.authorPseudo;
-	var topicsUrl = "http://www.jeuxvideo.com/forums/0-" + permalink.split("-")[1] + "-0-1-0-1-1-%22" + message.authorPseudo + "%22.htm"
+    var topicsUrl = "http://www.jeuxvideo.com/forums/0-" + permalink.split("-")[1] + "-0-1-0-1-1-%22" + message.authorPseudo + "%22.htm"
 
     //Bouton CDV
     var profileButtonOptions = {
@@ -219,8 +219,8 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
         });
     }
 
-	//Bouton rechercher topics
-	if(this.getSetting("enableSearchTopics")) {
+    //Bouton rechercher topics
+    if(this.getSetting("enableSearchTopics")) {
         SK.Util.addButton(message.$msg, {
             class: "searchTopics",
             href: topicsUrl,
@@ -234,7 +234,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             }
         });
     }
-	
+    
     //Bouton permalien
     if(this.getSetting("enablePermalinkAnchor")) {
         SK.Util.addButton(message.$msg, {
@@ -516,7 +516,7 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         type: "boolean",
         default: false,
     },
-	enableSearchTopics: {
+    enableSearchTopics: {
         title: "Bouton rechercher topics",
         description: "Ajoute un bouton permettant de rechercher les topics créés par le membre.",
         type: "boolean",
@@ -665,7 +665,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
             background-color: #FCCB0C;\
             border-bottom-color: #C6860F;\
         }\
-		.sk-button-content.searchTopics {\
+        .sk-button-content.searchTopics {\
             background-image: url('" + GM_getResourceURL("search-topics") + "');\
             background-color: #FFA500;\
             border-bottom-color: #8d5b00;\
