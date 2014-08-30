@@ -308,16 +308,28 @@ SK.Util = {
         $("body").get(0).dispatchEvent(new Event(eventName));
     },
 
-    getSelection: function() {
+    /**
+     * Retourne la sélection texte d'un post.
+     * Permet de contourner .getSelection() qui ne retourne pas l'alt des img sous Chrome
+     */
+    getPostSelection: function() {
         var selection = "";
         var selectionObject = window.getSelection();
         if (selectionObject.rangeCount) {
             var selectionWrapper = document.createElement("div");
-            for (var i = 1, rangeCount = selectionObject.rangeCount; i < rangeCount; i++) {
+            for (var i = 0; i < selectionObject.rangeCount; i++) {
                 selectionWrapper.appendChild(selectionObject.getRangeAt(i).cloneContents());
             }
             selection = selectionWrapper.innerHTML;
         }
+
+        //"Nettoyage" du post.
+        selection = selection.replace(/\n/g, "") //Suppression des line break
+                             .replace(/<br ?\/?>/g, "\n") //<br> -> \n
+                             .replace(/<img[^>]*alt="([^"]*)"[^>]*>/g, "$1") //img -> img[alt]
+                             .replace(/<a[^>]*href="([^"]*)".*<\/a>/g, "$1") //a -> a[href]
+                             .replace(/<div class="quote-bloc">.*?<\/div>/g, "") //suppression des quotes
+                             .replace(/<li class="post">/g, "").replace(/<li class="ancre">[^>]*>/g, "").replace(/<\/li>/g, ""); //suppression des li
         return selection;
     },
 

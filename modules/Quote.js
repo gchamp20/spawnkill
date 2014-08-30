@@ -81,20 +81,20 @@ SK.moduleConstructors.Quote.prototype.initPartialQuote = function() {
         // retirer la sélection 
         window.setTimeout(function() {
 
-            var selectionText = SK.Util.getSelectionHtml();
+            var selectionText = SK.Util.getPostSelection();
             var $post = $(this).find(".post");
             var message = new SK.Message($post.parents(".msg"));
 
-            console.log(selectionText);
             // Si la sélection est vide, ou que le texte sélectionné ne fait pas entièrement
             // partie du post, on n'affiche pas le bouton
             if (selectionText === "" ||
-                //On retire les espaces pour éviter les problèmes causés par les images
+                //On compare sans les espaces pour éviter les problèmes causés par les espace avant/après les images
                 message.text.replace(/\s/g, "").indexOf(selectionText.replace(/\s/g, "")) === -1
             ) {
                 return;
             }
 
+            //On affiche le bouton de citation partielle
             self.addPartialQuoteButton(message, selectionText, event.pageX, event.pageY);
 
         }.bind(this), 100);
@@ -105,6 +105,7 @@ SK.moduleConstructors.Quote.prototype.initPartialQuote = function() {
 
 /**
  * Crée et ajoute au message passé en paramètre un bouton de citation partielle.
+ * Il sera positionné juste en dessous de la souris (coordonnées passées en paramètre)
  */
 SK.moduleConstructors.Quote.prototype.addPartialQuoteButton = function(message, selectionText, mouseX, mouseY) {
 
@@ -145,6 +146,7 @@ SK.moduleConstructors.Quote.prototype.addPartialQuoteButton = function(message, 
     //On supprime tous les boutons existants avant d'en ajouter un nouveau
     $(".partial-quote").remove();
 
+    //On ajoute/anime le bouton
     message.$msg.append($partialQuoteButton);
     SK.Util.fetchStyle($partialQuoteButton);
     $partialQuoteButton.addClass("active");
