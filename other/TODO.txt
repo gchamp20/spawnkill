@@ -1,5 +1,2 @@
 v1.13.2++
-- Ajout de la documentation des classes Author, Modal, Button, SLideToggle et DropDownList
-	- Corriger définition jQUery
-	- Ajouter lien entre Buttonet addButton
-	- Ajouter lien entre Modal et show/hideModal
+- Ajout de la documentation des classes Author, Modal, Button, SLideToggle et DropDownList (Contribution de Kocal)
