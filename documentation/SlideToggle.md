@@ -1,6 +1,8 @@
 Documentation - Toggle ON/OFF (`SlideToggle`)
 ========================================
 
+*Dernière mise à jour : v1.13.1.2*
+
 ### SK.SlideToggle
 Permet de créer un toggle ON/OFF de SpawnKill.
 
@@ -8,13 +10,12 @@ Permet de créer un toggle ON/OFF de SpawnKill.
 
 Paramètre du toggle ON/OFF
 * `options.value` (bool) : Valeur par défaut **true** pour "ON", ou **false** (défaut) pour "OFF"
+* `options.*` (string) : Tout autre attribut passé à la création d'un objet jQuery (`class`, `id`, `click`, ...)
 
-Paramètres du checkbox
-* `options.checkbox.disabled` (string) : Permet de désactiver le toggle ON/OFF si la valeur est **disabled**
-
-#### Remarques
-
-Les objets `options`, et `options.checkbox` peuvent contenir d'autres clés/valeurs qui seront respectivement associées au toggle ON/OFF et au checkbox, et se comporteront tel le système HTML "attribut" => "valeur".
+Paramètres de la checkbox
+* `options.checkbox` (object) : Objet littéral contenant les différents paramètres
+    * `options.checkbox.disabled` (string) : Permet de désactiver le toggle ON/OFF si la valeur est **disabled**
+    * `options.checkbox.*` (string) : Tout autre attribut passé à la création d'un objet jQuery (`class`, `id`, `click`, ...)
 
 #### Utilisation
 

@@ -1,6 +1,8 @@
 Documentation - Liste déroulante (`DropdownList`)
 ========================================
 
+*Dernière mise à jour : v1.13.1.2*
+
 ### SK.DropdownList
 Permet de créer une liste déroulante de SpawnKill.
 
@@ -8,14 +10,13 @@ Permet de créer une liste déroulante de SpawnKill.
 
 Paramètres de la liste déroulante
 * `options.value` (string) : Valeur par défaut
-* `options.values` (object) : Liste de valeurs
+* `options.values` (object) : Liste de valeurs de la forme `{ "value" : "label", "value2" : "label2" }`
+* `options.*` (string) : Tout autre attribut passé à la création d'un objet jQuery (`class`, `id`, `click`, ...)
 
 Paramètres du `<select>`
-* `options.select` (object) : Objet qui contient les options du `<select>`
-
-#### Remarques
-
-Les objets `options`, et `options.select` peuvent contenir d'autres clés/valeurs qui seront respectivement associées à la liste déroulante et au `<select>`, et se comporteront tel le système HTML "attribut" => "valeur".
+* `options.select` (object) : Objet littéral contenant les différents paramètres
+    * `options.select.*` (string) : Tout autre attribut passé à la création d'un objet jQuery (`class`, `id`, `click`, ...)
+    
 
 #### Utilisation
 

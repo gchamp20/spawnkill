@@ -52,6 +52,8 @@ if(SK.Util.currentPageIn(["topic-list"])) {
 * **SK.Util.showModal**  : Affiche la fenêtre modale passée en paramètre
     * `$modal` (SK.Modal) : Modale à afficher
 
+**Note :** Voir la documentation des [`Modal`](https://github.com/dorian-marchal/spawnkill/blob/master/documentation/Modal.md) pour plus d'informations
+
 ```javascript
 var $modal = new SK.Modal({
     title : "SpawnKill",
@@ -65,9 +67,13 @@ SK.Util.showModal($modal);
 
 * **SK.Util.showModalLoader** : Affiche l'écran de chargement des fenêtres modales
 
+**Note :** Voir la documentation des [`Modal`](https://github.com/dorian-marchal/spawnkill/blob/master/documentation/Modal.md) pour plus d'informations
+
 ----
 
 * **SK.Util.hideModal** : Cache toutes les fenêtres modales ouvertes
+
+**Note :** Voir la documentation des [`Modal`](https://github.com/dorian-marchal/spawnkill/blob/master/documentation/Modal.md) pour plus d'informations
 
 ----
 
@@ -77,6 +83,8 @@ SK.Util.showModal($modal);
         * string `location` : "top" (défaut), "right" ou "bottom".
         * int `index` : position du bouton (de gauche à droite)
         * Les autres paramètres se trouvent [ici](http://un.lien)
+
+**Note :** Voir la documentation des [`Button`](https://github.com/dorian-marchal/spawnkill/blob/master/documentation/Button.md) pour plus d'informations
 
 ```javascript
 var $msg = $(".msg").first();
