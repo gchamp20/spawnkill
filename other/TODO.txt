@@ -2,3 +2,5 @@ v1.14.0.1
 - Correction d'un bug avec les dates du type "1er" du mois
 - Correction d'un bug dans les citations quand le post contenait un bouton de téléchargement SpawnKill
 - Correction d'un bug du nombre de messages dans l'onglet en cas de problème de connexion
+- Correction du bug avec la durée de départ dans les vidéos Youtube (Contribution de Thiht)
+- Correction quand une citation de type Turboforum commençait par un lien
