@@ -455,7 +455,7 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         title: "Taille des avatars",
         description: "Choix de la taille des avatars",
         type: "select",
-        options: { 40: "Petit", 60: "Moyen", 80: "Grand" },
+        options: { "40": "Petit", "60": "Moyen", "80": "Grand" },
         default: "60",
     },
     enableRank: {
@@ -536,6 +536,11 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
 
     //Seulement si les avatars sont affichés
     if(this.getSetting("enableAvatar")) {
+
+        var littleAvatar = this.avatarSize === 40;
+        var banTempoLabel = littleAvatar ? "tempo" : "ban tempo";
+        var banDefLabel = littleAvatar ? "def" : "ban def";
+
         css += "\
             .msg ul {\
                 margin-left: " + (this.avatarSize + 18) + "px;\
@@ -598,10 +603,10 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
                 color: #FFF;\
             }\
             .avatar.ban.def::after {\
-                content: \"ban def\";\
+                content: \"" + banDefLabel + "\";\
             }\
             .avatar.ban.tempo::after {\
-                content: \"ban tempo\";\
+                content: \"" + banTempoLabel + "\";\
             }\
             .rank {\
                 position: absolute;\
