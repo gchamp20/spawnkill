@@ -26,6 +26,9 @@ SK.Message.prototype.init = function() {
     //On supprime les éventuelles citations
     $message.find(".quote-bloc").remove();
 
+    //On supprime les éventuels boutons de téléchargement
+    $message.find(".spawnkill-media-element").remove();
+
     $message.find("> img").each(function() {
         $(this).replaceWith($(this).attr("alt"));
     });

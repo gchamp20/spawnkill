@@ -326,6 +326,7 @@ SK.Util = {
      * Permet de contourner .getSelection() qui ne retourne pas l'alt des img sous Chrome
      */
     getPostSelection: function() {
+        
         var selection = "";
         var selectionObject = window.getSelection();
         if (selectionObject.rangeCount) {
@@ -339,10 +340,12 @@ SK.Util = {
         //"Nettoyage" du post.
         selection = selection.replace(/\n/g, "") //Suppression des linebreaks
                              .replace(/<br ?\/?>/g, "\n") //<br> -> \n
+                             .replace(/<div class="quote-bloc">.*?<\/div>/g, "") //suppression des quotes
+                             .replace(/<div class="spawnkill-media-element(?:(?:.|\s)*?<\/div>){5}/g, "") //suppression des boutons de téléchargement
                              .replace(/<img[^>]*alt="([^"]*)"[^>]*>/g, "$1") //img -> img[alt]
                              .replace(/<a[^>]*href="([^"]*)".*<\/a>/g, "$1") //a -> a[href]
-                             .replace(/<div class="quote-bloc">.*?<\/div>/g, "") //suppression des quotes
                              .replace(/<li class="post">/g, "").replace(/<li class="ancre">[^>]*>/g, "").replace(/<\/li>/g, ""); //suppression des li
+        
         return selection;
     },
 

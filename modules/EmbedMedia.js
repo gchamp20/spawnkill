@@ -348,6 +348,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         getEmbeddedMedia: function() {
 
             var $el = $("<div>");
+
             var donationLabels = [
                 "Nourrir mon chat <img alt=':hap:' src='http://image.jeuxvideo.com/smileys_img/18.gif'>",
                 "Me payer une gauffre",
@@ -362,10 +363,10 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                 "M'offrir un Humble Bundle",
                 "Payer une partie du serveur",
                 "M'offrir un café",
+                "Apprivoiser un développeur",
                 "Nourrir un développeur"
             ];
             var donationLabel = donationLabels[Math.floor(Math.random() * donationLabels.length)];
-
 
             $el.append(new SK.Button({
                 class: "spawnkill-button large",
