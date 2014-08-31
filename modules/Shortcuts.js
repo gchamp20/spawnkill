@@ -80,19 +80,10 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
     /**
      * Analyse des touches utilisées par l'utilisateur et appel de la fonction suivant le raccourci utilisé
      */
-	$(window).keydown(function(event) {
-		var target = event.target || event.srcElement;
-		// Partout
-		// ...
+		$(window).keydown(function(event) {
 
-		// Sur la liste des topics
-		if (SK.Util.currentPageIn([ "topic-list" ])) {
-
-		}
-
-		// Sur la liste des posts
-		else if (SK.Util.currentPageIn([ "topic-read" ])) {
 			// Si l'on se trouve dans un champ de texte, on désactive les raccourcis (voir https://github.com/dorian-marchal/spawnkill/issues/30)
+			var target = event.target || event.srcElement;
 			if (target.tagName === "TEXTAREA" || (target.tagName === "INPUT" && target.type === "text")) {
 				return;
 			}
@@ -107,21 +98,9 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 				nextPage();
 				event.preventDefault();
 			}
-		}
+		});
+};
 
-		// Sur le formulaire de réponse
-		else if (SK.Util.currentPageIn([ "topic-form" ])) {
-
-		}
-
-		// Après une tentative de réponse ratée
-		else if (SK.Util.currentPageIn([ "topic-response" ])) {
-
-		}
-
-		// Lors de la prévisualisation d'un post
-		else if (SK.Util.currentPageIn([ "post-preview" ])) {
-
-		}
-	});
+SK.moduleConstructors.Shortcuts.prototype.shouldBeActivated = function() {
+    return SK.Util.currentPageIn([ "topic-read" ]);
 };
