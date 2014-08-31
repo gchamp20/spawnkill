@@ -44,7 +44,7 @@ SK.Message.prototype.init = function() {
     var $dateBloc = this.$msg.find(".date");
     var dateString = $dateBloc.text().trim();
 
-    var match = dateString.match(/Posté (via mobile )?le[\s]*(\d{1,2} [^\s]* \d{4}) à (\d{2}:\d{2}:\d{2})/);
+    var match = dateString.match(/Posté (via mobile )?le[\s]*(\d{1,2}(?:er)? [^\s]* \d{4}) à (\d{2}:\d{2}:\d{2})/);
     this.date = match[2];
     this.time = match[3];
 };
