@@ -159,24 +159,24 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
             };
 
             /**
-             * Prend en paramètre représentant un temps ("24", "1m35s", "1h8m12s", etc.) et la convertit en secondes
+             * Prend en paramètre une chaîne représentant un temps ("24", "1m35s", "1h8m12s", etc.) et la convertit en secondes
              */
             var timeToSeconds = function(time) {
                 var tmp = "";
                 var seconds = 0;
                 for (var i = 0, c = time.length; i < c; i++) {
                     switch (time[i]) {
-                        case 'h':
+                        case "h":
                         seconds += parseInt(tmp) * 3600;
                         tmp = "";
                         break;
 
-                        case 'm':
+                        case "m":
                         seconds += parseInt(tmp) * 60;
                         tmp = "";
                         break;
 
-                        case 's':
+                        case "s":
                         seconds += parseInt(tmp);
                         tmp = "";
                         break;
