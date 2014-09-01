@@ -379,7 +379,7 @@ SK.moduleConstructors.Quote.prototype.initQuoteTypes = function() {
     self.quoteTypes.push(new SK.moduleConstructors.Quote.QuoteType({
         id: "beatrice",
         /* $1: pseudo, $2: jour, $3: mois, $4: année, $5: heure, $6: message, $7: permalien */
-        regex: /# (.*)\n^# Posté le (\d{1,2}) ([^\s]*) (\d{4}) à (\d{2}:\d{2}):\d{2}\n((?:.|[\n\r])*?)\n^# *<a(?:.*?)href="(http[^"]*)".*[\s]*/gm,
+        regex: /# (.*)\n^# Posté le (\d{1,2}(?:er)?) ([^\s]*) (\d{4}) à (\d{2}:\d{2}):\d{2}\n((?:.|[\n\r])*?)\n^# *<a(?:.*?)href="(http[^"]*)".*[\s]*/gm,
 
         replaceCallback: function(match, pseudo, jour, mois, annee, heure, message, permalien) {
 
@@ -393,7 +393,7 @@ SK.moduleConstructors.Quote.prototype.initQuoteTypes = function() {
     self.quoteTypes.push(new SK.moduleConstructors.Quote.QuoteType({
         id: "spawnkill",
         /* $1: pseudo, $2: jour, $3: mois, $4: année, $5: heure, $6: permalien, $7: message (à épurer en retirant le cadre) */
-        regex: /╭(?:┄┄┄)?(?:\n *┊)? ([^,]*), le (\d{1,2}) ([^\s]*) (\d{4}) à (\d{2}:\d{2}):\d{2}\n^ *┊ *<a(?:.*?)href="(http[^"]*)".*\n *┊(?:┄┄┄)?\n((?:.|[\n\r])*?)\n^ *╰(?:┄┄┄)?[\s]*/gm,
+        regex: /╭(?:┄┄┄)?(?:\n *┊)? ([^,]*), le (\d{1,2}(?:er)?) ([^\s]*) (\d{4}) à (\d{2}:\d{2}):\d{2}\n^ *┊ *<a(?:.*?)href="(http[^"]*)".*\n *┊(?:┄┄┄)?\n((?:.|[\n\r])*?)\n^ *╰(?:┄┄┄)?[\s]*/gm,
 
         replaceCallback: function(match, pseudo, jour, mois, annee, heure, permalien, message) {
 
@@ -407,7 +407,7 @@ SK.moduleConstructors.Quote.prototype.initQuoteTypes = function() {
         id: "turboforum",
         /* $1: pseudo, $2: jour (peut être vide), $3: mois (peut être vide), $4: année (peut être vide),
          * $5: heure (peut être vide), $6: permalien (peut être vide), $6: message (à épurer en retirant le cadre), pas d'heure */
-        regex: /\| ([^\s]*)(?:(?:&nbsp;)|[\s])*-(?:(?:&nbsp;)|[\s])*(?:(?:le (\d{1,2}) ([^\s]*) (\d{4}))|(?:aujourd’hui à (\d{2}:\d{2})))[ ]*(?:\n\| <a(?:.*?)href="(http[^"]*)".*)?\n((?:(?:\n*^\|.*)*)*)(?:(?:[\s]*)&gt; )*/gm,
+        regex: /\| ([^\s]*)(?:(?:&nbsp;)|[\s])*-(?:(?:&nbsp;)|[\s])*(?:(?:le (\d{1,2}(?:er)?) ([^\s]*) (\d{4}))|(?:aujourd’hui à (\d{2}:\d{2})))[ ]*(?:\n\| <a(?:.*?)href="(http[^"]*)".*)?\n((?:(?:\n*^\|.*)*)*)(?:(?:[\s]*)&gt; )*/gm,
 
         replaceCallback: function(match, pseudo, jour, mois, annee, heure, permalien, message) {
 
@@ -420,7 +420,7 @@ SK.moduleConstructors.Quote.prototype.initQuoteTypes = function() {
     self.quoteTypes.push(new SK.moduleConstructors.Quote.QuoteType({
         id: "jvcmaster",
         /* $1: permalien (peut être vide), $2: pseudo, $3: jour, $4: mois, $5: année, $6: heure, $7: message (à épurer en retirant le cadre) */
-        regex: /(?:(?: *\| *<a(?:.*?)href="(http[^"]*)".*\n))* *\| Ecrit par « ([^\s]*) »(?:[^\d]*)(\d{1,2}) ([^\s]*) (\d{4}) à (\d{2}:\d{2}):\d{2}\n((?:\n? *\|.*)*)(?:(?:[\s]*)(?:&gt;)? *)?/gm,
+        regex: /(?:(?: *\| *<a(?:.*?)href="(http[^"]*)".*\n))* *\| Ecrit par « ([^\s]*) »(?:[^\d]*)(\d{1,2}(?:er)?) ([^\s]*) (\d{4}) à (\d{2}:\d{2}):\d{2}\n((?:\n? *\|.*)*)(?:(?:[\s]*)(?:&gt;)? *)?/gm,
 
         replaceCallback: function(match, permalien, pseudo, jour, mois, annee, heure, message) {
 
