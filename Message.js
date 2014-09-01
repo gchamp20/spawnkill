@@ -30,9 +30,8 @@ SK.Message.prototype.init = function() {
     $message.find(".spawnkill-media-element").remove();
 
     $message.find("> img").each(function() {
-        $(this).replaceWith($(this).attr("alt"));
+        $(this).replaceWith(this.alt);
     });
-
     this.text = $message.text().trim();
 
     /* Retourne le permalien du post */
