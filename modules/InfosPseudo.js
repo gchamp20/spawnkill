@@ -471,14 +471,14 @@ SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
         var postTextPseudo = $postPseudo.text().trim();
         // Si l'auteur du message correspond à ce pseudonyme
         if (postTextPseudo === currentUserPseudo) {
-            //Met en valeur le message
+            
             $postPseudo.addClass("current-user");
         }
     }); 
 };
 
-/** Parcours la liste des messages et souligne le pseudo qui correspond à celui de l'auteur **/
-SK.moduleConstructors.InfosPseudo.prototype.underlineAuthorTopic = function(authorTopic) {
+/** Parcours la liste des messages et ajoute une couronne devant le pseudo qui correspond à celui de l'auteur **/
+SK.moduleConstructors.InfosPseudo.prototype.crownAuthorTopic = function(authorTopic) {
 
     //On teste dans chaque message
     $(".msg .pseudo").each(function() {
@@ -487,14 +487,16 @@ SK.moduleConstructors.InfosPseudo.prototype.underlineAuthorTopic = function(auth
         var postTextPseudo = $postPseudo.text().trim().toLowerCase();
         // Si l'auteur du message correspond à ce pseudonyme
         if (postTextPseudo == authorTopic) {
-            //Met en valeur le message
-            $postPseudo.addClass("current-authorTopic");
+            //Crée le div contenant l'image de la couronne et le place avant le pseudo de l'auteur du topic
+            var div = document.createElement("div");
+            div.className = "current-authorTopic";
+            $(this).prepend(div);
         }
     }); 
 }
 
 /**
- * Récupère l'auteur du topic courant puis appelle la fonction pour souligner son pseudo.
+ * Récupère l'auteur du topic courant puis appelle la fonction pour couronner son pseudo.
  */
 SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentAuthor = function() {
     //Création de la clé
@@ -517,7 +519,7 @@ SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentAuthor = function() 
             if (nbResponses < 10) {
                 authorTopic = $(".msg:eq(0) .pseudo > strong").text().trim().toLowerCase();
                 SK.Util.setValue(key, authorTopic, true);
-                this.underlineAuthorTopic(authorTopic);
+                this.crownAuthorTopic(authorTopic);
             } 
             
             //Sinon, requête HTTP vers la première page
@@ -528,7 +530,7 @@ SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentAuthor = function() 
                     var contenu = $(firstPage.find("contenu").text());
                     var authorTopic = contenu.find(".pseudo").text().split(" ")[0].trim().toLowerCase();
                     SK.Util.setValue(key, authorTopic, true);
-                    SK.moduleConstructors.InfosPseudo.prototype.underlineAuthorTopic(authorTopic);
+                    SK.moduleConstructors.InfosPseudo.prototype.crownAuthorTopic(authorTopic);
                 });
             }
         }
@@ -539,7 +541,7 @@ SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentAuthor = function() 
             if (currentPage == "1") {
                 authorTopic = $(".msg:eq(0) > .pseudo > strong").text().trim().toLowerCase();
                 SK.Util.setValue(key, authorTopic, true);
-                this.underlineAuthorTopic(authorTopic);
+                this.crownAuthorTopic(authorTopic);
             } 
             
             //Sinon, on fait une requête HTTP vers la première page du topic
@@ -550,13 +552,13 @@ SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentAuthor = function() 
                     var contenu = $(firstPage.find("contenu").text());
                     authorTopic = contenu.find(".pseudo").text().split(" ")[0].trim().toLowerCase();
                     SK.Util.setValue(key, authorTopic, true);
-                    SK.moduleConstructors.InfosPseudo.prototype.underlineAuthorTopic(authorTopic);
+                    SK.moduleConstructors.InfosPseudo.prototype.crownAuthorTopic(authorTopic);
                 });
             }
         }
     }
     else {
-        this.underlineAuthorTopic(authorTopic);
+        this.crownAuthorTopic(authorTopic);
     }
 };
 
@@ -665,7 +667,10 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
     if(this.getSetting("enableAuthorHighlight")) {
         css += "\
             .current-authorTopic {\
-                text-decoration: underline;\
+                background-image: url('" + GM_getResourceURL("crown") + "');\
+                width:16px;\
+                height:16px;\
+                display:inline-block\
             }\
         ";
     }
