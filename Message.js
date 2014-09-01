@@ -29,9 +29,11 @@ SK.Message.prototype.init = function() {
     //On supprime les éventuels boutons de téléchargement
     $message.find(".spawnkill-media-element").remove();
 
+    //On remplace les smileys par des alt
     $message.find("> img").each(function() {
         $(this).replaceWith(this.alt);
     });
+
     this.text = $message.text().trim();
 
     /* Retourne le permalien du post */
