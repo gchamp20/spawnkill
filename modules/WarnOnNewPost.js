@@ -36,6 +36,11 @@ SK.moduleConstructors.WarnOnNewPost.prototype.init = function() {
 			//On limite l'icon à 99
 			var iconText = Math.min(99, postDifference);
 
+			//Affichage d'un croix à la réception de données erronées (ou problème de connexion)
+			if(isNaN(iconText)) {
+				iconText = "X";
+			}
+
 			//Dessin de l'icone
 			var textWidth = ctx.measureText(iconText).width;
 			ctx.drawImage(img, 0, 0);
