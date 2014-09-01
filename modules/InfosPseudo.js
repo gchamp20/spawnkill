@@ -14,15 +14,33 @@ SK.moduleConstructors.InfosPseudo.prototype.beforeInit = function() {
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.init = function() {
-    this.addPostInfos();
 
-    if (this.getSetting("enableUserHighlight")) {
-        //On attend quelques secondes que le pseudo soit chargé en Ajax
-        //Sale mais sera modifié avec l'arrivée de SpawnKill
-        window.setTimeout(function() {
-            this.highlightCurrentUser();
-        }.bind(this), 1000);
-    }
+	if(SK.Util.currentPageIn(["topic-list"])) {
+		
+		this.getAuthorsTopics();
+		
+	} else {
+	
+		this.addPostInfos();
+
+		if (this.getSetting("enableUserHighlight")) {
+			//On attend quelques secondes que le pseudo soit chargé en Ajax
+			//Sale mais sera modifié avec l'arrivée de SpawnKill
+			window.setTimeout(function() {
+				this.highlightCurrentUser();
+			}.bind(this), 1000);
+		}
+		
+		if (!SK.Util.currentPageIn(["post-preview"])) {
+			if (this.getSetting("enableAuthorHighlight")) {
+				//On attend quelques secondes que le pseudo soit chargé en Ajax
+				//Sale mais sera modifié avec l'arrivée de SpawnKill
+				window.setTimeout(function() {
+					this.highlightCurrentAuthor();
+				}.bind(this), 1000);
+			}
+		}
+	}
 };
 
 /* Taille des avatars en pixels */
@@ -31,6 +49,25 @@ SK.moduleConstructors.InfosPseudo.prototype.avatarSize = 0;
 /** Retourne un entier sur [1 ; 151] */
 SK.moduleConstructors.InfosPseudo.prototype.getRandomPokemon = function() {
     return ("00" + Math.floor((Math.random() * 151) + 1)).slice(-3);
+};
+
+/** Récupère et stocke les auteurs associés aux topics de la page. */
+SK.moduleConstructors.InfosPseudo.prototype.getAuthorsTopics = function() {
+     
+    var currentForum = document.URL.split("-")[1];
+	
+	$(".ltopic").each(function() {
+		
+		var $topicId = $(this).attr("href").split("-")[2];
+		var $key = currentForum + "." + $topicId;
+		
+		if (SK.Util.getValue($key) == null) {
+			var $authorTopic = $(this).parent().parent().find(".pseudo").text().toLowerCase();
+			SK.Util.setValue($key, $authorTopic, true);
+		}
+		
+	});
+	
 };
 
 /** Ajoute les infos à tous les posts */
@@ -440,8 +477,92 @@ SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
     }); 
 };
 
+/** Parcours la liste des messages et souligne le pseudo qui correspond à celui de l'auteur **/
+SK.moduleConstructors.InfosPseudo.prototype.underlineAuthorTopic = function(authorTopic) {
+
+	//On teste dans chaque message
+    $(".msg .pseudo").each(function() {
+		
+        var $postPseudo = $(this).find("strong").first();
+        var postTextPseudo = $postPseudo.text().trim().toLowerCase();
+        // Si l'auteur du message correspond à ce pseudonyme
+        if (postTextPseudo == authorTopic) {
+            //Met en valeur le message
+            $postPseudo.addClass("current-authorTopic");
+        }
+    }); 
+}
+
+/**
+ * Récupère l'auteur du topic courant puis appelle la fonction pour souligner son pseudo.
+ */
+SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentAuthor = function() {
+    //Création de la clé
+	var currentURLSplit = document.URL.split("-")
+	var currentForum = currentURLSplit[1];
+	var currentTopic = currentURLSplit[2];
+	var key = currentForum + "." + currentTopic;
+	
+	var authorTopic = SK.Util.getValue(key, true)
+	
+	//Si la clé n'est pas présente dans le sessionStorage
+    if (authorTopic == null) {
+	
+		//Si on est sur le formulaire de réponse
+		if (SK.Util.currentPageIn(["topic-response"])) {
+		
+			var nbResponses = $(".msg").length;
+			
+			//S'il y a moins de 10 réponses, on peut déterminer l'auteur
+			if (nbResponses < 10) {
+				authorTopic = $(".msg:eq(0) .pseudo > strong").text().trim().toLowerCase();
+				SK.Util.setValue(key, authorTopic, true);
+				this.underlineAuthorTopic(authorTopic);
+			} 
+			
+			//Sinon, requête HTTP vers la première page
+			else {
+				var requestURL = "forums/1-" + currentForum + "-" + currentTopic + "-1-0-1-0-0.xml";
+	
+				SK.Util.jvc(requestURL, function(firstPage) {
+					var contenu = $(firstPage.find("contenu").text());
+					var authorTopic = contenu.find(".pseudo").text().split(" ")[0].trim().toLowerCase();
+					SK.Util.setValue(key, authorTopic, true);
+					SK.moduleConstructors.InfosPseudo.prototype.underlineAuthorTopic(authorTopic);
+				});
+			}
+		}
+		else {
+			var currentPage = currentURLSplit[3]
+			
+			//Si on est sur la première page du topic, on récupère directement l'auteur
+			if (currentPage == "1") {
+				authorTopic = $(".msg:eq(0) > .pseudo > strong").text().trim().toLowerCase();
+				SK.Util.setValue(key, authorTopic, true);
+				this.underlineAuthorTopic(authorTopic);
+			} 
+			
+			//Sinon, on fait une requête HTTP vers la première page du topic
+			else {
+				var requestURL = "forums/1-" + currentForum + "-" + currentTopic + "-1-0-1-0-0.xml";
+	
+				SK.Util.jvc(requestURL, function(firstPage) {
+					var contenu = $(firstPage.find("contenu").text());
+					authorTopic = contenu.find(".pseudo").text().split(" ")[0].trim().toLowerCase();
+					SK.Util.setValue(key, authorTopic, true);
+					SK.moduleConstructors.InfosPseudo.prototype.underlineAuthorTopic(authorTopic);
+				});
+			}
+		}
+	}
+	else {
+		this.underlineAuthorTopic(authorTopic);
+	}
+};
+
+
 SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn([ "topic-read", "topic-response", "post-preview" ]);
+    return SK.Util.currentPageIn([ "topic-read", "topic-response", "post-preview", "topic-list" ]);
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.settings = {
@@ -518,6 +639,12 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         description: "Affiche votre pseudonyme en bleu pour les messages que vous avez postés.",
         type: "boolean",
         default: false,
+    },
+	enableAuthorHighlight: {
+        title: "Mise en valeur des messages de l'auteur du topic",
+        description: "Affiche le pseudonyme en souligné pour les messages que l'auteur du topic a postés.",
+        type: "boolean",
+        default: false,
     }
 };
 
@@ -530,6 +657,15 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
         css += "\
             .current-user {\
                 color: " + SK.modules.StartSpawnKill.darkColor + ";\
+            }\
+        ";
+    }
+	
+	//Si on met en valeur les posts de l'auteur
+    if(this.getSetting("enableAuthorHighlight")) {
+        css += "\
+            .current-authorTopic {\
+                text-decoration: underline;\
             }\
         ";
     }
