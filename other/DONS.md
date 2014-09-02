@@ -4,7 +4,7 @@ Ci-dessous, les gens qui ont fait un don pour l'évolution du script ou qui m'on
 
 ## Dons pour l'évolution du script
 - Dimitri M. (`15.24€`)
-- 7suna (`150€`)
+- 7suna (`144.65€`)
 
 ## Bières
 - MadDog84 (`1.74€`)
