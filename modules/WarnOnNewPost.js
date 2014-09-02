@@ -23,6 +23,10 @@ SK.moduleConstructors.WarnOnNewPost.prototype.init = function() {
 	var canvas = null;
 	var $faviconLink = null;
 
+	//Récupération de l'id du topic
+	var match = window.location.href.match(/http:\/\/www\.jeuxvideo\.com\/forums\/1-(\d*-\d*).*/);
+	var topicId = match[1];
+
 	//Change le favicon en icone de notifiction
 	var updateFavicon = function(postDifference) {
 
@@ -100,14 +104,14 @@ SK.moduleConstructors.WarnOnNewPost.prototype.init = function() {
     	ctx = canvas.getContext("2d");
 
     	//On récupère les infos initiales du topic
-    	self.getPostCount(function(postCount) {
+    	self.getPostCount(topicId, function(postCount) {
 
     		initialPostCount = postCount;
 
     		//On récupère de nouveau les infos du topic à intervale régulier
     		setInterval(function() {
 
-    			self.getPostCount(function(newPostCount) {
+    			self.getPostCount(topicId, function(newPostCount) {
     				//Si le nombre de posts est différent, on met à jour le titre de la page
 
     				//Si newPostCount === -1, il y a eu une erreur
@@ -121,10 +125,10 @@ SK.moduleConstructors.WarnOnNewPost.prototype.init = function() {
 	    				}
 	    			}
 
-    			}, false);
+    			});
 
     		}, checkInterval);
-    	}); //On log seulement le premier appel
+    	});
     }, startTimeout);
 };
 
@@ -132,17 +136,15 @@ SK.moduleConstructors.WarnOnNewPost.prototype.init = function() {
  * Récupère le nombre de posts du topic via l'API JVC.
  * Appelle la fonction de callback avec le nombre de posts en arguments.
  */
-SK.moduleConstructors.WarnOnNewPost.prototype.getPostCount = function(callback, logApiCall) {
+SK.moduleConstructors.WarnOnNewPost.prototype.getPostCount = function(topicId, callback) {
 
-	var match = window.location.href.match(/http:\/\/www\.jeuxvideo\.com\/forums\/1-(\d*-\d*).*/);
-	var topicId = match[1];
 	SK.Util.api("topic", topicId, function($api) {
 
 		//En cas d'erreur, on n'appelle pas le callback
 		if($api.find("error").length === 0) {
 			callback(parseInt($api.find("postcount").html()));
 		}
-	}, logApiCall);
+	}, false);
     
 };
 
