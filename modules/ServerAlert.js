@@ -19,7 +19,7 @@ SK.moduleConstructors.ServerAlert.prototype.init = function() {
 	var $downloadButton = new SK.Button({
 	    class: "large",
 	    text: "En savoir plus",
-	    href: "http://www.jeuxvideo.com/forums/1-1000021-2297983-1-0-1-0-spawnkill-j-ai-besoin-de-votre-aide.htm",
+	    href: "http://www.jeuxvideo.com/forums/1-1000021-2267708-38-0-1-0-script-jvc-spawnkill-avant-respawn.htm#message_2297960",
 	    target: "_blank",
 	    tooltip: {
 	        class: "large bottom-right",
