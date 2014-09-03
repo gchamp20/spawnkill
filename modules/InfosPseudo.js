@@ -608,6 +608,9 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
             .avatar.ban.tempo::after {\
                 content: \"" + banTempoLabel + "\";\
             }\
+            .avatar[data-error=\"1\"] img {\
+                width: 100%;\
+            }\
             .rank {\
                 position: absolute;\
                     bottom: 0px;\
