@@ -1,4 +1,4 @@
 v1.14.1
-#53 - Masquer les screenshots d'aide à l'installation par défaut
 #38 - Ajouter un système d'onglets au panneau de configuration
 #28 - Réduire la taille des options
+	+ Ajouter un panneau de scroll quand l'écran est trop petit

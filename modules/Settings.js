@@ -283,7 +283,7 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         .setting .option {\
             position: relative;\
-            padding: 10px;\
+            padding: 8px 10px;\
             padding-left: 20px;\
             color: #EEE;\
             border-bottom: solid 1px #888;\
