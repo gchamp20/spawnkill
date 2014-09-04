@@ -93,9 +93,14 @@ SK.moduleConstructors.Settings.prototype.getModal = function() {
         buttons: [ $cancelButton, $okButton ]
     });
 
+
     return $modal;
 };
 
+
+/**
+ * Retourne un objet jQuery représentant le contenu de la modale de paramètrage
+ */
 SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
 
     var ui = "";
@@ -104,14 +109,17 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
         for(var moduleKey in SK.modules) {
 
             var module = SK.modules[moduleKey];
-            ui += "<li title='" + SK.Util.htmlEncode(module.description) + "' class='setting" + (module.required ? " required" : "") + "' data-activated='" + (module.activated ? "1" : "0") + "' data-id='" + moduleKey + "' >";
+            ui += "<li title='" + SK.Util.htmlEncode(module.description) + "' class='setting" + 
+              (module.required ? " required" : "") + "' data-activated='" + (module.activated ? "1" : "0") +
+              "' data-id='" + moduleKey + "' >";
 
                 ui += "<div class='main-setting' >" + SK.Util.htmlEncode(module.title) + "</div>";
                 ui += "<hr>";
                 ui += "<ul class='options fold' >";
                     for(var settingKey in module.settings) {
                         var setting = module.settings[settingKey];
-                        ui += "<li class='option' title='" + SK.Util.htmlEncode(setting.description) + "' data-id='" + settingKey + "' >";
+                        ui += "<li class='option' title='" + SK.Util.htmlEncode(setting.description) +
+                          "' data-id='" + settingKey + "' >";
                             ui += SK.Util.htmlEncode(module.settings[settingKey].title);
                         ui += "</li>";
                     }    
@@ -185,6 +193,19 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
     return $ui;
 };
 
+/** 
+ * Retourne vrai si la hauteur de la modale est plus importante
+ * que celle de l'écran
+ */
+ SK.moduleConstructors.Settings.prototype.settingsExceedsScreenHeight = function() {
+
+    var settingsHeight = $(".setting-modal").outerHeight();
+    var screenHeight = $(window).height();
+
+    return settingsHeight > screenHeight;
+};
+
+
 /** Parcourt l'interface de paramètrage et enregistre les préférences */
 SK.moduleConstructors.Settings.prototype.saveSettings = function() {
 
@@ -247,6 +268,14 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         .setting-modal.scroll {\
             width: 440px;\
+        }\
+        .setting-modal.scroll > hr {\
+            display: none;\
+        }\
+        .setting-modal.scroll h3 {\
+            box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.15);\
+            border-bottom: 1px solid #DDD;\
+            padding-bottom: 10px !important;\
         }\
         .setting-modal.scroll .content {\
             overflow-x: hidden;\
