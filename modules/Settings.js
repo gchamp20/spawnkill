@@ -90,7 +90,12 @@ SK.moduleConstructors.Settings.prototype.getModal = function() {
         title: "Configuration de SpawnKill",
         hasCloseButton: false,
         content: this.getSettingsUI(),
-        buttons: [ $cancelButton, $okButton ]
+        buttons: [ $cancelButton, $okButton ],
+        onModalShow: function() {
+
+            //Si la modale est plus haute que l'écran, on la fait scroller
+            self.shrinkSettingsModal();
+        }
     });
 
 
@@ -103,7 +108,9 @@ SK.moduleConstructors.Settings.prototype.getModal = function() {
  */
 SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
 
+    var self = this;
     var ui = "";
+
     ui += "<span class='settings-spawnkill-version' >" + SK.VERSION + "</span>";
     ui += "<ul id='settings-form' >";
         for(var moduleKey in SK.modules) {
@@ -161,6 +168,9 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
             click: function() {
                 var $options = $setting.find(".options");
 
+                $options.on("transitionend webkitTransitionEnd", function() {
+                    self.shrinkSettingsModal();
+                });
                 $options.toggleClass("fold");
             }
         });
@@ -170,7 +180,6 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
         }
 
         //Slide-toggles Options
-
         $setting.find(".option").each(function() {
 
             var $option = $(this);
@@ -194,15 +203,29 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
 };
 
 /** 
- * Retourne vrai si la hauteur de la modale est plus importante
- * que celle de l'écran
+ * Si la hauteur de la modale est plus importante que celle de l'écran,
+ * On force une barre de scroll.
  */
- SK.moduleConstructors.Settings.prototype.settingsExceedsScreenHeight = function() {
+SK.moduleConstructors.Settings.prototype.shrinkSettingsModal = function() {
 
-    var settingsHeight = $(".setting-modal").outerHeight();
+    var $settingsModal = $(".setting-modal").first();
+    var contentsHeight = $settingsModal.find(".content").prop("scrollHeight");
     var screenHeight = $(window).height();
 
-    return settingsHeight > screenHeight;
+    //Hauteur maximale du contenu de la popup
+    var maxContentHeight = screenHeight - 100;
+
+
+    if(contentsHeight > maxContentHeight) {
+
+        $settingsModal.find(".content").css("height", maxContentHeight + "px");
+
+        $settingsModal.addClass("scroll");
+    }
+    else {
+        $settingsModal.find(".content").css("height", "auto");
+        $settingsModal.removeClass("scroll");
+    }
 };
 
 
@@ -280,7 +303,10 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         .setting-modal.scroll .content {\
             overflow-x: hidden;\
             overflow-y: scroll;\
-            height: 300px;\
+        }\
+        .setting-modal.scroll .options {\
+            width: 100%;\
+            padding-right: 20px;\
         }\
         .setting-modal.scroll .buttons {\
             padding-top: 10px;\
@@ -335,6 +361,7 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
                 inset 0px 11px 6px -10px rgba(0, 0, 0, 0.4),\
                 inset 0px -11px 6px -10px rgba(0, 0, 0, 0.4);\
             transition-duration: 300ms;\
+            transition-property: max-height;\
         }\
         .setting .option {\
             position: relative;\

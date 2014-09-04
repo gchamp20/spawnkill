@@ -113,6 +113,9 @@ SK.Util = {
             $background.fadeIn();
         }
 
+        //On appelle l'éventuelle fonction onModalShow de la modale
+        $modal.onModalShow();
+
         $modal.addClass("active");
     },
 
