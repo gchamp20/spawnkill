@@ -85,6 +85,7 @@ SK.moduleConstructors.Settings.prototype.getModal = function() {
     });
 
     var $modal = new SK.Modal({
+        class: "setting-modal",
         location: "top",
         title: "Configuration de SpawnKill",
         hasCloseButton: false,
@@ -96,13 +97,6 @@ SK.moduleConstructors.Settings.prototype.getModal = function() {
 };
 
 SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
-
-    var getOptionStringValue = function(option) {
-        if(option.type === "boolean") {
-            return option.value ? "1" : "0";
-        }
-        return option.value;
-    };
 
     var ui = "";
     ui += "<span class='settings-spawnkill-version' >" + SK.VERSION + "</span>";
@@ -237,6 +231,39 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         #ft2 {\
             right: 23px !important;\
         }\
+        .setting-modal {\
+            width: 420px !important;\
+            padding: 10px 0px;\
+        }\
+        .setting-modal h3 {\
+            padding: 0 10px !important;\
+        }\
+        .setting-modal hr {\
+            left: auto !important;\
+        }\
+        .setting-modal .buttons {\
+            box-sizing: border-box;\
+            padding: 0px 10px;\
+        }\
+        .setting-modal.scroll {\
+            width: 440px;\
+        }\
+        .setting-modal.scroll .content {\
+            overflow-x: hidden;\
+            overflow-y: scroll;\
+            height: 300px;\
+        }\
+        .setting-modal.scroll .buttons {\
+            padding-top: 10px;\
+            box-shadow: 0px -4px 6px -2px rgba(0, 0, 0, 0.15);\
+        }\
+        .setting-modal.scroll #settings-form {\
+            width: 408px;\
+            margin-bottom: 0px;\
+        }\
+        .setting-modal.scroll .tooltip {\
+            display: none;\
+        }\
         #settings-button {\
             position: absolute;\
                 right: 1px;\
@@ -257,7 +284,6 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         #settings-form {\
             position: relative;\
-            left: -10px;\
             width: 420px;\
             margin-bottom: 10px;\
         }\

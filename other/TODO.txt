@@ -2,3 +2,7 @@ v1.14.1
 #38 - Ajouter un système d'onglets au panneau de configuration
 #28 - Réduire la taille des options
 	+ Ajouter un panneau de scroll quand l'écran est trop petit
+	Ombrage sur la partie haute quand scroll
+	A chaque redimensionnement, tester si la box est plus grande que l'écran
+		Si elle l'est : ajouter la classe scroll
+	Tester la hauteur des options avant ouverture
