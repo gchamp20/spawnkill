@@ -319,12 +319,16 @@ SK.Util = {
     /**
      * Ajoute une valeur dans le localStorage. Fait le ménage dans les auteurs si ce dernier est plein.
      */
-    setValue: function(key, value) {
+    setValue: function(key, value, session=false) {
         key = "SK." + key;
 
         // Gestion du localStorage plein
         try {
-            localStorage.setItem(key, JSON.stringify(value));
+			if (session) {
+				sessionStorage.setItem(key, JSON.stringify(value));
+			} else {
+				localStorage.setItem(key, JSON.stringify(value));
+			}
         }
         catch(e) {
             if(e.name === "QUOTA_EXCEEDED_ERR") {
@@ -335,14 +339,22 @@ SK.Util = {
     },
 
     /* Retourne null si la donnée n'existe pas */
-    getValue: function(key) {
+    getValue: function(key, session=false) {
         key = "SK." + key;
-        return JSON.parse(localStorage.getItem(key));
+		if (session) {
+			return JSON.parse(sessionStorage.getItem(key));
+		} else {
+			return JSON.parse(localStorage.getItem(key));
+		}
     },
 
-    deleteValue: function(key) {
+    deleteValue: function(key, session=false) {
         key = "SK." + key;
-        localStorage.removeItem(key);
+		if (session) {
+			sessionStorage.removeItem(key);
+		} else {
+			localStorage.removeItem(key);
+		}
     },
 
     /* Retourne nbspCount espaces insecables */

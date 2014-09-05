@@ -54,6 +54,7 @@
 // @resource    search-topics         images/search-topics.png
 // @resource    calendar              images/calendar.png
 // @resource    clock                 images/clock.png
+// @resource    crown                 images/crown.png
 // @resource    settings              images/settings.png
 // @resource    youtube               images/youtube.png
 // @resource    vimeo                 images/vimeo.png
