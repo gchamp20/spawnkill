@@ -5,34 +5,53 @@
 /* Fonctions Utiles */
 SK.Util = {
     
-    /* Effectue une requête sur l'api de JVC */
-    jvc: function(url, callback) {
+    /**
+     * Effectue une requête sur l'api WS de JVC
+     * 
+     * @param {string} urlSuffix - suffixe de l'url à requêter sans le ".xml"
+     *      Exemple : "forums/1-81-052354-1-0-1-0-0" pour un topic
+     * 
+     * @param {function} callback - Callback appelé avec un objet jQuery représentant
+     *   le XML de réponse ou undefined en cas d'erreur
+     */
+    ws: function(urlSuffix, callback) {
 
         GM_xmlhttpRequest({
-            url: "http://ws.jeuxvideo.com/" + url,
+            url: "http://ws.jeuxvideo.com/" + urlSuffix + ".xml",
             method: "GET",
             headers: {
                 "Authorization": "Basic YXBwYW5kcjplMzIhY2Rm"
             },
             onload: function(response) {
-                callback($($.parseXML(SK.Util.sanitizeXML(response.responseText))));
+                var $response;
+
+                try {
+                    var xml = $.parseXML(SK.Util.sanitizeXML(response.responseText));
+                    $response = $(xml);
+                }
+                catch(e) {}
+
+                callback($response);
+            },
+            onerror: function() {
+                callback(undefined);
             }
         });
     },
 
     /**
-     * Wrapper de l'API JVC permettant de faire des requêtes simplifiées via un serveur distant.
-     * requestAction (string) : Type de requête à exécuter : "pseudos" ou "topic"
-     * data (mix) : données de la requête
-     *    pseudos : [ "pseudo1",  "pseudo2", "pseudo3"]
-     *    topic : la chaine d'id du topic. Ce qui est entre parenthèses dans l'url suivante :
-     *       http://www.jeuxvideo.com/forums/1-(51-65175198)-7-0-1-0-script-jvc-spawnkill-avant-respawn.htm
-     * callback : fonction appelée avec un objet jQuery contenant les infos récupérées
-     * logApiCall : true (défaut) ou false, si vrai : enregistre l'appel dans la BDD
-     * forceCacheReload : true ou false (défaut) : si vrai, ne prend pas en compte le cache
-     *     et force son rechargement pour l'appel courant
+     * Wrapper de l'API JVC permettant de faire des requêtes simplifiées via un
+     * serveur distant.
      *
-     * Retourne false si l'API a rencontré un problème
+     * @param {string} requestAction - Type de requête à exécuter : "pseudos"
+     * @param {mix} data - données de la requête
+     *    pseudos : [ "pseudo1",  "pseudo2", "pseudo3"]
+     * @param {function} callback - fonction appelée avec un objet jQuery contenant
+     *   les infos récupérées
+     * @param {boolean} logApiCall - true (défaut) ou false, si vrai : enregistre
+     *   l'appel dans la BDD
+     * @param {boolean} forceCacheReload - true ou false (défaut) : si vrai, ne prend
+     *   pas en compte le cache et force son rechargement pour l'appel courant
      */
     api: function(requestAction, data, callback, logApiCall, forceCacheReload) {
 
@@ -51,6 +70,60 @@ SK.Util = {
                 callback($xml);
             }
         });
+    },
+
+    apiHelper: {
+
+        /**
+         * Retourne des informations liées à un topic.
+         *
+         * @param {string} topicId - Chaîne identifiant le topic. Ce qui est entre
+         *   parenthèses dans l'url suivante :
+         *   http://www.jeuxvideo.com/forums/1-(51-65175198)-7-0-1-0-script-jvc-spawnkill-avant-respawn.htm
+         * @param {function} callback Fonction appelée avec les infos du topic :
+         *   topic : {
+         *      pageCount (int),
+         *      postCount (int),
+         *   }
+         *   ou undefined en cas d'erreur
+         */
+        topicInfos: function(topicId, callback) {
+
+            //Récupération du nombre de pages
+            SK.Util.ws("forums/1-" + topicId + "-1-0-1-0-0", function($ws) {
+                if(typeof $ws === "undefined") {
+                    callback(undefined);
+                }
+                else {
+                    var pageCount = parseInt($ws.find("count_page").text());
+                    var lastPageUrl = "forums/1-" + topicId + "-" + pageCount + "-0-1-0-0";
+                    
+                    //Récupération du nombre de posts de la dernière page
+                    SK.Util.ws(lastPageUrl, function($ws) {
+                        if(typeof $ws === "undefined") {
+                            callback(undefined);
+                        }
+                        else {
+                            var $posts = $("<div>", {
+                                html: $ws.find("contenu").text()
+                            });
+                            var lastPagePostCount = $posts.find("ul").length;
+                            var fullPostCount = ((pageCount - 1) * 20) + lastPagePostCount;
+
+                            if(lastPagePostCount === 0) {
+                                callback(undefined);
+                            }
+                            else {
+                                callback({
+                                    pageCount: pageCount,
+                                    postCount: fullPostCount
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        }
     },
 
     /**

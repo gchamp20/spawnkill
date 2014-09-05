@@ -3,12 +3,12 @@ Documentation - Fonctions utilitaires (`Util`)
 
 Dernière mise à jour : v1.13.1.2
 
-* **SK.Util.jvc** : Effectue une requête sur l'api de JVC
-    * `url` (string) : L'URL de la requête
+* **SK.Util.ws** : Effectue une requête sur l'api de JVC
+    * `url` (string) : Suffixe de l'URL de la requête sans le ".xml"
     * `callback` (function) : Fonction appelée avec comme premier paramètre un objet jQuery correspondant à la réponse XML
 
 ```javascript
-SK.Util.jvc("02.flux_news.xml", function(news) {
+SK.Util.ws("02.flux_news", function(news) {
     // On affiche les dernières news du site
     console.log(news);
 });

@@ -28,7 +28,6 @@ SK.moduleConstructors.StartSpawnKill.prototype.init = function() {
     if(SK.Util.currentPageIn([ "post-preview" ])) {
         this.preparePreview();
     }
-
 };
 
 /* Permet de régler les problèmes de tooltip dans les previews de messages */

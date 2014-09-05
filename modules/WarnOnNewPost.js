@@ -15,7 +15,7 @@ SK.moduleConstructors.WarnOnNewPost.prototype.init = function() {
 
 	var self = this;
 	var startTimeout = 3000;
-	var checkInterval = 3000;
+	var checkInterval = 5000;
 
 	//Element lié au canvas
 	var img = new Image();
@@ -138,12 +138,14 @@ SK.moduleConstructors.WarnOnNewPost.prototype.init = function() {
  */
 SK.moduleConstructors.WarnOnNewPost.prototype.getPostCount = function(topicId, callback) {
 
-	SK.Util.api("topic", topicId, function($api) {
+	SK.Util.apiHelper.topicInfos(topicId, function(topicInfos) {
 
 		//En cas d'erreur, on n'appelle pas le callback
-		if($api.find("error").length === 0) {
-			callback(parseInt($api.find("postcount").html()));
+		if (typeof topicInfos === "undefined") {
+			return;
 		}
+		callback(topicInfos.postCount);
+
 	}, false);
     
 };
