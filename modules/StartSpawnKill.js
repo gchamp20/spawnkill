@@ -513,6 +513,11 @@ SK.moduleConstructors.StartSpawnKill.prototype.settings = {
         .slide-toggle :disabled + .slide-toggle-style:after {\
             background-color: #DDD;\
         }\
+        .sk-dropdown {\
+            position: relative;\
+            display: inline-block;\
+            vertical-align: middle;\
+        }\
         .sk-dropdown-select:-moz-focusring {\
             color: transparent;\
             text-shadow: 0 0 0 #FFF;\
@@ -522,18 +527,13 @@ SK.moduleConstructors.StartSpawnKill.prototype.settings = {
         }\
         .sk-dropdown-select {\
             font-size: 12px;\
-            padding: 2px;\
+            padding: 1px;\
             margin: 0;\
             box-shadow: 0px 0px 2px 0px " + darkColor + " inset;\
         }\
         .sk-dropdown-select {\
             background-color: " + mainColor + ";\
             color: #fff;\
-        }\
-        .sk-dropdown {\
-            position: relative;\
-            display: inline-block;\
-            vertical-align: middle;\
         }\
         .sk-dropdown-select {\
             padding-right: 30px;\
@@ -552,13 +552,13 @@ SK.moduleConstructors.StartSpawnKill.prototype.settings = {
         }\
         .sk-dropdown::after {\
             content: \"\";\
-            right: 7px;\
+            right: 6px;\
             top: 9px;\
             border: solid 4px transparent;\
             border-top-color: rgba(0, 0, 0, 0.3);\
         }\
         .sk-dropdown::before {\
-            width: 22px;\
+            width: 20px;\
             right: 0;\
             top: 0;\
             bottom: 0;\

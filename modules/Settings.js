@@ -380,6 +380,18 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         #settings-form .option .slide-toggle {\
             right: 6px;\
+            top: 4px;\
+            width: 30px;\
+            height: 18px;\
+        }\
+        #settings-form .option .slide-toggle :checked + .slide-toggle-style:after {\
+            left: 14px;\
+        }\
+        #settings-form .option .slide-toggle input + .slide-toggle-style:after {\
+            left: 2px;\
+            top: 2px;\
+            width: 14px;\
+            height: 14px;\
         }\
         #settings-form .option .sk-dropdown {\
             position: absolute;\
