@@ -317,18 +317,24 @@ SK.Util = {
     },
 
     /**
-     * Ajoute une valeur dans le localStorage. Fait le ménage dans les auteurs si ce dernier est plein.
+     * Ajoute une valeur dans le localStorage ou sessionStorage.
+     * Fait le ménage dans les auteurs si ce dernier est plein.
+     *
+     * @param {boolean} temporary Vrai si la valeur doit être stockée en sessionStorage
      */
-    setValue: function(key, value, session=false) {
+    setValue: function(key, value, temporary) {
+
+        temporary = temporary || false;
+
         key = "SK." + key;
 
         // Gestion du localStorage plein
         try {
-			if (session) {
-				sessionStorage.setItem(key, JSON.stringify(value));
-			} else {
-				localStorage.setItem(key, JSON.stringify(value));
-			}
+            if (temporary) {
+                sessionStorage.setItem(key, JSON.stringify(value));
+            } else {
+                localStorage.setItem(key, JSON.stringify(value));
+            }
         }
         catch(e) {
             if(e.name === "QUOTA_EXCEEDED_ERR") {
@@ -338,19 +344,38 @@ SK.Util = {
         }
     },
 
-    /* Retourne null si la donnée n'existe pas */
-    getValue: function(key, session=false) {
+    /**
+     * Récupère une valeur du localStorage ou sessionStorage.
+     * 
+     * @param {boolean} temporary Vrai si la valeur doit être récupérée en sessionStorage
+     *
+     * @return null si la donnée n'existe pas
+     */
+    getValue: function(key, temporary) {
+
+        temporary = temporary || false;
+
         key = "SK." + key;
-		if (session) {
+
+		if (temporary) {
 			return JSON.parse(sessionStorage.getItem(key));
 		} else {
 			return JSON.parse(localStorage.getItem(key));
 		}
     },
 
-    deleteValue: function(key, session=false) {
+    /**
+     * Supprime une valeur du localStorage ou sessionStorage.
+     *
+     * @param {boolean} temporary Vrai si la valeur doit être supprimé du sessionStorage
+     */
+    deleteValue: function(key, temporary) {
+
+        temporary = temporary || false;
+
         key = "SK." + key;
-		if (session) {
+
+		if (temporary) {
 			sessionStorage.removeItem(key);
 		} else {
 			localStorage.removeItem(key);
