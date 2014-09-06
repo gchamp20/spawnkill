@@ -659,6 +659,7 @@ SK.moduleConstructors.Quote.prototype.getCss = function() {
             .quote-message {\
                 padding: 5px;\
                 padding-left: 10px;\
+                min-height: 10px;\
             }\
             .quote-bloc .sk-button.quote-link {\
                 float: right;\
