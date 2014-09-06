@@ -14,31 +14,24 @@ SK.moduleConstructors.InfosPseudo.prototype.beforeInit = function() {
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.init = function() {
-
-    //On récupère les auteurs des topics sur la liste des topics
-    if(SK.Util.currentPageIn(["topic-list"])) {
-        
-        this.getAuthorsTopics();
-        
-    } else {
     
-        this.addPostInfos();
+    this.addPostInfos();
 
-        if (this.getSetting("enableUserHighlight")) {
-            //On attend quelques secondes que le pseudo soit chargé en Ajax
-            //Sale mais sera modifié avec l'arrivée de SpawnKill
-            window.setTimeout(function() {
-                this.highlightCurrentUser();
-            }.bind(this), 1000);
+    if (this.getSetting("enableUserHighlight")) {
+        //On attend quelques secondes que le pseudo soit chargé en Ajax
+        //Sale mais sera modifié avec l'arrivée de SpawnKill
+        window.setTimeout(function() {
+            this.highlightCurrentUser();
+        }.bind(this), 1000);
+    }
+    
+
+    if(!SK.Util.currentPageIn(["post-preview"])) {
+        
+        if (this.getSetting("enableAuthorHighlight")) {
+            this.getTopicAuthor();
         }
         
-
-        //Sur les pages Lecture/Réponse, on marque l'auteur
-        if (SK.Util.currentPageIn(["topic-response", "topic-read"])) {
-            if (this.getSetting("enableAuthorHighlight")) {
-                this.highlightCurrentAuthor();
-            }
-        }
     }
 };
 
@@ -48,25 +41,6 @@ SK.moduleConstructors.InfosPseudo.prototype.avatarSize = 0;
 /** Retourne un entier sur [1 ; 151] */
 SK.moduleConstructors.InfosPseudo.prototype.getRandomPokemon = function() {
     return ("00" + Math.floor((Math.random() * 151) + 1)).slice(-3);
-};
-
-/** Récupère et stocke les auteurs associés aux topics de la page. */
-SK.moduleConstructors.InfosPseudo.prototype.getAuthorsTopics = function() {
-     
-    var currentForum = document.URL.split("-")[1];
-    
-    $(".ltopic").each(function() {
-        
-        var $topicId = $(this).attr("href").split("-")[2];
-        var $key = currentForum + "." + $topicId;
-        
-        if (SK.Util.getValue($key) === null) {
-            var $authorTopic = $(this).parent().parent().find(".pseudo").text().toLowerCase();
-            SK.Util.setValue($key, $authorTopic, true);
-        }
-        
-    });
-    
 };
 
 /** Ajoute les infos à tous les posts */
@@ -476,8 +450,69 @@ SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
     }); 
 };
 
+
+// -/** Récupère et stocke les auteurs associés aux topics de la page. */
+// -SK.moduleConstructors.InfosPseudo.prototype.getAuthorsTopics = function() {
+// -     
+// -    var currentForum = document.URL.split("-")[1];
+// -    
+// -    $(".ltopic").each(function() {
+// -        
+// -        var $topicId = $(this).attr("href").split("-")[2];
+// -        var $key = currentForum + "." + $topicId;
+// -        
+// -        if (SK.Util.getValue($key) === null) {
+// -            var $authorTopic = $(this).parent().parent().find(".pseudo").text().toLowerCase();
+// -            SK.Util.setValue($key, $authorTopic, true);
+// -        }
+// -        
+// -    });
+// -    
+// -};
+
+/**
+ * Récupère l'auteur du topic courant puis appelle la fonction pour couronner son pseudo.
+ */
+SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function() {
+     
+    //Création de la clé
+    var currentURLSplit = document.URL.split("-");
+    var topicId = currentURLSplit[1] + "-" + currentURLSplit[2];
+    var topicKey = "topics." + topicId;
+    var currentPage = currentURLSplit[3];
+
+    var topicAuthor = SK.Util.getValue(topicKey);
+    console.log(topicAuthor);
+    //Si la clé n'est pas présente dans le sessionStorage
+    if (topicAuthor === null) {
+    
+        //Si on est sur la première page du topic, on récupère directement l'auteur
+        if (currentPage === "1") {
+            topicAuthor = $(".msg:eq(0) > .pseudo > strong").text().trim().toLowerCase();
+            this.crownTopicAuthor(topicAuthor);
+            //On enregistre l'info en localStorage
+            SK.Util.setValue(topicKey, topicAuthor);
+        } 
+        //Sinon, on fait une requête HTTP vers la première page du topic
+        else {
+            var requestURL = "forums/1-" + topicId + "-1-0-1-0-0";
+
+            SK.Util.ws(requestURL, function($firstPage) {
+                var contenu = $($firstPage.find("contenu").text());
+                topicAuthor = contenu.find(".pseudo").first().text().split(" ")[0].trim().toLowerCase();
+                this.crownTopicAuthor(topicAuthor);
+                //On enregistre l'info en localStorage
+                SK.Util.setValue(topicKey, topicAuthor);
+            }.bind(this));
+        }
+    }
+    else {
+        this.crownTopicAuthor(topicAuthor);
+    }
+};
+
 /** Parcours la liste des messages et ajoute une couronne devant le pseudo qui correspond à celui de l'auteur **/
-SK.moduleConstructors.InfosPseudo.prototype.crownAuthorTopic = function(authorTopic) {
+SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function(authorTopic) {
 
     //On teste dans chaque message
     $(".msg .pseudo").each(function() {
@@ -494,76 +529,8 @@ SK.moduleConstructors.InfosPseudo.prototype.crownAuthorTopic = function(authorTo
     }); 
 };
 
-/**
- * Récupère l'auteur du topic courant puis appelle la fonction pour couronner son pseudo.
- */
-SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentAuthor = function() {
-    //Création de la clé
-    var currentURLSplit = document.URL.split("-");
-    var currentForum = currentURLSplit[1];
-    var currentTopic = currentURLSplit[2];
-    var key = currentForum + "." + currentTopic;
-    
-    var authorTopic = SK.Util.getValue(key, true);
-    
-    //Si la clé n'est pas présente dans le sessionStorage
-    if (authorTopic === null) {
-    
-        //Si on est sur le formulaire de réponse
-        if (SK.Util.currentPageIn(["topic-response"])) {
-        
-            var nbResponses = $(".msg").length;
-            
-            //S'il y a moins de 10 réponses, on peut déterminer l'auteur
-            if (nbResponses < 10) {
-                authorTopic = $(".msg:eq(0) .pseudo > strong").text().trim().toLowerCase();
-                SK.Util.setValue(key, authorTopic, true);
-                this.crownAuthorTopic(authorTopic);
-            } 
-            
-            //Sinon, requête HTTP vers la première page
-            else {
-                var requestURL = "forums/1-" + currentForum + "-" + currentTopic + "-1-0-1-0-0.xml";
-    
-                SK.Util.jvc(requestURL, function(firstPage) {
-                    var contenu = $(firstPage.find("contenu").text());
-                    var authorTopic = contenu.find(".pseudo").text().split(" ")[0].trim().toLowerCase();
-                    SK.Util.setValue(key, authorTopic, true);
-                    SK.moduleConstructors.InfosPseudo.prototype.crownAuthorTopic(authorTopic);
-                });
-            }
-        }
-        else {
-            var currentPage = currentURLSplit[3];
-            
-            //Si on est sur la première page du topic, on récupère directement l'auteur
-            if (currentPage == "1") {
-                authorTopic = $(".msg:eq(0) > .pseudo > strong").text().trim().toLowerCase();
-                SK.Util.setValue(key, authorTopic, true);
-                this.crownAuthorTopic(authorTopic);
-            } 
-            
-            //Sinon, on fait une requête HTTP vers la première page du topic
-            else {
-                var requestURL = "forums/1-" + currentForum + "-" + currentTopic + "-1-0-1-0-0.xml";
-    
-                SK.Util.jvc(requestURL, function(firstPage) {
-                    var contenu = $(firstPage.find("contenu").text());
-                    authorTopic = contenu.find(".pseudo").text().split(" ")[0].trim().toLowerCase();
-                    SK.Util.setValue(key, authorTopic, true);
-                    SK.moduleConstructors.InfosPseudo.prototype.crownAuthorTopic(authorTopic);
-                });
-            }
-        }
-    }
-    else {
-        this.crownAuthorTopic(authorTopic);
-    }
-};
-
-
 SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn([ "topic-read", "topic-response", "post-preview", "topic-list" ]);
+    return SK.Util.currentPageIn([ "topic-read", "topic-response", "post-preview" ]);
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.settings = {
