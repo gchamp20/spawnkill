@@ -1,4 +1,1 @@
-v1.14.2.1
-Mise à jour technique
-
-- Passage de l'affichage des nouveaux posts côté client pour soulager un peu le serveur
+v1.14.3

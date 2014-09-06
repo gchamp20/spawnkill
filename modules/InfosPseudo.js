@@ -15,23 +15,32 @@ SK.moduleConstructors.InfosPseudo.prototype.beforeInit = function() {
 
 SK.moduleConstructors.InfosPseudo.prototype.init = function() {
     
-    this.addPostInfos();
-
-    if (this.getSetting("enableUserHighlight")) {
-        //On attend quelques secondes que le pseudo soit chargé en Ajax
-        //Sale mais sera modifié avec l'arrivée de SpawnKill
-        window.setTimeout(function() {
-            this.highlightCurrentUser();
-        }.bind(this), 1000);
-    }
-    
-
-    if(!SK.Util.currentPageIn(["post-preview"])) {
-        
+    //Sur la page liste des sujets, on récupère les auteurs des topics
+    if(SK.Util.currentPageIn(["topic-list"])) {
         if (this.getSetting("enableAuthorHighlight")) {
-            this.getTopicAuthor();
+            this.getTopicListAuthors();
+        }
+    }
+
+    else {
+        this.addPostInfos();
+
+        if (this.getSetting("enableUserHighlight")) {
+            //On attend quelques secondes que le pseudo soit chargé en Ajax
+            //Sale mais sera modifié avec l'arrivée de SpawnKill
+            window.setTimeout(function() {
+                this.highlightCurrentUser();
+            }.bind(this), 1000);
         }
         
+        if(!SK.Util.currentPageIn(["post-preview"])) {
+            
+            if (this.getSetting("enableAuthorHighlight")) {
+                //On ajoute la couronne à l'auteur
+                this.crownTopicAuthor();
+            }
+            
+        }
     }
 };
 
@@ -451,30 +460,39 @@ SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
 };
 
 
-// -/** Récupère et stocke les auteurs associés aux topics de la page. */
-// -SK.moduleConstructors.InfosPseudo.prototype.getAuthorsTopics = function() {
-// -     
-// -    var currentForum = document.URL.split("-")[1];
-// -    
-// -    $(".ltopic").each(function() {
-// -        
-// -        var $topicId = $(this).attr("href").split("-")[2];
-// -        var $key = currentForum + "." + $topicId;
-// -        
-// -        if (SK.Util.getValue($key) === null) {
-// -            var $authorTopic = $(this).parent().parent().find(".pseudo").text().toLowerCase();
-// -            SK.Util.setValue($key, $authorTopic, true);
-// -        }
-// -        
-// -    });
-// -    
-// -};
+/**
+ * Récupère et stocke les auteurs associés aux topics de la page liste des sujets.
+ */
+SK.moduleConstructors.InfosPseudo.prototype.getTopicListAuthors = function() {
+     
+    var currentForumId = document.URL.split("-")[1];
+    
+    //On parcourt tous les topics de la liste
+    $(".ltopic").each(function() {
+        
+        //On récupère l'id du topic
+        var topicId = $(this).attr("href").split("-")[2];
+        var $topicKey = "topics." + currentForumId + "-" + topicId;
+        
+        //Puis, si on n'a pas déjà les infos en localStorage
+        if (SK.Util.getValue($topicKey) === null) {
+
+            //On récupère le pseudo de l'auteur et on l'enregistre
+            var $topicAuthor = $(this).parent().siblings(".pseudo").text().toLowerCase();
+            SK.Util.setValue($topicKey, $topicAuthor);
+        }
+        
+    });
+    
+};
 
 /**
  * Récupère l'auteur du topic courant puis appelle la fonction pour couronner son pseudo.
  */
-SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function() {
+SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function(callback) {
      
+    callback = callback || function() {};
+
     //Création de la clé
     var currentURLSplit = document.URL.split("-");
     var topicId = currentURLSplit[1] + "-" + currentURLSplit[2];
@@ -482,16 +500,18 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function() {
     var currentPage = currentURLSplit[3];
 
     var topicAuthor = SK.Util.getValue(topicKey);
-    console.log(topicAuthor);
+
     //Si la clé n'est pas présente dans le sessionStorage
     if (topicAuthor === null) {
     
         //Si on est sur la première page du topic, on récupère directement l'auteur
         if (currentPage === "1") {
             topicAuthor = $(".msg:eq(0) > .pseudo > strong").text().trim().toLowerCase();
-            this.crownTopicAuthor(topicAuthor);
+
             //On enregistre l'info en localStorage
             SK.Util.setValue(topicKey, topicAuthor);
+
+            callback(topicAuthor);
         } 
         //Sinon, on fait une requête HTTP vers la première page du topic
         else {
@@ -500,37 +520,45 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function() {
             SK.Util.ws(requestURL, function($firstPage) {
                 var contenu = $($firstPage.find("contenu").text());
                 topicAuthor = contenu.find(".pseudo").first().text().split(" ")[0].trim().toLowerCase();
-                this.crownTopicAuthor(topicAuthor);
+
                 //On enregistre l'info en localStorage
                 SK.Util.setValue(topicKey, topicAuthor);
-            }.bind(this));
+
+                callback(topicAuthor);
+            });
         }
     }
+    //Si on a déjà l'auteur
     else {
-        this.crownTopicAuthor(topicAuthor);
+        callback(topicAuthor);
     }
 };
 
-/** Parcours la liste des messages et ajoute une couronne devant le pseudo qui correspond à celui de l'auteur **/
-SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function(authorTopic) {
+/** Parcourt la liste des messages et ajoute une couronne devant le pseudo qui correspond à celui de l'auteur **/
+SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function() {
 
-    //On teste dans chaque message
-    $(".msg .pseudo").each(function() {
-        
-        var $postPseudo = $(this).find("strong").first();
-        var postTextPseudo = $postPseudo.text().trim().toLowerCase();
-        // Si l'auteur du message correspond à ce pseudonyme
-        if (postTextPseudo == authorTopic) {
-            //Crée le div contenant l'image de la couronne et le place avant le pseudo de l'auteur du topic
-            var div = document.createElement("div");
-            div.className = "current-authorTopic";
-            $(this).prepend(div);
-        }
-    }); 
+    //On récupère le pseudo de l'auteur
+    this.getTopicAuthor(function(topicAuthor) {
+
+        //On teste dans chaque message
+        $(".msg .pseudo").each(function() {
+            
+            var $postPseudo = $(this).find("strong").first();
+            var postTextPseudo = $postPseudo.text().trim().toLowerCase();
+            // Si l'auteur du message correspond à ce pseudonyme
+            if (postTextPseudo === topicAuthor) {
+                //Crée le div contenant l'image de la couronne et le place avant le pseudo de l'auteur du topic
+                var div = document.createElement("div");
+                div.className = "current-topic-author";
+                $(this).prepend(div);
+            }
+        }); 
+    });
+
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn([ "topic-read", "topic-response", "post-preview" ]);
+    return SK.Util.currentPageIn([ "topic-list", "topic-read", "topic-response", "post-preview" ]);
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.settings = {
@@ -632,7 +660,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
     //Si on met en valeur les posts de l'auteur
     if(this.getSetting("enableAuthorHighlight")) {
         css += "\
-            .current-authorTopic {\
+            .current-topic-author {\
                 vertical-align: top;\
                 display:inline-block;\
                 width:16px;\
