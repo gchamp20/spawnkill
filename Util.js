@@ -354,14 +354,17 @@ SK.Util = {
     getValue: function(key, temporary) {
 
         temporary = temporary || false;
-
         key = "SK." + key;
 
+        var item = null;
+
 		if (temporary) {
-			return JSON.parse(sessionStorage.getItem(key));
+			item = sessionStorage.getItem(key);
 		} else {
-			return JSON.parse(localStorage.getItem(key));
+			item = localStorage.getItem(key);
 		}
+
+        return JSON.parse(item);
     },
 
     /**

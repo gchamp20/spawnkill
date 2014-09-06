@@ -472,14 +472,14 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicListAuthors = function() {
         
         //On récupère l'id du topic
         var topicId = $(this).attr("href").split("-")[2];
-        var $topicKey = "topics." + currentForumId + "-" + topicId;
+        var topicKey = "topics." + currentForumId + "-" + topicId;
         
         //Puis, si on n'a pas déjà les infos en localStorage
-        if (SK.Util.getValue($topicKey) === null) {
+        if (SK.Util.getValue(topicKey) === null) {
 
             //On récupère le pseudo de l'auteur et on l'enregistre
-            var $topicAuthor = $(this).parent().siblings(".pseudo").text().toLowerCase();
-            SK.Util.setValue($topicKey, $topicAuthor);
+            var topicAuthor = $(this).parent().siblings(".pseudo").text().toLowerCase();
+            SK.Util.setValue(topicKey, topicAuthor);
         }
         
     });
@@ -503,10 +503,9 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function(callback) 
 
     //Si la clé n'est pas présente dans le sessionStorage
     if (topicAuthor === null) {
-    
         //Si on est sur la première page du topic, on récupère directement l'auteur
         if (currentPage === "1") {
-            topicAuthor = $(".msg:eq(0) > .pseudo > strong").text().trim().toLowerCase();
+            topicAuthor = $("#col1 .msg .pseudo > strong").first().text().trim().toLowerCase();
 
             //On enregistre l'info en localStorage
             SK.Util.setValue(topicKey, topicAuthor);
