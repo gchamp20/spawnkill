@@ -504,7 +504,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function(callback) 
     //Si la clé n'est pas présente dans le sessionStorage
     if (topicAuthor === null) {
         //Si on est sur la première page du topic, on récupère directement l'auteur
-        if (currentPage === "1") {
+        if (SK.Util.currentPageIn([ "topic-read" ]) && currentPage === "1") {
             topicAuthor = $("#col1 .msg .pseudo > strong").first().text().trim().toLowerCase();
 
             //On enregistre l'info en localStorage
