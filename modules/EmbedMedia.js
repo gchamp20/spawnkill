@@ -349,7 +349,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         id: "vimeo",
         settingId: "embedVideos",
 
-        regex: /^http:\/\/vimeo.com\/(?:[\w]*\/)*(\d*)/,
+        regex: /^http:\/\/vimeo.com\/(?:\w*\/)*(\d*)/,
 
         addHideButton: true,
         showButtonText: "Afficher les vidéos Vimeo",
