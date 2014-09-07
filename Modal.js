@@ -10,6 +10,7 @@
  * location (string) : Position de la modale "top" (defaut), "center", "notification"
  * hasCloseButton (boolean) : true (default) or false, vrai si un bouton doit être affiché en haut à droite de la modale
  * closeButtonAction : fonction appelée quand on clique sur le bouton fermer. Par défaut, la modale se ferme.
+ * onModalShow : fonction appelée une fois que la modale est ajoutée au DOM (avant de lancer la transition)
  * + options jQuery
  */
 SK.Modal = function(options) {
@@ -22,6 +23,10 @@ SK.Modal = function(options) {
     delete options.content;
     var location = options.location || "top";
     delete options.location;
+    var onModalShow = options.onModalShow || function() {};
+    delete options.onModalShow;
+
+
     var hasCloseButton = true;
     if(options.hasCloseButton === false) {
         hasCloseButton = false;
@@ -41,6 +46,9 @@ SK.Modal = function(options) {
     );
 
     $modal.find(".content").append(content);
+
+    //On ajoute la fonction onModalShow
+    $modal.onModalShow = onModalShow;
 
     //On ajoute les boutons à la modale
     var $buttons = $modal.find(".box.buttons");

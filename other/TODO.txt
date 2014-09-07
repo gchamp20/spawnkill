@@ -1,13 +1,1 @@
-v1.13.2
-- Contribution de Kocal : Ajout de documentation pour les fonctions utilitaires de SpawnKill
-- Contribution de Delgan : Ajout d'un bouton permettant de voir les topics créés par un auteur dans le forum (désactivé par défaut)
-
-v1.13.1.2
-- Correction d'un bug potentiel quand le localStorage était plein
-- Correction d'un conflit potentiel entre les pseudos et les noms de modules
-- Correction des PEMT via mobiles
-
-v1.13.1.1
-- Prise en compte du nouveau nom de domaine : www.spawnkill.fr pour le bouton de téléchargement
-- Correction du problème de sélection partielle avec des images sous Chrome
-- Correction du lien des images qui prenait toute la largeur même si l'image était étroite
+v1.14.3

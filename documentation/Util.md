@@ -3,12 +3,12 @@ Documentation - Fonctions utilitaires (`Util`)
 
 Dernière mise à jour : v1.13.1.2
 
-* **SK.Util.jvc** : Effectue une requête sur l'api de JVC
-    * `url` (string) : L'URL de la requête
+* **SK.Util.ws** : Effectue une requête sur l'api de JVC
+    * `url` (string) : Suffixe de l'URL de la requête sans le ".xml"
     * `callback` (function) : Fonction appelée avec comme premier paramètre un objet jQuery correspondant à la réponse XML
 
 ```javascript
-SK.Util.jvc("02.flux_news.xml", function(news) {
+SK.Util.ws("02.flux_news", function(news) {
     // On affiche les dernières news du site
     console.log(news);
 });
@@ -52,6 +52,8 @@ if(SK.Util.currentPageIn(["topic-list"])) {
 * **SK.Util.showModal**  : Affiche la fenêtre modale passée en paramètre
     * `$modal` (SK.Modal) : Modale à afficher
 
+**Note :** Voir la documentation des [`Modal`](https://github.com/dorian-marchal/spawnkill/blob/master/documentation/Modal.md) pour plus d'informations
+
 ```javascript
 var $modal = new SK.Modal({
     title : "SpawnKill",
@@ -65,9 +67,13 @@ SK.Util.showModal($modal);
 
 * **SK.Util.showModalLoader** : Affiche l'écran de chargement des fenêtres modales
 
+**Note :** Voir la documentation des [`Modal`](https://github.com/dorian-marchal/spawnkill/blob/master/documentation/Modal.md) pour plus d'informations
+
 ----
 
 * **SK.Util.hideModal** : Cache toutes les fenêtres modales ouvertes
+
+**Note :** Voir la documentation des [`Modal`](https://github.com/dorian-marchal/spawnkill/blob/master/documentation/Modal.md) pour plus d'informations
 
 ----
 
@@ -77,6 +83,8 @@ SK.Util.showModal($modal);
         * string `location` : "top" (défaut), "right" ou "bottom".
         * int `index` : position du bouton (de gauche à droite)
         * Les autres paramètres se trouvent [ici](http://un.lien)
+
+**Note :** Voir la documentation des [`Button`](https://github.com/dorian-marchal/spawnkill/blob/master/documentation/Button.md) pour plus d'informations
 
 ```javascript
 var $msg = $(".msg").first();

@@ -98,9 +98,12 @@ function getApiData($urls, $cache_result = true) {
 
 	$running = null;
 	do {
-		curl_multi_exec($mh, $running);
+		do {
+		    $mrc = curl_multi_exec($mh, $running);
+		    usleep(2000);
+		} while ($mrc == CURLM_CALL_MULTI_PERFORM);
+	    usleep(2000);
 	} while($running > 0);
-
 
 	foreach($curly as $id => $c) {
 		$error = false;

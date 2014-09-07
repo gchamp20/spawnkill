@@ -85,39 +85,48 @@ SK.moduleConstructors.Settings.prototype.getModal = function() {
     });
 
     var $modal = new SK.Modal({
+        class: "setting-modal",
         location: "top",
         title: "Configuration de SpawnKill",
         hasCloseButton: false,
         content: this.getSettingsUI(),
-        buttons: [ $cancelButton, $okButton ]
+        buttons: [ $cancelButton, $okButton ],
+        onModalShow: function() {
+
+            //Si la modale est plus haute que l'écran, on la fait scroller
+            self.shrinkSettingsModal();
+        }
     });
+
 
     return $modal;
 };
 
+
+/**
+ * Retourne un objet jQuery représentant le contenu de la modale de paramètrage
+ */
 SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
 
-    var getOptionStringValue = function(option) {
-        if(option.type === "boolean") {
-            return option.value ? "1" : "0";
-        }
-        return option.value;
-    };
-
+    var self = this;
     var ui = "";
+
     ui += "<span class='settings-spawnkill-version' >" + SK.VERSION + "</span>";
     ui += "<ul id='settings-form' >";
         for(var moduleKey in SK.modules) {
 
             var module = SK.modules[moduleKey];
-            ui += "<li title='" + SK.Util.htmlEncode(module.description) + "' class='setting" + (module.required ? " required" : "") + "' data-activated='" + (module.activated ? "1" : "0") + "' data-id='" + moduleKey + "' >";
+            ui += "<li title='" + SK.Util.htmlEncode(module.description) + "' class='setting" + 
+              (module.required ? " required" : "") + "' data-activated='" + (module.activated ? "1" : "0") +
+              "' data-id='" + moduleKey + "' >";
 
                 ui += "<div class='main-setting' >" + SK.Util.htmlEncode(module.title) + "</div>";
                 ui += "<hr>";
                 ui += "<ul class='options fold' >";
                     for(var settingKey in module.settings) {
                         var setting = module.settings[settingKey];
-                        ui += "<li class='option' title='" + SK.Util.htmlEncode(setting.description) + "' data-id='" + settingKey + "' >";
+                        ui += "<li class='option' title='" + SK.Util.htmlEncode(setting.description) +
+                          "' data-id='" + settingKey + "' >";
                             ui += SK.Util.htmlEncode(module.settings[settingKey].title);
                         ui += "</li>";
                     }    
@@ -159,6 +168,9 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
             click: function() {
                 var $options = $setting.find(".options");
 
+                $options.on("transitionend webkitTransitionEnd", function() {
+                    self.shrinkSettingsModal();
+                });
                 $options.toggleClass("fold");
             }
         });
@@ -168,7 +180,6 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
         }
 
         //Slide-toggles Options
-
         $setting.find(".option").each(function() {
 
             var $option = $(this);
@@ -190,6 +201,33 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
 
     return $ui;
 };
+
+/** 
+ * Si la hauteur de la modale est plus importante que celle de l'écran,
+ * On force une barre de scroll.
+ */
+SK.moduleConstructors.Settings.prototype.shrinkSettingsModal = function() {
+
+    var $settingsModal = $(".setting-modal").first();
+    var contentsHeight = $settingsModal.find(".content").prop("scrollHeight");
+    var screenHeight = $(window).height();
+
+    //Hauteur maximale du contenu de la popup
+    var maxContentHeight = screenHeight - 100;
+
+
+    if(contentsHeight > maxContentHeight) {
+
+        $settingsModal.find(".content").css("height", maxContentHeight + "px");
+
+        $settingsModal.addClass("scroll");
+    }
+    else {
+        $settingsModal.find(".content").css("height", "auto");
+        $settingsModal.removeClass("scroll");
+    }
+};
+
 
 /** Parcourt l'interface de paramètrage et enregistre les préférences */
 SK.moduleConstructors.Settings.prototype.saveSettings = function() {
@@ -237,6 +275,50 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         #ft2 {\
             right: 23px !important;\
         }\
+        .setting-modal {\
+            width: 420px !important;\
+            padding: 10px 0px;\
+        }\
+        .setting-modal h3 {\
+            padding: 0 10px !important;\
+        }\
+        .setting-modal hr {\
+            left: auto !important;\
+        }\
+        .setting-modal .buttons {\
+            box-sizing: border-box;\
+            padding: 0px 10px;\
+        }\
+        .setting-modal.scroll {\
+            width: 440px;\
+        }\
+        .setting-modal.scroll > hr {\
+            display: none;\
+        }\
+        .setting-modal.scroll h3 {\
+            box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.15);\
+            border-bottom: 1px solid #DDD;\
+            padding-bottom: 10px !important;\
+        }\
+        .setting-modal.scroll .content {\
+            overflow-x: hidden;\
+            overflow-y: scroll;\
+        }\
+        .setting-modal.scroll .options {\
+            width: 100%;\
+            padding-right: 20px;\
+        }\
+        .setting-modal.scroll .buttons {\
+            padding-top: 10px;\
+            box-shadow: 0px -4px 6px -2px rgba(0, 0, 0, 0.15);\
+        }\
+        .setting-modal.scroll #settings-form {\
+            width: 408px;\
+            margin-bottom: 0px;\
+        }\
+        .setting-modal.scroll .tooltip {\
+            display: none;\
+        }\
         #settings-button {\
             position: absolute;\
                 right: 1px;\
@@ -257,7 +339,6 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         #settings-form {\
             position: relative;\
-            left: -10px;\
             width: 420px;\
             margin-bottom: 10px;\
         }\
@@ -280,10 +361,11 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
                 inset 0px 11px 6px -10px rgba(0, 0, 0, 0.4),\
                 inset 0px -11px 6px -10px rgba(0, 0, 0, 0.4);\
             transition-duration: 300ms;\
+            transition-property: max-height;\
         }\
         .setting .option {\
             position: relative;\
-            padding: 10px;\
+            padding: 8px 10px;\
             padding-left: 20px;\
             color: #EEE;\
             border-bottom: solid 1px #888;\
@@ -298,6 +380,18 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         #settings-form .option .slide-toggle {\
             right: 6px;\
+            top: 4px;\
+            width: 30px;\
+            height: 18px;\
+        }\
+        #settings-form .option .slide-toggle :checked + .slide-toggle-style:after {\
+            left: 14px;\
+        }\
+        #settings-form .option .slide-toggle input + .slide-toggle-style:after {\
+            left: 2px;\
+            top: 2px;\
+            width: 14px;\
+            height: 14px;\
         }\
         #settings-form .option .sk-dropdown {\
             position: absolute;\
