@@ -472,14 +472,14 @@ SK.moduleConstructors.EmbedMedia.prototype.swapGifCanvas = function($gifElement)
     var $canvas = $gifElement.find("canvas");
     
     // Le .gif n'a pas encore été affiché, mais il est à la bonne position pour l'être
-    if (($canvas.css('display') != 'none')&&($gifElement.visible())) {
+    if (($canvas.css('display') !== 'none') && ($gifElement.visible())) {
         // Remet le gif au début, sans recharger l'image
         $img.attr("src", $img.attr("src"));
         $img.show();
         $canvas.hide();
     } 
     // Le .gif est affiché mais partiellement visible, il doit être caché
-    else if (($img.css('display') != 'none')&&!($gifElement.visible())){
+    else if (($img.css('display') !== 'none') && !($gifElement.visible())) {
         $img.hide();
         $canvas.show();
     }
@@ -609,7 +609,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                                         $mediaElement.addClass("loading");
                                         // On attend que le .gif soit chargé, sinon le canvas sera vide
                                         // JSHint ne semble pas très content, mais je ne vois pas comment faire autrement...
-                                        $img.on("load", function() {createCanvas($(this))};);
+                                        $img.on("load", function() {createCanvas($(this));});
                                     }
                                 }
                             }
