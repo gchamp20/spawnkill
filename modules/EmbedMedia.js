@@ -45,12 +45,11 @@ SK.moduleConstructors.EmbedMedia.GfyApi = {
      *    voir la doc pour plus d'infos : http://gfycat.com/api
      */ 
     testGif: function(url, callback) {
-        $.ajax({
+        GM_xmlhttpRequest({
             method: "GET",
             url: "http://gfycat.com/cajax/checkUrl/" + encodeURIComponent(url),
-            response: "JSON",
-            success: function(json) {
-                callback(json);
+            onload: function(data) {
+                callback(JSON.parse(data.responseText));
             }
         });
     },
@@ -62,11 +61,12 @@ SK.moduleConstructors.EmbedMedia.GfyApi = {
      *    voir la doc pour plus d'infos : http://gfycat.com/api
      */ 
     convertGif: function(gifUrl, callback) {
-        $.ajax({
+        GM_xmlhttpRequest({
             method: "POST",
             url: "http://upload.gfycat.com/transcode?fetchUrl=" + encodeURIComponent(gifUrl),
-            response: "JSON",
-            success: function(json) {
+            onload: function(data) {
+                var json = JSON.parse(data.responseText);
+
                 if(typeof json.error !== "undefined") {
                     callback(undefined);
                 }
