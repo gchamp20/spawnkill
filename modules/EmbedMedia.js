@@ -470,16 +470,16 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
 SK.moduleConstructors.EmbedMedia.prototype.swapGifCanvas = function($gifElement) {
     var $img = $gifElement.find("img");
     var $canvas = $gifElement.find("canvas");
-    
+    var $isVisible = $gifElement.visible());
     // Le .gif n'a pas encore été affiché, mais il est à la bonne position pour l'être
-    if (($canvas.css('display') !== 'none') && ($gifElement.visible())) {
+    if (($canvas.css('display') !== 'none') && ($isVisible) {
         // Remet le gif au début, sans recharger l'image
         $img.attr("src", $img.attr("src"));
         $img.show();
         $canvas.hide();
     } 
     // Le .gif est affiché mais partiellement visible, il doit être caché
-    else if (($img.css('display') !== 'none') && !($gifElement.visible())) {
+    else if (($img.css('display') !== 'none') && !($isVisible) {
         $img.hide();
         $canvas.show();
     }
