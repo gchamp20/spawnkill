@@ -21,7 +21,7 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
     }.bind(this));
 
     this.userSettings = {};
-
+    
     //On récupère le paramètre optin
     this.userSettings.optinEmbed = this.getSetting("optinEmbed");
 
@@ -31,6 +31,14 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
         this.userSettings[settingId] = this.getSetting(settingId);
     }
 
+    if (this.userSettings.startGifOnScroll) {
+        $(window).on("scroll", function() {
+            // Pour tous les .gif qui sont complètement chargés
+            $(".image-media-element.loaded").each(function() {
+                SK.moduleConstructors.EmbedMedia.prototype.swapGifCanvas($(this));
+            });
+        });
+    }
 };
 
 /* options : {
@@ -457,6 +465,27 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
 };
 
 /**
+ * Alterne entre canvas et gif suivant la visibilité sur l'écran de l'image
+ */
+SK.moduleConstructors.EmbedMedia.prototype.swapGifCanvas = function($gifElement) {
+    var $img = $gifElement.find("img");
+    var $canvas = $gifElement.find("canvas");
+    
+    // Le .gif n'a pas encore été affiché, mais il est à la bonne position pour l'être
+    if (($canvas.css('display') != 'none')&&($gifElement.visible())) {
+        // Remet le gif au début, sans recharger l'image
+        $img.attr("src", $img.attr("src"));
+        $img.show();
+        $canvas.hide();
+    } 
+    // Le .gif est affiché mais partiellement visible, il doit être caché
+    else if (($img.css('display') != 'none')&&!($gifElement.visible())){
+        $img.hide();
+        $canvas.show();
+    }
+};
+
+/**
  * Parcourt tous les liens des posts à la recherche de contenu à intégrer.
  */
 SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
@@ -505,6 +534,32 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
         });
     };
 
+    
+    /**
+     * Crée un canvas de la première frame d'un gif
+     */
+     var createCanvas = function($gifElement) {
+        var $imageElement = $gifElement.parent();
+        var gifWidth = $gifElement.width();
+        var gifHeight = $gifElement.height();
+        
+        $imageElement.removeClass("loading");
+        $imageElement.addClass("loaded");
+        
+        // Création du canvas et ajout dans le DOM après le .gif
+        var canvas = document.createElement("canvas");
+        canvas.width = gifWidth;
+        canvas.height = gifHeight;
+        canvas.style.display = "none";
+        canvas.getContext('2d').drawImage($gifElement.get(0), 0, 0, gifWidth, gifHeight);
+        $gifElement.after(canvas);
+        
+        // On détache l'event pour ne pas créer de nouveaux canvas
+        $gifElement.off("load");
+        
+        self.swapGifCanvas($imageElement);
+     };
+     
     /**
      * Lie un contenu au lien s'il match un type de media
      */
@@ -541,11 +596,24 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                         var $mediaElement = mediaType.getEmbeddedMedia($a, matchMedia);
 
                         if($mediaElement !== null) {
-
+                            
                             $a.after($mediaElement);
                             $mediaElement.addClass(mediaType.id + "-media-element media-element");
                             $a.addClass(mediaType.id + "-media-link");
-
+                            
+                            if (mediaType.id === "image") {
+                                var $img = $mediaElement.find("img");
+                                if ($img.attr("src").match(/.*\.gif(\?.*)?/i)) {
+                                    if (self.userSettings.startGifOnScroll) {
+                                        // Class "loading" pour ne pas que l'event onScroll prenne en compte l'image
+                                        $mediaElement.addClass("loading");
+                                        // On attend que le .gif soit chargé, sinon le canvas sera vide
+                                        // JSHint ne semble pas très content, mais je ne vois pas comment faire autrement...
+                                        $img.on("load", function() {createCanvas($(this))};);
+                                    }
+                                }
+                            }
+                            
                             if(showMedia) {
                                 $a.hide();
                             }
@@ -625,6 +693,12 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
     embedSpawnKill: {
         title: "Bouton de téléchargement SpawnKill",
         description: "Affiche un bouton à la place du lien de téléchargement SpawnKill",
+        type: "boolean",
+        default: true,
+    },
+    startGifOnScroll: {
+        title: "Démarrer les .gif lorsqu'ils sont visibles",
+        description: "Les images de type GIF démarrent lorsqu'elles sont entièrement visibles",
         type: "boolean",
         default: true,
     }
