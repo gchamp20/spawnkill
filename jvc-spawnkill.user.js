@@ -58,6 +58,7 @@
 // @resource    settings              images/settings.png
 // @resource    youtube               images/youtube.png
 // @resource    vimeo                 images/vimeo.png
+// @resource    vine                  images/vine.png
 // @resource    dailymotion           images/dailymotion.png
 // @resource    sondageio             images/sondageio.png
 // @resource    image                 images/image.png

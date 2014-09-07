@@ -349,7 +349,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         id: "vimeo",
         settingId: "embedVideos",
 
-        regex: /^http:\/\/vimeo.com\/(\d*)/,
+        regex: /^http:\/\/vimeo.com\/(?:[\w]*\/)*(\d*)/,
 
         addHideButton: true,
         showButtonText: "Afficher les vidéos Vimeo",
@@ -366,6 +366,37 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                src: vimeoLink,
                width: videoWidth,
                height: videoHeight,
+               allowfullscreen: 1,
+               frameborder: 0,
+            });
+
+            return $el;
+        }
+
+    }));
+    
+    //Vine
+    this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
+
+        id: "vine",
+        settingId: "embedVideos",
+
+        regex: /^https?:\/\/vine.co\/v\/([a-zA-Z0-9]*)/,
+
+        addHideButton: true,
+        showButtonText: "Afficher les vidéos Vine",
+        hideButtonText: "Masquer les vidéos Vine",
+
+        getEmbeddedMedia: function($a, match) {
+            var vineId = match[1];
+            var vineLink = "https://vine.co/v/" + vineId + "/embed/simple?audio=1&related=0";
+            var vineWidth = 320;
+            var vineHeight = 320;
+
+            var $el = $("<iframe>", {
+               src: vineLink,
+               width: vineWidth,
+               height: vineHeight,
                allowfullscreen: 1,
                frameborder: 0,
             });
@@ -642,6 +673,12 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             background-color: #E62117;\
             border-bottom-color: #9B140F;\
             background-image: url('" + GM_getResourceURL("youtube") + "');\
+            background-position: 0px -1px;\
+        }\
+        [data-media-id='vine'] {\
+            background-color: #23CC96;\
+            border-bottom-color: #1B8C6A;\
+            background-image: url('" + GM_getResourceURL("vine") + "');\
             background-position: 0px -1px;\
         }\
         [data-media-id='vimeo'] {\
