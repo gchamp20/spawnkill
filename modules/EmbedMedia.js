@@ -33,6 +33,75 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
 
 };
 
+/**
+ * Wrapper de l'API de GfyCat permettant de convertir des gif en vidéos webm à la volée
+ */
+SK.moduleConstructors.EmbedMedia.GfyApi = {
+
+    /**
+     * Test si le gif a déjà été converti.
+     * @param {string} url Url du gif à tester
+     * @param {function} callback Fonction appelée avec la réponse de l'appel,
+     *    voir la doc pour plus d'infos : http://gfycat.com/api
+     */ 
+    testGif: function(url, callback) {
+        $.ajax({
+            method: "GET",
+            url: "http://gfycat.com/cajax/checkUrl/" + encodeURIComponent(url),
+            response: "JSON",
+            success: function(json) {
+                callback(json);
+            }
+        });
+    },
+
+    /**
+     * Converti un gif en vidéo webm.
+     * @param {string} url Url du gif à convertir
+     * @param {function} callback Fonction appelée avec la réponse de l'appel,
+     *    voir la doc pour plus d'infos : http://gfycat.com/api
+     */ 
+    convertGif: function(gifUrl, callback) {
+        $.ajax({
+            method: "POST",
+            url: "http://upload.gfycat.com/transcode?fetchUrl=" + encodeURIComponent(gifUrl),
+            response: "JSON",
+            success: function(json) {
+                if(typeof json.error !== "undefined") {
+                    callback(undefined);
+                }
+                else {
+                    callback(json);
+                }
+            }
+        });
+    },
+
+    /**
+     * Retourne le lien vers la vidéos webm correspondant au gif passé en paramètre.
+     * @param {string} url Url du gif à convertir
+     * @param {function} callback Fonction appelée avec l'url de la vidéo en paramètre ou false en cas d'erreur
+     */ 
+    getWebmFromGif: function(gifUrl, callback) {
+        SK.moduleConstructors.EmbedMedia.GfyApi.testGif(gifUrl, function(check) {
+            if(check.urlKnown) {
+                callback(check.webmUrl);
+            }
+            else {
+                SK.moduleConstructors.EmbedMedia.GfyApi.convertGif(gifUrl, function(converted) {
+                    if(typeof converted === "undefined") {
+                        callback(undefined);
+                    }
+                    else {
+                        callback(converted.webmUrl);
+                    }
+                });
+            }
+        });
+    }
+};
+
+
 /* options : {
     id: nom du type de media
     regex: regex de reconnaissance du lien
