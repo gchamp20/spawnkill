@@ -545,7 +545,7 @@ SK.moduleConstructors.Quote.prototype.getCss = function() {
 
     var mainColor = SK.modules.StartSpawnKill.mainColor;
 
-    if(this.getSetting("quoteButton")) {
+    if(this.getSetting("quoteButton") || this.getSetting("partialQuote")) {
         css += "\
             .sk-button-content.quote {\
                 background-image: url('" + GM_getResourceURL("quote") + "');\
