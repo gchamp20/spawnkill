@@ -806,7 +806,8 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             margin: 5px;\
             margin-left: 0px;\
         }\
-        .image-media-element img {\
+        .image-media-element img ,\
+        .image-media-element video {\
             max-width: 100%;\
         }\
     ";
