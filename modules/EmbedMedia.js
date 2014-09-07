@@ -468,19 +468,20 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
  * Alterne entre canvas et gif suivant la visibilité sur l'écran de l'image
  */
 SK.moduleConstructors.EmbedMedia.prototype.swapGifCanvas = function($gifElement) {
-    var $img = $gifElement.find("img");
+    var $gif = $gifElement.find("img");
     var $canvas = $gifElement.find("canvas");
-    var $isVisible = $gifElement.visible());
+    var isVisible = $gifElement.visible();
+	var isGifDisplayed = ($gif.css('display') !== 'none');
     // Le .gif n'a pas encore été affiché, mais il est à la bonne position pour l'être
-    if (($canvas.css('display') !== 'none') && ($isVisible) {
+    if (!(isGifDisplayed) && (isVisible)) {
         // Remet le gif au début, sans recharger l'image
-        $img.attr("src", $img.attr("src"));
-        $img.show();
+        $gif.attr("src", $gif.attr("src"));
+        $gif.show();
         $canvas.hide();
     } 
     // Le .gif est affiché mais partiellement visible, il doit être caché
-    else if (($img.css('display') !== 'none') && !($isVisible) {
-        $img.hide();
+    else if ((isGifDisplayed) && !(isVisible)) {
+        $gif.hide();
         $canvas.show();
     }
 };
@@ -609,7 +610,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                                         $mediaElement.addClass("loading");
                                         // On attend que le .gif soit chargé, sinon le canvas sera vide
                                         // JSHint ne semble pas très content, mais je ne vois pas comment faire autrement...
-                                        $img.on("load", function() {createCanvas($(this));});
+                                        $img.on("load", function() {createCanvas($(this))});
                                     }
                                 }
                             }
