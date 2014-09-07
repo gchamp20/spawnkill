@@ -30,6 +30,18 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
         var settingId = i;
         this.userSettings[settingId] = this.getSetting(settingId);
     }
+	
+	if (this.userSettings.delayGifs) {
+		$(window).on("scroll", function() {
+			// Pour tous les .gif qui sont complètement chargés
+			$(".gif-webm").each(function() {
+				// this et self ne fonctionne pas...
+				// Par contre, je sais pas s'il y a pas moyen de faire quelque chose genre :
+				// $(".gif-webm").pauseOrsStartGif() sans utiliser le each ?
+				SK.moduleConstructors.EmbedMedia.prototype.pauseOrStartGif($(this));
+			});
+		});
+	}
 
 };
 
@@ -127,6 +139,25 @@ SK.moduleConstructors.EmbedMedia.MediaType = function(options) {
 SK.moduleConstructors.EmbedMedia.prototype.mediaTypes = [];
 
 /**
+ * Modifie le statut du GIF (.webm) suivant sa visibiltié sur l'écran
+ */
+SK.moduleConstructors.EmbedMedia.prototype.pauseOrStartGif = function($gif) {
+	
+	var isVisible = $gif.visible();
+	var gif = $gif.get(0);
+	var isPaused = gif.paused;
+	// Le .gif n'a pas encore été débuté, mais il est à la bonne position pour l'être
+	if (isPaused && isVisible) {
+		gif.play();
+	}
+	// Le .gif est débuté mais partiellement visible, il doit être mis en pause
+	else if (!(isPaused) && !(isVisible)) {
+		gif.currentTime = 0;
+		gif.pause();
+	}
+};
+
+/**
  * Prépare les styles de media supportés
  */
 SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
@@ -199,6 +230,14 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                         //On rempli l'élément du DOM après coup
                         $el.attr("href", webmLink);
                         $el.find("video").attr("src", webmLink);
+						if (SK.moduleConstructors.EmbedMedia.prototype.settings.delayGifs) {
+							$el.find("video").on("loadedmetadata",function() {
+								// Une fois chargé, ajout d'une classe pour prise en compte par le onScroll
+								$(this).addClass("gif-webm");
+								// Démarrer ou mettre en pause le .gif suivant sa position
+								SK.moduleConstructors.EmbedMedia.prototype.pauseOrStartGif($(this));
+							});
+						}
                     }
                 });
             }
@@ -721,6 +760,12 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         description: "Affiche un bouton à la place du lien de téléchargement SpawnKill",
         type: "boolean",
         default: true,
+    },
+	delayGifs: {
+        title: "Retarder le départ des .gif",
+        description: "Les images de type .gif démarrent lorsqu'elles sont entièrement visibles sur l'écran",
+        type: "boolean",
+        default: false,
     }
 };
 
