@@ -381,15 +381,17 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         id: "vine",
         settingId: "embedVideos",
 
-        regex: /^https?:\/\/vine.co\/v\/([a-zA-Z0-9]*)/,
+        regex: /(^(https?:\/\/vine.co\/v\/[a-zA-Z0-9]*)|(https?:\/\/v\.cdn\.vine\.co\/r\/videos\/[\w\.\-]+\.mp4))/,
 
         addHideButton: true,
         showButtonText: "Afficher les vidéos Vine",
         hideButtonText: "Masquer les vidéos Vine",
 
         getEmbeddedMedia: function($a, match) {
-            var vineId = match[1];
-            var vineLink = "https://vine.co/v/" + vineId + "/embed/simple?audio=1&related=0";
+            var vineLink = match[1];
+			if (match[3] === undefined) {
+				vineLink += "/embed/simple?audio=1&related=0";
+			}
             var vineWidth = 320;
             var vineHeight = 320;
 
@@ -631,7 +633,7 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
     },
     embedVideos: {
         title: "Intégration des vidéos",
-        description: "Intégre les vidéos Youtube, DailyMotion et Vimeo aux posts.",
+        description: "Intégre les vidéos Youtube, DailyMotion, Vimeo et Vine aux posts.",
         type: "boolean",
         default: true,
     },
@@ -679,7 +681,7 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             background-color: #23CC96;\
             border-bottom-color: #1B8C6A;\
             background-image: url('" + GM_getResourceURL("vine") + "');\
-            background-position: 0px -1px;\
+            background-position: 0px -2px;\
         }\
         [data-media-id='vimeo'] {\
             background-color: #20B9EB;\
