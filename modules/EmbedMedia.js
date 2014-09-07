@@ -41,6 +41,75 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
     }
 };
 
+/**
+ * Wrapper de l'API de GfyCat permettant de convertir des gif en vidéos webm à la volée
+ */
+SK.moduleConstructors.EmbedMedia.GfyApi = {
+
+    /**
+     * Test si le gif a déjà été converti.
+     * @param {string} url Url du gif à tester
+     * @param {function} callback Fonction appelée avec la réponse de l'appel,
+     *    voir la doc pour plus d'infos : http://gfycat.com/api
+     */ 
+    testGif: function(url, callback) {
+        GM_xmlhttpRequest({
+            method: "GET",
+            url: "http://gfycat.com/cajax/checkUrl/" + encodeURIComponent(url),
+            onload: function(data) {
+                callback(JSON.parse(data.responseText));
+            }
+        });
+    },
+
+    /**
+     * Converti un gif en vidéo webm.
+     * @param {string} url Url du gif à convertir
+     * @param {function} callback Fonction appelée avec la réponse de l'appel,
+     *    voir la doc pour plus d'infos : http://gfycat.com/api
+     */ 
+    convertGif: function(gifUrl, callback) {
+        GM_xmlhttpRequest({
+            method: "POST",
+            url: "http://upload.gfycat.com/transcode?fetchUrl=" + encodeURIComponent(gifUrl),
+            onload: function(data) {
+                var json = JSON.parse(data.responseText);
+
+                if(typeof json.error !== "undefined") {
+                    callback(undefined);
+                }
+                else {
+                    callback(json);
+                }
+            }
+        });
+    },
+
+    /**
+     * Retourne le lien vers la vidéos webm correspondant au gif passé en paramètre.
+     * @param {string} url Url du gif à convertir
+     * @param {function} callback Fonction appelée avec l'url de la vidéo en paramètre ou false en cas d'erreur
+     */ 
+    getWebmFromGif: function(gifUrl, callback) {
+        SK.moduleConstructors.EmbedMedia.GfyApi.testGif(gifUrl, function(check) {
+            if(check.urlKnown) {
+                callback(check.webmUrl);
+            }
+            else {
+                SK.moduleConstructors.EmbedMedia.GfyApi.convertGif(gifUrl, function(converted) {
+                    if(typeof converted === "undefined") {
+                        callback(undefined);
+                    }
+                    else {
+                        callback(converted.webmUrl);
+                    }
+                });
+            }
+        });
+    }
+};
+
+
 /* options : {
     id: nom du type de media
     regex: regex de reconnaissance du lien
@@ -83,8 +152,9 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
          * ne match pas :
          * https://www.dropbox.com/s/lfta3yd9tryotxp/screen2.png
          * http://www.hostingpics.net/viewer.php?id=785683.jpg
+         * Pour les tests : http://regex101.com/r/fD7bC3/1
          */
-        regex: /^https?:\/\/(?!www\.dropbox\.com|www\.hostingpics)(?:(?:(www\.hapshack\.com\/\?v=)|(www\.noelshack\.com\/([\d]{4})-([\d]{2})-))?(.*.(jpe?g|png|gif)))$/,
+        regex: /^https?:\/\/(?!www\.dropbox\.com|www\.hostingpics)(?:(?:(www\.hapshack\.com\/\?v=)|(www\.noelshack\.com\/([\d]{4})-([\d]{2})-))?(.*.(jpe?g|png|gif|JPE?G|PNG|GIF)))(?:\?.*)?$/,
 
         addHideButton: true,
         showButtonText: "Afficher les images",
@@ -93,6 +163,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         getEmbeddedMedia: function($a, match) {
 
             var imageLink = match[0];
+            var extension = match[6];
 
             //Prise en compte des images Noelshack
             if(typeof match[2] != "undefined") {
@@ -104,18 +175,41 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                 imageLink = "http://www.hapshack.com/images/" + match[5];
             }
 
+            //Embed d'une image "classique"
             var $el = $("<a>", {
                 href: imageLink,
                 target: "_blank"
             });
 
-            $el.html($("<img>", {
+            var $imageEmbed = $("<img>", {
                 src: imageLink,
                 title: " ",
                 alt: imageLink, //Obligatoire pour que les citations partielles fonctionnent avec les images
                 "data-popin": imageLink,
                 "data-popin-type": "image"
-            }));
+            });
+
+            $el.html($imageEmbed);
+
+            //Si l'image est un gif, on la converti en vidéo HTML5 via Gfycat
+            if(extension.toLowerCase() === "gif") {
+
+                // On intègre la vidéo et on met à jour le lien vers cette vidéo
+                $el.html("<video autoplay loop></video>");
+
+                SK.moduleConstructors.EmbedMedia.GfyApi.getWebmFromGif(imageLink, function(webmLink) {
+
+                    //En cas d'erreur, fallback à l'embed classique
+                    if(typeof webmLink === "undefined") {
+                        $el.html($imageEmbed);
+                    }
+                    else {
+                        //On rempli l'élément du DOM après coup
+                        $el.attr("href", webmLink);
+                        $el.find("video").attr("src", webmLink);
+                    }
+                });
+            }
 
             return $el;
         }
