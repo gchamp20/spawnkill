@@ -155,6 +155,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         getEmbeddedMedia: function($a, match) {
 
             var imageLink = match[0];
+            var extension = match[6];
 
             //Prise en compte des images Noelshack
             if(typeof match[2] != "undefined") {
@@ -166,18 +167,41 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                 imageLink = "http://www.hapshack.com/images/" + match[5];
             }
 
+            //Embed d'une image "classique"
             var $el = $("<a>", {
                 href: imageLink,
                 target: "_blank"
             });
 
-            $el.html($("<img>", {
+            var $imageEmbed = $("<img>", {
                 src: imageLink,
                 title: " ",
                 alt: imageLink, //Obligatoire pour que les citations partielles fonctionnent avec les images
                 "data-popin": imageLink,
                 "data-popin-type": "image"
-            }));
+            });
+
+            $el.html($imageEmbed);
+
+            //Si l'image est un gif, on la converti en vidéo HTML5 via Gfycat
+            if(extension.toLowerCase() === "gif") {
+
+                // On intègre la vidéo et on met à jour le lien vers cette vidéo
+                $el.html("<video autoplay loop></video>");
+
+                SK.moduleConstructors.EmbedMedia.GfyApi.getWebmFromGif(imageLink, function(webmLink) {
+
+                    //En cas d'erreur, fallback à l'embed classique
+                    if(typeof webmLink === "undefined") {
+                        $el.html($imageEmbed);
+                    }
+                    else {
+                        //On rempli l'élément du DOM après coup
+                        $el.attr("href", webmLink);
+                        $el.find("video").attr("src", webmLink);
+                    }
+                });
+            }
 
             return $el;
         }
