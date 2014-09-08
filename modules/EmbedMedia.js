@@ -34,11 +34,11 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
         this.userSettings[settingId] = this.getSetting(settingId);
     }
     
-    if (this.getSetting("delayGifs")) {
+    if (this.getSetting("startGifWhenOnScreen")) {
         $(window).on("scroll", function() {
-            // Pour tous les .gif qui sont complètement chargés
+            // Pour toutes les webm qui sont complètement chargées
             $(".gif-webm").each(function() {
-                self.pauseOrStartGif($(this));
+                self.updateWebmStatus($(this));
             });
         });
     }
@@ -139,18 +139,18 @@ SK.moduleConstructors.EmbedMedia.MediaType = function(options) {
 SK.moduleConstructors.EmbedMedia.prototype.mediaTypes = [];
 
 /**
- * Modifie le statut du GIF (.webm) suivant sa visibiltié sur l'écran
+ * Modifie le statut (lecture / pause) du GIF (.webm) suivant sa visibilité sur l'écran
  */
-SK.moduleConstructors.EmbedMedia.prototype.pauseOrStartGif = function($gif) {
+SK.moduleConstructors.EmbedMedia.prototype.updateWebmStatus = function($gif) {
     
     var isVisible = $gif.visible();
     var gif = $gif.get(0);
     var isPaused = gif.paused;
-    // Le .gif n'a pas encore été débuté, mais il est à la bonne position pour l'être
+    // La vidéo n'a pas encore été débuté, mais elle est à la bonne position pour l'être
     if (isPaused && isVisible) {
         gif.play();
     }
-    // Le .gif est débuté mais partiellement visible, il doit être mis en pause
+    // La vidéo a débuté mais elle partiellement visible : elle doit être mise en pause
     else if (!(isPaused) && !(isVisible)) {
         gif.currentTime = 0;
         gif.pause();
@@ -233,14 +233,14 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                         $el.attr("href", webmLink);
                         $el.find("video").attr("src", webmLink);
 
-                        if (self.getSetting("delayGifs")) {
+                        if (self.getSetting("startGifWhenOnScreen")) {
                             $el.find("video").on("loadedmetadata",function() {
 
                                 var $this = $(this);
                                 // Une fois chargé, ajout d'une classe pour prise en compte par le onScroll
                                 $this.addClass("gif-webm");
-                                // Démarrer ou mettre en pause le .gif suivant sa position
-                                self.pauseOrStartGif($this);
+                                // Démarrer ou mettre en pause la webm suivant sa position
+                                self.updateWebmStatus($this);
                             });
                         }
                     }
@@ -808,7 +808,7 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         type: "boolean",
         default: true,
     },
-    delayGifs: {
+    startGifWhenOnScreen: {
         title: "Retarder le départ des GIF",
         description: "Les GIF démarrent lorsqu'ils sont entièrement visibles sur l'écran pour éviter d'en louper une partie.",
         type: "boolean",
