@@ -625,6 +625,12 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                 $msg.find("." + mediaId + "-media-element").toggle();
                 $msg.find("." + mediaId + "-media-link").toggle();
 
+                //Fix pour vine quand optin est activé
+                if(mediaType.id === "vine") {
+                    var $vineFrame = $msg.find("." + mediaId + "-media-element");
+                    $vineFrame.attr("src", $vineFrame.attr("src"));
+                }
+
                 //On enregistre l'état dans le localStorage
                 SK.Util.setValue($msg.attr("id") + "." + mediaId +".show", show);
 
@@ -641,6 +647,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
 
             var messageId = $msg.attr("id");
 
+            //On parcourt tous les types de medias
             for(var i in self.mediaTypes) {
 
                 var mediaType = self.mediaTypes[i];
@@ -658,10 +665,12 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                         showMedia = false;
                     }
 
+                    //Par défaut, on affiche le media si optinEmbed est à faux
                     if(showMedia === null) {
                         showMedia = !self.userSettings.optinEmbed;
                     }
 
+                    //Le lien correspond au media
                     if (matchMedia) {
 
                         //On remplace le lien par l'élément du media
