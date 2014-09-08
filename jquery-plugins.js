@@ -26,3 +26,19 @@ $.fn.scrollThere = function(delay, callback) {
 
     return this;
 };
+
+/* L'élement est-il visible sur l'écran */
+/* @DigitalFusion http://www.teamdf.com/web/jquery-element-onscreen-visibility/194 */
+$.fn.visible = function(partial) {
+    var $t            = $(this),
+        $w            = $(window),
+        viewTop       = $w.scrollTop(),
+        viewBottom    = viewTop + $w.height(),
+        _top          = $t.offset().top,
+        _bottom       = _top + $t.height(),
+        compareTop    = partial === true ? _bottom : _top,
+        compareBottom = partial === true ? _top : _bottom;
+
+    return ((compareBottom <= viewBottom) && (compareTop >= viewTop));
+
+  };
