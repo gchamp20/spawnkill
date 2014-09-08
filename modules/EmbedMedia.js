@@ -12,6 +12,9 @@ SK.moduleConstructors.EmbedMedia.prototype.title = "Intégration de contenus";
 SK.moduleConstructors.EmbedMedia.prototype.description = "Remplace les liens vers les images, vidéos, sondages ou vocaroo par le contenu lui-même.";
 
 SK.moduleConstructors.EmbedMedia.prototype.init = function() {
+
+    var self = this;
+
     this.initMediaTypes();
 
     //Si htmlQuote est activé, on a besoin que les citations soient chargées pour calculer la taille des vidéos
@@ -31,14 +34,11 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
         this.userSettings[settingId] = this.getSetting(settingId);
     }
     
-    if (this.userSettings.delayGifs) {
+    if (this.getSetting("delayGifs")) {
         $(window).on("scroll", function() {
             // Pour tous les .gif qui sont complètement chargés
             $(".gif-webm").each(function() {
-                // this et self ne fonctionne pas...
-                // Par contre, je sais pas s'il y a pas moyen de faire quelque chose genre :
-                // $(".gif-webm").pauseOrsStartGif() sans utiliser le each ?
-                SK.moduleConstructors.EmbedMedia.prototype.pauseOrStartGif($(this));
+                self.pauseOrStartGif($(this));
             });
         });
     }
@@ -162,6 +162,8 @@ SK.moduleConstructors.EmbedMedia.prototype.pauseOrStartGif = function($gif) {
  */
 SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
 
+    var self = this;
+
     //Images
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
@@ -231,12 +233,14 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                         $el.attr("href", webmLink);
                         $el.find("video").attr("src", webmLink);
 
-                        if (SK.moduleConstructors.EmbedMedia.prototype.settings.delayGifs) {
+                        if (self.getSetting("delayGifs")) {
                             $el.find("video").on("loadedmetadata",function() {
+
+                                var $this = $(this);
                                 // Une fois chargé, ajout d'une classe pour prise en compte par le onScroll
-                                $(this).addClass("gif-webm");
+                                $this.addClass("gif-webm");
                                 // Démarrer ou mettre en pause le .gif suivant sa position
-                                SK.moduleConstructors.EmbedMedia.prototype.pauseOrStartGif($(this));
+                                self.pauseOrStartGif($this);
                             });
                         }
                     }
@@ -800,15 +804,15 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
     },
     embedSpawnKill: {
         title: "Bouton de téléchargement SpawnKill",
-        description: "Affiche un bouton à la place du lien de téléchargement SpawnKill",
+        description: "Affiche un bouton à la place du lien de téléchargement SpawnKill.",
         type: "boolean",
         default: true,
     },
     delayGifs: {
-        title: "Retarder le départ des .gif",
-        description: "Les images de type .gif démarrent lorsqu'elles sont entièrement visibles sur l'écran",
+        title: "Retarder le départ des GIF",
+        description: "Les GIF démarrent lorsqu'ils sont entièrement visibles sur l'écran pour éviter d'en louper une partie.",
         type: "boolean",
-        default: false,
+        default: true,
     }
 };
 
