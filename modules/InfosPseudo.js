@@ -204,7 +204,8 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
 
     //Bouton Avertir
     if(this.getSetting("enableAlert")) {
-        SK.Util.addButton(message.$msg, {
+
+        var alertButtonOptions = {
             class: "alert",
             location: "right",
             index: 100,
@@ -214,10 +215,34 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             },
             click: function(event) {
                 event.preventDefault();
-                window.open(avertirUrl, "avertir", "width=700,height=470,scrollbars=no,status=no");
+
+                //On ne bloque pas le Ctrl + Clic et le middle clic
+                if(!event.ctrlKey && event.which !== 2) {
+
+                    //On n'ouvre la popup que si l'option modalProfile est désactivée
+                    if(!self.getSetting("modalAlert")) {
+
+                        window.open(avertirUrl, "avertir", "width=700,height=470,scrollbars=no,status=no");
+                    }
+                }
+                else {
+                    window.open(avertirUrl, "_blank");
+                }
             }
-        });
+        };
+
+        //Si l'option est activée, la DDB s'affichera dans une popin
+        if(this.getSetting("modalAlert")) {
+            alertButtonOptions["data-popin"] = avertirUrl;
+            alertButtonOptions["data-popin-type"] = "iframe";
+            alertButtonOptions["data-popin-width"] = "560";
+            alertButtonOptions["data-popin-height"] = "400";
+            alertButtonOptions.title = " ";
+        }
+
+        SK.Util.addButton(message.$msg, alertButtonOptions);
     }
+
 
     //Bouton MP
     if(this.getSetting("enableMP")) {
@@ -626,6 +651,12 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
     modalProfile: {
         title: "Charger la CDV dans une modale",
         description: "Affiche le profil de l'auteur dans une fenêtre modale au clic.",
+        type: "boolean",
+        default: true,
+    },
+    modalAlert: {
+        title: "Charger l'alerte administrateur dans une modale",
+        description: "Affiche la fenêtre d'alerte administrateur dans une fenêtre modale au clic.",
         type: "boolean",
         default: true,
     },

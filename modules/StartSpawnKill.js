@@ -106,8 +106,10 @@ SK.moduleConstructors.StartSpawnKill.prototype.bindPopinEvent = function() {
                 }
                 else if(contentType === "iframe") {
 
-                    var frameWidth = Math.min(800,  $(window).width() - 80);
-                    var frameHeight = Math.min(700,  $(window).height() - 80);
+                    var desiredWidth = parseInt($el.attr("data-popin-width")) || 800;
+                    var desiredHeight = parseInt($el.attr("data-popin-height")) || 700;
+                    var frameWidth = Math.min(desiredWidth,  $(window).width() - 80);
+                    var frameHeight = Math.min(desiredHeight,  $(window).height() - 80);
 
                     $modalContent = $("<div>");
 
