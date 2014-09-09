@@ -102,5 +102,5 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 };
 
 SK.moduleConstructors.Shortcuts.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn([ "topic-read" ]);
+    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ);
 };

@@ -768,7 +768,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
 };
 
 SK.moduleConstructors.EmbedMedia.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn([ "topic-read", "topic-response", "post-preview" ]);
+    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ, SK.common.Pages.TOPIC_RESPONSE, SK.common.Pages.POST_PREVIEW);
 };
 
 SK.moduleConstructors.EmbedMedia.prototype.settings = {

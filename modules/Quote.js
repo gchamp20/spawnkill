@@ -537,13 +537,13 @@ SK.moduleConstructors.Quote.prototype.settings = {
 
 SK.moduleConstructors.Quote.prototype.shouldBeActivated = function() {
     /* On affiche le bloc de citation sur la page réponse et les pages de lecture */
-    return SK.Util.currentPageIn([ "topic-read", "topic-response", "post-preview" ]);
+    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ, SK.common.Pages.TOPIC_RESPONSE, SK.common.Pages.POST_PREVIEW);
 };
 
 SK.moduleConstructors.Quote.prototype.getCss = function() {
     var css = "";
 
-    var mainColor = SK.modules.SpawnkillBase.mainColor;
+    var mainColor = SK.common.mainColor;
 
     if(this.getSetting("quoteButton") || this.getSetting("partialQuote")) {
         css += "\

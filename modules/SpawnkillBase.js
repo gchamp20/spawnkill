@@ -14,10 +14,16 @@ SK.moduleConstructors.SpawnkillBase.prototype.description = "Met en place la str
 SK.moduleConstructors.SpawnkillBase.prototype.required = true;
 
 SK.moduleConstructors.SpawnkillBase.prototype.beforeInit = function() {
+
+    //Couleur principale du script
     var mainHsl = this.getSetting("mainColor");
     var match = mainHsl.match(/hsl\((\d*), (\d*)%, (\d*)%\)/);
-    this.mainColor = "hsl(" + match[1] + ", " + match[2] + "%, 60%)";
-    this.darkColor = "hsl(" + match[1] + ", " + match[2] + "%, 35%)";
+
+    SK.common.mainColor = "hsl(" + match[1] + ", " + match[2] + "%, 60%)";
+    SK.common.darkColor = "hsl(" + match[1] + ", " + match[2] + "%, 35%)";
+
+    //Définition de la page courante
+    SK.common.currentPage = this.getCurrentPage();
 };
 
 SK.moduleConstructors.SpawnkillBase.prototype.init = function() {
@@ -25,9 +31,56 @@ SK.moduleConstructors.SpawnkillBase.prototype.init = function() {
     this.correctSplitPost();
     this.bindPopinEvent();
 
-    if(SK.Util.currentPageIn([ "post-preview" ])) {
+    if(SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW)) {
         this.preparePreview();
     }
+
+};
+
+/**
+ * Récupère la page courante.
+ * 
+ * @return {string} type de page : "topic-list", "topic-read", "topic-response", "topic-form", "post-preview" ou "other"
+ */
+SK.moduleConstructors.SpawnkillBase.prototype.getCurrentPage = function() {
+
+    var regex = "http:\\/\\/www\\.jeuxvideo\\.com\\/forums\\/(0|1|2|3)";
+    var match = window.location.href.match(regex);
+
+    var currentPage = null;
+
+    //Le chiffre après forum/ identifie le type de page
+    if(match !== null) {
+        switch(match[1]) {
+            case "0" :
+                currentPage = SK.common.Pages.TOPIC_LIST;
+                break;
+            case "1" :
+                currentPage = SK.common.Pages.TOPIC_READ;
+                break;
+            case "2" :
+                currentPage = SK.common.Pages.TOPIC_FORM;
+                break;
+            case "3" :
+                currentPage = SK.common.Pages.TOPIC_RESPONSE;
+                break;
+        }
+    }
+
+    //Si on n'est pas sur une page forum
+    if(currentPage === null) {
+
+        //Le titre de la page identifie l'aperçu
+        if ($("title").html() === "Aperçu d'un message sur JeuxVideo.com") {
+            currentPage = SK.common.Pages.POST_PREVIEW;
+        }
+        //Toutes les autres pages
+        else {
+            currentPage = SK.common.Pages.OTHER;
+        }
+    }
+
+    return currentPage;
 };
 
 /* Permet de régler les problèmes de tooltip dans les previews de messages */
@@ -186,8 +239,8 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
 
  SK.moduleConstructors.SpawnkillBase.prototype.getCss = function() {
 
-    var mainColor = SK.modules.SpawnkillBase.mainColor;
-    var darkColor = SK.modules.SpawnkillBase.darkColor;
+    var mainColor = SK.common.mainColor;
+    var darkColor = SK.common.darkColor;
 
     var css = "\
         .msg {\

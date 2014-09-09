@@ -77,10 +77,10 @@ La méthode `shouldBeActivated` doit retourner vrai si le script doit être exé
  * Le script est exécuté sur la liste des sujets
  */
 SK.moduleConstructors.LastPage.prototype.shouldBeActivated = function() {
-    SK.Util.currentPageIn([ "topic-list" ]); //Le module est activé si la page courante est la liste des sujets
+    SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST); //Le module est activé si la page courante est la liste des sujets
 };
 ```
-La méthode `SK.Util.currentPageIn` prend en compte les pages suivantes : `topic-list`, `topic-read`, `topic-form` et `topic-response`. 
+La méthode `SK.Util.currentPageIn` prend en paramètres tous les `SK.common.Pages` à tester
 
 ### Initialisation du plugin
 

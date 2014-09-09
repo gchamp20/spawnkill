@@ -56,7 +56,7 @@ SK.moduleConstructors.QuickResponse.prototype.addAnchor = function() {
 
 SK.moduleConstructors.QuickResponse.prototype.shouldBeActivated = function() {
     //On ajoute la quickResponse que si le bouton répondre est présent sur la page
-    return SK.Util.currentPageIn([ "topic-read" ]) && $(".bt_repondre").length > 0;
+    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ) && $(".bt_repondre").length > 0;
 };
 
 SK.moduleConstructors.QuickResponse.prototype.getCss = function() {

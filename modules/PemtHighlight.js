@@ -56,7 +56,7 @@ SK.moduleConstructors.PemtHighlight.prototype.init = function() {
  * Par défaut le module est toujours activé
  */
 SK.moduleConstructors.PemtHighlight.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn([ "topic-read" ]);
+    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ);
 };
 
 /**
@@ -67,7 +67,7 @@ SK.moduleConstructors.PemtHighlight.prototype.getCss = function() {
 
 	var css = "\
         .pemt-highlight {\
-            color: " + SK.modules.SpawnkillBase.mainColor + " !important;\
+            color: " + SK.common.mainColor + " !important;\
         }\
     ";
 

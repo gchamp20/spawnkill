@@ -261,7 +261,12 @@ SK.moduleConstructors.Settings.prototype.saveSettings = function() {
 };
 
 SK.moduleConstructors.Settings.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn([ "topic-read", "topic-list", "topic-form", "topic-response" ]);
+    return SK.Util.currentPageIn(
+        SK.common.Pages.TOPIC_LIST,
+        SK.common.Pages.TOPIC_READ,
+        SK.common.Pages.TOPIC_RESPONSE,
+        SK.common.Pages.TOPIC_FORM
+    );
 };
 
 SK.moduleConstructors.Settings.prototype.getCss = function() {

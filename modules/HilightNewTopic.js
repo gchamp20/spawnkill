@@ -40,5 +40,5 @@ SK.moduleConstructors.HilightNewTopic.prototype.hilightNewTopic = function() {
 
 
 SK.moduleConstructors.HilightNewTopic.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn([ "topic-list" ]);
+    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST);
 };

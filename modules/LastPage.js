@@ -62,7 +62,7 @@ SK.moduleConstructors.LastPage.prototype.addLastPageLinks = function() {
  * Le script est exécuté sur la liste des sujets
  */
 SK.moduleConstructors.LastPage.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn([ "topic-list" ]);
+    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST);
 };
 
 /**

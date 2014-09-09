@@ -189,7 +189,7 @@ SK.moduleConstructors.AutoUpdate.prototype.dissmisUpdateNotification = function(
 
 
 SK.moduleConstructors.AutoUpdate.prototype.shouldBeActivated = function() {
-    return !SK.Util.currentPageIn([ "post-preview" ]);
+    return !SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW);
 };
 
 /**

@@ -38,11 +38,11 @@ SK.Util.api("topic", "1000021-2267708", function($topic) {
 
 
 * **SK.Util.currentPageIn**  : Retourne vrai si l'utilisateur est sur l'une des pages passée en paramètre
-    * `pages` (array<string>): Un tableau de d'identifiants de page ("topic-list", "topic-read", "topic-form" ou "topic-response" ou "post-preview")
+    * `pages` (SK.common.Pages...): Tous les identifiants de pages à tester
 
 ```javascript
-// Est-ce que nous sommes sur la page qui liste les topics ?
-if(SK.Util.currentPageIn(["topic-list"])) {
+// Est-ce que nous sommes bien soit sur la page qui liste les topics soit sur la page de réponse ?
+if(SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST, SK.common.Pages.TOPIC_RESPONSE)) {
     // On fait un truc
 }
 ```

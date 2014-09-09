@@ -135,42 +135,18 @@ SK.Util = {
 
     /**
      * Retourne vrai si l'utilisateur est sur l'une des pages passée en paramètre.
-     * pages (array<string>) : Liste des pages ("topic-list", "topic-read", "topic-form" ou "topic-response", "post-preview")
+     * pages (SK.common.Pages...) : Liste des pages possibles (voir SK.common.Pages)
      */
-    currentPageIn: function(pages) {
-        var regex = "http:\\/\\/www\\.jeuxvideo\\.com\\/forums\\/";
-        var checkPostPreview = false;
-        var isOnPage = false;
+    currentPageIn: function(/* SK.common.Pages... */) {
 
-        for(var i in pages) {
-            switch(pages[i]) {
-                case "topic-list" :
-                    pages[i] = 0;
-                    break;
-                case "topic-read" :
-                    pages[i] = 1;
-                    break;
-                case "topic-form" :
-                    pages[i] = 2;
-                    break;
-                case "topic-response" :
-                    pages[i] = 3;
-                    break;
-                case "post-preview" :
-                    checkPostPreview = true;
-                    break;
+        for (var i = arguments.length - 1; i >= 0; i--) {
+
+            if(SK.common.currentPage === arguments[i]) {
+                return true;
             }
         }
 
-        regex += "(" + pages.join("|") +")";
-        
-        isOnPage = window.location.href.match(regex);
-    
-        if(checkPostPreview) {
-            isOnPage = isOnPage || ($("title").html() === "Aperçu d'un message sur JeuxVideo.com");
-        }
-
-        return isOnPage;
+        return false;
     },
 
     /* Montre une fenêtre modale passée en paramètre */

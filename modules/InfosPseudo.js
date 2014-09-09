@@ -16,7 +16,7 @@ SK.moduleConstructors.InfosPseudo.prototype.beforeInit = function() {
 SK.moduleConstructors.InfosPseudo.prototype.init = function() {
     
     //Sur la page liste des sujets, on récupère les auteurs des topics
-    if(SK.Util.currentPageIn(["topic-list"])) {
+    if(SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST)) {
         if (this.getSetting("enableAuthorHighlight")) {
             this.getTopicListAuthors();
         }
@@ -33,7 +33,7 @@ SK.moduleConstructors.InfosPseudo.prototype.init = function() {
             }.bind(this), 1000);
         }
         
-        if(!SK.Util.currentPageIn(["post-preview"])) {
+        if(!SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW)) {
             
             if (this.getSetting("enableAuthorHighlight")) {
                 //On ajoute la couronne à l'auteur
@@ -529,7 +529,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function(callback) 
     //Si la clé n'est pas présente dans le sessionStorage
     if (topicAuthor === null) {
         //Si on est sur la première page du topic, on récupère directement l'auteur
-        if (SK.Util.currentPageIn([ "topic-read" ]) && currentPage === "1") {
+        if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ) && currentPage === "1") {
             topicAuthor = $("#col1 .msg .pseudo > strong").first().text().trim().toLowerCase();
 
             //On enregistre l'info en localStorage
@@ -582,7 +582,12 @@ SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function() {
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn([ "topic-list", "topic-read", "topic-response", "post-preview" ]);
+    return SK.Util.currentPageIn(
+        SK.common.Pages.TOPIC_LIST,
+        SK.common.Pages.TOPIC_READ,
+        SK.common.Pages.TOPIC_RESPONSE,
+        SK.common.Pages.POST_PREVIEW
+    );
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.settings = {
@@ -682,7 +687,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
     if(this.getSetting("enableUserHighlight")) {
         css += "\
             .current-user {\
-                color: " + SK.modules.SpawnkillBase.darkColor + ";\
+                color: " + SK.common.darkColor + ";\
             }\
         ";
     }

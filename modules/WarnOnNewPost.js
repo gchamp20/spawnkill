@@ -160,5 +160,5 @@ SK.moduleConstructors.WarnOnNewPost.prototype.settings = {
 };
 
 SK.moduleConstructors.WarnOnNewPost.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn([ "topic-read" ]);
+    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ);
 };
