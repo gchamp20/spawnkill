@@ -179,7 +179,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
          * http://www.hostingpics.net/viewer.php?id=785683.jpg
          * Pour les tests : http://regex101.com/r/fD7bC3/1
          */
-        regex: /^https?:\/\/(?!www\.dropbox\.com|www\.hostingpics)(?:(?:(www\.hapshack\.com\/\?v=)|(www\.noelshack\.com\/([\d]{4})-([\d]{2})-))?(.*.(jpe?g|png|gif|bmp))(?:[\?:].*)?$/i,
+        regex: /^https?:\/\/(?!www\.dropbox\.com|www\.hostingpics)(?:(?:(www\.hapshack\.com\/\?v=)|(www\.noelshack\.com\/([\d]{4})-([\d]{2})-))?(.*.(jpe?g|png|gif|bmp)))(?:[\?:].*)?$/i,
 
         addHideButton: true,
         showButtonText: "Afficher les images",
@@ -380,7 +380,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         id: "pixule",
         settingId: "embedSurveys",
 
-        regex: /^http:\/\/www\.pixule\.com\/(?:sondages\/[^\/]*\/)?([\d]*).*$/,
+        regex: /^http:\/\/www\.pixule\.com\.*\/(\d+).*$/,
 
         addHideButton: true,
         showButtonText: "Afficher les sondages Pixule",
