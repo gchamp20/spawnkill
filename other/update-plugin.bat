@@ -59,6 +59,7 @@ mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.defaul
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\sondageio.png" "C:\wamp\www\spawnkill\images\sondageio.png"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\image.png" "C:\wamp\www\spawnkill\images\image.png"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\vocaroo.png" "C:\wamp\www\spawnkill\images\vocaroo.png"
+mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\vine.png" "C:\wamp\www\spawnkill\images\vocaroo.png"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\loader.gif" "C:\wamp\www\spawnkill\images\loader.gif"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\big-loader.gif" "C:\wamp\www\spawnkill\images\big-loader.gif"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\error.png" "C:\wamp\www\spawnkill\images\error.png"

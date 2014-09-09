@@ -12,6 +12,9 @@ SK.moduleConstructors.EmbedMedia.prototype.title = "Intégration de contenus";
 SK.moduleConstructors.EmbedMedia.prototype.description = "Remplace les liens vers les images, vidéos, sondages ou vocaroo par le contenu lui-même.";
 
 SK.moduleConstructors.EmbedMedia.prototype.init = function() {
+
+    var self = this;
+
     this.initMediaTypes();
 
     //Si htmlQuote est activé, on a besoin que les citations soient chargées pour calculer la taille des vidéos
@@ -29,6 +32,15 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
     for(var i in this.settings) {
         var settingId = i;
         this.userSettings[settingId] = this.getSetting(settingId);
+    }
+    
+    if (this.getSetting("startGifWhenOnScreen")) {
+        $(window).on("scroll", function() {
+            // Pour toutes les webm qui sont complètement chargées
+            $(".gif-webm").each(function() {
+                self.updateWebmStatus($(this));
+            });
+        });
     }
 
 };
@@ -127,9 +139,30 @@ SK.moduleConstructors.EmbedMedia.MediaType = function(options) {
 SK.moduleConstructors.EmbedMedia.prototype.mediaTypes = [];
 
 /**
+ * Modifie le statut (lecture / pause) du GIF (.webm) suivant sa visibilité sur l'écran
+ */
+SK.moduleConstructors.EmbedMedia.prototype.updateWebmStatus = function($gif) {
+    
+    var isVisible = $gif.visible();
+    var gif = $gif.get(0);
+    var isPaused = gif.paused;
+    // La vidéo n'a pas encore été débuté, mais elle est à la bonne position pour l'être
+    if (isPaused && isVisible) {
+        gif.play();
+    }
+    // La vidéo a débuté mais elle partiellement visible : elle doit être mise en pause
+    else if (!(isPaused) && !(isVisible)) {
+        gif.currentTime = 0;
+        gif.pause();
+    }
+};
+
+/**
  * Prépare les styles de media supportés
  */
 SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
+
+    var self = this;
 
     //Images
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
@@ -199,6 +232,17 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                         //On rempli l'élément du DOM après coup
                         $el.attr("href", webmLink);
                         $el.find("video").attr("src", webmLink);
+
+                        if (self.getSetting("startGifWhenOnScreen")) {
+                            $el.find("video").on("loadedmetadata",function() {
+
+                                var $this = $(this);
+                                // Une fois chargé, ajout d'une classe pour prise en compte par le onScroll
+                                $this.addClass("gif-webm");
+                                // Démarrer ou mettre en pause la webm suivant sa position
+                                self.updateWebmStatus($this);
+                            });
+                        }
                     }
                 });
             }
@@ -443,7 +487,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         id: "vimeo",
         settingId: "embedVideos",
 
-        regex: /^http:\/\/vimeo.com\/(\d*)/,
+        regex: /^http:\/\/vimeo.com\/(?:\w*\/)*(\d*)/,
 
         addHideButton: true,
         showButtonText: "Afficher les vidéos Vimeo",
@@ -460,6 +504,39 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                src: vimeoLink,
                width: videoWidth,
                height: videoHeight,
+               allowfullscreen: 1,
+               frameborder: 0,
+            });
+
+            return $el;
+        }
+
+    }));
+    
+    //Vine
+    this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
+
+        id: "vine",
+        settingId: "embedVideos",
+
+        regex: /(^(https?:\/\/vine.co\/v\/[a-zA-Z0-9]*)|(https?:\/\/v\.cdn\.vine\.co\/r\/videos\/[\w\.\-]+\.mp4))/,
+
+        addHideButton: true,
+        showButtonText: "Afficher les vidéos Vine",
+        hideButtonText: "Masquer les vidéos Vine",
+
+        getEmbeddedMedia: function($a, match) {
+            var vineLink = match[1];
+			if (match[3] === undefined) {
+				vineLink += "/embed/simple?audio=1&related=0";
+			}
+            var vineWidth = 320;
+            var vineHeight = 320;
+
+            var $el = $("<iframe>", {
+               src: vineLink,
+               width: vineWidth,
+               height: vineHeight,
                allowfullscreen: 1,
                frameborder: 0,
             });
@@ -592,6 +669,12 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                 $msg.find("." + mediaId + "-media-element").toggle();
                 $msg.find("." + mediaId + "-media-link").toggle();
 
+                //Fix pour vine quand optin est activé
+                if(mediaType.id === "vine") {
+                    var $vineFrame = $msg.find("." + mediaId + "-media-element");
+                    $vineFrame.attr("src", $vineFrame.attr("src"));
+                }
+
                 //On enregistre l'état dans le localStorage
                 SK.Util.setValue($msg.attr("id") + "." + mediaId +".show", show);
 
@@ -608,6 +691,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
 
             var messageId = $msg.attr("id");
 
+            //On parcourt tous les types de medias
             for(var i in self.mediaTypes) {
 
                 var mediaType = self.mediaTypes[i];
@@ -625,10 +709,12 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                         showMedia = false;
                     }
 
+                    //Par défaut, on affiche le media si optinEmbed est à faux
                     if(showMedia === null) {
                         showMedia = !self.userSettings.optinEmbed;
                     }
 
+                    //Le lien correspond au media
                     if (matchMedia) {
 
                         //On remplace le lien par l'élément du media
@@ -694,7 +780,7 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
     },
     embedVideos: {
         title: "Intégration des vidéos",
-        description: "Intégre les vidéos Youtube, DailyMotion et Vimeo aux posts.",
+        description: "Intégre les vidéos Youtube, DailyMotion, Vimeo et Vine aux posts.",
         type: "boolean",
         default: true,
     },
@@ -718,7 +804,13 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
     },
     embedSpawnKill: {
         title: "Bouton de téléchargement SpawnKill",
-        description: "Affiche un bouton à la place du lien de téléchargement SpawnKill",
+        description: "Affiche un bouton à la place du lien de téléchargement SpawnKill.",
+        type: "boolean",
+        default: true,
+    },
+    startGifWhenOnScreen: {
+        title: "Retarder le départ des GIF",
+        description: "Les GIF démarrent lorsqu'ils sont entièrement visibles sur l'écran pour éviter d'en louper une partie.",
         type: "boolean",
         default: true,
     }
@@ -737,6 +829,12 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             border-bottom-color: #9B140F;\
             background-image: url('" + GM_getResourceURL("youtube") + "');\
             background-position: 0px -1px;\
+        }\
+        [data-media-id='vine'] {\
+            background-color: #23CC96;\
+            border-bottom-color: #1B8C6A;\
+            background-image: url('" + GM_getResourceURL("vine") + "');\
+            background-position: 0px -2px;\
         }\
         [data-media-id='vimeo'] {\
             background-color: #20B9EB;\
@@ -806,7 +904,8 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             margin: 5px;\
             margin-left: 0px;\
         }\
-        .image-media-element img {\
+        .image-media-element img ,\
+        .image-media-element video {\
             max-width: 100%;\
         }\
     ";

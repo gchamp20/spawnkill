@@ -4,31 +4,31 @@
 // @author      Spixel_
 // @namespace   http://www.spixel.fr
 // @include     http://*.jeuxvideo.com*
-// @version     1.14.4
-// @require     jquery-2.1.1.min.js?v1.14.4
-// @require     jquery-plugins.js?v1.14.4
-// @require     base.js?v1.14.4
-// @require     Util.js?v1.14.4
-// @require     Message.js?v1.14.4
-// @require     Author.js?v1.14.4
-// @require     Button.js?v1.14.4
-// @require     SlideToggle.js?v1.14.4
-// @require     Modal.js?v1.14.4
-// @require     DropdownList.js?v1.14.4
-// @require     modules/Module.js?v1.14.4
-// @require     modules/StartSpawnKill.js?v1.14.4
-// @require     modules/Settings.js?v1.14.4
-// @require     modules/QuickResponse.js?v1.14.4
-// @require     modules/Quote.js?v1.14.4
-// @require     modules/Shortcuts.js?v1.14.4
-// @require     modules/InfosPseudo.js?v1.14.4
-// @require     modules/HilightNewTopic.js?v1.14.4
-// @require     modules/LastPage.js?v1.14.4
-// @require     modules/EmbedMedia.js?v1.14.4
-// @require     modules/WarnOnNewPost.js?v1.14.4
-// @require     modules/AutoUpdate.js?v1.14.4
-// @require     modules/PemtHighlight.js?v1.14.4
-// @require     modules/Usability.js?v1.14.4
+// @version     1.14.6
+// @require     jquery-2.1.1.min.js?v1.14.6
+// @require     jquery-plugins.js?v1.14.6
+// @require     base.js?v1.14.6
+// @require     Util.js?v1.14.6
+// @require     Message.js?v1.14.6
+// @require     Author.js?v1.14.6
+// @require     Button.js?v1.14.6
+// @require     SlideToggle.js?v1.14.6
+// @require     Modal.js?v1.14.6
+// @require     DropdownList.js?v1.14.6
+// @require     modules/Module.js?v1.14.6
+// @require     modules/StartSpawnKill.js?v1.14.6
+// @require     modules/Settings.js?v1.14.6
+// @require     modules/QuickResponse.js?v1.14.6
+// @require     modules/Quote.js?v1.14.6
+// @require     modules/Shortcuts.js?v1.14.6
+// @require     modules/InfosPseudo.js?v1.14.6
+// @require     modules/HilightNewTopic.js?v1.14.6
+// @require     modules/LastPage.js?v1.14.6
+// @require     modules/EmbedMedia.js?v1.14.6
+// @require     modules/WarnOnNewPost.js?v1.14.6
+// @require     modules/AutoUpdate.js?v1.14.6
+// @require     modules/PemtHighlight.js?v1.14.6
+// @require     modules/Usability.js?v1.14.6
 // @resource    close                 images/close.png
 // @resource    banImage              images/ban.png
 // @resource    newTopic              images/topic_new.gif
@@ -58,6 +58,7 @@
 // @resource    settings              images/settings.png
 // @resource    youtube               images/youtube.png
 // @resource    vimeo                 images/vimeo.png
+// @resource    vine                  images/vine.png
 // @resource    dailymotion           images/dailymotion.png
 // @resource    sondageio             images/sondageio.png
 // @resource    image                 images/image.png
@@ -77,7 +78,7 @@
 /* jshint multistr: true */
 /* jshint newcap: false */
 
-SK.VERSION = "v1.14.4";
+SK.VERSION = "v1.14.6";
 
 var modulesStyle = "";
 
