@@ -682,7 +682,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
     if(this.getSetting("enableUserHighlight")) {
         css += "\
             .current-user {\
-                color: " + SK.modules.StartSpawnKill.darkColor + ";\
+                color: " + SK.modules.SpawnkillBase.darkColor + ";\
             }\
         ";
     }

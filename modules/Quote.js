@@ -543,7 +543,7 @@ SK.moduleConstructors.Quote.prototype.shouldBeActivated = function() {
 SK.moduleConstructors.Quote.prototype.getCss = function() {
     var css = "";
 
-    var mainColor = SK.modules.StartSpawnKill.mainColor;
+    var mainColor = SK.modules.SpawnkillBase.mainColor;
 
     if(this.getSetting("quoteButton") || this.getSetting("partialQuote")) {
         css += "\

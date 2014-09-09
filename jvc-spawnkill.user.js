@@ -16,7 +16,7 @@
 // @require     Modal.js?v1.14.6
 // @require     DropdownList.js?v1.14.6
 // @require     modules/Module.js?v1.14.6
-// @require     modules/StartSpawnKill.js?v1.14.6
+// @require     modules/SpawnkillBase.js?v1.14.6
 // @require     modules/Settings.js?v1.14.6
 // @require     modules/QuickResponse.js?v1.14.6
 // @require     modules/Quote.js?v1.14.6

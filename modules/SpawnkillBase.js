@@ -3,24 +3,24 @@
 /* jshint newcap: false */
 
 /**
- * StartSpawnKill : Module requis de SpawnKill, 
+ * SpawnkillBase : Module requis de SpawnKill, 
  * permet de mettre en place la structure du script
  */
-SK.moduleConstructors.StartSpawnKill = SK.Module.new();
+SK.moduleConstructors.SpawnkillBase = SK.Module.new();
 
-SK.moduleConstructors.StartSpawnKill.prototype.id = "StartSpawnKill";
-SK.moduleConstructors.StartSpawnKill.prototype.title = "Module Principal";
-SK.moduleConstructors.StartSpawnKill.prototype.description = "Met en place la structure générale de SpawnKill.";
-SK.moduleConstructors.StartSpawnKill.prototype.required = true;
+SK.moduleConstructors.SpawnkillBase.prototype.id = "SpawnkillBase";
+SK.moduleConstructors.SpawnkillBase.prototype.title = "Module Principal";
+SK.moduleConstructors.SpawnkillBase.prototype.description = "Met en place la structure générale de SpawnKill.";
+SK.moduleConstructors.SpawnkillBase.prototype.required = true;
 
-SK.moduleConstructors.StartSpawnKill.prototype.beforeInit = function() {
+SK.moduleConstructors.SpawnkillBase.prototype.beforeInit = function() {
     var mainHsl = this.getSetting("mainColor");
     var match = mainHsl.match(/hsl\((\d*), (\d*)%, (\d*)%\)/);
     this.mainColor = "hsl(" + match[1] + ", " + match[2] + "%, 60%)";
     this.darkColor = "hsl(" + match[1] + ", " + match[2] + "%, 35%)";
 };
 
-SK.moduleConstructors.StartSpawnKill.prototype.init = function() {
+SK.moduleConstructors.SpawnkillBase.prototype.init = function() {
     this.addModalBackground();
     this.correctSplitPost();
     this.bindPopinEvent();
@@ -31,13 +31,13 @@ SK.moduleConstructors.StartSpawnKill.prototype.init = function() {
 };
 
 /* Permet de régler les problèmes de tooltip dans les previews de messages */
-SK.moduleConstructors.StartSpawnKill.prototype.preparePreview = function() {
+SK.moduleConstructors.SpawnkillBase.prototype.preparePreview = function() {
     $("body").append($("<div>", { id: "footer" }));
 };
 
 
 /* Ajoute l'évenement permettant d'ouvrir du contenu dans une fenêtre modale */
-SK.moduleConstructors.StartSpawnKill.prototype.bindPopinEvent = function() {
+SK.moduleConstructors.SpawnkillBase.prototype.bindPopinEvent = function() {
 
     setTimeout(function() {
 
@@ -140,7 +140,7 @@ SK.moduleConstructors.StartSpawnKill.prototype.bindPopinEvent = function() {
 };
 
 /** prépare le terrain pour les modales */
-SK.moduleConstructors.StartSpawnKill.prototype.addModalBackground = function() {
+SK.moduleConstructors.SpawnkillBase.prototype.addModalBackground = function() {
     $("body")
         .prepend("<div id='modal-loader'></div>")
         .prepend($("<div>", {
@@ -158,7 +158,7 @@ setTimeout(function() {
     }
 }, 1000);
 
-SK.moduleConstructors.StartSpawnKill.prototype.correctSplitPost = function() {
+SK.moduleConstructors.SpawnkillBase.prototype.correctSplitPost = function() {
 
     var $splitPost = $(".suite_sujet").parents(".msg");
     $splitPost
@@ -168,7 +168,7 @@ SK.moduleConstructors.StartSpawnKill.prototype.correctSplitPost = function() {
         });
 };
 
-SK.moduleConstructors.StartSpawnKill.prototype.settings = {
+SK.moduleConstructors.SpawnkillBase.prototype.settings = {
     mainColor: {
         title: "Couleur principale du plugin",
         description: "Possibilité de choisir la couleur principale utilisée à travers tout le plugin.",
@@ -184,10 +184,10 @@ SK.moduleConstructors.StartSpawnKill.prototype.settings = {
     }
 };
 
- SK.moduleConstructors.StartSpawnKill.prototype.getCss = function() {
+ SK.moduleConstructors.SpawnkillBase.prototype.getCss = function() {
 
-    var mainColor = SK.modules.StartSpawnKill.mainColor;
-    var darkColor = SK.modules.StartSpawnKill.darkColor;
+    var mainColor = SK.modules.SpawnkillBase.mainColor;
+    var darkColor = SK.modules.SpawnkillBase.darkColor;
 
     var css = "\
         .msg {\
