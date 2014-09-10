@@ -6,6 +6,7 @@
 SK.Author = function(pseudo) {
     this.version = SK.Author.VERSION;
     this.pseudo = pseudo;
+    this.key = "authors." + pseudo.toLowerCase();
     this.rank = "";
     this.messageCount = 0;
     this.avatar = "";
@@ -21,7 +22,7 @@ SK.Author = function(pseudo) {
 };
 
 /** Version du modèle. Permet de déprecier le cache si la structure change */
-SK.Author.VERSION = "2.3";
+SK.Author.VERSION = "2.4";
 
 /** Durée de validité du localStorage en jours */
 SK.Author.DATA_TTL = 4;
@@ -102,7 +103,7 @@ SK.Author.prototype.saveLocalData = function() {
         date: new Date()
     };
 
-    SK.Util.setValue("authors." + this.pseudo, data);
+    SK.Util.setValue(this.key, data);
 };
 
 /*
@@ -111,7 +112,7 @@ SK.Author.prototype.saveLocalData = function() {
  */
 SK.Author.prototype.loadLocalData = function() {
 
-    var data = SK.Util.getValue("authors." + this.pseudo);
+    var data = SK.Util.getValue(this.key);
     var dataLoaded = false;
 
     if(SK.Author.isDataValid(data)) {
