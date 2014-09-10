@@ -5,8 +5,9 @@ Fonctionnement des branches
 ---------------------------
 
 - La branche `master` est la branche stable. C'est cette version qui est releasée.
-- La branche `dev` est la branche de développement. Si possible c'est de celle-ci que vous devez partir. Les modifications effectuées sur `dev` sont ensuite mergées dans `master` quand elles sont assez matures.
-- Parfois, il est nécessaire d'effectuer une correction rapide alors qu'un développement est déjà en cours sur `dev` et que la branche ne peut pas être mergée maintenant avec `master`. Dans ce cas, la branche `hotfix` est utilisée. Le code d'`hotfix` est tiré de `master` est une fois la correction effectuée, elle est directement mergée dans `master` et `dev`.
+- La branche `dev` est la branche de développement. C'est de celle-ci que vous devez partir. Les modifications effectuées sur `dev` sont ensuite mergées dans `master` quand elles sont assez matures.
+- Pour ajouter une fonctionnalité, partez de la branche `dev` pour en créer une nouvelle `nom-de-votre-fonctionnalite`. Quand votre code est prêt, faites votre `pull request` depuis la branche `dev`
+
 
 Conventions de code
 -------------------
@@ -34,6 +35,40 @@ Conventions de code
 ### Déclarations de variables
 
 - Déclarez toutes vos variables avant de les utiliser pour faciliter la compréhension du code.
+
+### Fin d'instructions
+
+- Terminez toutes vos instructions par des `;`, même s'il n'est pas nécessaire.
+
+Utilisation de Git
+------------------
+
+### Commits fonctionnels
+
+- Evitez de commiter du code qui ne fonctionne pas. La fonctionnalité peut être incomplète mais le script doit s'exécuter correctement pour faciliter la navigation dans l'historique des versions.
+
+### Messages de commit
+
+- Autant que possible, essayez d'écrire de bons messages de commit en français (jeuxvideo.com est un site français)
+
+Schéma classique :
+
+```
+Première ligne : titre du commit
+
+Corps et description de la modification juste après une ligne blanche.
+```
+
+La première ligne doit faire moins que 72 caractères et toujours commencer par un verbe d'action. Par exemple :
+
+```
+Ajoute le démarrage des GIF au scroll de la page
+
+Les gifs commençaient dès le chargement de la page, du coup on pouvait
+les voir en cours de route.
+Ce commit permet de démarrer le gif seulement quand on l'a atteint en
+scrollant.
+```
 
 ---
 
