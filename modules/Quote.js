@@ -319,7 +319,7 @@ SK.moduleConstructors.Quote.prototype.citationToHtml = function(pseudo, jour, mo
     }
     var $quote = $("<div class='quote-bloc' >" +
             "<div class='quote-header' >" +
-                "<a class='quote-pseudo' href='" + profileUrl + "' >" + pseudo + "</a>" +
+                "<a class='quote-pseudo' href='" + profileUrl + "?popup=0' data-popin='" + profileUrl + "' data-popin-type='iframe' >" + pseudo + "</a>" +
                 heure +
                 "<div class='quote-date' >" + jour + " " + mois + " " + annee + "</div>" +
             "</div>" +
