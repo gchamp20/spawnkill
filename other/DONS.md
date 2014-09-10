@@ -7,7 +7,8 @@ Ci-dessous, les gens qui ont fait un don pour l'évolution du script ou qui m'on
 - 7suna (`144.65€`)
 
 ## Bières
-- MadDog84 (`1.74€`)
-- 7suna (`1.74€`)
-- Project_MATO (`1.74€`)
-- Antoine V. (`1.74€`)
+- MadDog84 (`1.68€`)
+- 7suna (`1.68€`)
+- Project_MATO (`1.68€`)
+- Antoine V. (`1.68€`)
+- ChromeLegend (`1.68€`)
