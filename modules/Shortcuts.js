@@ -82,25 +82,47 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
      */
 		$(window).keydown(function(event) {
 
-			// Si l'on se trouve dans un champ de texte, on désactive les raccourcis (voir https://github.com/dorian-marchal/spawnkill/issues/30)
+			var LEFT_ARROW_KEY = 37,
+				UP_ARROW_KEY = 38,
+				RIGHT_ARROW_KEY = 39,
+				DOWN_ARROW_KEY = 40,
+				ENTER_KEY = 13,
+				SPACE_KEY = 32,
+				ESCAPE_KEY = 27;
+
+			// Si l'on se trouve dans un champ de texte, on désactive les raccourcis
 			var target = event.target || event.srcElement;
 			if (target.tagName === "TEXTAREA" || (target.tagName === "INPUT" && target.type === "text")) {
 				return;
 			}
 
-			//Ctrl + fleche gauche -> page précedente
-			if (event.ctrlKey && event.keyCode === 37) {
-				previousPage();
-				event.preventDefault();
-			}
-			//Ctrl + fleche doite -> page suivante
-			if (event.ctrlKey && event.keyCode === 39) {
-				nextPage();
-				event.preventDefault();
-			}
-		});
-};
+			//Page lecture d'un topic
+			if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ)) {
 
-SK.moduleConstructors.Shortcuts.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ);
+				//Ctrl + fleche gauche -> page précedente
+				if (event.ctrlKey && event.keyCode === LEFT_ARROW_KEY) {
+					event.preventDefault();
+					previousPage();
+				}
+
+				//Ctrl + fleche doite -> page suivante
+				if (event.ctrlKey && event.keyCode === RIGHT_ARROW_KEY) {
+					event.preventDefault();
+					nextPage();
+				}
+			}
+
+			//Sur toutes les pages
+
+			//Si le module Settings est activé, Ctrl + down -> Configuration
+			if (SK.modules.Settings.activated && event.ctrlKey && event.keyCode === DOWN_ARROW_KEY) {
+				SK.modules.Settings.showSettings();
+			}
+
+			//S'il y a des fenêtres modales ouvertes, Escape -> Ferme les modales
+			if ($(".modal-box").length > 0 && event.keyCode === ESCAPE_KEY) {
+				SK.Util.hideModal();
+			}
+
+		});
 };

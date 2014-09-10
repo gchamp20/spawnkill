@@ -13,18 +13,33 @@ SK.moduleConstructors.Settings.prototype.description = "Ajoute une fenêtre de c
 SK.moduleConstructors.Settings.prototype.required = true;
 
 SK.moduleConstructors.Settings.prototype.init = function() {
-    this.addSettingsButton();
+
+    //On n'ajoute le bouton de paramètres que sur les pages du forum
+    if (SK.Util.currentPageIn(
+            SK.common.Pages.TOPIC_LIST,
+            SK.common.Pages.TOPIC_READ,
+            SK.common.Pages.TOPIC_RESPONSE,
+            SK.common.Pages.TOPIC_FORM)
+    ) {
+        this.addSettingsButton();
+    }
+    
     this.showSettingsIfNeeded();
+};
+
+/* Affiche le panneau de configuration */
+SK.moduleConstructors.Settings.prototype.showSettings = function() {
+    SK.Util.showModal(this.getModal());
 };
 
 /* Affiche le panneau de configuration au premier lancement du script */
 SK.moduleConstructors.Settings.prototype.showSettingsIfNeeded = function() {
     if(!SK.Util.getValue("seenSettings")) {
         window.setTimeout(function() {
-            $("#settings-button > a").click();
+            this.showSettings();
             //Le panneau ne doit s'afficher qu'une fois
             SK.Util.setValue("seenSettings", true);
-        }, 200);
+        }.bind(this), 200);
     }
 };
 
@@ -42,7 +57,7 @@ SK.moduleConstructors.Settings.prototype.addSettingsButton = function() {
         },
         click: function(event) {
             event.preventDefault();
-            SK.Util.showModal(this.getModal());
+            this.showSettings();
         }.bind(this)
     });
 
@@ -258,15 +273,6 @@ SK.moduleConstructors.Settings.prototype.saveSettings = function() {
         });
 
     });
-};
-
-SK.moduleConstructors.Settings.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn(
-        SK.common.Pages.TOPIC_LIST,
-        SK.common.Pages.TOPIC_READ,
-        SK.common.Pages.TOPIC_RESPONSE,
-        SK.common.Pages.TOPIC_FORM
-    );
 };
 
 SK.moduleConstructors.Settings.prototype.getCss = function() {
