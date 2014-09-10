@@ -40,9 +40,61 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
             $(".gif-webm").each(function() {
                 self.updateWebmStatus($(this));
             });
+            $(".image-media-element.media-element.gif").each(function() {
+                self.ManageGifCanvas.swapGifCanvas($(this));
+            });
         });
     }
 
+};
+
+/**
+ * Fonctions destinées à gérer les gifs et canvas
+ */
+SK.moduleConstructors.EmbedMedia.ManageGifCanvas = {
+    /**
+    * Crée un canvas de la première frame d'un gif
+    */
+    createCanvas: function($gif) {
+        // On détache l'event pour ne pas créer de nouveaux canvas
+        $gif.off("load");
+        var $imageElement = $gif.parent();
+        var gifWidth = $gif.width();
+        var gifHeight = $gif.height();
+        
+        // Création du canvas
+        var canvas = document.createElement("canvas");
+        canvas.width = gifWidth;
+        canvas.height = gifHeight;
+        canvas.style.display = "none";
+        canvas.getContext('2d').drawImage($gif.get(0), 0, 0, gifWidth, gifHeight);
+        
+        $gif.after($(canvas));
+        $imageElement.addClass("gif");
+        SK.moduleConstructors.EmbedMedia.ManageGifCanvas.swapGifCanvas($imageElement);
+    },
+    
+    /**
+    * Alterne entre gif et canvas suivant la position sur l'écran
+    */
+    swapGifCanvas: function($imageElement) {
+        var $gif = $imageElement.find("img");
+        var $canvas = $imageElement.find("canvas");
+        var isVisible = $imageElement.visible();
+        var isGifDisplayed = ($gif.css('display') !== 'none');
+        // Le .gif n'a pas encore été affiché, mais il est à la bonne position pour l'être
+        if (!(isGifDisplayed) && (isVisible)) {
+            // Remet le gif au début, sans recharger l'image
+            $gif.attr("src", $gif.attr("src"));
+            $gif.show();
+            $canvas.hide();
+        }
+        // Le .gif est affiché mais partiellement visible, il doit être caché
+        else if ((isGifDisplayed) && !(isVisible)) {
+            $gif.hide();
+            $canvas.show();
+        }
+    }
 };
 
 /**
@@ -226,6 +278,11 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
 
                     //En cas d'erreur, fallback à l'embed classique
                     if(typeof webmLink === "undefined") {
+                        if (self.getSetting("startGifWhenOnScreen")) {
+                            $imageEmbed.on("load", function() {
+                                SK.moduleConstructors.EmbedMedia.ManageGifCanvas.createCanvas($(this));
+                            });
+                        }
                         $el.html($imageEmbed);
                     }
                     else {
@@ -527,9 +584,9 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
 
         getEmbeddedMedia: function($a, match) {
             var vineLink = match[1];
-			if (match[3] === undefined) {
-				vineLink += "/embed/simple?audio=1&related=0";
-			}
+            if (match[3] === undefined) {
+                vineLink += "/embed/simple?audio=1&related=0";
+            }
             var vineWidth = 320;
             var vineHeight = 320;
 
