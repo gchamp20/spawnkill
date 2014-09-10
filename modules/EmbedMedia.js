@@ -380,7 +380,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         id: "pixule",
         settingId: "embedSurveys",
 
-        regex: /^http:\/\/www\.pixule\.com\.*\/(\d+).*$/,
+        regex: /^http:\/\/www\.pixule\.com.*\/(\d+).*$/,
 
         addHideButton: true,
         showButtonText: "Afficher les sondages Pixule",
