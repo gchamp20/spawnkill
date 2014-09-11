@@ -110,6 +110,13 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 					event.preventDefault();
 					nextPage();
 				}
+
+				//Ctrl + flèche haut -> Retour liste des sujets
+				if (event.ctrlKey && event.keyCode === UP_ARROW_KEY) {
+					event.preventDefault();
+					$(".boutons_sujet .liste a").get(0).click();
+				}
+				
 			}
 
 			//Sur toutes les pages
