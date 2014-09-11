@@ -73,6 +73,13 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 					$(".boutons_sujet .liste a").addClass("sk-outline").get(0).click();
 					return;
 				}
+
+				//Ctrl + Espace -> Répondre
+				if (event.ctrlKey && event.keyCode === SPACE_KEY) {
+					event.preventDefault();
+					$(".bt_repondre").get(0).click();
+					return;
+				}
 			}
 
 			//Seulement Page liste des sujets
