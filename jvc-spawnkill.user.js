@@ -4,31 +4,31 @@
 // @author      Spixel_
 // @namespace   http://www.spixel.fr
 // @include     http://*.jeuxvideo.com*
-// @version     1.14.6
-// @require     jquery-2.1.1.min.js?v1.14.6
-// @require     jquery-plugins.js?v1.14.6
-// @require     base.js?v1.14.6
-// @require     Util.js?v1.14.6
-// @require     Message.js?v1.14.6
-// @require     Author.js?v1.14.6
-// @require     Button.js?v1.14.6
-// @require     SlideToggle.js?v1.14.6
-// @require     Modal.js?v1.14.6
-// @require     DropdownList.js?v1.14.6
-// @require     modules/Module.js?v1.14.6
-// @require     modules/SpawnkillBase.js?v1.14.6
-// @require     modules/Settings.js?v1.14.6
-// @require     modules/QuickResponse.js?v1.14.6
-// @require     modules/Quote.js?v1.14.6
-// @require     modules/Shortcuts.js?v1.14.6
-// @require     modules/InfosPseudo.js?v1.14.6
-// @require     modules/HilightNewTopic.js?v1.14.6
-// @require     modules/LastPage.js?v1.14.6
-// @require     modules/EmbedMedia.js?v1.14.6
-// @require     modules/WarnOnNewPost.js?v1.14.6
-// @require     modules/AutoUpdate.js?v1.14.6
-// @require     modules/PemtHighlight.js?v1.14.6
-// @require     modules/Usability.js?v1.14.6
+// @version     1.14.7
+// @require     jquery-2.1.1.min.js?v1.14.7
+// @require     jquery-plugins.js?v1.14.7
+// @require     base.js?v1.14.7
+// @require     Util.js?v1.14.7
+// @require     Message.js?v1.14.7
+// @require     Author.js?v1.14.7
+// @require     Button.js?v1.14.7
+// @require     SlideToggle.js?v1.14.7
+// @require     Modal.js?v1.14.7
+// @require     DropdownList.js?v1.14.7
+// @require     modules/Module.js?v1.14.7
+// @require     modules/SpawnkillBase.js?v1.14.7
+// @require     modules/Settings.js?v1.14.7
+// @require     modules/QuickResponse.js?v1.14.7
+// @require     modules/Quote.js?v1.14.7
+// @require     modules/Shortcuts.js?v1.14.7
+// @require     modules/InfosPseudo.js?v1.14.7
+// @require     modules/HilightNewTopic.js?v1.14.7
+// @require     modules/LastPage.js?v1.14.7
+// @require     modules/EmbedMedia.js?v1.14.7
+// @require     modules/WarnOnNewPost.js?v1.14.7
+// @require     modules/AutoUpdate.js?v1.14.7
+// @require     modules/PemtHighlight.js?v1.14.7
+// @require     modules/Usability.js?v1.14.7
 // @resource    close                 images/close.png
 // @resource    banImage              images/ban.png
 // @resource    newTopic              images/topic_new.gif
@@ -78,7 +78,7 @@
 /* jshint multistr: true */
 /* jshint newcap: false */
 
-SK.VERSION = "v1.14.6";
+SK.VERSION = "v1.14.7";
 
 var modulesStyle = "";
 
