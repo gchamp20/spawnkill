@@ -33,29 +33,56 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 			return;
 		}
 
-		//Page lecture d'un topic
-		if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ)) {
+		//Page lecture d'un topic ou page liste des sujets
+		if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ) || SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST)) {
+
+			//Ctrl + Shift + fleche gauche -> Première page
+			if (event.ctrlKey && event.shiftKey && event.keyCode === LEFT_ARROW_KEY) {
+				event.preventDefault();
+				$(".navig_prec a:first-child").addClass("sk-hilight").get(0).click();
+				return;
+			}
+
+			//Ctrl + Shift + fleche droite -> Dernière page
+			if (event.ctrlKey && event.shiftKey && event.keyCode === RIGHT_ARROW_KEY) {
+				event.preventDefault();
+				$(".navig_suiv a:last-child").addClass("sk-hilight").get(0).click();
+				return;
+			}
 
 			//Ctrl + fleche gauche -> page précedente
 			if (event.ctrlKey && event.keyCode === LEFT_ARROW_KEY) {
 				event.preventDefault();
-
 				$(".navig_prec a:last-child").addClass("sk-hilight").get(0).click();
+				return;
 			}
 
-			//Ctrl + fleche doite -> page suivante
+			//Ctrl + fleche droite -> page suivante
 			if (event.ctrlKey && event.keyCode === RIGHT_ARROW_KEY) {
 				event.preventDefault();
 				$(".navig_suiv a:first-child").addClass("sk-hilight").get(0).click();
+				return;
 			}
 
-			//Ctrl + flèche haut -> Retour liste des sujets
-			if (event.ctrlKey && event.keyCode === UP_ARROW_KEY) {
-				event.preventDefault();
-				$(".boutons_sujet .liste a").addClass("sk-outline").get(0).click();
+			//Seulement page lecture d'un topic
+			if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ)) {
+
+				//Ctrl + flèche haut -> Retour liste des sujets
+				if (event.ctrlKey && event.keyCode === UP_ARROW_KEY) {
+					event.preventDefault();
+					$(".boutons_sujet .liste a").addClass("sk-outline").get(0).click();
+					return;
+				}
 			}
 
+			//Seulement Page liste des sujets
+			else if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST)) {
+
+			}
 		}
+
+		
+
 
 		//Sur toutes les pages
 
