@@ -85,6 +85,14 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 			//Seulement Page liste des sujets
 			else if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST)) {
 
+				//Ctrl + Espace -> Nouveau topic
+				if (event.ctrlKey && event.keyCode === SPACE_KEY) {
+					event.preventDefault();
+					$("#newsujet")
+					    .scrollThere()
+					    .focus();
+					return;
+				}
 			}
 		}
 
