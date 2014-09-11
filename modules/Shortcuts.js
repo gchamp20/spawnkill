@@ -25,7 +25,8 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 			DOWN_ARROW_KEY = 40,
 			ENTER_KEY = 13,
 			SPACE_KEY = 32,
-			ESCAPE_KEY = 27;
+			ESCAPE_KEY = 27,
+			F_CHAR_KEY = 70;
 
 		// Si l'on se trouve dans un champ de texte, on désactive les raccourcis
 		var target = event.target || event.srcElement;
@@ -91,6 +92,14 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 					$("#newsujet")
 					    .scrollThere()
 					    .focus();
+					return;
+				}
+
+				//Ctrl + F -> Focus Recherche
+				if (event.ctrlKey && event.keyCode === F_CHAR_KEY) {
+					event.preventDefault();
+					$("body").scrollThere();
+					$("#textfield_forum").focus();
 					return;
 				}
 			}
