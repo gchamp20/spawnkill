@@ -40,8 +40,9 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
             $(".gif-webm").each(function() {
                 self.updateWebmStatus($(this));
             });
+            // Pour tous les GIF qui sont complètement chargés
             $(".image-media-element.media-element.gif").each(function() {
-                self.ManageGifCanvas.swapGifCanvas($(this));
+                SK.moduleConstructors.EmbedMedia.ManageGifCanvas.swapGifCanvas($(this));
             });
         });
     }
@@ -56,8 +57,6 @@ SK.moduleConstructors.EmbedMedia.ManageGifCanvas = {
     * Crée un canvas de la première frame d'un gif
     */
     createCanvas: function($gif) {
-        // On détache l'event pour ne pas créer de nouveaux canvas
-        $gif.off("load");
         var $imageElement = $gif.parent();
         var gifWidth = $gif.width();
         var gifHeight = $gif.height();
@@ -67,10 +66,10 @@ SK.moduleConstructors.EmbedMedia.ManageGifCanvas = {
         canvas.width = gifWidth;
         canvas.height = gifHeight;
         canvas.style.display = "none";
-        canvas.getContext('2d').drawImage($gif.get(0), 0, 0, gifWidth, gifHeight);
+        canvas.getContext("2d").drawImage($gif.get(0), 0, 0, gifWidth, gifHeight);
         
         $gif.after($(canvas));
-        $imageElement.addClass("gif");
+        $imageElement.addClass("gif");  // Ajout d'une classe spécifique pour prise en compte par le onScroll
         SK.moduleConstructors.EmbedMedia.ManageGifCanvas.swapGifCanvas($imageElement);
     },
     
@@ -81,7 +80,7 @@ SK.moduleConstructors.EmbedMedia.ManageGifCanvas = {
         var $gif = $imageElement.find("img");
         var $canvas = $imageElement.find("canvas");
         var isVisible = $imageElement.visible();
-        var isGifDisplayed = ($gif.css('display') !== 'none');
+        var isGifDisplayed = $gif.is(":visible");
         // Le .gif n'a pas encore été affiché, mais il est à la bonne position pour l'être
         if (!(isGifDisplayed) && (isVisible)) {
             // Remet le gif au début, sans recharger l'image
@@ -275,15 +274,17 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                 $el.html("<video autoplay loop></video>");
 
                 SK.moduleConstructors.EmbedMedia.GfyApi.getWebmFromGif(imageLink, function(webmLink) {
-
                     //En cas d'erreur, fallback à l'embed classique
                     if(typeof webmLink === "undefined") {
-                        if (self.getSetting("startGifWhenOnScreen")) {
-                            $imageEmbed.on("load", function() {
-                                SK.moduleConstructors.EmbedMedia.ManageGifCanvas.createCanvas($(this));
-                            });
-                        }
                         $el.html($imageEmbed);
+                        
+                        if (self.getSetting("startGifWhenOnScreen")) {
+                            // On attend le chargement complet du GIF, sinon le canvas sera vide
+                            $imageEmbed.one("load", function() { 
+                                SK.moduleConstructors.EmbedMedia.ManageGifCanvas.createCanvas($imageEmbed);
+                            });
+                            $imageEmbed.attr("src", $imageEmbed.attr("src"));
+                        }
                     }
                     else {
                         //On rempli l'élément du DOM après coup
@@ -291,7 +292,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                         $el.find("video").attr("src", webmLink);
 
                         if (self.getSetting("startGifWhenOnScreen")) {
-                            $el.find("video").on("loadedmetadata",function() {
+                            $el.find("video").on("loadedmetadata", function() {
 
                                 var $this = $(this);
                                 // Une fois chargé, ajout d'une classe pour prise en compte par le onScroll
@@ -303,7 +304,6 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                     }
                 });
             }
-
             return $el;
         }
 
@@ -778,7 +778,6 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                         var $mediaElement = mediaType.getEmbeddedMedia($a, matchMedia);
 
                         if($mediaElement !== null) {
-
                             $a.after($mediaElement);
                             $mediaElement.addClass(mediaType.id + "-media-element media-element");
                             $a.addClass(mediaType.id + "-media-link");
