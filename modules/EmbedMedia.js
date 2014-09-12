@@ -82,7 +82,7 @@ SK.moduleConstructors.EmbedMedia.ManageGifCanvas = {
 
         var $gif = $imageElement.find("img");
         var $canvas = $imageElement.find("canvas");
-        var isVisibleOnScreen = $imageElement.isVisibleOnScreen();
+        var isVisibleOnScreen = $imageElement.isVisibleOnScreen() || $imageElement.isOversized(0.9);
         var isGifDisplayed = $gif.is(":visible");
 
         // Le .gif n'a pas encore été affiché, mais il est à la bonne position pour l'être
@@ -200,7 +200,7 @@ SK.moduleConstructors.EmbedMedia.prototype.mediaTypes = [];
  */
 SK.moduleConstructors.EmbedMedia.prototype.updateWebmStatus = function($gif) {
     
-    var isVisibleOnScreen = $gif.isVisibleOnScreen();
+    var isVisibleOnScreen = $gif.isVisibleOnScreen() || $gif.isOversized(0.9);
     var gif = $gif.get(0);
     var isPaused = gif.paused;
 

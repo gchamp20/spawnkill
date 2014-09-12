@@ -52,14 +52,13 @@ $.fn.isVisibleOnScreen = function(partial) {
 
 
 /**
- * @param {int} coefficient Si renseigné, la fonction retourne true quand
- *   la hauteur de l'élément dépasse <coefficient>% de la hauteur de l'écran
+ * @param {float} coefficient Si renseigné, la fonction retourne true quand
+ *   la hauteur de l'élément dépasse <coefficient> * la hauteur de l'écran
  * @return {boolean} true si l'élément est plus haut que l'écran
  */
 $.fn.isOversized = function(coefficient) {
 
-    coefficient = coefficient || 100;
-    coefficient = coefficient / 100;
+    coefficient = coefficient || 1;
 
     var elementHeight = $(this).outerHeight();
     var windowHeight = $(window).height();
