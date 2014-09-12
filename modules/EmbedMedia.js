@@ -35,6 +35,7 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
     }
     
     if (this.getSetting("startGifWhenOnScreen")) {
+
         $(window).on("scroll", function() {
             // Pour toutes les webm qui sont complètement chargées
             $(".gif-webm").each(function() {
@@ -57,6 +58,7 @@ SK.moduleConstructors.EmbedMedia.ManageGifCanvas = {
     * Crée un canvas de la première frame d'un gif
     */
     createCanvas: function($gif) {
+
         var $imageElement = $gif.parent();
         var gifWidth = $gif.width();
         var gifHeight = $gif.height();
@@ -77,19 +79,23 @@ SK.moduleConstructors.EmbedMedia.ManageGifCanvas = {
     * Alterne entre gif et canvas suivant la position sur l'écran
     */
     swapGifCanvas: function($imageElement) {
+
         var $gif = $imageElement.find("img");
         var $canvas = $imageElement.find("canvas");
         var isVisible = $imageElement.visible();
         var isGifDisplayed = $gif.is(":visible");
+
         // Le .gif n'a pas encore été affiché, mais il est à la bonne position pour l'être
-        if (!(isGifDisplayed) && (isVisible)) {
+        if (!isGifDisplayed && isVisible) {
+
             // Remet le gif au début, sans recharger l'image
             $gif.attr("src", $gif.attr("src"));
             $gif.show();
             $canvas.hide();
         }
+
         // Le .gif est affiché mais partiellement visible, il doit être caché
-        else if ((isGifDisplayed) && !(isVisible)) {
+        else if (isGifDisplayed && !isVisible) {
             $gif.hide();
             $canvas.show();
         }
