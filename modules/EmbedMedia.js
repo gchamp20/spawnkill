@@ -40,9 +40,60 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
             $(".gif-webm").each(function() {
                 self.updateWebmStatus($(this));
             });
+            // Pour tous les GIF qui sont complètement chargés
+            $(".image-media-element.media-element.gif").each(function() {
+                SK.moduleConstructors.EmbedMedia.ManageGifCanvas.swapGifCanvas($(this));
+            });
         });
     }
 
+};
+
+/**
+ * Fonctions destinées à gérer les gifs et canvas
+ */
+SK.moduleConstructors.EmbedMedia.ManageGifCanvas = {
+    /**
+    * Crée un canvas de la première frame d'un gif
+    */
+    createCanvas: function($gif) {
+        var $imageElement = $gif.parent();
+        var gifWidth = $gif.width();
+        var gifHeight = $gif.height();
+        
+        // Création du canvas
+        var canvas = document.createElement("canvas");
+        canvas.width = gifWidth;
+        canvas.height = gifHeight;
+        canvas.style.display = "none";
+        canvas.getContext("2d").drawImage($gif.get(0), 0, 0, gifWidth, gifHeight);
+        
+        $gif.after($(canvas));
+        $imageElement.addClass("gif");  // Ajout d'une classe spécifique pour prise en compte par le onScroll
+        SK.moduleConstructors.EmbedMedia.ManageGifCanvas.swapGifCanvas($imageElement);
+    },
+    
+    /**
+    * Alterne entre gif et canvas suivant la position sur l'écran
+    */
+    swapGifCanvas: function($imageElement) {
+        var $gif = $imageElement.find("img");
+        var $canvas = $imageElement.find("canvas");
+        var isVisible = $imageElement.visible();
+        var isGifDisplayed = $gif.is(":visible");
+        // Le .gif n'a pas encore été affiché, mais il est à la bonne position pour l'être
+        if (!(isGifDisplayed) && (isVisible)) {
+            // Remet le gif au début, sans recharger l'image
+            $gif.attr("src", $gif.attr("src"));
+            $gif.show();
+            $canvas.hide();
+        }
+        // Le .gif est affiché mais partiellement visible, il doit être caché
+        else if ((isGifDisplayed) && !(isVisible)) {
+            $gif.hide();
+            $canvas.show();
+        }
+    }
 };
 
 /**
@@ -179,7 +230,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
          * http://www.hostingpics.net/viewer.php?id=785683.jpg
          * Pour les tests : http://regex101.com/r/fD7bC3/1
          */
-        regex: /^https?:\/\/(?!www\.dropbox\.com|www\.hostingpics)(?:(?:(www\.hapshack\.com\/\?v=)|(www\.noelshack\.com\/([\d]{4})-([\d]{2})-))?(.*.(jpe?g|png|gif|JPE?G|PNG|GIF)))(?:\?.*)?$/,
+        regex: /^https?:\/\/(?!www\.dropbox\.com|www\.hostingpics)(?:(?:(www\.hapshack\.com\/\?v=)|(www\.noelshack\.com\/([\d]{4})-([\d]{2})-))?(.*.(jpe?g|png|gif|bmp)))(?:[\?:].*)?$/i,
 
         addHideButton: true,
         showButtonText: "Afficher les images",
@@ -223,10 +274,17 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                 $el.html("<video autoplay loop></video>");
 
                 SK.moduleConstructors.EmbedMedia.GfyApi.getWebmFromGif(imageLink, function(webmLink) {
-
                     //En cas d'erreur, fallback à l'embed classique
                     if(typeof webmLink === "undefined") {
                         $el.html($imageEmbed);
+                        
+                        if (self.getSetting("startGifWhenOnScreen")) {
+                            // On attend le chargement complet du GIF, sinon le canvas sera vide
+                            $imageEmbed.one("load", function() { 
+                                SK.moduleConstructors.EmbedMedia.ManageGifCanvas.createCanvas($imageEmbed);
+                            });
+                            $imageEmbed.attr("src", $imageEmbed.attr("src"));
+                        }
                     }
                     else {
                         //On rempli l'élément du DOM après coup
@@ -234,7 +292,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                         $el.find("video").attr("src", webmLink);
 
                         if (self.getSetting("startGifWhenOnScreen")) {
-                            $el.find("video").on("loadedmetadata",function() {
+                            $el.find("video").on("loadedmetadata", function() {
 
                                 var $this = $(this);
                                 // Une fois chargé, ajout d'une classe pour prise en compte par le onScroll
@@ -246,7 +304,6 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                     }
                 });
             }
-
             return $el;
         }
 
@@ -380,7 +437,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         id: "pixule",
         settingId: "embedSurveys",
 
-        regex: /^http:\/\/www\.pixule\.com\/(?:sondages\/[^\/]*\/)?([\d]*).*$/,
+        regex: /^http:\/\/www\.pixule\.com.*\/(\d+).*$/,
 
         addHideButton: true,
         showButtonText: "Afficher les sondages Pixule",
@@ -527,9 +584,9 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
 
         getEmbeddedMedia: function($a, match) {
             var vineLink = match[1];
-			if (match[3] === undefined) {
-				vineLink += "/embed/simple?audio=1&related=0";
-			}
+            if (match[3] === undefined) {
+                vineLink += "/embed/simple?audio=1&related=0";
+            }
             var vineWidth = 320;
             var vineHeight = 320;
 
@@ -721,7 +778,6 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                         var $mediaElement = mediaType.getEmbeddedMedia($a, matchMedia);
 
                         if($mediaElement !== null) {
-
                             $a.after($mediaElement);
                             $mediaElement.addClass(mediaType.id + "-media-element media-element");
                             $a.addClass(mediaType.id + "-media-link");

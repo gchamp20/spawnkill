@@ -32,12 +32,14 @@ $.fn.scrollThere = function(delay, callback) {
 $.fn.visible = function(partial) {
     var $t            = $(this),
         $w            = $(window),
+        $wHeight      = $w.height(),
         viewTop       = $w.scrollTop(),
-        viewBottom    = viewTop + $w.height(),
+        viewBottom    = viewTop + $wHeight,
         _top          = $t.offset().top,
         _bottom       = _top + $t.height(),
-        compareTop    = partial === true ? _bottom : _top,
-        compareBottom = partial === true ? _top : _bottom;
+        _oversized    = Math.min(_bottom, viewBottom) - Math.max(_top, viewTop) > 0.95 * $wHeight,
+        compareTop    = (partial === true || _oversized) ? _bottom : _top,
+        compareBottom = (partial === true || _oversized) ? _top : _bottom;
 
     return ((compareBottom <= viewBottom) && (compareTop >= viewTop));
 
