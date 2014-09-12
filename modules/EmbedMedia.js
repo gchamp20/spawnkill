@@ -883,7 +883,7 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             border-bottom-color: #525252;\
         }\
         .spawnkill-media-element {\
-            display: block !important;\
+            display: block;\
         }\
         .spawnkill-wrapper {\
             margin-left: 0px;\
