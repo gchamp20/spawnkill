@@ -18,15 +18,15 @@ class ConnectionManager implements MessageComponentInterface {
         echo "New connection! ({$connection->resourceId})\n";
     }
 
-    public function onMessage(ConnectionInterface $from, $msg) {
+    public function onMessage(ConnectionInterface $from, $jsonMessage) {
         $clientCount = count($this->clients) - 1;
         echo sprintf('Connection %d sending message "%s" to %d other connections' . "\n"
-            , $from->resourceId, $msg);
+            , $from->resourceId, $jsonMessage);
 
         foreach ($this->clients as $client) {
             if ($from !== $client) {
                 // The sender is not the receiver, send to each client connected
-                $client->send('[message] ' . $msg);
+                $client->send('[message] ' . $jsonMessage);
             }
         }
     }

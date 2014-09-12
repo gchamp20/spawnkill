@@ -1,1 +1,54 @@
-v1.14.3
+Fonctionnement du serveur de socket
+
+un topic a :
+	- un id
+	- une liste d'inscrits
+	- un nombre de pages courant
+	- une méthode permettant de récupérer les infos du topic
+
+un message (json) a :
+	- un identifiant
+	- des données
+
+l'objet parallele HTTP a :
+	- une méthode permettant d'exécuter des requêtes en parallèle et
+	  d'exécuter une fonction de callback pour chaque résultat
+
+le serveur a :
+	- une liste de connectés
+	- une liste de topics suivis
+	- un objet permettant de faire des requêtes HTTP en parallèle
+
+	on (connexion ouverte) :
+		ajout de la connexion à la liste de connectés
+
+	on (message) :
+		si (message.identifiant = premier message)
+			si (message.topicId n'existe pas dans liste des topics)
+				ajout du topic à la liste des topics
+			ajout de l'utilisateur au topic concerné
+			si (nombre de posts du topic renseigné)
+				envoi direct d'un message à l'utilisateur avec les infos du topic
+
+	on (connexion fermée) :
+		parcourt de la liste des topics du connecté
+			suppression du connecté du topic
+
+			si (plus de connectés sur le topic)
+				suppression du topic de la liste
+
+
+	boucle en tâche de fond :
+		parcourt de la liste des topics suivis
+			on ajoute la requête du topic aux infos à récupérer
+
+		on exécute toutes les requêtes des topics via l'objet parallèle HTTP
+			//à compléter ici
+			récupération des infos du topic
+			si (nombre de page récupéré différent du nombre de page courant)
+				topic.nombre de page courant = nombre de page récupéré
+				parcourt de la liste d'utilisateurs du topic
+					on envoie un message à ces utilisateur contenant les infos du topic
+			attente X secondes
+
+
