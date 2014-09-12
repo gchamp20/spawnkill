@@ -82,11 +82,11 @@ SK.moduleConstructors.EmbedMedia.ManageGifCanvas = {
 
         var $gif = $imageElement.find("img");
         var $canvas = $imageElement.find("canvas");
-        var isVisible = $imageElement.visible();
+        var isVisibleOnScreen = $imageElement.isVisibleOnScreen();
         var isGifDisplayed = $gif.is(":visible");
 
         // Le .gif n'a pas encore été affiché, mais il est à la bonne position pour l'être
-        if (!isGifDisplayed && isVisible) {
+        if (!isGifDisplayed && isVisibleOnScreen) {
 
             // Remet le gif au début, sans recharger l'image
             $gif.attr("src", $gif.attr("src"));
@@ -95,7 +95,7 @@ SK.moduleConstructors.EmbedMedia.ManageGifCanvas = {
         }
 
         // Le .gif est affiché mais partiellement visible, il doit être caché
-        else if (isGifDisplayed && !isVisible) {
+        else if (isGifDisplayed && !isVisibleOnScreen) {
             $gif.hide();
             $canvas.show();
         }
@@ -200,15 +200,17 @@ SK.moduleConstructors.EmbedMedia.prototype.mediaTypes = [];
  */
 SK.moduleConstructors.EmbedMedia.prototype.updateWebmStatus = function($gif) {
     
-    var isVisible = $gif.visible();
+    var isVisibleOnScreen = $gif.isVisibleOnScreen();
     var gif = $gif.get(0);
     var isPaused = gif.paused;
+
     // La vidéo n'a pas encore été débuté, mais elle est à la bonne position pour l'être
-    if (isPaused && isVisible) {
+    if (isPaused && isVisibleOnScreen) {
         gif.play();
     }
+
     // La vidéo a débuté mais elle partiellement visible : elle doit être mise en pause
-    else if (!(isPaused) && !(isVisible)) {
+    else if (!isPaused && !isVisibleOnScreen) {
         gif.currentTime = 0;
         gif.pause();
     }
