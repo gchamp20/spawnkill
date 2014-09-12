@@ -1,4 +1,4 @@
 no-git
 index.php
 server/socket/composer.lock
-vendor
+server/socket/vendor
