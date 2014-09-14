@@ -4,40 +4,67 @@ use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 use SpawnKill\Topic;
 use SpawnKill\SocketMessage;
+use SpawnKill\SpawnKillCurlManager;
 
 class SocketServer implements MessageComponentInterface {
 
-    protected $topic;
+    /**
+     * Clients connectés au serveur
+     */
+    protected $clients;
+
+    /**
+     * Liste de topics suivis par au moins un client.
+     */
+    protected $topics = array();
+
+    /**
+     * Permet de faire facilement des requêtes HTTP parallèles
+     */
+    protected $curlm;
 
     public function __construct() {
-        $this->topic = new Topic('12-42');
-        $this->topic->setPostCount(14);
-        $this->topic->setPageCount(8);
+        $this->clients = new \SplObjectStorage();
+        $this->curlm = new SpawnKillCurlManager();
     }
 
+    /**
+     * Connexion d'un utilisateur.
+     */
     public function onOpen(ConnectionInterface $connection) {
-        // Store the new connection to send messages to later
-        $this->topic->addFollower($connection);
-        echo "New connection! ({$connection->resourceId})\n";
+
+        $this->clients->attach($connection);
+        echo "Nouvelle connexion : {$connection->resourceId}\n";
     }
 
-    public function onMessage(ConnectionInterface $from, $json) {
+    public function onMessage(ConnectionInterface $connection, $json) {
 
         $message = SocketMessage::fromJson($json);
-        echo $message->getId();
-        print_r($message->getData());
-        $this->topic->sendInfosToFollowers();
     }
 
+    /**
+     * Déconnexion d'un utilisateur.
+     */
     public function onClose(ConnectionInterface $connection) {
-        $this->topic->removeFollower($connection);
-        echo "Connection {$connection->resourceId} has disconnected\n";
+
+        //On parcourt tous les topics suivis
+        foreach ($this->topics as $topic) {
+            //On supprime l'utilisateur déconnecté du suivi
+            $topic->removeFollower($connection);
+
+            //Si le topic n'est plus suivi, on le supprime
+            if($topic->getFollowers()->count() === 0) {
+                $topics->detach($topic);
+            }
+        }
+
+        //On supprime l'utilisateur
+        $this->clients->detach($connection);
     }
 
     public function onError(ConnectionInterface $connection, \Exception $e) {
 
-        $this->topic->removeFollower($connection);
         $connection->close();
-        echo "An error has occurred: {$e->getMessage()}\n";
+        echo "Erreur : {$e->getMessage()}\n";
     }
 }
