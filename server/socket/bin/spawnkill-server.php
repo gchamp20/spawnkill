@@ -2,14 +2,14 @@
 use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
-use SpawnKill\ConnectionManager;
+use SpawnKill\SocketServer;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 $server = IoServer::factory(
     new HttpServer(
         new WsServer(
-            new ConnectionManager()
+            new SocketServer()
         )
     ),
     8080

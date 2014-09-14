@@ -1,5 +1,6 @@
 <?php
 namespace SpawnKill;
+use SpawnKill\SocketMessage;
 
 /**
  * Représente un topic de JVC
