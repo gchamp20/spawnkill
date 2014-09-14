@@ -4,6 +4,7 @@ un topic a :
 	- un id
 	- une liste d'inscrits
 	- un nombre de pages courant
+	- un nombre de posts courants
 	- une méthode permettant de récupérer les infos du topic
 	- une méthode permettant d'obtenir une url d'une page du topic à partir de la page
 	- une méthode pour prévenir tous les utilisateurs courants

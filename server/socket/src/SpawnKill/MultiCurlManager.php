@@ -9,19 +9,19 @@ class MultiCurlManager {
     /**
      * curl multi handle
      */
-    private $multiHandle;
+    protected $multiHandle;
 
     /**
      * array<CURLOPT => ?> Options de curl
      */
-    private $options;
+    protected $options;
 
     /**
      * array<String> Ressources à récupérer
      */
-    private $urls;
+    protected $urls;
 
-    private $handles;
+    protected $handles;
 
     public function __construct() {
         $this->multiHandle = curl_multi_init();
@@ -64,7 +64,7 @@ class MultiCurlManager {
      * Ajoute un curl handle pour l'url passée en paramètre
      * avec les options de l'objet au multi handle
      */
-    private function addHandle($url) {
+    protected function addHandle($url) {
 
         $handle = curl_init($url);
 
@@ -78,7 +78,7 @@ class MultiCurlManager {
     /**
      * Applique les options courantes à l'handle passé en paramètre.
      */
-    private function applyOptions($handle) {
+    protected function applyOptions($handle) {
 
         foreach($this->options as $curlopt => $value) {
             curl_setopt($handle, $curlopt, $value);

@@ -7,9 +7,9 @@ namespace SpawnKill;
  */
 class SpawnKillCurlManager extends MultiCurlManager {
 
-    private $apiUsername = 'appandr';
-    private $apiPassword = 'e32!cdf';
-    private $timeoutMs = 1000;
+    protected $apiUsername = 'appandr';
+    protected $apiPassword = 'e32!cdf';
+    protected $timeoutMs = 1000;
 
 
     public function __construct() {
