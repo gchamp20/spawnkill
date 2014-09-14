@@ -14,7 +14,7 @@ class Topic {
     /**
      * Utilisateurs suivant le topic
      */
-    protected $followers = array();
+    protected $followers;
 
     /**
      * Nombre de pages du topic à un instant T
@@ -28,6 +28,7 @@ class Topic {
 
     public function __construct($id) {
         $this->id = $id;
+        $this->followers = new \SplObjectStorage();
     }
 
     public function getId() {
@@ -49,10 +50,20 @@ class Topic {
      * Retourne un tableau associatif contenant les infos de base
      * du topic.
      */
-    public function getTopicInfos() {
+    public function getInfos() {
         return array(
             'pageCount' => $this->pageCount,
             'postCount' => $this->postCount
         );
+    }
+
+    /**
+     * Envoie les infos du topic à toutes les connexions qui suivent ce topic.
+     */
+    public function sendInfosToFollowers() {
+
+        foreach ($this->followers as $follower) {
+            $follower->send(json_encode($this->getInfos()));
+        }
     }
 }

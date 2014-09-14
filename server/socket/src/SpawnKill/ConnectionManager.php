@@ -8,7 +8,7 @@ class ConnectionManager implements MessageComponentInterface {
     protected $clients;
 
     public function __construct() {
-        $this->clients = new \SplObjectStorage;
+        $this->clients = new \SplObjectStorage();
     }
 
     public function onOpen(ConnectionInterface $connection) {

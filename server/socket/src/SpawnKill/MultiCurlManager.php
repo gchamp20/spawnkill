@@ -14,20 +14,17 @@ class MultiCurlManager {
     /**
      * array<CURLOPT => ?> Options de curl
      */
-    protected $options;
+    protected $options = array();
 
     /**
      * array<String> Ressources à récupérer
      */
-    protected $urls;
+    protected $urls = array();
 
-    protected $handles;
+    protected $handles = array();
 
     public function __construct() {
         $this->multiHandle = curl_multi_init();
-        $this->options = array();
-        $this->urls = array();
-        $this->handles = array();
     }
 
     /**
