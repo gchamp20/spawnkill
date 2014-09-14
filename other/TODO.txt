@@ -1,25 +1,6 @@
 Fonctionnement du serveur de socket
 
-un topic a :
-	- un id
-	- une liste d'inscrits
-	- un nombre de pages courant
-	- un nombre de posts courants
-	- une méthode permettant de récupérer les infos du topic
-	- une méthode permettant d'obtenir une url d'une page du topic à partir de la page
-	- une méthode pour prévenir tous les utilisateurs courants
-
-un message (json) a :
-	- un identifiant
-	- des données
-
 le serveur a :
-	- une liste de connectés
-	- une liste de topics suivis
-	- un objet permettant de faire des requêtes HTTP en parallèle
-
-	on (connexion ouverte) :
-		ajout de la connexion à la liste de connectés
 
 	on (message) :
 		si (message.identifiant = premier message)
@@ -28,13 +9,6 @@ le serveur a :
 			ajout de l'utilisateur au topic concerné
 			si (nombre de posts du topic renseigné)
 				envoi direct d'un message à l'utilisateur avec les infos du topic
-
-	on (connexion fermée) :
-		parcourt de la liste des topics du connecté
-			suppression du connecté du topic
-
-			si (plus de connectés sur le topic)
-				suppression du topic de la liste
 
 
 	boucle en tâche de fond :

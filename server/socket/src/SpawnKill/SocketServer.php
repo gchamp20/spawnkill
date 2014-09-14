@@ -5,6 +5,7 @@ use Ratchet\ConnectionInterface;
 use SpawnKill\Topic;
 use SpawnKill\SocketMessage;
 use SpawnKill\SpawnKillCurlManager;
+use SpawnKill\Config;
 
 class SocketServer implements MessageComponentInterface {
 
@@ -48,12 +49,27 @@ class SocketServer implements MessageComponentInterface {
 
         switch($message->getId()) {
 
+            case 'updateTopicsAndPushInfos' :
+                $this->updateTopicsAndPushInfos($client->remoteAddress);
+                break;
+
             case 'startFollowingTopic' :
                 $this->clientStartFollowingTopic($client, $message->getData());
                 break;
         }
 
         echo "\n";
+    }
+
+    /**
+     * met à jour l'état de tous les topics et notifie les clients 
+     * des topics modifiés si c'est nécessaire.
+     */
+    protected function updateTopicsAndPushInfos($remoteAddress) {
+
+        //Seul le serveur peut exécuter cet appel
+        echo $remoteAddress . "\n";
+        echo Config::$SERVER_IP . "\n";
     }
 
     /**
