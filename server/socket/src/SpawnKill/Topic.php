@@ -39,6 +39,22 @@ class Topic {
         return $this->followers;
     }
 
+    public function addFollower($follower) {
+        $this->followers->attach($follower);
+    }
+
+    public function removeFollower($follower) {
+        $this->followers->detach($follower);
+    }
+
+    public function setPostCount($postCount) {
+        $this->postCount = $postCount;
+    }
+
+    public function setPageCount($pageCount) {
+        $this->pageCount = $pageCount;
+    }
+
     /**
      * Retourne l'url de la page du topic passée en paramètre.
      */
