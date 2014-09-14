@@ -26,6 +26,15 @@ class SocketMessage {
     public static function fromJson($json) {
         $message = new SocketMessage();
         $data = json_decode($json);
+
+        if($data === null ||
+            !is_object($data) ||
+            key($data) === null ||
+            current($data) === false
+        ) {
+            return false;
+        }
+
         $message->setId(key($data));
         $message->setData(current($data));
         return $message;

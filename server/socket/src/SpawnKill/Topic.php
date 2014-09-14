@@ -42,10 +42,12 @@ class Topic {
 
     public function addFollower($follower) {
         $this->followers->attach($follower);
+        echo "[Topic '{$this->id}'] Nouveau follower : '{$follower->resourceId}'\n";
     }
 
     public function removeFollower($follower) {
         $this->followers->detach($follower);
+        echo "[Topic '{$this->id}'] Follower déconnecté : '{$follower->resourceId}'\n";
     }
 
     public function setPostCount($postCount) {

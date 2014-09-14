@@ -31,26 +31,59 @@ class SocketServer implements MessageComponentInterface {
     /**
      * Connexion d'un utilisateur.
      */
-    public function onOpen(ConnectionInterface $connection) {
+    public function onOpen(ConnectionInterface $client) {
 
-        $this->clients->attach($connection);
-        echo "Nouvelle connexion : {$connection->resourceId}\n";
+        //On ajoute le nouveau connecté aux clients
+        $this->clients->attach($client);
+        echo "Nouvelle connexion : {$client->resourceId}\n";
     }
 
-    public function onMessage(ConnectionInterface $connection, $json) {
+    public function onMessage(ConnectionInterface $client, $json) {
 
         $message = SocketMessage::fromJson($json);
+
+        if($message === false) {
+            return;
+        }
+
+        switch($message->getId()) {
+
+            case 'startFollowingTopic' :
+                $this->clientStartFollowingTopic($client, $message->getData());
+                break;
+        }
+
+        echo "\n";
+    }
+
+    /**
+     * Ajoute le suivi d'un topic à un client.
+     */
+    protected function clientStartFollowingTopic($client, $topicId) {
+
+        if(!is_string($topicId)) {
+            return;
+        }
+
+        echo "Ajout du suivi du topic '$topicId' au client '{$client->resourceId}' ...\n";
+        //Si le topic n'est pas déjà suivi
+        if(!isset($this->topics[$topicId])) {
+            echo "Nouveau topic suivi : '{$topicId}'\n";
+            $this->topics[$topicId] = new Topic($topicId);
+        }
+
+        $this->topics[$topicId]->addFollower($client);
     }
 
     /**
      * Déconnexion d'un utilisateur.
      */
-    public function onClose(ConnectionInterface $connection) {
+    public function onClose(ConnectionInterface $client) {
 
         //On parcourt tous les topics suivis
         foreach ($this->topics as $topic) {
             //On supprime l'utilisateur déconnecté du suivi
-            $topic->removeFollower($connection);
+            $topic->removeFollower($client);
 
             //Si le topic n'est plus suivi, on le supprime
             if($topic->getFollowers()->count() === 0) {
@@ -59,12 +92,12 @@ class SocketServer implements MessageComponentInterface {
         }
 
         //On supprime l'utilisateur
-        $this->clients->detach($connection);
+        $this->clients->detach($client);
     }
 
-    public function onError(ConnectionInterface $connection, \Exception $e) {
+    public function onError(ConnectionInterface $client, \Exception $e) {
 
-        $connection->close();
+        $client->close();
         echo "Erreur : {$e->getMessage()}\n";
     }
 }
