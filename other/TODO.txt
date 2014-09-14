@@ -5,14 +5,12 @@ un topic a :
 	- une liste d'inscrits
 	- un nombre de pages courant
 	- une méthode permettant de récupérer les infos du topic
+	- une méthode permettant d'obtenir une url d'une page du topic à partir de la page
+	- une méthode pour prévenir tous les utilisateurs courants
 
 un message (json) a :
 	- un identifiant
 	- des données
-
-l'objet parallele HTTP a :
-	- une méthode permettant d'exécuter des requêtes en parallèle et
-	  d'exécuter une fonction de callback pour chaque résultat
 
 le serveur a :
 	- une liste de connectés
@@ -40,15 +38,36 @@ le serveur a :
 
 	boucle en tâche de fond :
 		parcourt de la liste des topics suivis
-			on ajoute la requête du topic aux infos à récupérer
+			on ajoute la requête de la dernière page connue aux infos à récupérer
 
-		on exécute toutes les requêtes des topics via l'objet parallèle HTTP
-			//à compléter ici
-			récupération des infos du topic
-			si (nombre de page récupéré différent du nombre de page courant)
-				topic.nombre de page courant = nombre de page récupéré
-				parcourt de la liste d'utilisateurs du topic
-					on envoie un message à ces utilisateur contenant les infos du topic
-			attente X secondes
+		on récupère toutes les données de la liste d'urls
+
+		parcourt des données récupérées
+			On calcule le nombre de page du topic
+			Si (on vient de récupérer le dernière page)
+				On calcule le nombre de posts du topic
+				On met à jour le nombre de posts du topic
+				On construit le résultat
+				On parcourt la liste d'utilisateurs du topic
+					On envoie à tous ces utilisateurs la mise à jour des infos
+
+				Sinon (pas sur la dernière page)
+					On met à jour le nombre de pages du topic
+					On ajoute la requête des récupération de la dernière page aux urls à récupérer
+		
+		on récupère toutes les données de la liste d'urls
+
+		parcourt des données récupérées
+			On calcule le nombre de posts du topic
+			On met à jour le nombre de posts du topic
+			On construit le résultat
+			On parcourt la liste d'utilisateurs du topic
+				On envoie à tous ces utilisateurs la mise à jour des infos
+
+			attente 2 secondes
 
 
+TODO :
+- Gestion des 404/topic supprimés/Problème de réseau/timeout
+- Gestion des connexions fermées à l'envoi
+- Gérer le cas où le client n'a pas encore envoyé de premire message
