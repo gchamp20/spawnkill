@@ -39,13 +39,18 @@ class SocketServer implements MessageComponentInterface {
         $this->clients->attach($client);
         
         Log::ln("Nouvelle connexion : {$client->resourceId}");
+        Log::ln();
     }
 
+    /**
+     * Message JSON reçu par un client
+     */
     public function onMessage(ConnectionInterface $client, $json) {
 
+        //Création d'un message à partir du JSON
         $message = SocketMessage::fromJson($json);
 
-        print_r($message);
+        Log::ln("Nouveau message : '{$message->getId()}'");
 
         if($message === false) {
             return;
@@ -77,8 +82,7 @@ class SocketServer implements MessageComponentInterface {
         if($remoteAddress === Config::$SERVER_IP) {
 
             foreach ($this->topics as $topic) {
-                Log::ln("Mise à jour du topic '{$topic->getId()}'");
-
+                Log::ln("Topic '{$topic->getId()}' marqué pour mise à jour");
             }
         }
 
@@ -115,7 +119,7 @@ class SocketServer implements MessageComponentInterface {
 
             //Si le topic n'est plus suivi, on le supprime
             if($topic->getFollowers()->count() === 0) {
-                $topics->detach($topic);
+                $this->topics->detach($topic);
             }
         }
 
