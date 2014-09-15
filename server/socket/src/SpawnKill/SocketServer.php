@@ -36,12 +36,15 @@ class SocketServer implements MessageComponentInterface {
 
         //On ajoute le nouveau connecté aux clients
         $this->clients->attach($client);
+        
         echo "Nouvelle connexion : {$client->resourceId}\n";
     }
 
     public function onMessage(ConnectionInterface $client, $json) {
 
         $message = SocketMessage::fromJson($json);
+
+        print_r($message);
 
         if($message === false) {
             return;
