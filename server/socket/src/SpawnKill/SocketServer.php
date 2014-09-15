@@ -6,6 +6,7 @@ use SpawnKill\Topic;
 use SpawnKill\SocketMessage;
 use SpawnKill\SpawnKillCurlManager;
 use SpawnKill\Config;
+use SpawnKill\Log;
 
 class SocketServer implements MessageComponentInterface {
 
@@ -37,7 +38,7 @@ class SocketServer implements MessageComponentInterface {
         //On ajoute le nouveau connecté aux clients
         $this->clients->attach($client);
         
-        echo "Nouvelle connexion : {$client->resourceId}\n";
+        Log::ln("Nouvelle connexion : {$client->resourceId}");
     }
 
     public function onMessage(ConnectionInterface $client, $json) {
@@ -61,7 +62,7 @@ class SocketServer implements MessageComponentInterface {
                 break;
         }
 
-        echo "\n";
+        Log::ln();
     }
 
     /**
@@ -70,9 +71,18 @@ class SocketServer implements MessageComponentInterface {
      */
     protected function updateTopicsAndPushInfos($remoteAddress) {
 
+        Log::ln("Mise à jour des topics");
+
         //Seul le serveur peut exécuter cet appel
-        echo $remoteAddress . "\n";
-        echo Config::$SERVER_IP . "\n";
+        if($remoteAddress === Config::$SERVER_IP) {
+
+            foreach ($this->topics as $topic) {
+                Log::ln("Mise à jour du topic '{$topic->getId()}'");
+
+            }
+        }
+
+        Log::ln();
     }
 
     /**
@@ -83,11 +93,10 @@ class SocketServer implements MessageComponentInterface {
         if(!is_string($topicId)) {
             return;
         }
-
-        echo "Ajout du suivi du topic '$topicId' au client '{$client->resourceId}' ...\n";
+        Log::ln("Ajout du suivi du topic '$topicId' au client '{$client->resourceId}' ...");
         //Si le topic n'est pas déjà suivi
         if(!isset($this->topics[$topicId])) {
-            echo "Nouveau topic suivi : '{$topicId}'\n";
+            Log::ln("Nouveau topic suivi : '{$topicId}'");
             $this->topics[$topicId] = new Topic($topicId);
         }
 
@@ -117,6 +126,6 @@ class SocketServer implements MessageComponentInterface {
     public function onError(ConnectionInterface $client, \Exception $e) {
 
         $client->close();
-        echo "Erreur : {$e->getMessage()}\n";
+        Log::ln("Erreur : {$e->getMessage()}");
     }
 }
