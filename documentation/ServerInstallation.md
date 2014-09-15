@@ -35,6 +35,8 @@ php server/socket/bin/spawnkill-server.php
 #### Dépendances
 
 ```
+apt-get install curl
+curl -sL https://deb.nodesource.com/setup | bash -
 apt-get install node
 ```
 
