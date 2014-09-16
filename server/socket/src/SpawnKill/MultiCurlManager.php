@@ -61,7 +61,7 @@ class MultiCurlManager {
      * Ajoute un curl handle pour l'url passée en paramètre
      * avec les options de l'objet au multi handle
      */
-    protected function addHandle($url) {
+    private function addHandle($url) {
 
         $handle = curl_init($url);
 
@@ -70,6 +70,13 @@ class MultiCurlManager {
         curl_multi_add_handle($this->multiHandle, $handle);
 
         $this->handles[] = $handle;
+    }
+
+    /**
+     * Supprime tous les curl handle
+     */
+    private function clearHandles() {
+        $this->handles = array();
     }
 
     /**
@@ -91,6 +98,8 @@ class MultiCurlManager {
      *      )
      */
     public function processRequests() {
+
+        $this->clearHandles();
 
         foreach ($this->urls as $url) {
             $this->addHandle($url);
@@ -116,8 +125,6 @@ class MultiCurlManager {
 
             curl_multi_remove_handle($this->multiHandle, $handle);
         }
-
-        curl_multi_close($this->multiHandle);
 
         return $data;
 

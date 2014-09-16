@@ -74,7 +74,7 @@ class SocketServer implements MessageComponentInterface {
      * met à jour l'état de tous les topics et notifie les clients 
      * des topics modifiés si c'est nécessaire.
      */
-    protected function updateTopicsAndPushInfos($remoteAddress) {
+    private function updateTopicsAndPushInfos($remoteAddress) {
 
         Log::ln("Mise à jour des topics");
 
@@ -88,6 +88,9 @@ class SocketServer implements MessageComponentInterface {
 
             //Récupération des infos de la dernière page connue des topics
             $topicsData = $curlm->getTopicsData();
+
+            foreach ($topicsData as $topicData) {
+            }
         }
 
         Log::ln();
@@ -96,7 +99,7 @@ class SocketServer implements MessageComponentInterface {
     /**
      * Ajoute le suivi d'un topic à un client.
      */
-    protected function clientStartFollowingTopic($client, $topicId) {
+    private function clientStartFollowingTopic($client, $topicId) {
 
         if(!is_string($topicId)) {
             return;
