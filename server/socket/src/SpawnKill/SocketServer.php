@@ -27,7 +27,7 @@ class SocketServer implements MessageComponentInterface {
 
     public function __construct() {
         $this->clients = new \SplObjectStorage();
-        $this->curlm = new SpawnKillCurlManager();
+        $this->curlm = new TopicCurlManager();
     }
 
     /**
@@ -83,7 +83,11 @@ class SocketServer implements MessageComponentInterface {
 
             foreach ($this->topics as $topic) {
                 Log::ln("Topic '{$topic->getId()}' marqué pour mise à jour");
+                $this->curlm->addTopic($topic);
             }
+
+            //Récupération des infos de la dernière page connue des topics
+            $topicsData = $curlm->getTopicsData();
         }
 
         Log::ln();
