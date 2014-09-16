@@ -85,9 +85,9 @@ class MultiCurlManager {
     /**
      * Exécute les requêtes vers $this->urls et retourne un tableau des données récupérées
      * @return array Résultat de la requête, du type :
-     *      array(
-     *          HTTP_CODE (int),
-     *          data (string)
+     *      Object(
+     *          "httpCode": (int),
+     *          "data": (string)
      *      )
      */
     public function processRequests() {
@@ -107,10 +107,12 @@ class MultiCurlManager {
         } while($running > 0);
 
         foreach($this->handles as $handle) {
-            $data[] = array(
-                "http_code" => curl_getinfo($handle, CURLINFO_HTTP_CODE),
-                "data" => curl_multi_getcontent($handle)
-            );
+
+            $requestData = new \stdClass();
+            $requestData->httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+            $requestData->data = curl_multi_getcontent($handle);
+
+            $data[] = $requestData;
 
             curl_multi_remove_handle($this->multiHandle, $handle);
         }

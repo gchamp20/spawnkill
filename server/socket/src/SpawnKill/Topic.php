@@ -20,12 +20,12 @@ class Topic {
     /**
      * Nombre de pages du topic à un instant T
      */
-    protected $pageCount = 0;
+    protected $pageCount = 1;
 
     /**
      * Nombre de posts du topic à un instant T
      */
-    protected $postCount = 0;
+    protected $postCount = 1;
 
     public function __construct($id) {
         $this->id = $id;
@@ -58,22 +58,32 @@ class Topic {
         $this->pageCount = $pageCount;
     }
 
+    public function getPostCount() {
+        return $this->postCount;
+    }
+
+    public function getPageCount() {
+        return $this->pageCount;
+    }
+
     /**
      * Retourne l'url de la page du topic passée en paramètre.
      */
     public function getPageUrl($pageNumber) {
-        return 'http://ws.jeuxvideo.com/forums/1-' . $this->id . '-' . $pageNumber . '-0-1-0-0';
+        return 'http://ws.jeuxvideo.com/forums/1-' . $this->id . '-' . $pageNumber . '-0-1-0-0.xml';
     }
 
     /**
-     * Retourne un tableau associatif contenant les infos de base
+     * Retourne un objet contenant les infos de base
      * du topic.
      */
     public function getInfos() {
-        return array(
-            'pageCount' => $this->pageCount,
-            'postCount' => $this->postCount
-        );
+
+        $topicInfos = new \stdClass();
+        $topicInfos->pageCount = $this->pageCount;
+        $topicInfos->postCount = $this->postCount;
+        
+        return $topicInfos;
     }
 
     /**
