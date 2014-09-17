@@ -51,7 +51,7 @@ class MultiCurlManager {
 
     /**
      * Remplace les urls à appeler
-     * @param array<array<CURLOPT => ?>> $options Options à 
+     * @param array<array<CURLOPT => ?>> $options Options à
      */
     public function setOptions($options) {
         $this->options = $options;
@@ -115,16 +115,24 @@ class MultiCurlManager {
             usleep(2000);
         } while($running > 0);
 
+        $data = array();
+
         foreach($this->handles as $handle) {
 
             $requestData = new \stdClass();
             $requestData->httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
             $requestData->data = curl_multi_getcontent($handle);
 
+            //Si data est vide (timeout), on ajoute l'erreur manuellement
+            if(empty($requestData->data)) {
+                $requestData->httpCode = 408;
+            }
+
             $data[] = $requestData;
 
             curl_multi_remove_handle($this->multiHandle, $handle);
         }
+
 
         return $data;
 

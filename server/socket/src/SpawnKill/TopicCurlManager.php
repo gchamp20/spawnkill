@@ -17,7 +17,7 @@ class TopicCurlManager extends SpawnKillCurlManager {
 
         parent::__construct();
 
-        $topics = array();
+        $this->topics = array();
 
     }
 
@@ -43,7 +43,8 @@ class TopicCurlManager extends SpawnKillCurlManager {
      *      "data" : stdClass {
      *          error: (boolean) : true si une erreur a été rencontrée (statut HTTP >= 400)
      *          pageCount: (int)
-     *          postCount: (int)
+     *          postCount: (int) : Seulement présent si upToDate = true
+     *          upToDate: (boolean) : true si la page récupérée est la dernière du topic
      *          locked: (boolean)
      *       }
      * }
@@ -52,7 +53,7 @@ class TopicCurlManager extends SpawnKillCurlManager {
 
         $topicsData = $this->getCurrentTopicsData();
 
-        $toUpdateTopicIds = array();
+        $toUpdateTopics = array();
 
         foreach ($topicsData as $topicData) {
 
@@ -97,8 +98,8 @@ class TopicCurlManager extends SpawnKillCurlManager {
      *      "data" : stdClass {
      *          error: (boolean) : true si une erreur a été rencontrée (statut HTTP >= 400)
      *          pageCount: (int)
-     *          postCount: (int)
-     *          upToDate: (boolean) : true si la page récupérée est la dernière fu topic
+     *          postCount: (int) : Seulement présent si upToDate = true
+     *          upToDate: (boolean) : true si la page récupérée est la dernière du topic
      *          locked: (boolean)
      *       }
      * }
@@ -136,7 +137,7 @@ class TopicCurlManager extends SpawnKillCurlManager {
      * @return stdClass {
      *      error: (boolean) : true si une erreur a été rencontrée (statut HTTP >= 400)
      *      pageCount: (int)
-     *      upToDate: (boolean) : true si la page récupérée est la dernière fu topic
+     *      upToDate: (boolean) : true si la page récupérée est la dernière du topic
      *      postCount: (int) : Seulement présent si upToDate = true
      *      locked: (boolean)
      * }
@@ -151,12 +152,24 @@ class TopicCurlManager extends SpawnKillCurlManager {
         if(!$topicData->error) {
             //Nombre de pages
             preg_match('/<count_page>(\\d*)<\\/count_page>/', $requestResult->data, $matches);
-            $topicData->pageCount = intval($matches[1]);
+            if(!isset($matches[1])) {
+                $topicData->error = true;
+                return $topicData;
+            }
+            else {
+                $topicData->pageCount = intval($matches[1]);
+            }
 
             //À jour si la page récupérée est la dernière
             preg_match('/<num_page>(\\d*)<\\/num_page>/', $requestResult->data, $matches);
-            $currentPageNumber = intval($matches[1]);
-            $topicData->upToDate = $currentPageNumber === $topicData->pageCount;
+            if(!isset($matches[1])) {
+                $topicData->error = true;
+                return $topicData;
+            }
+            else {
+                $currentPageNumber = intval($matches[1]);
+                $topicData->upToDate = $currentPageNumber === $topicData->pageCount;
+            }
 
             //Locké si le lien de réponse n'est pas présent
             preg_match('/<repondre>/', $requestResult->data, $matches);
@@ -171,7 +184,7 @@ class TopicCurlManager extends SpawnKillCurlManager {
         }
 
         return $topicData;
-    } 
+    }
 
 
 }
