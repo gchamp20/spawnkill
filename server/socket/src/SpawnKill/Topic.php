@@ -27,9 +27,22 @@ class Topic {
      */
     protected $postCount = 1;
 
+    /**
+     * Vrai si le topic est locké.
+     */
+    protected $locked = false;
+
     public function __construct($id) {
         $this->id = $id;
         $this->followers = new \SplObjectStorage();
+    }
+
+    public function isLocked() {
+        return $this->locked;
+    }
+
+    public function setLocked($locked) {
+        $this->locked = $locked;
     }
 
     public function getId() {
@@ -82,7 +95,8 @@ class Topic {
         $topicInfos = new \stdClass();
         $topicInfos->pageCount = $this->pageCount;
         $topicInfos->postCount = $this->postCount;
-        
+        $topicInfos->locked = $this->locked;
+
         return $topicInfos;
     }
 
