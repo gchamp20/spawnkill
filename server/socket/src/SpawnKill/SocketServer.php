@@ -37,7 +37,7 @@ class SocketServer implements MessageComponentInterface {
 
         //On ajoute le nouveau connecté aux clients
         $this->clients->attach($client);
-        
+
         Log::ln("Nouvelle connexion : {$client->resourceId}");
         Log::ln();
     }
@@ -71,12 +71,12 @@ class SocketServer implements MessageComponentInterface {
     }
 
     /**
-     * met à jour l'état de tous les topics et notifie les clients 
+     * met à jour l'état de tous les topics et notifie les clients
      * des topics modifiés si c'est nécessaire.
      */
     private function updateTopicsAndPushInfos($remoteAddress) {
 
-        Log::ln("Mise à jour des topics");
+        Log::ln("Mise à jour des topics...");
 
         //Seul le serveur peut exécuter cet appel
         if($remoteAddress === Config::$SERVER_IP) {
@@ -86,10 +86,34 @@ class SocketServer implements MessageComponentInterface {
                 $this->curlm->addTopic($topic);
             }
 
-            //Récupération des infos de la dernière page connue des topics
-            $topicsData = $curlm->getTopicsData();
+            //Récupération des infos des topics
+            $topicsData = $this->curlm->getTopicsData();
 
             foreach ($topicsData as $topicData) {
+
+                Log::ln("Topic '{$topicData->topic->getId()}' récupéré...");
+                //On ne fait rien en cas d'erreur
+                if(!$topicData->data->error) {
+
+                    //Si le nombre de posts du topic a changé ou que le topic vient d'être locké
+                    if($topicData->data->locked ||
+                        (
+                            isset($topicData->data->postCount) &&
+                            $topicData->data->postCount > $topicData->topic->getPostCount()
+                        )
+                    ) {
+                        Log::ln("Modifié !");
+                        //On met à jour les infos du topic
+                        if(isset($topicData->data->postCount)) {
+                            $topicData->topic->setPostCount($topicData->data->postCount);
+                        }
+
+                        $topicData->topic->setLocked($topicData->data->locked);
+
+                        //On envoie les données aux followers
+                        $topicData->topic->sendInfosToFollowers();
+                    }
+                }
             }
         }
 
@@ -126,7 +150,10 @@ class SocketServer implements MessageComponentInterface {
 
             //Si le topic n'est plus suivi, on le supprime
             if($topic->getFollowers()->count() === 0) {
-                $this->topics->detach($topic);
+
+                if(($key = array_search($topic, $this->topics, true)) !== false) {
+                    unset($this->topics[$key]);
+                }
             }
         }
 
