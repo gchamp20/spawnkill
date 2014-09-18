@@ -4,19 +4,24 @@
 
 /**
  * Objet parent de tous les modules de SpawnKill
- * 
+ *
  */
 SK.Module = function() {
     /** File de fonctions à exécuter */
     this.internal_queue = [];
 };
 
-//MÉTHODES ET ATTRIBUTS POUVANT ÊTRE REDÉFINIES DANS LES MODULES ENFANTS
+//MÉTHODES ET ATTRIBUTS POUVANT ÊTRE REDÉFINIS DANS LES MODULES ENFANTS
 
 /**
  * true si le module ne peut pas être désactivé.
  */
 SK.Module.prototype.required = false;
+
+/**
+ * true si le module n'est pas visible dans le panneau de configuration.
+ */
+SK.Module.prototype.hidden = false;
 
 /**
  * Id du module
@@ -50,7 +55,7 @@ SK.Module.prototype.shouldBeActivated = function() {
 /**
  * Options configurables du plugin.
  * Ces options apparaitront dans le panneau de configuration de SpawnKill
- */ 
+ */
 SK.Module.prototype.settings = {};
 
 /**
@@ -93,7 +98,7 @@ SK.Module.new = function(constructor) {
 //MÉTHODES INTERNES À NE SURTOUT PAS REDÉFINIR
 
 /**
- * Méthode interne permettant d'initialiser le module si besoin, 
+ * Méthode interne permettant d'initialiser le module si besoin,
  * à ne pas redéfinir, la méthode d'init réelle est init()
  */
 SK.Module.prototype.internal_init = function() {

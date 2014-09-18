@@ -1,34 +1,35 @@
 // ==UserScript==
 // @name        JVC SpawnKill
-// @description JVC SpawnKill est un plugin pour jeuxvideo.com ajoutant des fonctionnalités comme les avatars, les citations ou les signatures.        
+// @description JVC SpawnKill est un plugin pour jeuxvideo.com ajoutant des fonctionnalités comme les avatars, les citations ou les signatures.
 // @author      Spixel_
 // @namespace   http://www.spixel.fr
 // @include     http://*.jeuxvideo.com*
-// @version     1.14.7
-// @require     jquery-2.1.1.min.js?v1.14.7
-// @require     jquery-plugins.js?v1.14.7
-// @require     base.js?v1.14.7
-// @require     Util.js?v1.14.7
-// @require     Message.js?v1.14.7
-// @require     Author.js?v1.14.7
-// @require     Button.js?v1.14.7
-// @require     SlideToggle.js?v1.14.7
-// @require     Modal.js?v1.14.7
-// @require     DropdownList.js?v1.14.7
-// @require     modules/Module.js?v1.14.7
-// @require     modules/SpawnkillBase.js?v1.14.7
-// @require     modules/Settings.js?v1.14.7
-// @require     modules/QuickResponse.js?v1.14.7
-// @require     modules/Quote.js?v1.14.7
-// @require     modules/Shortcuts.js?v1.14.7
-// @require     modules/InfosPseudo.js?v1.14.7
-// @require     modules/HilightNewTopic.js?v1.14.7
-// @require     modules/LastPage.js?v1.14.7
-// @require     modules/EmbedMedia.js?v1.14.7
-// @require     modules/WarnOnNewPost.js?v1.14.7
-// @require     modules/AutoUpdate.js?v1.14.7
-// @require     modules/PemtHighlight.js?v1.14.7
-// @require     modules/Usability.js?v1.14.7
+// @version     1.15
+// @require     jquery-2.1.1.min.js?v1.15
+// @require     jquery-plugins.js?v1.15
+// @require     base.js?v1.15
+// @require     Util.js?v1.15
+// @require     Message.js?v1.15
+// @require     Author.js?v1.15
+// @require     Button.js?v1.15
+// @require     SlideToggle.js?v1.15
+// @require     Modal.js?v1.15
+// @require     DropdownList.js?v1.15
+// @require     modules/Module.js?v1.15
+// @require     modules/SpawnkillBase.js?v1.15
+// @require     modules/Settings.js?v1.15
+// @require     modules/SocketClient.js?v1.15
+// @require     modules/QuickResponse.js?v1.15
+// @require     modules/Quote.js?v1.15
+// @require     modules/Shortcuts.js?v1.15
+// @require     modules/InfosPseudo.js?v1.15
+// @require     modules/HilightNewTopic.js?v1.15
+// @require     modules/LastPage.js?v1.15
+// @require     modules/EmbedMedia.js?v1.15
+// @require     modules/WarnOnNewPost.js?v1.15
+// @require     modules/AutoUpdate.js?v1.15
+// @require     modules/PemtHighlight.js?v1.15
+// @require     modules/Usability.js?v1.15
 // @resource    close                 images/close.png
 // @resource    banImage              images/ban.png
 // @resource    newTopic              images/topic_new.gif
@@ -78,7 +79,7 @@
 /* jshint multistr: true */
 /* jshint newcap: false */
 
-SK.VERSION = "v1.14.7";
+SK.VERSION = "v1.15";
 
 var modulesStyle = "";
 
@@ -139,7 +140,7 @@ var checkDomReady = setInterval(function() {
     if($(".stats").length > 0) {
 
         clearInterval(checkDomReady);
-        
+
         //On initialise les modules actifs
         for(var key in SK.modules) {
             if(SK.modules[key].activated) {

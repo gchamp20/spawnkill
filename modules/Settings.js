@@ -11,6 +11,7 @@ SK.moduleConstructors.Settings.prototype.id = "Settings";
 SK.moduleConstructors.Settings.prototype.title = "Configuration";
 SK.moduleConstructors.Settings.prototype.description = "Ajoute une fenêtre de configuration pour SpawnKill.";
 SK.moduleConstructors.Settings.prototype.required = true;
+SK.moduleConstructors.Settings.prototype.hidden = true;
 
 SK.moduleConstructors.Settings.prototype.init = function() {
 
@@ -23,7 +24,7 @@ SK.moduleConstructors.Settings.prototype.init = function() {
     ) {
         this.addSettingsButton();
     }
-    
+
     this.showSettingsIfNeeded();
 };
 
@@ -131,22 +132,25 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
         for(var moduleKey in SK.modules) {
 
             var module = SK.modules[moduleKey];
-            ui += "<li title='" + SK.Util.htmlEncode(module.description) + "' class='setting" + 
-              (module.required ? " required" : "") + "' data-activated='" + (module.activated ? "1" : "0") +
-              "' data-id='" + moduleKey + "' >";
 
-                ui += "<div class='main-setting' >" + SK.Util.htmlEncode(module.title) + "</div>";
-                ui += "<hr>";
-                ui += "<ul class='options fold' >";
-                    for(var settingKey in module.settings) {
-                        var setting = module.settings[settingKey];
-                        ui += "<li class='option' title='" + SK.Util.htmlEncode(setting.description) +
-                          "' data-id='" + settingKey + "' >";
-                            ui += SK.Util.htmlEncode(module.settings[settingKey].title);
-                        ui += "</li>";
-                    }    
-                ui += "</ul>";
-            ui += "</li>";
+            if(!module.hidden) {
+                ui += "<li title='" + SK.Util.htmlEncode(module.description) + "' class='setting" +
+                  (module.required ? " required" : "") + "' data-activated='" + (module.activated ? "1" : "0") +
+                  "' data-id='" + moduleKey + "' >";
+
+                    ui += "<div class='main-setting' >" + SK.Util.htmlEncode(module.title) + "</div>";
+                    ui += "<hr>";
+                    ui += "<ul class='options fold' >";
+                        for(var settingKey in module.settings) {
+                            var setting = module.settings[settingKey];
+                            ui += "<li class='option' title='" + SK.Util.htmlEncode(setting.description) +
+                              "' data-id='" + settingKey + "' >";
+                                ui += SK.Util.htmlEncode(module.settings[settingKey].title);
+                            ui += "</li>";
+                        }
+                    ui += "</ul>";
+                ui += "</li>";
+            }
         }
     ui += "</ul>";
 
@@ -217,7 +221,7 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
     return $ui;
 };
 
-/** 
+/**
  * Si la hauteur de la modale est plus importante que celle de l'écran,
  * On force une barre de scroll.
  */

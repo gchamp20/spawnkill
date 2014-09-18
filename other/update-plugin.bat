@@ -14,13 +14,14 @@ mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.defaul
 
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\Module.js" "C:\wamp\www\spawnkill\modules\Module.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\SpawnkillBase.js" "C:\wamp\www\spawnkill\modules\SpawnkillBase.js"
+mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\Settings.js" "C:\wamp\www\spawnkill\modules\Settings.js"
+mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\SocketClient.js" "C:\wamp\www\spawnkill\modules\SocketClient.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\QuickResponse.js" "C:\wamp\www\spawnkill\modules\QuickResponse.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\Quote.js" "C:\wamp\www\spawnkill\modules\Quote.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\Shortcuts.js" "C:\wamp\www\spawnkill\modules\Shortcuts.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\InfosPseudo.js" "C:\wamp\www\spawnkill\modules\InfosPseudo.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\HilightNewTopic.js" "C:\wamp\www\spawnkill\modules\HilightNewTopic.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\LastPage.js" "C:\wamp\www\spawnkill\modules\LastPage.js"
-mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\Settings.js" "C:\wamp\www\spawnkill\modules\Settings.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\EmbedMedia.js" "C:\wamp\www\spawnkill\modules\EmbedMedia.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\WarnOnNewPost.js" "C:\wamp\www\spawnkill\modules\WarnOnNewPost.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\AutoUpdate.js" "C:\wamp\www\spawnkill\modules\AutoUpdate.js"
@@ -65,5 +66,5 @@ mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.defaul
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\error.png" "C:\wamp\www\spawnkill\images\error.png"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\search-topics.png" "C:\wamp\www\spawnkill\images\search-topics.png"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\crown.png" "C:\wamp\www\spawnkill\images\crown.png"
-mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\notification.ogg" "C:\wamp\www\spawnkill\audio\notification.ogg" 
+mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\notification.ogg" "C:\wamp\www\spawnkill\audio\notification.ogg"
 pause
