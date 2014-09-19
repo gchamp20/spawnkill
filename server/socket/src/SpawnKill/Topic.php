@@ -5,7 +5,7 @@ use SpawnKill\SocketMessage;
 /**
  * Représente un topic de JVC
  */
-class Topic {
+class Topic implements \Serializable {
 
     /**
      * String id du topic de la forme "forum-topic"
@@ -47,6 +47,10 @@ class Topic {
 
     public function getId() {
         return $this->id;
+    }
+
+    public function setId($id) {
+        $this->id = $id;
     }
 
     public function getFollowers() {
@@ -108,5 +112,25 @@ class Topic {
         foreach ($this->followers as $follower) {
             $follower->send(json_encode($this->getInfos()));
         }
+    }
+
+    public function serialize() {
+
+        return serialize(array(
+            "id" => $this->id,
+            "pageCount" => $this->pageCount,
+            "postCount" => $this->postCount,
+            "locked" => $this->locked
+        ));
+    }
+
+    public function unserialize($serialized) {
+
+        $data = unserialize($serialized);
+
+        $this->id = $data["id"];
+        $this->pageCount = $data["pageCount"];
+        $this->postCount = $data["postCount"];
+        $this->locked = $data["locked"];
     }
 }
