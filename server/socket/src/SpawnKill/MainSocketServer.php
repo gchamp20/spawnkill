@@ -21,18 +21,28 @@ class MainSocketServer implements MessageComponentInterface {
     protected $clients;
 
     /**
+     * Connexion au serveur de mise à jour
+     */
+    protected $updateServerConnection;
+
+    /**
      * Liste de topics suivis par au moins un client.
      */
     protected $topics = array();
 
-    /**
-     * Permet de faire facilement des requêtes HTTP parallèles
-     */
-    protected $curlm;
+    private $logger;
 
     public function __construct() {
+
+        $this->logger = new Logger("main server");
         $this->clients = new \SplObjectStorage();
-        $this->curlm = new TopicCurlManager();
+    }
+
+    /**
+     * Retourne vrai si la connexion est issue du serveur.
+     */
+    private function isConnectionFromServer($connection) {
+        return $connection->remoteAddress === Config::$SERVER_IP;
     }
 
     /**
@@ -43,8 +53,7 @@ class MainSocketServer implements MessageComponentInterface {
         //On ajoute le nouveau connecté aux clients
         $this->clients->attach($client);
 
-        Log::ln("Nouvelle connexion : {$client->resourceId}");
-        Log::ln();
+        $this->logger->ln("Nouvelle connexion : {$client->resourceId}");
     }
 
     /**
@@ -55,7 +64,7 @@ class MainSocketServer implements MessageComponentInterface {
         //Création d'un message à partir du JSON
         $message = SocketMessage::fromJson($json);
 
-        Log::ln("Nouveau message : '{$message->getId()}'");
+        $this->logger->ln("Nouveau message : '{$message->getId()}'");
 
         if($message === false) {
             return;
@@ -64,15 +73,35 @@ class MainSocketServer implements MessageComponentInterface {
         switch($message->getId()) {
 
             case 'updateTopicsAndPushInfos' :
-                $this->updateTopicsAndPushInfos($client->remoteAddress);
+                if($this->isConnectionFromServer($client)) {
+                    $this->updateTopicsAndPushInfos();
+                }
                 break;
 
             case 'startFollowingTopic' :
                 $this->clientStartFollowingTopic($client, $message->getData());
                 break;
+
+            case 'linkUpdateServer' :
+                if($this->isConnectionFromServer($client)) {
+                    $this->linkUpdateServer($client);
+                }
+                break;
+
+            case 'ping' :
+                $this->logger->ln("pong: " . $message->getData());
+                break;
+
         }
 
-        Log::ln();
+    }
+
+    /**
+     * Met en place le lien avec le serveur de mise à jour des topics.
+     */
+    private function linkUpdateServer($client) {
+        $this->logger->ln("Mise en place du lien avec le serveur de mise à jour");
+        $this->updateServerConnection = $client;
     }
 
     /**
@@ -81,48 +110,44 @@ class MainSocketServer implements MessageComponentInterface {
      */
     private function updateTopicsAndPushInfos($remoteAddress) {
 
-        Log::ln("Mise à jour des topics...");
+        $this->logger->ln("Mise à jour des topics...");
 
-        //Seul le serveur peut exécuter cet appel
-        if($remoteAddress === Config::$SERVER_IP) {
 
-            foreach ($this->topics as $topic) {
-                Log::ln("Topic '{$topic->getId()}' marqué pour mise à jour");
-                $this->curlm->addTopic($topic);
-            }
+        foreach ($this->topics as $topic) {
+            $this->logger->ln("Topic '{$topic->getId()}' marqué pour mise à jour");
+            $this->curlm->addTopic($topic);
+        }
 
-            //Récupération des infos des topics
-            $topicsData = $this->curlm->getTopicsData();
+        //Récupération des infos des topics
+        $topicsData = $this->curlm->getTopicsData();
 
-            foreach ($topicsData as $topicData) {
+        foreach ($topicsData as $topicData) {
 
-                Log::ln("Topic '{$topicData->topic->getId()}' récupéré...");
-                //On ne fait rien en cas d'erreur
-                if(!$topicData->data->error) {
+            $this->logger->ln("Topic '{$topicData->topic->getId()}' récupéré...");
+            //On ne fait rien en cas d'erreur
+            if(!$topicData->data->error) {
 
-                    //Si le nombre de posts du topic a changé ou que le topic vient d'être locké
-                    if($topicData->data->locked ||
-                        (
-                            isset($topicData->data->postCount) &&
-                            $topicData->data->postCount > $topicData->topic->getPostCount()
-                        )
-                    ) {
-                        Log::ln("Modifié !");
-                        //On met à jour les infos du topic
-                        if(isset($topicData->data->postCount)) {
-                            $topicData->topic->setPostCount($topicData->data->postCount);
-                        }
-
-                        $topicData->topic->setLocked($topicData->data->locked);
-
-                        //On envoie les données aux followers
-                        $topicData->topic->sendInfosToFollowers();
+                //Si le nombre de posts du topic a changé ou que le topic vient d'être locké
+                if($topicData->data->locked ||
+                    (
+                        isset($topicData->data->postCount) &&
+                        $topicData->data->postCount > $topicData->topic->getPostCount()
+                    )
+                ) {
+                    $this->logger->ln("Modifié !");
+                    //On met à jour les infos du topic
+                    if(isset($topicData->data->postCount)) {
+                        $topicData->topic->setPostCount($topicData->data->postCount);
                     }
+
+                    $topicData->topic->setLocked($topicData->data->locked);
+
+                    //On envoie les données aux followers
+                    $topicData->topic->sendInfosToFollowers();
                 }
             }
         }
 
-        Log::ln();
     }
 
     /**
@@ -133,10 +158,10 @@ class MainSocketServer implements MessageComponentInterface {
         if(!is_string($topicId)) {
             return;
         }
-        Log::ln("Ajout du suivi du topic '$topicId' au client '{$client->resourceId}' ...");
+        $this->logger->ln("Ajout du suivi du topic '$topicId' au client '{$client->resourceId}' ...");
         //Si le topic n'est pas déjà suivi
         if(!isset($this->topics[$topicId])) {
-            Log::ln("Nouveau topic suivi : '{$topicId}'");
+            $this->logger->ln("Nouveau topic suivi : '{$topicId}'");
             $this->topics[$topicId] = new Topic($topicId);
         }
 
@@ -169,6 +194,6 @@ class MainSocketServer implements MessageComponentInterface {
     public function onError(ConnectionInterface $client, \Exception $e) {
 
         $client->close();
-        Log::ln("Erreur : {$e->getMessage()}");
+        $this->logger->ln("Erreur : {$e->getMessage()}");
     }
 }

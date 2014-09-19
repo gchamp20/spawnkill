@@ -1,0 +1,3 @@
+- Documentation de la structure actuelle et future du serveur
+- Faire le script de démarrage des serveurs
+- Différents ports pour les différents serveurs
