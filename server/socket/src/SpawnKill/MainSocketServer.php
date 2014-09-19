@@ -8,7 +8,12 @@ use SpawnKill\SpawnKillCurlManager;
 use SpawnKill\Config;
 use SpawnKill\Log;
 
-class SocketServer implements MessageComponentInterface {
+/**
+ * Serveur de socket principal de SpawnKill.
+ * Gère les connexions des utilisateurs et le suivi des topics.
+ * Délègue la récupération des informations des topics à UpdateTopicsServer.
+ */
+class MainSocketServer implements MessageComponentInterface {
 
     /**
      * Clients connectés au serveur
