@@ -3,7 +3,7 @@
 /* jshint newcap: false */
 
 /**
- * SpawnkillBase : Module requis de SpawnKill, 
+ * SpawnkillBase : Module requis de SpawnKill,
  * permet de mettre en place la structure du script
  */
 SK.moduleConstructors.SpawnkillBase = SK.Module.new();
@@ -27,6 +27,8 @@ SK.moduleConstructors.SpawnkillBase.prototype.beforeInit = function() {
 };
 
 SK.moduleConstructors.SpawnkillBase.prototype.init = function() {
+
+    this.initCommonVars();
     this.addModalBackground();
     this.correctSplitPost();
     this.bindPopinEvent();
@@ -34,12 +36,30 @@ SK.moduleConstructors.SpawnkillBase.prototype.init = function() {
     if(SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW)) {
         this.preparePreview();
     }
+};
 
+
+/**
+ * Défini les variables communes à tous les modules.
+ */
+SK.moduleConstructors.SpawnkillBase.prototype.initCommonVars = function() {
+
+    //Défini l'id du topic, si disponible
+    if(SK.common.currentPage === "topic-read" ||
+        SK.common.currentPage === "topic-form" ||
+        SK.common.currentPage === "topic-response"
+    ) {
+        var currentURLSplit = document.URL.split("-");
+        SK.common.topicId = currentURLSplit[1] + "-" + currentURLSplit[2];
+    }
+    else {
+        SK.common.topicId = null;
+    }
 };
 
 /**
  * Récupère la page courante.
- * 
+ *
  * @return {string} type de page : "topic-list", "topic-read", "topic-response", "topic-form", "post-preview" ou "other"
  */
 SK.moduleConstructors.SpawnkillBase.prototype.getCurrentPage = function() {
@@ -98,7 +118,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.bindPopinEvent = function() {
 
             //Si la touche Ctrl est enfoncée, on laisse le navigateur ouvrir un onglet
             if(!event.ctrlKey) {
-            
+
                 event.preventDefault();
 
                 var $el = $(this);
