@@ -8,4 +8,4 @@
 			communication via update-to-server-link.js (lien entre les deux serveurs)
 - Faire le script de démarrage des serveurs
 - Différents ports pour les différents serveurs
-- Voir pour compresser les données avec gzcompress avant echange entre Main et Update, si possible
+- Voir pour compresser les données avec gzinflate avant echange entre Main et Update
