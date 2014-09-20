@@ -13,7 +13,13 @@
  */
 
 console.ln = function(string) {
-    console.log("[link] " + string);
+    var now = new Date();
+    now.setHours(now.getHours() + 2);
+    var jsonNow = now.toJSON();
+
+    var hour = jsonNow.slice(8, 10) + "-" + jsonNow.slice(5, 7) + " " + jsonNow.slice(11, 19);
+
+    console.log("[" + hour + " link] " + string);
 };
 
 var WebSocketClient = require("websocket").client;
@@ -56,7 +62,6 @@ mainClient.on("connect", function(connection) {
     mainConnection.on("message", function(message) {
 
         if (message.type === "utf8") {
-            console.ln("main -> update: '" + message.utf8Data + "'");
             updateConnection.sendUTF(message.utf8Data);
         }
     });
@@ -91,7 +96,6 @@ updateClient.on("connect", function(connection) {
     updateConnection.on("message", function(message) {
 
         if (message.type === "utf8") {
-            console.ln("update -> main: '" + message.utf8Data + "'");
             mainConnection.sendUTF(message.utf8Data);
         }
     });
