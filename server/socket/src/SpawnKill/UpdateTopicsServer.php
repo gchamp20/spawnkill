@@ -25,7 +25,7 @@ class UpdateTopicsServer implements MessageComponentInterface {
 
     public function __construct() {
 
-        $this->logger = new Logger("update server");
+        $this->logger = new Logger("upda");
         $this->curlm = new TopicCurlManager();
     }
 
@@ -98,7 +98,11 @@ class UpdateTopicsServer implements MessageComponentInterface {
 
         $topics = unserialize($serializedTopics);
 
+        //On reset les topics
+        $this->curlm->clearTopics();
+
         foreach ($topics as $topic) {
+
             $this->logger->ln("Topic '{$topic->getId()}' marqué pour mise à jour");
             $this->curlm->addTopic($topic);
         }
