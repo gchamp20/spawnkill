@@ -38,32 +38,21 @@ class TopicCurlManager extends SpawnKillCurlManager {
 
     /**
      * Récupère les données des topics.
-     * @return array Données du type stdClass {
-     *      "topic" : Topic
-     *      "data" : stdClass {
-     *          error: (boolean) : true si une erreur a été rencontrée (statut HTTP >= 400)
-     *          pageCount: (int)
-     *          postCount: (int) : Seulement présent si upToDate = true
-     *          upToDate: (boolean) : true si la page récupérée est la dernière du topic
-     *          locked: (boolean)
-     *       }
-     * }
+     * @return array<Topic> Topics mis à jour
      */
-    public function getTopicsData() {
+    public function getUpdatedTopics() {
 
-        $topicsData = $this->getCurrentTopicsData();
+        $currentTopics = $this->getCurrentTopics();
 
         $toUpdateTopics = array();
 
-        foreach ($topicsData as $topicData) {
+        foreach ($currentTopics as $currentTopic) {
 
             //Si les données du topic ne sont pas à jour
             //et qu'aucune erreur n'est survenue, on marque le topic
-            if(!$topicData->data->error && !$topicData->data->upToDate) {
+            if(!$currentTopic->error && !$currentTopic->upToDate) {
 
-                //On met à jour le nombre de pages du topic
-                $topicData->topic->setPageCount($topicData->data->pageCount);
-                $toUpdateTopics[] = $topicData->topic;
+                $toUpdateTopics[] = $currentTopic;
             }
         }
 
@@ -73,50 +62,36 @@ class TopicCurlManager extends SpawnKillCurlManager {
             $this->addTopic($topic);
         }
         //On récupère les infos à jour
-        $updatesData = $this->getCurrentTopicsData();
+        $updatedTopics = $this->getCurrentTopics();
 
         //On complète les données avec la mise à jour (et on met à jour les topics)
-        foreach ($topicsData as &$topicData) {
+        foreach ($currentTopics as &$currentTopic) {
 
-            if(!$topicData->data->error && !$topicData->data->upToDate) {
-
-                $updateData = array_shift($updatesData);
+            if(!$currentTopic->error && !$currentTopic->upToDate) {
 
                 //On remplace les anciennes données
-                $topicData = $updateData;
+                $currentTopic = array_shift($updatedTopics);
             }
         }
-        unset($topicData);
+        unset($currentTopic);
 
-        return $topicsData;
+        return $currentTopics;
     }
 
     /**
      * Récupère les données de la dernière page connue des topics.
-     * @return array Données du type stdClass {
-     *      "topic" : Topic
-     *      "data" : stdClass {
-     *          error: (boolean) : true si une erreur a été rencontrée (statut HTTP >= 400)
-     *          pageCount: (int)
-     *          postCount: (int) : Seulement présent si upToDate = true
-     *          upToDate: (boolean) : true si la page récupérée est la dernière du topic
-     *          locked: (boolean)
-     *       }
-     * }
+     * @return array<Topic> Topics contenant les données des dernières pages connues
      */
-    private function getCurrentTopicsData() {
+    private function getCurrentTopics() {
 
-        $topicsData = array();
+        $topics = array();
 
         //On reset le tableau d'urls
         $this->urls = array();
 
         //On peuple $this->urls avec les urls des dernières pages des topics
         foreach ($this->topics as $topic) {
-            $lastPageData = new \stdClass();
-            $lastPageData->topic = $topic;
-            $topicsData[] = $lastPageData;
-
+            $topics[] = $topic;
             $this->urls[] = $topic->getPageUrl($topic->getPageCount());
         }
 
@@ -125,10 +100,19 @@ class TopicCurlManager extends SpawnKillCurlManager {
 
         //On lie ces données aux topics correspondants
         for($i = 0; $i < count($requestsData); $i++) {
-            $topicsData[$i]->data = $this->parseTopicData($requestsData[$i]);
+
+            $topicData = $this->parseTopicData($requestsData[$i]);
+
+            $topic->setPageCount($topicData->pageCount);
+            $topic->setLocked($topicData->locked);
+            if(isset($topicData->postCount)) {
+                $topic->setPostCount($topicData->postCount);
+            }
+            $topic->upToDate = $topicData->upToDate;
+            $topic->error = $topicData->error;
         }
 
-        return $topicsData;
+        return $topics;
 
     }
 

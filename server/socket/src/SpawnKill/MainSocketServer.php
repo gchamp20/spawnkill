@@ -72,22 +72,33 @@ class MainSocketServer implements MessageComponentInterface {
 
         switch($message->getId()) {
 
+            //Demande de mise à jour des topics
             case 'updateTopicsAndPushInfos' :
                 if($this->isConnectionFromServer($client)) {
-                    $this->updateTopicsAndPushInfos();
+                    $this->delegateTopicsUpdate();
                 }
                 break;
 
+            //Nouvelles données des topics disponibles
+            case 'topicsUpdate' :
+                if($this->isConnectionFromServer($client)) {
+                    $this->pushTopicsUpdate($message->getData());
+                }
+                break;
+
+            //Un client suit un nouveau topic
             case 'startFollowingTopic' :
                 $this->clientStartFollowingTopic($client, $message->getData());
                 break;
 
+            //Le lien avec le serveur de mise à jour des topics est effectué
             case 'linkUpdateServer' :
                 if($this->isConnectionFromServer($client)) {
                     $this->linkUpdateServer($client);
                 }
                 break;
 
+            //Simple ping
             case 'ping' :
                 $this->logger->ln("pong: " . $message->getData());
                 break;
@@ -105,48 +116,52 @@ class MainSocketServer implements MessageComponentInterface {
     }
 
     /**
-     * met à jour l'état de tous les topics et notifie les clients
-     * des topics modifiés si c'est nécessaire.
+     * Demande au serveur de mise à jour de récupérer les dernières infos des topics
+     * suivis.
      */
-    private function updateTopicsAndPushInfos($remoteAddress) {
+    private function delegateTopicsUpdate() {
 
-        $this->logger->ln("Mise à jour des topics...");
+        $this->logger->ln("Délégation de la récupération des infos au serveur de mise à jour...");
 
+        $this->updateServerConnection->send(json_encode(array(
+            "getTopicUpdates" => serialize($this->topics)
+        )));
+    }
 
-        foreach ($this->topics as $topic) {
-            $this->logger->ln("Topic '{$topic->getId()}' marqué pour mise à jour");
-            $this->curlm->addTopic($topic);
-        }
+    /**
+     * Notifie les clients des topics modifiés si nécessaire.
+     */
+    private function pushTopicsUpdate($serializedUpdatedTopics) {
 
-        //Récupération des infos des topics
-        $topicsData = $this->curlm->getTopicsData();
+        $this->logger->ln("Notification de mise à jour des topics aux clients...");
 
-        foreach ($topicsData as $topicData) {
+        print_r(unserialize($serializedUpdatedTopics));
+        // foreach ($topicsData as $topicData) {
 
-            $this->logger->ln("Topic '{$topicData->topic->getId()}' récupéré...");
-            //On ne fait rien en cas d'erreur
-            if(!$topicData->data->error) {
+        //     $this->logger->ln("Topic '{$topicData->topic->getId()}' récupéré...");
+        //     //On ne fait rien en cas d'erreur
+        //     if (!$topicData->data->error) {
 
-                //Si le nombre de posts du topic a changé ou que le topic vient d'être locké
-                if($topicData->data->locked ||
-                    (
-                        isset($topicData->data->postCount) &&
-                        $topicData->data->postCount > $topicData->topic->getPostCount()
-                    )
-                ) {
-                    $this->logger->ln("Modifié !");
-                    //On met à jour les infos du topic
-                    if(isset($topicData->data->postCount)) {
-                        $topicData->topic->setPostCount($topicData->data->postCount);
-                    }
+        //         //Si le nombre de posts du topic a changé ou que le topic vient d'être locké
+        //         if ($topicData->data->locked ||
+        //             (
+        //                 isset($topicData->data->postCount) &&
+        //                 $topicData->data->postCount > $topicData->topic->getPostCount()
+        //             )
+        //         ) {
+        //             $this->logger->ln("Modifié !");
+        //             //On met à jour les infos du topic
+        //             if (isset($topicData->data->postCount)) {
+        //                 $topicData->topic->setPostCount($topicData->data->postCount);
+        //             }
 
-                    $topicData->topic->setLocked($topicData->data->locked);
+        //             $topicData->topic->setLocked($topicData->data->locked);
 
-                    //On envoie les données aux followers
-                    $topicData->topic->sendInfosToFollowers();
-                }
-            }
-        }
+        //             //On envoie les données aux followers
+        //             $topicData->topic->sendInfosToFollowers();
+        //         }
+        //     }
+        // }
 
     }
 

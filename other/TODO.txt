@@ -1,3 +1,11 @@
 - Documentation de la structure actuelle et future du serveur
+	toute la communication se fait en messages JSON
+	serveur principal : MainSocketServer
+		chargé de gérer les utilisateurs et les topics qu'ils suivent
+	script update-topics-client.js : client node js demandant à MainSocketServer d'informer les utilisateurs de la mise à jour des topics
+		MainSocketServer délégue la récupération des infos à UpdateTopicsServer pour ne pas bloquer le serveur
+			passage de l'état actuel des topics en PHP sérialisé
+			communication via update-to-server-link.js (lien entre les deux serveurs)
 - Faire le script de démarrage des serveurs
 - Différents ports pour les différents serveurs
+- Voir pour compresser les données avec gzcompress avant echange entre Main et Update, si possible
