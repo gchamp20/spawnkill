@@ -103,13 +103,13 @@ class TopicCurlManager extends SpawnKillCurlManager {
 
             $topicData = $this->parseTopicData($requestsData[$i]);
 
-            $topic->setPageCount($topicData->pageCount);
-            $topic->setLocked($topicData->locked);
+            $topics[$i]->setPageCount($topicData->pageCount);
+            $topics[$i]->setLocked($topicData->locked);
             if(isset($topicData->postCount)) {
-                $topic->setPostCount($topicData->postCount);
+                $topics[$i]->setPostCount($topicData->postCount);
             }
-            $topic->upToDate = $topicData->upToDate;
-            $topic->error = $topicData->error;
+            $topics[$i]->upToDate = $topicData->upToDate;
+            $topics[$i]->error = $topicData->error;
         }
 
         return $topics;
