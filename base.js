@@ -12,6 +12,8 @@ window.SK = {
 	 */
 	common: {
 
+		SOCKET_SERVER_URL: "ws://localhost",
+		SOCKET_SERVER_PORT: 8080,
 		/**
 		 * Types de pages de JVC
 		 */
@@ -23,7 +25,7 @@ window.SK = {
 			TOPIC_RESPONSE: "topic-response",
 			POST_PREVIEW: 	"post-preview",
 			OTHER: 			"other"
-			
+
 		})
 	},
 

@@ -17,4 +17,12 @@ SK.moduleConstructors.SocketClient.prototype.hidden = true;
  * Initialise le module, fonction appelée quand le module est chargé
  */
 SK.moduleConstructors.SocketClient.prototype.init = function() {
+	var conn = new WebSocket(SK.common.SOCKET_SERVER_URL + ":" + SK.common.SOCKET_SERVER_PORT);
+	conn.onopen = function() {
+	    conn.send(JSON.stringify({startFollowingTopic: SK.common.topicId}));
+	};
+	conn.onmessage = function(event) {
+		console.log(JSON.parse(event.data));
+	};
+
 };
