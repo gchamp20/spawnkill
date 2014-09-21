@@ -1,7 +1,7 @@
 #!/bin/bash
 php spawnkill-server.php &
 php update-topics-server.php &
-sleep 0.5
+sleep 1
 node update-to-server-link.js &
 sleep 1
 node update-topics-client.js &
