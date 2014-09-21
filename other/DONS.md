@@ -12,3 +12,4 @@ Ci-dessous, les gens qui ont fait un don pour l'évolution du script ou qui m'on
 - Project_MATO (`1.68€`)
 - Antoine V. (`1.68€`)
 - ChromeLegend (`1.68€`)
+- Kévin K. (`1.68€`)
