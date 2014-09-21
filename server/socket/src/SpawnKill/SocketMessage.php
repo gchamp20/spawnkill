@@ -64,6 +64,8 @@ class SocketMessage {
     }
 
     public function toJson() {
-        return json_encode($this->data);
+        return json_encode(array(
+            $this->id => $this->data
+        ));
     }
 }
