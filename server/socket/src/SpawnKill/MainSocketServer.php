@@ -34,7 +34,7 @@ class MainSocketServer implements MessageComponentInterface {
 
     public function __construct() {
 
-        $this->logger = new Logger("main server");
+        $this->logger = new Logger("main");
         $this->clients = new \SplObjectStorage();
     }
 
@@ -64,11 +64,12 @@ class MainSocketServer implements MessageComponentInterface {
         //Création d'un message à partir du JSON
         $message = SocketMessage::fromJson($json);
 
-        $this->logger->ln("Nouveau message : '{$message->getId()}'");
-
         if($message === false) {
+            $this->logger->ln("Nouveau message mal formate : '{$json}'");
             return;
         }
+
+        $this->logger->ln("Nouveau message : '{$message->getId()}'");
 
         switch($message->getId()) {
 
@@ -121,11 +122,12 @@ class MainSocketServer implements MessageComponentInterface {
      */
     private function delegateTopicsUpdate() {
 
-        $this->logger->ln("Délégation de la récupération des infos au serveur de mise à jour...");
+        $this->logger->ln("Delegation de la mise a jour des topics...");
 
-        $this->updateServerConnection->send(json_encode(array(
-            "getTopicUpdates" => serialize($this->topics)
-        )));
+        $message = SocketMessage::fromData('getTopicUpdates', serialize($this->topics));
+        $this->updateServerConnection->send($message->toJson());
+
+        $this->logger->ln("envoye : " . print_r(unserialize(serialize($this->topics)), true));
     }
 
     /**
@@ -133,9 +135,11 @@ class MainSocketServer implements MessageComponentInterface {
      */
     private function pushTopicsUpdate($serializedUpdatedTopics) {
 
-        $this->logger->ln("Notification de mise à jour des topics aux clients...");
+        $this->logger->ln("Notification de mise a jour des topics aux clients...");
 
-        print_r(unserialize($serializedUpdatedTopics));
+        $updatedTopics = unserialize($serializedUpdatedTopics);
+        $this->logger->ln("recu : " . print_r($updatedTopics, true));
+
         // foreach ($topicsData as $topicData) {
 
         //     $this->logger->ln("Topic '{$topicData->topic->getId()}' récupéré...");

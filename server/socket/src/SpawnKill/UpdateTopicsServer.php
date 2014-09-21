@@ -47,9 +47,8 @@ class UpdateTopicsServer implements MessageComponentInterface {
             $this->mainServerConnection = $connection;
         }
         else {
-            $connection->send(json_encode(array(
-                "connectionError" => "Serveur déjà connecté"
-            )));
+            $message = SocketMessage::fromData('connectionError', 'Serveur déjà connecté');
+            $connection->send($message->toJson());
         }
 
     }
@@ -62,11 +61,12 @@ class UpdateTopicsServer implements MessageComponentInterface {
             //Création d'un message à partir du JSON
             $message = SocketMessage::fromJson($json);
 
-            $this->logger->ln("Nouveau message : '{$message->getId()}'");
-
-            if ($message === false) {
+            if($message === false) {
+                $this->logger->ln("Nouveau message mal formate : '{$json}'");
                 return;
             }
+
+            $this->logger->ln("Nouveau message : '{$message->getId()}'");
 
             switch ($message->getId()) {
 
@@ -85,7 +85,7 @@ class UpdateTopicsServer implements MessageComponentInterface {
      * Met en place le lien avec le serveur principal.
      */
     private function linkMainServer($client) {
-        $this->logger->ln("Mise en place du lien avec le serveur de mise à jour");
+        $this->logger->ln("Mise en place du lien avec le serveur de mise a jour");
         $this->mainServerConnection = $client;
     }
 
@@ -94,7 +94,7 @@ class UpdateTopicsServer implements MessageComponentInterface {
      */
     private function getTopicUpdates($serializedTopics) {
 
-        $this->logger->ln("Mise à jour des topics...");
+        $this->logger->ln("Mise a jour des topics...");
 
         $topics = unserialize($serializedTopics);
 
@@ -103,7 +103,7 @@ class UpdateTopicsServer implements MessageComponentInterface {
 
         foreach ($topics as $topic) {
 
-            $this->logger->ln("Topic '{$topic->getId()}' marqué pour mise à jour");
+            $this->logger->ln("Topic '{$topic->getId()}' marque pour mise a jour");
             $this->curlm->addTopic($topic);
         }
 
@@ -112,7 +112,7 @@ class UpdateTopicsServer implements MessageComponentInterface {
 
         //On envoie les infos au serveur principal
         $this->mainServerConnection->send(json_encode(array(
-            "topicUpdates" => serialize($topics)
+            "topicsUpdate" => serialize($topics)
         )));
     }
 
