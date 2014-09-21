@@ -25,7 +25,7 @@ class UpdateTopicsServer implements MessageComponentInterface {
 
     public function __construct() {
 
-        $this->logger = new Logger("upda");
+        $this->logger = new Logger("upda", "yellow");
         $this->curlm = new TopicCurlManager();
     }
 
@@ -62,11 +62,11 @@ class UpdateTopicsServer implements MessageComponentInterface {
             $message = SocketMessage::fromJson($json);
 
             if($message === false) {
-                $this->logger->ln("Nouveau message mal formate : '{$json}'");
+                $this->logger->ln("Nouveau message mal formate : '{$json}'", 2);
                 return;
             }
 
-            $this->logger->ln("Nouveau message : '{$message->getId()}'");
+            $this->logger->ln("Nouveau message : '{$message->getId()}'", 2);
 
             switch ($message->getId()) {
 
@@ -78,6 +78,8 @@ class UpdateTopicsServer implements MessageComponentInterface {
                     $this->logger->ln("pong: " . $message->getData());
                     break;
             }
+
+            $this->logger->ln('--', 2);
         }
     }
 
@@ -94,16 +96,16 @@ class UpdateTopicsServer implements MessageComponentInterface {
      */
     private function getTopicUpdates($serializedTopics) {
 
-        $this->logger->ln("Mise a jour des topics...");
-
         $topics = unserialize($serializedTopics);
+
+        $this->logger->ln('Mise a jour de ' . count($topics) . ' topics...', 2);
 
         //On reset les topics
         $this->curlm->clearTopics();
 
         foreach ($topics as $topic) {
 
-            $this->logger->ln("Topic '{$topic->getId()}' marque pour mise a jour");
+            $this->logger->ln("Topic '{$topic->getId()}' marque pour mise a jour", 3);
             $this->curlm->addTopic($topic);
         }
 
@@ -111,9 +113,8 @@ class UpdateTopicsServer implements MessageComponentInterface {
         $topics = $this->curlm->getUpdatedTopics();
 
         //On envoie les infos au serveur principal
-        $this->mainServerConnection->send(json_encode(array(
-            "topicsUpdate" => serialize($topics)
-        )));
+        $updateMessage = SocketMessage::fromData("topicsUpdate", serialize($topics));
+        $this->mainServerConnection->send($updateMessage->toJson());
     }
 
     /**

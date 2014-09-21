@@ -32,6 +32,11 @@ class Topic implements \Serializable {
      */
     protected $locked = false;
 
+    //Attributs temporaires utilisés pour la récupération des données, à revoir.
+    public $error = false;
+    public $upToDate = false;
+
+
     public function __construct($id) {
         $this->id = $id;
         $this->followers = new \SplObjectStorage();

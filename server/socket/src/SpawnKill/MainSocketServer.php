@@ -34,7 +34,7 @@ class MainSocketServer implements MessageComponentInterface {
 
     public function __construct() {
 
-        $this->logger = new Logger("main");
+        $this->logger = new Logger("main", "light_cyan");
         $this->clients = new \SplObjectStorage();
     }
 
@@ -65,11 +65,11 @@ class MainSocketServer implements MessageComponentInterface {
         $message = SocketMessage::fromJson($json);
 
         if($message === false) {
-            $this->logger->ln("Nouveau message mal formate : '{$json}'");
+            $this->logger->ln("Nouveau message mal formate : '{$json}'", 2);
             return;
         }
 
-        $this->logger->ln("Nouveau message : '{$message->getId()}'");
+        $this->logger->ln("Nouveau message : '{$message->getId()}'", 2);
 
         switch($message->getId()) {
 
@@ -106,6 +106,8 @@ class MainSocketServer implements MessageComponentInterface {
 
         }
 
+        $this->logger->ln('--', 2);
+
     }
 
     /**
@@ -122,12 +124,12 @@ class MainSocketServer implements MessageComponentInterface {
      */
     private function delegateTopicsUpdate() {
 
-        $this->logger->ln("Delegation de la mise a jour des topics...");
+        $this->logger->ln("Delegation de la mise a jour des topics...", 2);
 
         $message = SocketMessage::fromData('getTopicUpdates', serialize($this->topics));
         $this->updateServerConnection->send($message->toJson());
 
-        $this->logger->ln("envoye : " . print_r(unserialize(serialize($this->topics)), true));
+        $this->logger->ln("envoye : " . print_r(unserialize(serialize($this->topics)), true), 3);
     }
 
     /**
@@ -135,10 +137,10 @@ class MainSocketServer implements MessageComponentInterface {
      */
     private function pushTopicsUpdate($serializedUpdatedTopics) {
 
-        $this->logger->ln("Notification de mise a jour des topics aux clients...");
+        $this->logger->ln("Notification de mise a jour des topics aux clients...", 2);
 
         $updatedTopics = unserialize($serializedUpdatedTopics);
-        $this->logger->ln("recu : " . print_r($updatedTopics, true));
+        $this->logger->ln("recu : " . print_r($updatedTopics, true), 3);
 
         // foreach ($topicsData as $topicData) {
 
@@ -177,10 +179,10 @@ class MainSocketServer implements MessageComponentInterface {
         if(!is_string($topicId)) {
             return;
         }
-        $this->logger->ln("Ajout du suivi du topic '$topicId' au client '{$client->resourceId}' ...");
+        $this->logger->ln("Ajout du suivi du topic '$topicId' au client '{$client->resourceId}' ...", 2);
         //Si le topic n'est pas déjà suivi
         if(!isset($this->topics[$topicId])) {
-            $this->logger->ln("Nouveau topic suivi : '{$topicId}'");
+            $this->logger->ln("Nouveau topic suivi : '{$topicId}'", 2);
             $this->topics[$topicId] = new Topic($topicId);
         }
 
@@ -192,6 +194,8 @@ class MainSocketServer implements MessageComponentInterface {
      */
     public function onClose(ConnectionInterface $client) {
 
+        $this->logger->ln("Deconnexion : {$client->resourceId}");
+
         //On parcourt tous les topics suivis
         foreach ($this->topics as $topic) {
             //On supprime l'utilisateur déconnecté du suivi
@@ -201,6 +205,7 @@ class MainSocketServer implements MessageComponentInterface {
             if($topic->getFollowers()->count() === 0) {
 
                 if(($key = array_search($topic, $this->topics, true)) !== false) {
+                    $this->logger->ln("Fin de suivi du topic : '{$key}'", 2);
                     unset($this->topics[$key]);
                 }
             }
