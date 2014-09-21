@@ -169,12 +169,13 @@ SK.moduleConstructors.AutoUpdate.prototype.showUpdateModal = function(release, u
 /** Regarde réguilèrement si la notif n'a pas été fermée dans un autre onglet */
 SK.moduleConstructors.AutoUpdate.prototype.intervalDismissIfSeen = function() {
 
-	setInterval(function() {
+	var dismissInterval = setInterval(function() {
 
 		var updateSeen = SK.Util.getValue("update.seen");
 
 		//Si aucune notification n'a été vue ou que le délai est dépassé
 		if(updateSeen && (SK.Util.timestamp() - updateSeen) <= SK.moduleConstructors.AutoUpdate.NOTIFICATION_INTERVAL) {
+			clearInterval(dismissInterval);
 			SK.Util.hideModal();
 		}
 
