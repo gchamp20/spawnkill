@@ -96,7 +96,7 @@ class UpdateTopicsServer implements MessageComponentInterface {
      */
     private function getTopicUpdates($serializedTopics) {
 
-        $topics = unserialize($serializedTopics);
+        $topics = unserialize(SocketMessage::uncompress($serializedTopics));
 
         $this->logger->ln('Mise a jour de ' . count($topics) . ' topics...', 2);
 
@@ -113,7 +113,7 @@ class UpdateTopicsServer implements MessageComponentInterface {
         $topics = $this->curlm->getUpdatedTopics();
 
         //On envoie les infos au serveur principal
-        $updateMessage = SocketMessage::fromData("topicsUpdate", serialize($topics));
+        $updateMessage = SocketMessage::fromData("topicsUpdate", SocketMessage::compress(serialize($topics)));
         $this->mainServerConnection->send($updateMessage->toJson());
     }
 

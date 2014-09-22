@@ -126,7 +126,7 @@ class MainSocketServer implements MessageComponentInterface {
 
         $this->logger->ln("Delegation de la mise a jour des topics...", 2);
 
-        $message = SocketMessage::fromData('getTopicUpdates', serialize($this->topics));
+        $message = SocketMessage::fromData('getTopicUpdates', SocketMessage::compress(serialize($this->topics)));
         $this->updateServerConnection->send($message->toJson());
 
         $this->logger->ln("envoye : " . print_r(unserialize(serialize($this->topics)), true), 3);
@@ -139,7 +139,7 @@ class MainSocketServer implements MessageComponentInterface {
 
         $this->logger->ln("Notification de mise a jour des topics aux clients...", 2);
 
-        $updatedTopics = unserialize($serializedUpdatedTopics);
+        $updatedTopics = unserialize(SocketMessage::uncompress($serializedUpdatedTopics));
         $this->logger->ln("recu : " . print_r($updatedTopics, true), 3);
 
         // foreach ($topicsData as $topicData) {

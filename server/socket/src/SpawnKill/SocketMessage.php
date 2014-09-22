@@ -16,7 +16,9 @@ class SocketMessage {
      */
     protected $data;
 
-    public function __construct() {
+    public function __construct($id, $data) {
+        $this->setId($id);
+        $this->setData($data);
     }
 
     /**
@@ -24,7 +26,6 @@ class SocketMessage {
      * @param String $json du type {id:{my:data}}
      */
     public static function fromJson($json) {
-        $message = new SocketMessage();
         $data = json_decode($json);
 
         if($data === null ||
@@ -35,15 +36,12 @@ class SocketMessage {
             return false;
         }
 
-        $message->setId(key($data));
-        $message->setData(current($data));
+        $message = new SocketMessage(key($data), current($data));
         return $message;
     }
 
     public static function fromData($id, $data) {
-        $message = new SocketMessage();
-        $message->setId($id);
-        $message->setData($data);
+        $message = new SocketMessage($id, $data);
         return $message;
     }
 
@@ -67,5 +65,13 @@ class SocketMessage {
         return json_encode(array(
             $this->id => $this->data
         ));
+    }
+
+    public static function compress($data) {
+        return utf8_encode(gzdeflate($data));
+    }
+
+    public static function uncompress($data) {
+        return gzinflate(utf8_decode($data));
     }
 }
