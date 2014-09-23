@@ -145,6 +145,10 @@ class MainSocketServer implements MessageComponentInterface {
         //On parcourt les mises à jour de topics
         foreach ($updatedTopics as $updatedTopic) {
 
+            if(!isset($this->topics[$updatedTopic->getId()])) {
+                continue;
+            }
+
             $currentTopic = $this->topics[$updatedTopic->getId()];
 
             $this->logger->ln("Verification du topic {$updatedTopic->getId()}...", 3);
