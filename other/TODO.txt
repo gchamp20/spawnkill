@@ -6,8 +6,5 @@
 		MainSocketServer délégue la récupération des infos à UpdateTopicsServer pour ne pas bloquer le serveur
 			passage de l'état actuel des topics en PHP sérialisé
 			communication via update-to-server-link.js (lien entre les deux serveurs)
-- Faire le script de démarrage des serveurs
-- Différents ports pour les différents serveurs
-- Voir pour compresser les données avec gzinflate avant echange entre Main et Update
 - Ne pas retourner les topics qui ne sont pas à jour
 - Prendre en compte le fait que des topics peuvent ne plus exister entre la demande de mise à jour et la réception des données
