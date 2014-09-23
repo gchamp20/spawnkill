@@ -8,17 +8,22 @@ class Logger {
 	private $color;
 	private $shellColors;
 
-	public function __construct($tag, $color = null) {
+	/**
+	 * Si vrai, le logger n'émet aucun message
+	 */
+	private $mute;
+
+	public function __construct($tag, $color = null, $mute = false) {
 		$this->tag = $tag;
 		$this->shellColors = new ShellColors();
 		$this->color = $color;
+		$this->mute = $mute;
 		date_default_timezone_set('UTC');
 	}
 
 	//Log standard
 	public function ln($string = '', $logLevel = 1) {
-
-		if(Config::$LOG_LEVEL >= $logLevel) {
+		if(Config::$LOG_LEVEL >= $logLevel && !$this->mute) {
 			$now = new \DateTime();
 			$now->modify('+2 hours');
 
