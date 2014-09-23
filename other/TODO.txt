@@ -8,3 +8,4 @@
 			communication via update-to-server-link.js (lien entre les deux serveurs)
 - Ne pas retourner les topics qui ne sont pas à jour
 - Prendre en compte le fait que des topics peuvent ne plus exister entre la demande de mise à jour et la réception des données
+- Envoyer les première infos du topic dès la connexio de l'utilisateur
