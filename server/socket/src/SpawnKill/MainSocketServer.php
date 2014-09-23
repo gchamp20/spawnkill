@@ -142,33 +142,39 @@ class MainSocketServer implements MessageComponentInterface {
         $updatedTopics = unserialize(SocketMessage::uncompress($serializedUpdatedTopics));
         $this->logger->ln("recu : " . print_r($updatedTopics, true), 3);
 
-        // foreach ($topicsData as $topicData) {
+        //On parcourt les mises à jour de topics
+        foreach ($updatedTopics as $updatedTopic) {
 
-        //     $this->logger->ln("Topic '{$topicData->topic->getId()}' récupéré...");
-        //     //On ne fait rien en cas d'erreur
-        //     if (!$topicData->data->error) {
+            $currentTopic = $this->topics[$updatedTopic->getId()];
 
-        //         //Si le nombre de posts du topic a changé ou que le topic vient d'être locké
-        //         if ($topicData->data->locked ||
-        //             (
-        //                 isset($topicData->data->postCount) &&
-        //                 $topicData->data->postCount > $topicData->topic->getPostCount()
-        //             )
-        //         ) {
-        //             $this->logger->ln("Modifié !");
-        //             //On met à jour les infos du topic
-        //             if (isset($topicData->data->postCount)) {
-        //                 $topicData->topic->setPostCount($topicData->data->postCount);
-        //             }
+            $this->logger->ln("Verification du topic {$updatedTopic->getId()}...", 3);
 
-        //             $topicData->topic->setLocked($topicData->data->locked);
+            //On ne traite pas les topics en erreur
+            if($updatedTopic->error) {
+                $this->logger->ln("Erreur pour le topic {$updatedTopic->getId()}...", 3);
+                continue;
+            }
 
-        //             //On envoie les données aux followers
-        //             $topicData->topic->sendInfosToFollowers();
-        //         }
-        //     }
-        // }
+            $this->logger->ln("Données à jour : " . print_r($updatedTopic, true) . "...", 3);
+            $this->logger->ln("Données actuelles : " . print_r(unserialize(serialize($currentTopic)), true) . "...", 3);
 
+            //On détermine si on doit pousser la nouvelle info aux clients (le nombre de posts a changé
+            //  ou le topic vient d'être locké).
+            if(
+                !$currentTopic->isLocked() && $updatedTopic->isLocked() || //le topic vient d'être locké
+                $currentTopic->getPostCount() !== $updatedTopic->getPostCount() //Nombre de posts différent
+            ) {
+                $this->logger->ln("Topic {$updatedTopic->getId()} modifie !", 3);
+
+                //On met à jour le topic
+                $currentTopic->setPostCount($updatedTopic->getPostCount());
+                $currentTopic->setPageCount($updatedTopic->getPageCount());
+                $currentTopic->setLocked($updatedTopic->isLocked());
+
+                //On envoie les données aux followers si besoin
+                $currentTopic->sendInfosToFollowers();
+            }
+        }
     }
 
     /**

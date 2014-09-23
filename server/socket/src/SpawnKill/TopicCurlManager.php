@@ -20,7 +20,7 @@ class TopicCurlManager extends SpawnKillCurlManager {
         parent::__construct();
 
         $this->topics = array();
-        $this->logger = new Logger("upda", "brown");
+        $this->logger = new Logger("curl", "brown", true);
 
     }
 

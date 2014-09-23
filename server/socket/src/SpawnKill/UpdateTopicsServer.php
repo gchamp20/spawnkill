@@ -25,7 +25,7 @@ class UpdateTopicsServer implements MessageComponentInterface {
 
     public function __construct() {
 
-        $this->logger = new Logger("upda", "yellow");
+        $this->logger = new Logger("upda", "yellow", true);
         $this->curlm = new TopicCurlManager();
     }
 
