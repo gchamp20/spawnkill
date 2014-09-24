@@ -18,7 +18,7 @@
 // @require     modules/Module.js?v1.15
 // @require     modules/SpawnkillBase.js?v1.15
 // @require     modules/Settings.js?v1.15
-// @require     modules/SocketClient.js?v1.15
+// @require     modules/SocketConnection.js?v1.15
 // @require     modules/QuickResponse.js?v1.15
 // @require     modules/Quote.js?v1.15
 // @require     modules/Shortcuts.js?v1.15

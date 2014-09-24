@@ -15,7 +15,7 @@ mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.defaul
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\Module.js" "C:\wamp\www\spawnkill\modules\Module.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\SpawnkillBase.js" "C:\wamp\www\spawnkill\modules\SpawnkillBase.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\Settings.js" "C:\wamp\www\spawnkill\modules\Settings.js"
-mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\SocketClient.js" "C:\wamp\www\spawnkill\modules\SocketClient.js"
+mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\SocketConnection.js" "C:\wamp\www\spawnkill\modules\SocketConnection.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\QuickResponse.js" "C:\wamp\www\spawnkill\modules\QuickResponse.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\Quote.js" "C:\wamp\www\spawnkill\modules\Quote.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\Shortcuts.js" "C:\wamp\www\spawnkill\modules\Shortcuts.js"
