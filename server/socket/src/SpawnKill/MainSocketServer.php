@@ -168,12 +168,13 @@ class MainSocketServer implements MessageComponentInterface {
                 !$currentTopic->isLocked() && $updatedTopic->isLocked() || //le topic vient d'être locké
                 $currentTopic->getPostCount() !== $updatedTopic->getPostCount() //Nombre de posts différent
             ) {
-                $this->logger->ln("Topic {$updatedTopic->getId()} modifie !", 3);
+                $this->logger->ln("Topic {$updatedTopic->getId()} modifie !", 2);
 
                 //On met à jour le topic
                 $currentTopic->setPostCount($updatedTopic->getPostCount());
                 $currentTopic->setPageCount($updatedTopic->getPageCount());
                 $currentTopic->setLocked($updatedTopic->isLocked());
+                $currentTopic->setDataFetched(true);
 
                 //On envoie les données aux followers si besoin
                 $currentTopic->sendInfosToFollowers();
@@ -190,10 +191,17 @@ class MainSocketServer implements MessageComponentInterface {
             return;
         }
         $this->logger->ln("Ajout du suivi du topic '$topicId' au client '{$client->resourceId}' ...", 2);
+
         //Si le topic n'est pas déjà suivi
         if(!isset($this->topics[$topicId])) {
             $this->logger->ln("Nouveau topic suivi : '{$topicId}'", 2);
             $this->topics[$topicId] = new Topic($topicId);
+        }
+        //Si le topic est déjà suivi et que le serveur a des infos sur celui-ci
+        else if($this->topics[$topicId]->getDataFetched()) {
+
+            //On envoie ces infos au nouveau follower
+            $this->topics[$topicId]->sendInfosTo($client);
         }
 
         $this->topics[$topicId]->addFollower($client);

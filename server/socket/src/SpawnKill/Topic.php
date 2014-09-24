@@ -32,6 +32,11 @@ class Topic implements \Serializable {
      */
     protected $locked = false;
 
+    /**
+     * Vrai si des infos ont déjà été récupérées pour ce topic.
+     */
+    protected $dataFetched = false;
+
     //Attributs temporaires utilisés pour la récupération des données, à revoir.
     public $error = false;
     public $upToDate = false;
@@ -88,6 +93,14 @@ class Topic implements \Serializable {
         return $this->pageCount;
     }
 
+    public function getDataFetched() {
+        return $this->dataFetched;
+    }
+
+    public function setDataFetched($dataFetched) {
+        $this->dataFetched = $dataFetched;
+    }
+
     /**
      * Retourne l'url de la page du topic passée en paramètre.
      */
@@ -117,6 +130,13 @@ class Topic implements \Serializable {
         foreach ($this->followers as $follower) {
             $follower->send(json_encode($this->getInfos()));
         }
+    }
+
+    /**
+     * Envoie les infos du topic à une connexion en particulier.
+     */
+    public function sendInfosTo($follower) {
+        $follower->send(json_encode($this->getInfos()));
     }
 
     public function serialize() {
