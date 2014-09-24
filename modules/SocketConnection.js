@@ -16,7 +16,7 @@ SK.moduleConstructors.SocketConnection.prototype.hidden = true;
 /**
  * Vrai si le client est connecté au serveur de websocket.
  */
-SK.moduleConstructors.SocketConnection.prototype.connected = true;
+SK.moduleConstructors.SocketConnection.prototype.connected = false;
 
 SK.moduleConstructors.SocketConnection.prototype.init = function() {
 	var conn = new WebSocket(SK.common.SOCKET_SERVER_URL + ":" + SK.common.SOCKET_SERVER_PORT);
