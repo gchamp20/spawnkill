@@ -8,12 +8,18 @@
 window.SK = {
 
 	/**
+	 * Configuration du script
+	 */
+	config: {
+		SOCKET_SERVER_URL: "ws://localhost",
+		SOCKET_SERVER_PORT: 8080
+	},
+
+	/**
 	 * Réuni les variables communes à tous les modules.
 	 */
 	common: {
 
-		SOCKET_SERVER_URL: "ws://localhost",
-		SOCKET_SERVER_PORT: 8080,
 		/**
 		 * Types de pages de JVC
 		 */
