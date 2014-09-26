@@ -25,7 +25,7 @@ class UpdateTopicsServer implements MessageComponentInterface {
 
     public function __construct() {
 
-        $this->logger = new Logger("upda", "yellow", true);
+        $this->logger = new Logger("upda", "yellow", false);
         $this->curlm = new TopicCurlManager();
     }
 
@@ -62,7 +62,7 @@ class UpdateTopicsServer implements MessageComponentInterface {
             $message = SocketMessage::fromJson($json);
 
             if($message === false) {
-                $this->logger->ln("Nouveau message mal formate : '{$json}'", 2);
+                $this->logger->ln("Nouveau message mal formate : '{$json}'", -1);
                 return;
             }
 

@@ -23,7 +23,7 @@ class SocketMessage {
 
     /**
      * Retourne un message à partir d'une chaîne json
-     * @param String $json du type {id:{my:data}}
+     * @param String $json du type { id: "identifiant", data: "données" }
      */
     public static function fromJson($json) {
         $messageObject = json_decode($json);

@@ -68,7 +68,7 @@ mainClient.on("connect", function(connection) {
 
     //Envoi d'un message de synchronisation au serveur principal
     mainConnection.sendUTF(JSON.stringify({
-        linkUpdateServer: "",
+        id: "linkUpdateServer"
     }));
 
     console.ln("Connecté au serveur principal.");

@@ -65,7 +65,7 @@ class MainSocketServer implements MessageComponentInterface {
         $message = SocketMessage::fromJson($json);
 
         if($message === false) {
-            $this->logger->ln("Nouveau message mal formate : '{$json}'", 2);
+            $this->logger->ln("Nouveau message mal formate : '{$json}'", -1);
             return;
         }
 
