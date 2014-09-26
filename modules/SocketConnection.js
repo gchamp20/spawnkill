@@ -36,16 +36,21 @@ SK.moduleConstructors.SocketConnection.prototype.openServerConnection = function
 	this.serverConnection = new WebSocket(SK.config.SOCKET_SERVER_URL + ":" + SK.config.SOCKET_SERVER_PORT);
 
 	this.serverConnection.onopen = function() {
-		// for (var i in this.onConnectedListeners) {
-			// this.onConnectedListeners[i]();
-		// }
+		for (var i in this.onConnectedListeners) {
+			this.onConnectedListeners[i]();
+		}
 
-	    // this.serverConnection.send(JSON.stringify({startFollowingTopic: SK.common.topicId}));
-	};
+	    this.serverConnection.send(JSON.stringify({startFollowingTopic: SK.common.topicId}));
+	}.bind(this);
 
 	this.serverConnection.onmessage = function(event) {
+
 		console.log(JSON.parse(event.data));
-	};
+
+		for (var i in this.onConnectedListeners) {
+			this.onConnectedListeners[i]();
+		}
+	}.bind(this);
 };
 
 /**

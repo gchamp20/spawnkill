@@ -7,6 +7,16 @@
 			passage de l'état actuel des topics en PHP sérialisé
 			communication via update-to-server-link.js (lien entre les deux serveurs)
 
+Changer la structure des SocketMessage :
+{
+	id: "action",
+	data: "données"
+}
+plutôt que
+{
+	"action": "données"
+}
+
 Client :
 	SocketConnection
 		Lance le client
