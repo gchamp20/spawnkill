@@ -15,6 +15,7 @@
 // @require     SlideToggle.js?v1.15
 // @require     Modal.js?v1.15
 // @require     DropdownList.js?v1.15
+// @require     FaviconNotificationUpdater.js?v1.15
 // @require     SocketMessage.js?v1.15
 // @require     modules/Module.js?v1.15
 // @require     modules/SpawnkillBase.js?v1.15
