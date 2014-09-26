@@ -128,7 +128,7 @@ class Topic implements \Serializable {
     public function sendInfosToFollowers() {
 
         foreach ($this->followers as $follower) {
-            $follower->send(json_encode($this->getInfos()));
+            $this->sendInfosTo($follower);
         }
     }
 
@@ -136,7 +136,8 @@ class Topic implements \Serializable {
      * Envoie les infos du topic à une connexion en particulier.
      */
     public function sendInfosTo($follower) {
-        $follower->send(json_encode($this->getInfos()));
+        $message = SocketMessage::fromData('topicInfos', $this->getInfos());
+        $follower->send($message->toJson());
     }
 
     public function serialize() {
