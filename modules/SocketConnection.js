@@ -33,20 +33,28 @@ SK.moduleConstructors.SocketConnection.prototype.init = function() {
  */
 SK.moduleConstructors.SocketConnection.prototype.openServerConnection = function() {
 
+	//On ouvre une connexion au serveur
 	this.serverConnection = new WebSocket(SK.config.SOCKET_SERVER_URL + ":" + SK.config.SOCKET_SERVER_PORT);
 
+	//Connexion ouverte : On prévient les listeners
 	this.serverConnection.onopen = function() {
 		for (var i in this.onConnectedListeners) {
 			this.onConnectedListeners[i]();
 		}
 
-	    this.serverConnection.send(JSON.stringify({startFollowingTopic: SK.common.topicId}));
 	}.bind(this);
 
+	//Nouveau message : On parse le message et on prévient les listeners
 	this.serverConnection.onmessage = function(event) {
 
-		console.log(JSON.parse(event.data));
+		var message = SK.SocketMessage.fromJson(event.data);
 
+		//Message mal formaté, on laisse tomber
+		if(message === false) {
+			return;
+		}
+
+		//On averti tous les listeners
 		for (var i in this.onConnectedListeners) {
 			this.onConnectedListeners[i]();
 		}
@@ -93,7 +101,10 @@ SK.moduleConstructors.SocketConnection.prototype.addOnConnectedListener = functi
  * Attention, la connexion doit être en place.
  */
 SK.moduleConstructors.SocketConnection.prototype.sendMessage = function(id, data) {
-	// this.serverConnection.send();
+
+	data = data || null;
+	var message = SK.SocketMessage.fromData(id, data);
+	this.serverConnection.send(message.toJson());
 };
 
 /**
