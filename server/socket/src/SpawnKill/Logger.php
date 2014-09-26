@@ -2,6 +2,10 @@
 namespace SpawnKill;
 use SpawnKill\ShellColors;
 
+/**
+ * Classe de log
+ * À revoir, les niveaux de logs doivent être mieux définis.
+ */
 class Logger {
 
 	private $tag;
@@ -21,16 +25,31 @@ class Logger {
 		date_default_timezone_set('UTC');
 	}
 
-	//Log standard
+	/**
+	 * Méthode de log standard
+	 * $logLevel
+	 * 	1 : logs principaux
+	 *  2 : logs secondaires
+	 *  3 : logs verbeux
+	 *  -1: erreur
+	 */
 	public function ln($string = '', $logLevel = 1) {
+
 		if(Config::$LOG_LEVEL >= $logLevel && !$this->mute) {
 			$now = new \DateTime();
 			$now->modify('+2 hours');
 
 			$tag = '[' . $now->format('d-m H:i:s') . ' ' . $this->tag . '] ';
 
+			if($logLevel === -1) {
+				$color = "red";
+			}
+			else {
+				$color = $this->color;
+			}
+
 			if(Config::$COLOR_SHELL === true) {
-				$tag = $this->shellColors->getColoredString($tag, $this->color);
+				$tag = $this->shellColors->getColoredString($tag, $color);
 			}
 
 			echo $tag . $string . "\n";

@@ -103,15 +103,16 @@ updateClient.on("connect", function(connection) {
     console.ln("Connecté au serveur de mise à jour, tout est en place.");
 
     mainConnection.sendUTF(JSON.stringify({
-        "ping" : "fromLink"
+        id: "ping",
+        data: "Ping depuis le lien !"
     }));
 
     updateConnection.sendUTF(JSON.stringify({
-        "ping" : "fromLink"
+        id: "ping",
+        data: "Ping depuis le lien !"
     }));
 
 });
-
 
 //Connexion au serveur principal
 mainClient.connect("ws://localhost:8080/");

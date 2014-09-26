@@ -28,9 +28,11 @@ client.on("connect", function(connection) {
 
 	//On demande régulièrement de mettre à jour les données
 	setInterval(function() {
-		connection.sendUTF(JSON.stringify({"updateTopicsAndPushInfos": true}));
+		connection.sendUTF(JSON.stringify({
+            id: "updateTopicsAndPushInfos"
+        }));
 	}, UPDATE_INTERVAL_MS);
-	
+
 
     connection.on("error", function(error) {
         console.log("Connection Error: " + error.toString());

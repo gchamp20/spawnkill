@@ -26,21 +26,24 @@ class SocketMessage {
      * @param String $json du type {id:{my:data}}
      */
     public static function fromJson($json) {
-        $data = json_decode($json);
+        $messageObject = json_decode($json);
 
-        if($data === null ||
-            !is_object($data) ||
-            key($data) === null ||
-            current($data) === false
+        if($messageObject === null ||
+            !is_object($messageObject) ||
+            !isset($messageObject->id) ||
+            !is_string($messageObject->id)
         ) {
             return false;
         }
 
-        $message = new SocketMessage(key($data), current($data));
+        $id = $messageObject->id;
+        $data = isset($messageObject->data) ? $messageObject->data : null;
+
+        $message = new SocketMessage($id, $data);
         return $message;
     }
 
-    public static function fromData($id, $data) {
+    public static function fromData($id, $data = null) {
         $message = new SocketMessage($id, $data);
         return $message;
     }
@@ -63,7 +66,8 @@ class SocketMessage {
 
     public function toJson() {
         return json_encode(array(
-            $this->id => $this->data
+            "id" => $this->id,
+            "data" => $this->data
         ));
     }
 
