@@ -11,6 +11,7 @@ mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.defaul
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\SlideToggle.js" "C:\wamp\www\spawnkill\SlideToggle.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\Modal.js" "C:\wamp\www\spawnkill\Modal.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\DropdownList.js" "C:\wamp\www\spawnkill\DropdownList.js"
+mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\SocketMessage.js" "C:\wamp\www\spawnkill\SocketMessage.js"
 
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\Module.js" "C:\wamp\www\spawnkill\modules\Module.js"
 mklink "C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\SpawnkillBase.js" "C:\wamp\www\spawnkill\modules\SpawnkillBase.js"
