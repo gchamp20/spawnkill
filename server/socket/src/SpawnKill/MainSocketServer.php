@@ -197,12 +197,6 @@ class MainSocketServer implements MessageComponentInterface {
             $this->logger->ln("Nouveau topic suivi : '{$topicId}'", 2);
             $this->topics[$topicId] = new Topic($topicId);
         }
-        //Si le topic est déjà suivi et que le serveur a des infos sur celui-ci
-        else if($this->topics[$topicId]->getDataFetched()) {
-
-            //On envoie ces infos au nouveau follower
-            $this->topics[$topicId]->sendInfosTo($client);
-        }
 
         $this->topics[$topicId]->addFollower($client);
     }
