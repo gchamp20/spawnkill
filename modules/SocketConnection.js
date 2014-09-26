@@ -18,7 +18,7 @@ SK.moduleConstructors.SocketConnection.prototype.hidden = true;
  */
 SK.moduleConstructors.SocketConnection.prototype.serverConnection = null;
 
-SK.moduleConstructors.SocketConnection.prototype.onConnectedListeners = [];
+SK.moduleConstructors.SocketConnection.prototype.onConnectListeners = [];
 SK.moduleConstructors.SocketConnection.prototype.onMessageListeners = {};
 SK.moduleConstructors.SocketConnection.prototype.onCloseListeners = [];
 
@@ -38,8 +38,8 @@ SK.moduleConstructors.SocketConnection.prototype.openServerConnection = function
 
 	//Connexion ouverte : On prévient les listeners
 	this.serverConnection.onopen = function() {
-		for (var i in this.onConnectedListeners) {
-			this.onConnectedListeners[i]();
+		for (var i in this.onConnectListeners) {
+			this.onConnectListeners[i]();
 		}
 
 	}.bind(this);
@@ -50,14 +50,26 @@ SK.moduleConstructors.SocketConnection.prototype.openServerConnection = function
 		var message = SK.SocketMessage.fromJson(event.data);
 
 		//Message mal formaté, on laisse tomber
-		if(message === false) {
+		if (message === false) {
 			return;
 		}
 
 		//On averti tous les listeners
-		for (var i in this.onConnectedListeners) {
-			this.onConnectedListeners[i]();
+		if (typeof this.onMessageListeners[message.id] !== "undefined") {
+
+			for (var i in this.onMessageListeners[message.id]) {
+				this.onMessageListeners[message.id][i](message.data);
+			}
 		}
+	}.bind(this);
+
+	//Connexion fermée : On prévient les listeners
+	this.serverConnection.onclose = function() {
+
+		for (var i in this.onCloseListeners) {
+			this.onCloseListeners[i]();
+		}
+
 	}.bind(this);
 };
 
@@ -65,11 +77,11 @@ SK.moduleConstructors.SocketConnection.prototype.openServerConnection = function
  * Ajoute un listener executée quand un message d'id passé en paramètre est reçu.
  * Les données reçues sont passées en paramètre du listener.
  * @param {String} id ID du message
- * @param {function} listener Fonction executée à la réception du message
+ * @param {function} listener Fonction executée à la réception du message avec les données reçues en paramètre
  */
 SK.moduleConstructors.SocketConnection.prototype.addOnMessageListener = function(id, listener) {
 
-	if(typeof this.onMessageListeners[id] === "undefined") {
+	if (typeof this.onMessageListeners[id] === "undefined") {
 		this.onMessageListeners[id] = [];
 	}
 	this.onMessageListeners[id].push(listener);
@@ -79,6 +91,7 @@ SK.moduleConstructors.SocketConnection.prototype.addOnMessageListener = function
  * Ajoute un listener executé quand la connexion est fermée.
  */
 SK.moduleConstructors.SocketConnection.prototype.addOnCloseListener = function(listener) {
+
 	this.onCloseListeners.push(listener);
 };
 
@@ -87,12 +100,12 @@ SK.moduleConstructors.SocketConnection.prototype.addOnCloseListener = function(l
  * Si this.isConnected est vrai, exécute immédiatement la fonction,
  * sinon, ajoute la fonction aux listeners de l'onOpen event.
  */
-SK.moduleConstructors.SocketConnection.prototype.addOnConnectedListener = function(listener) {
+SK.moduleConstructors.SocketConnection.prototype.addOnConnectListener = function(listener) {
 	if(this.isConnected()) {
 		listener();
 	}
 	else {
-		this.onConnectedListeners.push(listener);
+		this.onConnectListeners.push(listener);
 	}
 };
 
