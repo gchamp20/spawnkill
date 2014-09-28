@@ -6,3 +6,5 @@
 		MainSocketServer délégue la récupération des infos à UpdateTopicsServer pour ne pas bloquer le serveur
 			passage de l'état actuel des topics en PHP sérialisé
 			communication via update-to-server-link.js (lien entre les deux serveurs)
+
+- Corriger le problème des topics qui lockent sans raison
