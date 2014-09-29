@@ -9,3 +9,4 @@
 
 - Corriger le problème des topics qui lockent sans raison
 - Corriger les topics lockés qui n'apparaissent pas lockés la première fois
+- Corriger les topics qui affichent parfois une erreur quand on rafraichit la page

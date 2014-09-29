@@ -119,8 +119,10 @@ class TopicCurlManager extends SpawnKillCurlManager {
         //On lie ces données aux topics correspondants
         for($i = 0; $i < count($requestsData); $i++) {
 
+            $this->logger->ln('Donnees brutes[' . $i . ']: ' . print_r($requestsData[$i], true), 3);
+
             $topicData = $this->parseTopicData($requestsData[$i]);
-            $this->logger->ln('Donnee ' . ($i + 1) . ': ' . print_r($topicData, true), 3);
+            $this->logger->ln('Donnee[' . $i . ']: ' . print_r($topicData, true), 3);
 
             //En cas d'erreur, on n'enregistre aucune donnée et on marque le topic en "erreur"
             if($topicData === false) {
