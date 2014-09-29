@@ -1,5 +1,6 @@
 <?php
 namespace SpawnKill;
+use SpawnKill\Config;
 
 /**
  * Wrapper de CurlManager permettant de faire facilement des requêtes
@@ -9,7 +10,7 @@ class SpawnKillCurlManager extends MultiCurlManager {
 
     protected $apiUsername = 'appandr';
     protected $apiPassword = 'e32!cdf';
-    protected $timeoutMs = 1000;
+    protected $timeoutMs = Config::CURL_TIMEOUT_MS;
 
 
     public function __construct() {
