@@ -10,12 +10,14 @@ class SpawnKillCurlManager extends MultiCurlManager {
 
     protected $apiUsername = 'appandr';
     protected $apiPassword = 'e32!cdf';
-    protected $timeoutMs = Config::CURL_TIMEOUT_MS;
+    protected $timeoutMs = 0;
 
 
     public function __construct() {
 
         parent::__construct();
+
+        $this->timeoutMs = Config::$CURL_TIMEOUT_MS;
 
         $this->setOptions(array(
             CURLOPT_RETURNTRANSFER => true,
