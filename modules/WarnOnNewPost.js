@@ -55,10 +55,7 @@ SK.moduleConstructors.WarnOnNewPost.prototype.requestTopicUpdates = function() {
 	//Quand on reçoit une mise à jour des infos du topic
 	client.addOnMessageListener("topicInfos", function(topicInfos) {
 
-		//On joue un son
-		if(this.getSetting("playSoundOnNewPost")) {
-			this.notificationSound.play();
-		}
+		var playSound = this.getSetting("playSoundOnNewPost");
 
 		//En cas de lock, on affiche une erreur dans le favicon
 		if(topicInfos.locked) {
@@ -70,6 +67,7 @@ SK.moduleConstructors.WarnOnNewPost.prototype.requestTopicUpdates = function() {
 			//Cas de la réception initiale des infos
 			if (this.initialPostCount === 0) {
 				this.initialPostCount = topicInfos.postCount;
+				playSound = false;
 			}
 
 			var postDifference = topicInfos.postCount - this.initialPostCount;
@@ -78,6 +76,11 @@ SK.moduleConstructors.WarnOnNewPost.prototype.requestTopicUpdates = function() {
 				this.faviconUpdater.showFaviconCount(postDifference);
 			}
 		}
+
+		if(playSound) {
+			this.notificationSound.play();
+		}
+
 	}.bind(this));
 
 	client.addOnConnectListener(function() {

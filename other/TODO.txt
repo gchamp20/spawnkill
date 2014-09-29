@@ -8,3 +8,4 @@
 			communication via update-to-server-link.js (lien entre les deux serveurs)
 
 - Corriger le problème des topics qui lockent sans raison
+- Corriger les topics lockés qui n'apparaissent pas lockés la première fois
