@@ -1,5 +1,6 @@
+server.log
 no-git
-index.php
-server/socket/composer.lock
-server/socket/vendor
-server/socket/src/SpawnKill/Config.php
+/index.php
+/server/socket/composer.lock
+/server/socket/vendor
+/server/socket/src/SpawnKill/Config.php
