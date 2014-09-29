@@ -158,8 +158,10 @@ class TopicCurlManager extends SpawnKillCurlManager {
 
         $topicData = new \stdClass();
 
-        //Erreur
-        if($requestResult->httpCode >= 400) {
+        //Erreur si le code HTTP est supérieur à 100 ou que les données sont incomplètes
+        //(pas de balise fermante)
+        preg_match('/<\\/detail_topic>/', $requestResult->data, $matches);
+        if($requestResult->httpCode >= 400 || empty($matches)) {
             return false;
         }
 
