@@ -90,7 +90,12 @@ SK.moduleConstructors.WarnOnNewPost.prototype.requestTopicUpdates = function() {
 
 	//En cas d'erreur, on affiche une notif rouge (pour différencier des topics lockés)
 	client.addOnCloseListener(function() {
-		this.faviconUpdater.showFaviconError("red");
+
+		//Timeout de trois secondes pour éviter les erreurs au rechargement de la page
+		setTimeout(function() {
+			this.faviconUpdater.showFaviconError("red");
+		}, 3000);
+
 	}.bind(this));
 
 };

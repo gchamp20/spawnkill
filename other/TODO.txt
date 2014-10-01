@@ -1,3 +1,4 @@
+- Poster une version Beta des serveur de socket
 - Documentation de la structure actuelle et future du serveur
 	toute la communication se fait en messages JSON
 	serveur principal : MainSocketServer
@@ -7,6 +8,5 @@
 			passage de l'état actuel des topics en PHP sérialisé
 			communication via update-to-server-link.js (lien entre les deux serveurs)
 
-- Corriger le problème des topics qui lockent sans raison
-- Corriger les topics lockés qui n'apparaissent pas lockés la première fois
 - Corriger les topics qui affichent parfois une erreur quand on rafraichit la page
+- Sécuriser le serveur de sockets
