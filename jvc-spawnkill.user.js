@@ -5,6 +5,8 @@
 // @namespace   http://www.spixel.fr
 // @include     http://*.jeuxvideo.com*
 // @version     1.15
+// @downloadURL https://github.com/dorian-marchal/spawnkill/raw/master/jvc-spawnkill.user.js
+// @updateURL   https://github.com/dorian-marchal/spawnkill/raw/master/jvc-spawnkill.meta.js
 // @require     jquery-2.1.1.min.js?v1.15
 // @require     jquery-plugins.js?v1.15
 // @require     base.js?v1.15
