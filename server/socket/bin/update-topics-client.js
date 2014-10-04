@@ -7,11 +7,8 @@
  * topics et d'envoyer les mises à jours aux clients.
  */
 
-
-/**
- * Intervalle de mise à jour en ms.
- */
-var UPDATE_INTERVAL_MS = 3000;
+var UPDATE_INTERVAL_MS = 3000; //Intervalle de mise à jour en ms.
+var SERVER_PORT = 8080; // Adresse IP du serveur
 
 var WebSocketClient = require("websocket").client;
 
@@ -44,4 +41,4 @@ client.on("connect", function(connection) {
 
 });
 
-client.connect("ws://localhost:8080/");
+client.connect("ws://localhost:" + SERVER_PORT);

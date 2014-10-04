@@ -4,3 +4,4 @@ no-git
 /server/socket/composer.lock
 /server/socket/vendor
 /server/socket/src/SpawnKill/Config.php
+/server/config.php

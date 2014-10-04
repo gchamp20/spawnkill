@@ -11,8 +11,10 @@ window.SK = {
 	 * Configuration du script
 	 */
 	config: {
-		SOCKET_SERVER_URL: "ws://localhost",
-		SOCKET_SERVER_PORT: 8080
+		//Url du serveur (avec un slash à la fin)
+		SERVER_URL: "http://serveur.spawnkill.fr/",
+		SOCKET_SERVER_URL: "ws://serveur.spawnkill.fr",
+		SOCKET_SERVER_PORT: 4243
 	},
 
 	/**

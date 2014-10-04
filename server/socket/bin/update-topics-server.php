@@ -3,6 +3,7 @@ use Ratchet\Server\IoServer;
 use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 use SpawnKill\UpdateTopicsServer;
+use SpawnKill\Config;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -12,7 +13,7 @@ $server = IoServer::factory(
             new UpdateTopicsServer()
         )
     ),
-    8081
+    Config::$SERVER_UPDATE_PORT
 );
 
 $server->run();

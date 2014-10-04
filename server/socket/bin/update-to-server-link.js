@@ -12,6 +12,9 @@
  * qui est quand même bien crade (il faut l'avouer)
  */
 
+var SERVER_PORT = 8080; // Adresse IP du serveur
+var SERVER_UPDATE_PORT = 8081; // Adresse IP du serveur
+
 console.ln = function(string) {
     var now = new Date();
     now.setHours(now.getHours() + 2);
@@ -74,7 +77,7 @@ mainClient.on("connect", function(connection) {
     console.ln("Connecté au serveur principal.");
 
     //Connexion au serveur de mise à jour
-    updateClient.connect("ws://localhost:8081/");
+    updateClient.connect("ws://localhost:" + SERVER_UPDATE_PORT);
 
 });
 
@@ -115,6 +118,6 @@ updateClient.on("connect", function(connection) {
 });
 
 //Connexion au serveur principal
-mainClient.connect("ws://localhost:8080/");
+mainClient.connect("ws://localhost:" + SERVER_PORT);
 
 
