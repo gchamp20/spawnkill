@@ -97,7 +97,7 @@ SK.moduleConstructors.AutoUpdate.prototype.getLastRelease = function(callback) {
  	callback = callback || function() {};
 	//On appelle l'API Github
 	GM_xmlhttpRequest({
-		url: "http://dl.spixel.fr/greasemonkey/jvc-spawnkill/server/api-github.php?action=releases",
+		url: SK.config.SERVER_URL + "api-github.php?action=releases",
 		method: "GET",
 		onload: function(response) {
 			callback(JSON.parse(response.responseText)[0]);

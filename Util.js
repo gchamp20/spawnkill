@@ -59,7 +59,7 @@ SK.Util = {
         logApiCall = (logApiCall === false ? "0" : "1");
         forceCacheReload = (forceCacheReload === false ? "0" : "1");
 
-        var url = "http://dl.spixel.fr/greasemonkey/jvc-spawnkill/server/api-jvc.php?action=" + requestAction + 
+        var url = SK.config.SERVER_URL + "api-jvc.php?action=" + requestAction + 
             "&data=" + encodeURIComponent(JSON.stringify(data)) + "&log=" + logApiCall + "&forceCacheReload=" + forceCacheReload;
 
         GM_xmlhttpRequest({
