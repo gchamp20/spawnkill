@@ -65,6 +65,8 @@ cp server/config.default.php server/config.php
 nano server/config.php
 ```
 
+Ce fichier permet aussi de configurer vos infos Github pour pouvoir proposer les mises à jour aux utilisateurs du script (voir la doc de Github pour obtenir le client_id et le client_secret)
+
 Et lancer le script de création de la base de données (toujours depuis la racine du dépôt):
 
 ```
