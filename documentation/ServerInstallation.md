@@ -78,7 +78,8 @@ php5 server/create-database.php
 Depuis la racine du dépôt
 
 ```
-server/socket/bin/start-server.sh
+cd server/socket/bin
+./start-server.sh
 ```
 
 Note : par défaut, le serveur se lance sur les ports 8080 et 8081, ceci peut être modifié dans le fichier de configuration.

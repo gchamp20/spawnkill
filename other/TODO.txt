@@ -10,3 +10,4 @@
 
 - Corriger les topics qui affichent parfois une erreur quand on rafraichit la page
 - Sécuriser le serveur de sockets
+- Prendre en compte les topics supprimés (du type 'il n'y a pas de message')
