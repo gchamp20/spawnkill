@@ -33,7 +33,7 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
         var settingId = i;
         this.userSettings[settingId] = this.getSetting(settingId);
     }
-    
+
     if (this.getSetting("startGifWhenOnScreen")) {
 
         $(window).on("scroll", function() {
@@ -62,19 +62,19 @@ SK.moduleConstructors.EmbedMedia.ManageGifCanvas = {
         var $imageElement = $gif.parent();
         var gifWidth = $gif.width();
         var gifHeight = $gif.height();
-        
+
         // Création du canvas
         var canvas = document.createElement("canvas");
         canvas.width = gifWidth;
         canvas.height = gifHeight;
         canvas.style.display = "none";
         canvas.getContext("2d").drawImage($gif.get(0), 0, 0, gifWidth, gifHeight);
-        
+
         $gif.after($(canvas));
         $imageElement.addClass("gif");  // Ajout d'une classe spécifique pour prise en compte par le onScroll
         SK.moduleConstructors.EmbedMedia.ManageGifCanvas.swapGifCanvas($imageElement);
     },
-    
+
     /**
     * Alterne entre gif et canvas suivant la position sur l'écran
     */
@@ -112,7 +112,7 @@ SK.moduleConstructors.EmbedMedia.GfyApi = {
      * @param {string} url Url du gif à tester
      * @param {function} callback Fonction appelée avec la réponse de l'appel,
      *    voir la doc pour plus d'infos : http://gfycat.com/api
-     */ 
+     */
     testGif: function(url, callback) {
         GM_xmlhttpRequest({
             method: "GET",
@@ -128,7 +128,7 @@ SK.moduleConstructors.EmbedMedia.GfyApi = {
      * @param {string} url Url du gif à convertir
      * @param {function} callback Fonction appelée avec la réponse de l'appel,
      *    voir la doc pour plus d'infos : http://gfycat.com/api
-     */ 
+     */
     convertGif: function(gifUrl, callback) {
         GM_xmlhttpRequest({
             method: "POST",
@@ -150,7 +150,7 @@ SK.moduleConstructors.EmbedMedia.GfyApi = {
      * Retourne le lien vers la vidéos webm correspondant au gif passé en paramètre.
      * @param {string} url Url du gif à convertir
      * @param {function} callback Fonction appelée avec l'url de la vidéo en paramètre ou false en cas d'erreur
-     */ 
+     */
     getWebmFromGif: function(gifUrl, callback) {
         SK.moduleConstructors.EmbedMedia.GfyApi.testGif(gifUrl, function(check) {
             if(check.urlKnown) {
@@ -199,7 +199,7 @@ SK.moduleConstructors.EmbedMedia.prototype.mediaTypes = [];
  * Modifie le statut (lecture / pause) du GIF (.webm) suivant sa visibilité sur l'écran
  */
 SK.moduleConstructors.EmbedMedia.prototype.updateWebmStatus = function($gif) {
-    
+
     var isVisibleOnScreen = $gif.isVisibleOnScreen() || $gif.isOversized(0.9);
     var gif = $gif.get(0);
     var isPaused = gif.paused;
@@ -285,10 +285,10 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                     //En cas d'erreur, fallback à l'embed classique
                     if(typeof webmLink === "undefined") {
                         $el.html($imageEmbed);
-                        
+
                         if (self.getSetting("startGifWhenOnScreen")) {
                             // On attend le chargement complet du GIF, sinon le canvas sera vide
-                            $imageEmbed.one("load", function() { 
+                            $imageEmbed.one("load", function() {
                                 SK.moduleConstructors.EmbedMedia.ManageGifCanvas.createCanvas($imageEmbed);
                             });
                             $imageEmbed.attr("src", $imageEmbed.attr("src"));
@@ -577,7 +577,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         }
 
     }));
-    
+
     //Vine
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
@@ -626,21 +626,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
             var $el = $("<div>");
 
             var donationLabels = [
-                "Nourrir mon chat <img alt=':hap:' src='http://image.jeuxvideo.com/smileys_img/18.gif'>",
-                "Me payer une gauffre",
                 "Me payer une bière",
-                "Me payer l'apéro",
-                "Me payer un kebab",
-                "Me payer un coca",
-                "Me payer une clope",
-                "M'acheter des chewing-gums",
-                "M'acheter des bonbons",
-                "M'acheter une pizza",
-                "M'offrir un Humble Bundle",
-                "Payer une partie du serveur",
-                "M'offrir un café",
-                "Apprivoiser un développeur",
-                "Nourrir un développeur"
             ];
             var donationLabel = donationLabels[Math.floor(Math.random() * donationLabels.length)];
 
