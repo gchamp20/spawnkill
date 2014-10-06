@@ -86,7 +86,17 @@ Note : par défaut, le serveur se lance sur les ports 8080 et 8081, ceci peut ê
 `stdout` et `stderr` peuvent être redirigées vers un éventuel fichier de log de cette façon :
 
 ```
-server/socket/bin/start-server.sh &> /var/log/spawnkill/server.log
+cd server/socket/bin
+./start-server.sh &> /var/log/spawnkill/server.log
+```
+
+Attention, si le shell est fermé, le serveur est coupé.
+Pour éviter ça, il est possible d'utiliser screen pour détacher le processus du shell :
+
+```
+cd server/socket/bin
+screen
+./start-server.sh &> /var/log/spawnkill/server.log
 ```
 
 ### Couper le serveur
