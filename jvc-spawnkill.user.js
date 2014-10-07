@@ -4,74 +4,74 @@
 // @author      Spixel_
 // @namespace   http://www.spixel.fr
 // @include     http://*.jeuxvideo.com*
-// @version     1.15
+// @version     1.15.0.1
 // @downloadURL https://github.com/dorian-marchal/spawnkill/raw/master/jvc-spawnkill.user.js
 // @updateURL   https://github.com/dorian-marchal/spawnkill/raw/master/jvc-spawnkill.meta.js
-// @require     jquery-2.1.1.min.js?v1.15
-// @require     jquery-plugins.js?v1.15
-// @require     base.js?v1.15
-// @require     Util.js?v1.15
-// @require     Message.js?v1.15
-// @require     Author.js?v1.15
-// @require     Button.js?v1.15
-// @require     SlideToggle.js?v1.15
-// @require     Modal.js?v1.15
-// @require     DropdownList.js?v1.15
-// @require     FaviconNotificationUpdater.js?v1.15
-// @require     SocketMessage.js?v1.15
-// @require     modules/Module.js?v1.15
-// @require     modules/SpawnkillBase.js?v1.15
-// @require     modules/Settings.js?v1.15
-// @require     modules/SocketConnection.js?v1.15
-// @require     modules/QuickResponse.js?v1.15
-// @require     modules/Quote.js?v1.15
-// @require     modules/Shortcuts.js?v1.15
-// @require     modules/InfosPseudo.js?v1.15
-// @require     modules/HilightNewTopic.js?v1.15
-// @require     modules/LastPage.js?v1.15
-// @require     modules/EmbedMedia.js?v1.15
-// @require     modules/WarnOnNewPost.js?v1.15
-// @require     modules/AutoUpdate.js?v1.15
-// @require     modules/PemtHighlight.js?v1.15
-// @require     modules/Usability.js?v1.15
-// @resource    close                 images/close.png
-// @resource    banImage              images/ban.png
-// @resource    newTopic              images/topic_new.gif
-// @resource    carton                images/carton.png
-// @resource    bronze                images/bronze.png
-// @resource    argent                images/argent.png
-// @resource    or                    images/or.png
-// @resource    rubis                 images/rubis.png
-// @resource    emeraude              images/emeraude.png
-// @resource    diamant               images/diamant.png
-// @resource    saphir                images/saphir.png
-// @resource    female                images/female.png
-// @resource    male                  images/male.png
-// @resource    unknown               images/unknown.png
-// @resource    plus                  images/plus.png
-// @resource    minus                 images/minus.png
-// @resource    link                  images/link.png
-// @resource    anchor                images/anchor.png
-// @resource    quote                 images/quote.png
-// @resource    mp                    images/mp.png
-// @resource    alert                 images/alert.png
-// @resource    link-gray             images/link-gray.png
-// @resource    search-topics         images/search-topics.png
-// @resource    calendar              images/calendar.png
-// @resource    clock                 images/clock.png
-// @resource    crown                 images/crown.png
-// @resource    settings              images/settings.png
-// @resource    youtube               images/youtube.png
-// @resource    vimeo                 images/vimeo.png
-// @resource    vine                  images/vine.png
-// @resource    dailymotion           images/dailymotion.png
-// @resource    sondageio             images/sondageio.png
-// @resource    image                 images/image.png
-// @resource    vocaroo               images/vocaroo.png
-// @resource    loader                images/loader.gif
-// @resource    big-loader            images/big-loader.gif
-// @resource    error                 images/error.png
-// @resource    notification          audio/notification.ogg
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/jquery-2.1.1.min.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/jquery-plugins.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/base.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/Util.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/Message.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/Author.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/Button.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/SlideToggle.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/Modal.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/DropdownList.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/FaviconNotificationUpdater.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/SocketMessage.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/Module.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/SpawnkillBase.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/Settings.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/SocketConnection.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/QuickResponse.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/Quote.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/Shortcuts.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/InfosPseudo.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/HilightNewTopic.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/LastPage.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/EmbedMedia.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/WarnOnNewPost.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/AutoUpdate.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/PemtHighlight.js?v1.15.0.1
+// @require     https://github.com/dorian-marchal/spawnkill/raw/master/modules/Usability.js?v1.15.0.1
+// @resource    close                 https://github.com/dorian-marchal/spawnkill/raw/master/images/close.png
+// @resource    banImage              https://github.com/dorian-marchal/spawnkill/raw/master/images/ban.png
+// @resource    newTopic              https://github.com/dorian-marchal/spawnkill/raw/master/images/topic_new.gif
+// @resource    carton                https://github.com/dorian-marchal/spawnkill/raw/master/images/carton.png
+// @resource    bronze                https://github.com/dorian-marchal/spawnkill/raw/master/images/bronze.png
+// @resource    argent                https://github.com/dorian-marchal/spawnkill/raw/master/images/argent.png
+// @resource    or                    https://github.com/dorian-marchal/spawnkill/raw/master/images/or.png
+// @resource    rubis                 https://github.com/dorian-marchal/spawnkill/raw/master/images/rubis.png
+// @resource    emeraude              https://github.com/dorian-marchal/spawnkill/raw/master/images/emeraude.png
+// @resource    diamant               https://github.com/dorian-marchal/spawnkill/raw/master/images/diamant.png
+// @resource    saphir                https://github.com/dorian-marchal/spawnkill/raw/master/images/saphir.png
+// @resource    female                https://github.com/dorian-marchal/spawnkill/raw/master/images/female.png
+// @resource    male                  https://github.com/dorian-marchal/spawnkill/raw/master/images/male.png
+// @resource    unknown               https://github.com/dorian-marchal/spawnkill/raw/master/images/unknown.png
+// @resource    plus                  https://github.com/dorian-marchal/spawnkill/raw/master/images/plus.png
+// @resource    minus                 https://github.com/dorian-marchal/spawnkill/raw/master/images/minus.png
+// @resource    link                  https://github.com/dorian-marchal/spawnkill/raw/master/images/link.png
+// @resource    anchor                https://github.com/dorian-marchal/spawnkill/raw/master/images/anchor.png
+// @resource    quote                 https://github.com/dorian-marchal/spawnkill/raw/master/images/quote.png
+// @resource    mp                    https://github.com/dorian-marchal/spawnkill/raw/master/images/mp.png
+// @resource    alert                 https://github.com/dorian-marchal/spawnkill/raw/master/images/alert.png
+// @resource    link-gray             https://github.com/dorian-marchal/spawnkill/raw/master/images/link-gray.png
+// @resource    search-topics         https://github.com/dorian-marchal/spawnkill/raw/master/images/search-topics.png
+// @resource    calendar              https://github.com/dorian-marchal/spawnkill/raw/master/images/calendar.png
+// @resource    clock                 https://github.com/dorian-marchal/spawnkill/raw/master/images/clock.png
+// @resource    crown                 https://github.com/dorian-marchal/spawnkill/raw/master/images/crown.png
+// @resource    settings              https://github.com/dorian-marchal/spawnkill/raw/master/images/settings.png
+// @resource    youtube               https://github.com/dorian-marchal/spawnkill/raw/master/images/youtube.png
+// @resource    vimeo                 https://github.com/dorian-marchal/spawnkill/raw/master/images/vimeo.png
+// @resource    vine                  https://github.com/dorian-marchal/spawnkill/raw/master/images/vine.png
+// @resource    dailymotion           https://github.com/dorian-marchal/spawnkill/raw/master/images/dailymotion.png
+// @resource    sondageio             https://github.com/dorian-marchal/spawnkill/raw/master/images/sondageio.png
+// @resource    image                 https://github.com/dorian-marchal/spawnkill/raw/master/images/image.png
+// @resource    vocaroo               https://github.com/dorian-marchal/spawnkill/raw/master/images/vocaroo.png
+// @resource    loader                https://github.com/dorian-marchal/spawnkill/raw/master/images/loader.gif
+// @resource    big-loader            https://github.com/dorian-marchal/spawnkill/raw/master/images/big-loader.gif
+// @resource    error                 https://github.com/dorian-marchal/spawnkill/raw/master/images/error.png
+// @resource    notification          https://github.com/dorian-marchal/spawnkill/raw/master/audio/notification.ogg
 // @grant       GM_xmlhttpRequest
 // @grant       GM_getResourceURL
 // @grant       GM_setClipboard
@@ -83,7 +83,7 @@
 /* jshint multistr: true */
 /* jshint newcap: false */
 
-SK.VERSION = "v1.15";
+SK.VERSION = "v1.15.0.1";
 
 var modulesStyle = "";
 
