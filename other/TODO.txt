@@ -1,3 +1,4 @@
 - Corriger les topics qui affichent parfois une erreur quand on rafraichit la page
 - Prendre en compte les topics supprimés (du type 'il n'y a pas de message')
 - Corriger le nombre de posts sous Chrome/Opera
+- Mettre en place une tentative de reconnexion automatique
