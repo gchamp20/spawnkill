@@ -15,10 +15,18 @@ SK.FaviconNotificationUpdater = function(baseFaviconUrl) {
     this.canvas.height = 16;
 
     this.ctx = this.canvas.getContext("2d");
-    this.ctx.font = "10px Verdana";
-    this.ctx.textBaseline = "bottom";
 
     this.img = new Image();
+
+    /**
+     * Affiche une point d'exclamation rouge discret sur le favicon.
+     */
+     this.showExclamationMark = function(color) {
+
+        color = color || "red";
+
+        this.showFaviconNotification("!", "transparent", color, true);
+     }
 
     /**
      * Affiche une notification d'erreur dans le favicon (une croix)
@@ -54,9 +62,17 @@ SK.FaviconNotificationUpdater = function(baseFaviconUrl) {
     /**
      * Met à jour le favicon avec une notification
      * @param {string} text Texte à afficher dans le favicon (maximum deux caractères)
-     * @param {string} color Du type #123456 Couleur du background de la notification.
+     * @param {string} backgroundColor Du type #123456 Couleur du background de la notification.
+     *                  peut aussi être "transparent" pour ne pas afficher de cadre
+     * @param {string} textColor Du type #123456 Couleur du texte de la notification (#FFF par défaut)
+     * @param {boolean} boldText Vrai si le texte doit être en gras
      */
-    this.showFaviconNotification = function(text, color) {
+    this.showFaviconNotification = function(text, backgroundColor, textColor, boldText) {
+
+        textColor = textColor || "#FFF";
+        boldText = boldText === false ? false : true;
+
+        console.log(text, backgroundColor, textColor);
 
         $(this.img).on("load", function() {
 
@@ -66,9 +82,16 @@ SK.FaviconNotificationUpdater = function(baseFaviconUrl) {
             //On ajoute le text à l'icône
             var textWidth = this.ctx.measureText(text).width;
             this.ctx.drawImage(this.img, 0, 0);
-            this.ctx.fillStyle = color;
-            this.ctx.fillRect(0, 0, textWidth + 3, 11);
-            this.ctx.fillStyle = "#FFF";
+
+            //Pas de cadre si backgroundColor === false
+            if(backgroundColor !== "transparent") {
+                this.ctx.fillStyle = backgroundColor;
+                this.ctx.fillRect(0, 0, textWidth + 3, 11);
+            }
+
+            this.ctx.fillStyle = textColor;
+            this.ctx.font = (boldText ? "bold " : "") + "10px Verdana";
+            this.ctx.textBaseline = "bottom";
             this.ctx.fillText(text, 1, 11);
 
             var faviconDataUrl = this.canvas.toDataURL("image/png");
