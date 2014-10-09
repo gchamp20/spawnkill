@@ -93,7 +93,7 @@ SK.moduleConstructors.WarnOnNewPost.prototype.requestTopicUpdates = function() {
 
 		//Timeout de trois secondes pour éviter les erreurs au rechargement de la page
 		setTimeout(function() {
-			this.faviconUpdater.showFaviconError("red");
+			this.faviconUpdater.showExclamationMark();
 		}.bind(this), 3000);
 
 	}.bind(this));
