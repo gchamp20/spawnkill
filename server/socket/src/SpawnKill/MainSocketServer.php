@@ -155,6 +155,11 @@ class MainSocketServer implements MessageComponentInterface {
 
             //On ne traite pas les topics en erreur
             if($updatedTopic->error) {
+
+                //En revanche, on repasse le nombre de pages du topic à 1.
+                //Ceci pour éviter qu'un topic soit tout le temps en erreur à cause d'une
+                //suppression de message qui a entrainé un nombre de page inférieur.
+                $updatedTopic->setPageCount(1);
                 $this->logger->ln("Erreur pour le topic {$updatedTopic->getId()}...", 3);
                 continue;
             }
