@@ -24,7 +24,7 @@ SK.moduleConstructors.AutoUpdate.prototype.init = function() {
 	setTimeout(function() {
 		this.getLastRelease(function(release) {
 
-			//Si la version courante n'est pas la dernière et que la notification 
+			//Si la version courante n'est pas la dernière et que la notification
 			//n'a pas déjà été vue au cours de la dernière heure, on affiche une notification
 			if(release.tag_name !== SK.VERSION) {
 
@@ -57,7 +57,7 @@ SK.moduleConstructors.AutoUpdate.prototype.updateIsMinor = function(currentVersi
 	var currentFragments = this.splitTagName(currentVersionTag);
 	var updateFragments = this.splitTagName(updateVersionTag);
 
-	if(updateFragments.bugfixPart !== 0 && 
+	if(updateFragments.bugfixPart !== 0 &&
 		updateFragments.bugfixPart !== currentFragments.bugfixPart &&
 		updateFragments.featurePart === currentFragments.featurePart &&
 		updateFragments.modulePart === currentFragments.modulePart &&
@@ -126,7 +126,7 @@ SK.moduleConstructors.AutoUpdate.prototype.showUpdateModal = function(release, u
 		<h4>" + release.name + "<span class='spawnkill-version' >" + release.tag_name + "</span></h4>\
 	";
 
-	var pseudoRandomString = new Array(16 + 1).join((Math.random().toString(36) + "00000000000000000").slice(2, 18)).slice(0, 10);
+	var pseudoRandomString = SK.Util.pseudoRandomString();
 
 	var $downloadButton = new SK.Button({
 	    class: "large",
@@ -213,7 +213,7 @@ SK.moduleConstructors.AutoUpdate.prototype.getCss = function() {
     return css;
 };
 
-/* Options modifiables du plugin */ 
+/* Options modifiables du plugin */
 SK.moduleConstructors.AutoUpdate.prototype.settings = {
     enableBugFixAlert: {
         title: "Notification pour les corrections de bug",

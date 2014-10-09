@@ -4,13 +4,13 @@
 
 /* Fonctions Utiles */
 SK.Util = {
-    
+
     /**
      * Effectue une requête sur l'api WS de JVC
-     * 
+     *
      * @param {string} urlSuffix - suffixe de l'url à requêter sans le ".xml"
      *      Exemple : "forums/1-81-052354-1-0-1-0-0" pour un topic
-     * 
+     *
      * @param {function} callback - Callback appelé avec un objet jQuery représentant
      *   le XML de réponse ou undefined en cas d'erreur
      */
@@ -59,7 +59,7 @@ SK.Util = {
         logApiCall = (logApiCall === false ? "0" : "1");
         forceCacheReload = (forceCacheReload === false ? "0" : "1");
 
-        var url = SK.config.SERVER_URL + "api-jvc.php?action=" + requestAction + 
+        var url = SK.config.SERVER_URL + "api-jvc.php?action=" + requestAction +
             "&data=" + encodeURIComponent(JSON.stringify(data)) + "&log=" + logApiCall + "&forceCacheReload=" + forceCacheReload;
 
         GM_xmlhttpRequest({
@@ -97,7 +97,7 @@ SK.Util = {
                 else {
                     var pageCount = parseInt($ws.find("count_page").text());
                     var lastPageUrl = "forums/1-" + topicId + "-" + pageCount + "-0-1-0-0";
-                    
+
                     //Récupération du nombre de posts de la dernière page
                     SK.Util.ws(lastPageUrl, function($ws) {
                         if(typeof $ws === "undefined") {
@@ -191,7 +191,7 @@ SK.Util = {
 
     /**
      * Ajoute un bouton au post à l'emplacement indiqué en paramètre
-     * dans les options 
+     * dans les options
      *    location: "top" (defaut), "right", ou "bottom"
      *    index (int): position du bouton (de gauche à droite).
      */
@@ -204,7 +204,7 @@ SK.Util = {
 
         //On récupère ou on crée le conteneur des boutons
         var $buttons = $msg.find(".buttons." + location);
-        
+
         if($buttons.length === 0) {
 
             $buttons = $("<div>", {
@@ -281,7 +281,7 @@ SK.Util = {
 
     //Force le navigateur à recalculer le CSS pour les animations
     fetchStyle: function(element) {
-            
+
         if(typeof(window.getComputedStyle) == "function") {
 
             if(element instanceof jQuery) {
@@ -322,7 +322,7 @@ SK.Util = {
 
     /**
      * Récupère une valeur du localStorage ou sessionStorage.
-     * 
+     *
      * @param {boolean} temporary Vrai si la valeur doit être récupérée en sessionStorage
      *
      * @return null si la donnée n'existe pas
@@ -418,7 +418,7 @@ SK.Util = {
      * Permet de contourner .getSelection() qui ne retourne pas l'alt des img sous Chrome
      */
     getPostSelection: function() {
-        
+
         var selection = "";
         var selectionObject = window.getSelection();
         if (selectionObject.rangeCount) {
@@ -437,7 +437,7 @@ SK.Util = {
                              .replace(/<img[^>]*alt="([^"]*)"[^>]*>/g, "$1") //img -> img[alt]
                              .replace(/<a[^>]*href="([^"]*)".*<\/a>/g, "$1") //a -> a[href]
                              .replace(/<li class="post">/g, "").replace(/<li class="ancre">[^>]*>/g, "").replace(/<\/li>/g, ""); //suppression des li
-        
+
         return selection;
     },
 
@@ -449,6 +449,11 @@ SK.Util = {
         else {
            fn();
         }
+    },
+
+    /** Retourne une chaîne pseudo aléatoire. */
+    pseudoRandomString: function() {
+        return new Array(16 + 1).join((Math.random().toString(36) + "00000000000000000").slice(2, 18)).slice(0, 10);
     }
 
 };

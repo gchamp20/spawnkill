@@ -88,7 +88,7 @@ SK.FaviconNotificationUpdater = function(baseFaviconUrl) {
             }
 
             this.ctx.fillStyle = textColor;
-            this.ctx.font = (boldText ? "bold " : "") + "10px Verdana";
+            this.ctx.font = (boldText ? "bold" : "normal") + " 10px Verdana";
             this.ctx.textBaseline = "bottom";
             this.ctx.fillText(text, 1, 11);
 
@@ -110,6 +110,6 @@ SK.FaviconNotificationUpdater = function(baseFaviconUrl) {
         }.bind(this));
 
         //Récupération du favicon
-        this.img.src = this.baseFaviconUrl;
+        this.img.src = this.baseFaviconUrl + "?" + SK.Util.pseudoRandomString();
     };
 };
