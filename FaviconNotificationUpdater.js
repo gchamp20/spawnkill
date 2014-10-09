@@ -72,8 +72,6 @@ SK.FaviconNotificationUpdater = function(baseFaviconUrl) {
         textColor = textColor || "#FFF";
         boldText = boldText === false ? false : true;
 
-        console.log(text, backgroundColor, textColor);
-
         $(this.img).on("load", function() {
 
             //On reset le canvas
