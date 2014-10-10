@@ -33,6 +33,11 @@ class Topic implements \Serializable {
     protected $locked = false;
 
     /**
+     * Vrai si le topic n'existe pas.
+     */
+    protected $removed = false;
+
+    /**
      * Vrai si des infos ont déjà été récupérées pour ce topic.
      */
     protected $dataFetched = false;
@@ -53,6 +58,14 @@ class Topic implements \Serializable {
 
     public function setLocked($locked) {
         $this->locked = $locked;
+    }
+
+    public function isRemoved() {
+        return $this->removed;
+    }
+
+    public function setRemoved($removed) {
+        $this->removed = $removed;
     }
 
     public function getId() {
