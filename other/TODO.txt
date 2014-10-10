@@ -1,2 +1,0 @@
-- Prendre en compte les topics supprimés (du type 'il n'y a pas de message')
-- Mettre en place une tentative de reconnexion automatique
