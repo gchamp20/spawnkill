@@ -14,7 +14,7 @@ SK.moduleConstructors.InfosPseudo.prototype.beforeInit = function() {
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.init = function() {
-    
+
     //Sur la page liste des sujets, on récupère les auteurs des topics
     if(SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST)) {
         if (this.getSetting("enableAuthorHighlight")) {
@@ -32,14 +32,14 @@ SK.moduleConstructors.InfosPseudo.prototype.init = function() {
                 this.highlightCurrentUser();
             }.bind(this), 1000);
         }
-        
+
         if(!SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW)) {
-            
+
             if (this.getSetting("enableAuthorHighlight")) {
                 //On ajoute la couronne à l'auteur
                 this.crownTopicAuthor();
             }
-            
+
         }
     }
 };
@@ -66,13 +66,13 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
 
         //Auteurs sur la page
         var authors = {};
-        
+
         //On parcourt tous les messages
         $(".msg .pseudo").each(function() {
 
             self.queueFunction(function() {
                 var $msg = $(this).parents(".msg").first();
-                
+
                 //On crée le Message
                 var message = new SK.Message($msg);
 
@@ -266,7 +266,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             class: "searchTopics",
             href: topicsUrl,
             tooltip: {
-                text: "Rechercher les topics de " + message.authorPseudo 
+                text: "Rechercher les topics de " + message.authorPseudo
             },
             click: function(event) {
                 event.preventDefault();
@@ -275,7 +275,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             }
         });
     }
-    
+
     //Bouton permalien
     if(this.getSetting("enablePermalinkAnchor")) {
         SK.Util.addButton(message.$msg, {
@@ -334,7 +334,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addRank = function(message) {
 
         //Si l'avatar est pas disponible et que le rang doit être positionné sur l'avatar
         if(this.getSetting("enableAvatar") && this.getSetting("rankLocation") === "avatar") {
-            
+
             var $rank = $("<span />", {
                 class: "rank " + message.author.rank,
                 title: rankString
@@ -379,7 +379,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addAvatar = function(message) {
             message.author.avatar = GM_getResourceURL("error");
         }
 
-            
+
     }
     else {
         //On ajoute pas le lien vers l'image si l'auteur est banni
@@ -394,7 +394,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addAvatar = function(message) {
 
     //Au chargement de l'avatar
     $avatarImg.on("load", function() {
-        
+
         //On n'execute pas l'événement si l'avatar est l'image d'erreur
         if($avatar.attr("data-error") !== "1") {
 
@@ -431,11 +431,11 @@ SK.moduleConstructors.InfosPseudo.prototype.addAvatar = function(message) {
     });
 
     //On met seulement src pour que l'event onload soit en place avant
-    $avatarImg.attr("src", message.author.avatar); 
+    $avatarImg.attr("src", message.author.avatar);
 
     //Permet de régler les problèmes de cache sur certains navigateurs
     if(this.complete) {
-        $(this).trigger("load");  
+        $(this).trigger("load");
     }
 };
 
@@ -478,10 +478,10 @@ SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
         var postTextPseudo = $postPseudo.text().trim();
         // Si l'auteur du message correspond à ce pseudonyme
         if (postTextPseudo === currentUserPseudo) {
-            
+
             $postPseudo.addClass("current-user");
         }
-    }); 
+    });
 };
 
 
@@ -489,16 +489,16 @@ SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
  * Récupère et stocke les auteurs associés aux topics de la page liste des sujets.
  */
 SK.moduleConstructors.InfosPseudo.prototype.getTopicListAuthors = function() {
-     
+
     var currentForumId = document.URL.split("-")[1];
-    
+
     //On parcourt tous les topics de la liste
     $(".ltopic").each(function() {
-        
+
         //On récupère l'id du topic
         var topicId = $(this).attr("href").split("-")[2];
         var topicKey = "topics." + currentForumId + "-" + topicId;
-        
+
         //Puis, si on n'a pas déjà les infos en localStorage
         if (SK.Util.getValue(topicKey) === null) {
 
@@ -506,16 +506,16 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicListAuthors = function() {
             var topicAuthor = $(this).parent().siblings(".pseudo").text().toLowerCase();
             SK.Util.setValue(topicKey, topicAuthor);
         }
-        
+
     });
-    
+
 };
 
 /**
  * Récupère l'auteur du topic courant puis appelle la fonction pour couronner son pseudo.
  */
 SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function(callback) {
-     
+
     callback = callback || function() {};
 
     //Création de la clé
@@ -536,7 +536,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function(callback) 
             SK.Util.setValue(topicKey, topicAuthor);
 
             callback(topicAuthor);
-        } 
+        }
         //Sinon, on fait une requête HTTP vers la première page du topic
         else {
             var requestURL = "forums/1-" + topicId + "-1-0-1-0-0";
@@ -566,7 +566,7 @@ SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function() {
 
         //On teste dans chaque message
         $(".msg .pseudo").each(function() {
-            
+
             var $postPseudo = $(this).find("strong").first();
             var postTextPseudo = $postPseudo.text().trim().toLowerCase();
             // Si l'auteur du message correspond à ce pseudonyme
@@ -576,7 +576,7 @@ SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function() {
                 div.className = "current-topic-author";
                 $(this).prepend(div);
             }
-        }); 
+        });
     });
 
 };
@@ -676,13 +676,13 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         description: "Affiche une couronne devant le pseudo de tous les messages de l'auteur.",
         type: "boolean",
         default: false,
-    }
+    },
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
 
     var css = "";
-    
+
     //Si on met en valeur les posts de l'utilisateur
     if(this.getSetting("enableUserHighlight")) {
         css += "\
@@ -691,7 +691,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
             }\
         ";
     }
-    
+
     //Si on met en valeur les posts de l'auteur
     if(this.getSetting("enableAuthorHighlight")) {
         css += "\
