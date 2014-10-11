@@ -215,6 +215,17 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
                     value: option.value
                 }));
             }
+            else if(option.type === "button") {
+                $option.append(new SK.Button({
+                    text: option.buttonLabel,
+                    class: "large",
+                    tooltip : {
+                        text: option.title,
+                        position: "bottom"
+                    },
+                    click: option.value
+                }));
+            }
         });
     });
 
@@ -261,11 +272,18 @@ SK.moduleConstructors.Settings.prototype.saveSettings = function() {
 
         //Enregistrement des options des modules
         $setting.find(".option").each(function() {
+
             var $option = $(this);
             var optionId = $option.attr("data-id");
             var option = setting.settings[optionId];
             var optionLocalstorageId = settingId + "." + $option.attr("data-id");
             var optionValue = null;
+
+            //Si l'"option" est un bouton, on n'enregistre pas de valeur
+            if(option.type === "button") {
+                return;
+            }
+
             if(option.type === "boolean") {
                 optionValue = $option.find("input").prop("checked");
             }
@@ -416,6 +434,14 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         .subsettings-button {\
             position: absolute !important;\
             right: 10px;\
+        }\
+        #settings-form .option .sk-button {\
+            float: right;\
+            top: -4px;\
+        }\
+        #settings-form .option .sk-button-content {\
+            padding: 4px 6px;\
+            font-size: 0.9em;\
         }\
     ";
     return css;
