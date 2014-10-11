@@ -28,7 +28,7 @@ SK.Author.VERSION = "2.4";
 SK.Author.DATA_TTL = 4;
 
 
-/** 
+/**
  * Set les données de l'auteur à partir d'un objet data
  */
 SK.Author.prototype.initFromData = function(data) {
@@ -48,7 +48,7 @@ SK.Author.prototype.initFromData = function(data) {
 SK.Author.prototype.initFromCdv = function($cdv) {
 
     this.profileLink = "http://www.jeuxvideo.com/profil/" + this.pseudo + ".html";
-    
+
     if($cdv.find("info_pseudo").length > 0 &&
         $cdv.find("nb_messages").length > 0 &&
         $cdv.find("petite_image").length > 0 &&
@@ -64,7 +64,7 @@ SK.Author.prototype.initFromCdv = function($cdv) {
         this.profileUnavailable = true;
 
         var error = $cdv.find("texte_erreur").text();
-        
+
         if(error === "Le pseudo est banni temporairement") {
             this.errorType = "ban tempo";
         }
@@ -84,7 +84,7 @@ SK.Author.prototype.addMessage = function(message) {
     this.messages.push(message);
 };
 
-/** 
+/**
  * Enregistre les données de l'auteur dans le localStorage
  */
 SK.Author.prototype.saveLocalData = function() {
@@ -119,7 +119,7 @@ SK.Author.prototype.loadLocalData = function() {
         this.initFromData(data);
         dataLoaded = true;
     }
-    
+
     return dataLoaded;
 };
 
@@ -185,15 +185,15 @@ SK.Author.isDataValid = function(data) {
 /**
  * Supprime les auteurs dont les données sont expirées.
  */
-SK.Author.removeObsoleteData = function() {
+SK.Author.clearObsoleteData = function() {
 
     //On parcourt les données locales
     Object
         .keys(localStorage)
         .forEach(function(key) {
 
-            //SI les données concernent un auteur
-            if (/^(SK.authors.)/.test(key)) {
+            //Si les données concernent un auteur
+            if (/^SK.authors./.test(key)) {
 
                 var skKey = key.substr(3);
                 var data = SK.Util.getValue(skKey);
@@ -204,5 +204,27 @@ SK.Author.removeObsoleteData = function() {
                     SK.Util.deleteValue(skKey);
                 }
             }
-        }); 
+        })
+    ;
 };
+
+/**
+ * Supprime toutes les données des auteurs du localStorage
+ */
+SK.Author.clearData = function() {
+    //On parcourt les données locales
+    Object
+        .keys(localStorage)
+        .forEach(function(key) {
+
+            //Si les données concernent un auteur
+            if (/^SK.authors./.test(key)) {
+
+                var skKey = key.substr(3);
+
+                //On les supprime
+                SK.Util.deleteValue(skKey);
+            }
+        })
+    ;
+}

@@ -677,6 +677,16 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         type: "boolean",
         default: false,
     },
+    clearAuthorCache: {
+        title: "Vider le cache des auteurs",
+        description: "Permet de vider le cache des auteurs pour voir votre nouvel avatar, par exemple.",
+        type: "button",
+        buttonLabel: "Vider le cache",
+        default: function() {
+            SK.Author.clearData();
+            alert("Le cache a bien été vidé.");
+        },
+    }
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {

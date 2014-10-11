@@ -315,7 +315,7 @@ SK.Util = {
         catch(e) {
             if(e.name === "QUOTA_EXCEEDED_ERR") {
                 // On supprime les données obsolètes des auteurs
-                SK.Author.removeObsoleteData();
+                SK.Author.clearObsoleteData();
             }
         }
     },
