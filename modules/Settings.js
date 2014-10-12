@@ -438,6 +438,7 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         #settings-form .option .sk-button {\
             float: right;\
             top: -4px;\
+            right: -4px;\
         }\
         #settings-form .option .sk-button-content {\
             padding: 4px 6px;\

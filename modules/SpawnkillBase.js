@@ -265,6 +265,18 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
     var darkColor = SK.common.darkColor;
 
     var css = "\
+        #new_header #header {\
+            z-index: 41000;\
+        },\
+        #recherche #suggest {\
+            z-index: 41001;\
+        },\
+        .modal_generic_overflow {\
+            z-index: 41100;\
+        },\
+        .modal_generic {\
+            z-index: 41101;\
+        },\
         .msg {\
             position: relative;\
         }\
@@ -280,7 +292,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             height: 100%;\
             background-color: #EEE;\
             opacity: 0.9;\
-            z-index: 2147483647;\
+            z-index: 42000;\
         }\
         #modal-loader {\
             display: none;\
@@ -289,7 +301,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             height: 40px;\
             background-image: url('" + GM_getResourceURL("big-loader") + "');\
             background-repeat: no-repeat;\
-            z-index: 2147483648;\
+            z-index: 42010;\
             opacity: 0.3;\
         }\
         #sk-notifications {\
@@ -306,8 +318,8 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             border-radius: 4px;\
             background-color: #FFF;\
             box-shadow: 0 10px 20px 2px rgba(0, 0, 0, 0.4);\
-            z-index: 2147483649;\
             opacity: 0;\
+            z-index: 42020;\
             transition-duration: 400ms;\
         }\
         .modal-box.center {\
@@ -400,16 +412,27 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             background-repeat: no-repeat;\
             opacity: 0.3;\
         }\
+        #sk-notifications {\
+            z-index: 42030;\
+        }\
         #sk-notifications .notification {\
             position: relative;\
             margin: 10px;\
             left: auto;\
-            top: auto;\
+            top: -200px;\
             right: 0px;\
+            box-shadow: 0 5px 10px 1px rgba(0, 0, 0, 0.4);\
         }\
         #sk-notifications .notification .content {\
-            margin-top: 15px;\
-            margin-bottom: 5px;\
+            margin-top: 10px;\
+            margin-bottom: 2px;\
+            font-size: 1.2em;\
+            line-height: 1.6;\
+            color: #555;\
+        }\
+        #sk-notifications .notification.active {\
+            top: 0px;\
+            opacity: 1;\
         }\
         .sk-button {\
             position: relative;\

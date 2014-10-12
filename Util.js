@@ -163,12 +163,22 @@ SK.Util = {
         });
 
         $("#sk-notifications").append($notification);
+        SK.Util.fetchStyle($notification);
+
         $notification.addClass("active");
 
         //La notification s'efface toute seule après quelques secondes
         setTimeout(function() {
-            $notification.remove();
-        }, 2000);
+
+            $notification.on("transitionend webkitTransitionEnd", function() {
+                $notification.remove();
+            });
+
+            $notification
+                .slideUp(400)
+                .removeClass("active")
+            ;
+        }, 4000);
     },
 
     /* Montre une fenêtre modale passée en paramètre */
