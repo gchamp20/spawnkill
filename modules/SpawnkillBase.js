@@ -292,6 +292,11 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             z-index: 2147483648;\
             opacity: 0.3;\
         }\
+        #sk-notifications {\
+            position: fixed;\
+                top: 0px;\
+                right: 0px;\
+        }\
         .modal-box {\
             position: fixed;\
             left: 50%;\
@@ -394,6 +399,17 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             background-image: url('" + GM_getResourceURL("big-loader") + "');\
             background-repeat: no-repeat;\
             opacity: 0.3;\
+        }\
+        #sk-notifications .notification {\
+            position: relative;\
+            margin: 10px;\
+            left: auto;\
+            top: auto;\
+            right: 0px;\
+        }\
+        #sk-notifications .notification .content {\
+            margin-top: 15px;\
+            margin-bottom: 5px;\
         }\
         .sk-button {\
             position: relative;\

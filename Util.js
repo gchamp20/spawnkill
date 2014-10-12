@@ -149,6 +149,28 @@ SK.Util = {
         return false;
     },
 
+    /**
+     * Affiche une notification très simple (qui disparait toute seule au bout de quelques secondes).
+     */
+    notify: function(title, text) {
+
+        var $notification = new SK.Modal({
+            title: title,
+            content: text,
+            buttons: [],
+            hasCloseButton: false,
+            location: "notification"
+        });
+
+        $("#sk-notifications").append($notification);
+        $notification.addClass("active");
+
+        //La notification s'efface toute seule après quelques secondes
+        setTimeout(function() {
+            $notification.remove();
+        }, 2000);
+    },
+
     /* Montre une fenêtre modale passée en paramètre */
     showModal: function($modal) {
         var $background = $("#modal-background");
