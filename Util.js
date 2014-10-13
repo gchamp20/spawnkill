@@ -220,10 +220,13 @@ SK.Util = {
     hideModal: function() {
         $("#modal-background").fadeOut();
         $("#modal-loader").hide();
-        $(".modal-box").on("transitionend webkitTransitionEnd", function() {
-            $(".modal-box").remove();
+
+        var $modals = $("body > .modal-box");
+
+        $modals.on("transitionend webkitTransitionEnd", function() {
+            $modals.remove();
         });
-        $(".modal-box").removeClass("active");
+        $modals.removeClass("active");
     },
 
     /**
