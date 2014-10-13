@@ -684,7 +684,7 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         buttonLabel: "Vider le cache",
         default: function() {
             SK.Author.clearData();
-            alert("Le cache a bien été vidé.");
+            SK.Util.notify("Confirmation", "Le cache a bien été vidé.");
         },
     }
 };
