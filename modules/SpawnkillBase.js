@@ -267,16 +267,16 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
     var css = "\
         #new_header #header {\
             z-index: 41000;\
-        },\
+        }\
         #recherche #suggest {\
             z-index: 41001;\
-        },\
+        }\
         .modal_generic_overflow {\
             z-index: 41100;\
-        },\
+        }\
         .modal_generic {\
             z-index: 41101;\
-        },\
+        }\
         .msg {\
             position: relative;\
         }\
