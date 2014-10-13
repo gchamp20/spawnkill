@@ -151,8 +151,13 @@ SK.Util = {
 
     /**
      * Affiche une notification très simple (qui disparait toute seule au bout de quelques secondes).
+     * @param {String} title Titre de la notification
+     * @param {String} text Contenu texte de la notification
+     * @param {int} delay Delai en ms avant la disparition de la notification
      */
-    notify: function(title, text) {
+    notify: function(title, text, delay) {
+
+        delay = delay || 4000;
 
         var $notification = new SK.Modal({
             title: title,
@@ -178,7 +183,7 @@ SK.Util = {
                 .slideUp(400)
                 .removeClass("active")
             ;
-        }, 4000);
+        }, delay);
     },
 
     /* Montre une fenêtre modale passée en paramètre */
