@@ -15,6 +15,12 @@ use SpawnKill\Log;
  */
 class MainSocketServer implements MessageComponentInterface {
 
+
+    /**
+     * Timestamp de démarrage du serveur.
+     */
+    protected $startTimestamp;
+
     /**
      * Clients connectés au serveur
      */
@@ -26,6 +32,11 @@ class MainSocketServer implements MessageComponentInterface {
     protected $updateServerConnection;
 
     /**
+     * Connexion au client récupérant les statistiques
+     */
+    protected $statsClient;
+
+    /**
      * Liste de topics suivis par au moins un client.
      */
     protected $topics = array();
@@ -34,6 +45,7 @@ class MainSocketServer implements MessageComponentInterface {
 
     public function __construct() {
 
+        $this->startTimestamp = time();
         $this->logger = new Logger("main", "light_cyan");
         $this->clients = new \SplObjectStorage();
     }
@@ -99,6 +111,23 @@ class MainSocketServer implements MessageComponentInterface {
                 }
                 break;
 
+            //Indique au serveur que la connexion vient du client de stats
+            case 'IAmTheStatsClient' :
+                if($this->isConnectionFromServer($client)) {
+                    $this->statsClient = $client;
+                    $this->logger->ln("Stats client connecté...", 2);
+                }
+                break;
+
+            //Demande d'infos sur les connectés
+            case 'getClientInfos' :
+
+                //Seul le client de stats peut obtenir ces infos
+                if($this->statsClient === $client) {
+                    $this->sendClientInfos($client);
+                }
+                break;
+
             //Simple ping
             case 'ping' :
                 $this->logger->ln("pong: " . $message->getData());
@@ -116,6 +145,25 @@ class MainSocketServer implements MessageComponentInterface {
     private function linkUpdateServer($client) {
         $this->logger->ln("Mise en place du lien avec le serveur de mise à jour");
         $this->updateServerConnection = $client;
+    }
+
+    /**
+     * Envoie des infos sur les connectés à $client.
+     *
+     * clientCount: Nombre de clients connectés
+     * topicCount: Nombre de topics suivis
+     * uptime: Nombre de secondes écoulées depuis le démarrage du serveur
+     */
+    private function sendClientInfos($client) {
+
+        $clientInfos = array(
+            'clientCount' => count($this->clients),
+            'topicCount' => count($this->topics),
+            'uptime' => time() - $this->startTimestamp,
+        );
+
+        $message = SocketMessage::fromData('clientInfos', $clientInfos);
+        $client->send($message->toJson());
     }
 
     /**

@@ -13,3 +13,4 @@ Ci-dessous, les gens qui ont fait un don pour l'évolution du script ou qui m'on
 - Antoine V. (`1.68€`)
 - ChromeLegend (`1.68€`)
 - Kévin K. (`1.68€`)
+- Graphikaweb (`1.68€`)
