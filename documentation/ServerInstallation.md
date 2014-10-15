@@ -51,11 +51,11 @@ cp server/socket/src/SpawnKill/Config.default.php server/socket/src/SpawnKill/Co
 nano server/socket/src/SpawnKill/Config.php
 ```
 
-Faites de même pour les fichiers Javascript si vous voulez modifier les ports par défaut
+Faites de même avec le fichier de configuration pour le javascript
 
 ```
-nano server/socket/bin/update-to-server-link.js
-nano server/socket/bin/update-topics-client.js
+cp server/socket/bin/config.js.default server/socket/bin/config.js
+nano server/socket/bin/config.js
 ```
 
 Configurer ensuite la base de données (toujours depuis la racine du dépôt)

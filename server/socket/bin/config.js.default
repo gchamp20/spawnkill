@@ -1,0 +1,12 @@
+define("config",
+    [],
+    function () {
+        var serverPort = 4243;
+        var serverUpdatePort = 4244;
+
+        return {
+            serverPort: serverPort,
+            serverUpdatePort: serverUpdatePort,
+        };
+    }
+);
