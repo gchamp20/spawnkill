@@ -76,7 +76,7 @@ mainClient.on("connect", function(connection) {
     console.ln("Connecté au serveur principal.");
 
     //Connexion au serveur de mise à jour
-    updateClient.connect("ws://localhost:" + Config.updateServerPort);
+    updateClient.connect("ws://localhost:" + Config.serverUpdatePort);
 
 });
 
