@@ -7,11 +7,9 @@
  * topics et d'envoyer les mises à jours aux clients.
  */
 
-var UPDATE_INTERVAL_MS = 3000; //Intervalle de mise à jour en ms.
-var SERVER_PORT = 8080; // Adresse IP du serveur
+var Config = require("./config.js");
 
 var WebSocketClient = require("websocket").client;
-
 
 var client = new WebSocketClient();
 
@@ -28,7 +26,7 @@ client.on("connect", function(connection) {
 		connection.sendUTF(JSON.stringify({
             id: "updateTopicsAndPushInfos"
         }));
-	}, UPDATE_INTERVAL_MS);
+	}, Config.updateIntervalMs);
 
 
     connection.on("error", function(error) {
@@ -41,4 +39,4 @@ client.on("connect", function(connection) {
 
 });
 
-client.connect("ws://localhost:" + SERVER_PORT);
+client.connect("ws://localhost:" + Config.serverPort);
