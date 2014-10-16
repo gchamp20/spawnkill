@@ -54,7 +54,7 @@ nano server/socket/src/SpawnKill/Config.php
 Faites de même avec le fichier de configuration pour le javascript
 
 ```
-cp server/socket/bin/config.js.default server/socket/bin/config.js
+cp server/socket/bin/config.default.js server/socket/bin/config.js
 nano server/socket/bin/config.js
 ```
 
