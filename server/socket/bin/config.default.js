@@ -8,4 +8,7 @@ module.exports = {
 
 	//Intervalle de mise à jour des topics en ms
 	updateIntervalMs: 3000,
+
+	//Intervalle en minutes entre deux enregistrements de stats
+	statsIntervalMin: 10,
 };
