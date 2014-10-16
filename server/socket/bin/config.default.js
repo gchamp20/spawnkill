@@ -11,4 +11,10 @@ module.exports = {
 
 	//Intervalle en minutes entre deux enregistrements de stats
 	statsIntervalMin: 10,
+
+	//Connexion à la BDD
+	databaseHost: "localhost",
+	databaseUser: "user",
+	databasePassword: "pass",
+	databaseName: "spawnkill",
 };

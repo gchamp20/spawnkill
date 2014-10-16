@@ -2,6 +2,7 @@
 "use strict";
 
 var Config = require("./config.js");
+var mysql = require("mysql");
 
 console.ln = function(string) {
     var now = new Date();
@@ -16,53 +17,74 @@ console.ln = function(string) {
 var WebSocketClient = require("websocket").client;
 var statsIntervalMs = Config.statsIntervalMin * 60 * 1000;
 
-//client du serveur principal
-var client = new WebSocketClient();
-var mainConnection = null;
-
-//Gestion des erreurs de connexions
-client.on("connectFailed", function(error) {
-    console.ln("Erreur de connexion au serveur principal: " + error.toString());
+var database = mysql.createConnection({
+    host: Config.databaseHost,
+    user: Config.databaseUser,
+    password: Config.databasePassword,
+    database: Config.databaseName,
 });
 
-//Gestion de la connexion au serveur principal
-client.on("connect", function(connection) {
+database.connect(function(err) {
 
-    mainConnection = connection;
+    if(err) {
+        console.ln("Erreur de connexion à la base de données");
+        console.log(err);
+        return;
+    }
 
-    //Gestion des erreurs/fermetures
-    mainConnection.on("error", function(error) {
-        console.ln("Erreur du serveur principal: " + error.toString());
+    //client du serveur principal
+    var client = new WebSocketClient();
+    var mainConnection = null;
+
+    //Gestion des erreurs de connexions
+    client.on("connectFailed", function(error) {
+        console.ln("Erreur de connexion au serveur principal: " + error.toString());
     });
 
-    mainConnection.on("close", function() {
-        console.ln("Connexion au serveur principal fermée");
-    });
+    //Gestion de la connexion au serveur principal
+    client.on("connect", function(connection) {
 
-    //Gestion de la transmission des messages
-    mainConnection.on("message", function(message) {
+        mainConnection = connection;
 
-        message = JSON.parse(message.utf8Data);
+        //Gestion des erreurs/fermetures
+        mainConnection.on("error", function(error) {
+            console.ln("Erreur du serveur principal: " + error.toString());
+        });
 
-        if(message.id === "clientInfos") {
-            saveStats(message.data);
-        }
-    });
+        mainConnection.on("close", function() {
+            console.ln("Connexion au serveur principal fermée");
+        });
 
-    //Envoi d'un message de synchronisation au serveur principal
-    mainConnection.sendUTF(JSON.stringify({
-        id: "IAmTheStatsClient"
-    }));
+        //Gestion de la transmission des messages
+        mainConnection.on("message", function(message) {
 
-    askForStats(mainConnection);
+            message = JSON.parse(message.utf8Data);
 
-    setInterval(function() {
+            if(message.id === "clientInfos") {
+                saveStats(message.data);
+            }
+        });
+
+        //Envoi d'un message de synchronisation au serveur principal
+        mainConnection.sendUTF(JSON.stringify({
+            id: "IAmTheStatsClient"
+        }));
 
         askForStats(mainConnection);
 
-    }, statsIntervalMs);
+        setInterval(function() {
+
+            askForStats(mainConnection);
+
+        }, statsIntervalMs);
+
+    });
+
+    //Connexion au serveur principal
+    client.connect("ws://localhost:" + Config.serverPort);
 
 });
+
 
 /**
  * Demande les stats du serveur principal
@@ -79,9 +101,12 @@ var askForStats = function(connection) {
 var saveStats = function(stats) {
     console.ln("Stats recues:");
     console.log(stats);
+
+    database.query("INSERT INTO server_stats(client_count, topic_count) VALUES('?', '?')", [stats.clientCount, stats.topicCount], function(err) {
+        if(err) {
+            console.ln("Problème avec la requête de sauvegarde.");
+            console.log(err);
+        }
+    });
+
 };
-
-//Connexion au serveur principal
-client.connect("ws://localhost:" + Config.serverPort);
-
-
