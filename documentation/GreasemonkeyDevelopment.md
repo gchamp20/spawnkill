@@ -12,7 +12,7 @@ Le principe est de remplacer les fichiers du scripts par des liens symboliques v
 
 ### Sous Ubuntu
 
-Le `répertoire du script` se trouve dans :
+Le `repertoire_du_script` se trouve dans :
 
 ```
 /home/<user>/.mozilla/firefox/<profile_name>/gm_scripts/<script_name>/
@@ -26,7 +26,7 @@ Par exemple, chez moi, le répertoire de SpawnKill se trouve dans :
 
 ### Sous Windows
 
-Le `répertoire du script` se trouve dans :
+Le `repertoire_du_script` se trouve dans :
 
 ```
 C:\Users\<user>\AppData\Roaming\Mozilla\Firefox\Profiles\<profile_name>\gm_scripts\<script_name>\
