@@ -12,36 +12,42 @@ Le principe est de remplacer les fichiers du scripts par des liens symboliques v
 
 ### Sous Ubuntu
 
-Le `repertoire_du_script` se trouve dans :
+Pour cela, configurez le script bash en le copiant puis en remplaçant les variables du fichier (depuis la racine du script) :
+
+```
+cp other/update-plugin-config.default.sh other/update-plugin-config.sh
+chmod u+x other/update-plugin-config.sh
+nano other/update-plugin-config.sh
+```
+
+Le `repertoire_du_script` (`gm_script_path`) se trouve dans :
 
 ```
 /home/<user>/.mozilla/firefox/<profile_name>/gm_scripts/<script_name>/
 ```
+Le `repertoire_de_developpement` (`dev_script_path`) est le répertoire du
+script que vous modifiez
 
-Par exemple, chez moi, le répertoire de SpawnKill se trouve dans :
+Le `nom_du_fichier_principal` (`main_script_file`) est le chemin du fichier `.user.js` depuis la racine du script.
+
+Par exemple, chez moi, le fichier donne ça :
 
 ```
-/home/dorian/.mozilla/firefox/8ned6ue0.default/gm_scripts/JVC_SpawnKill/
+#!/bin/bash
+gm_script_path="/home/dorian/.mozilla/firefox/8ned6ue0.default/gm_scripts/JVC_SpawnKill/"
+dev_script_path="/var/www/spawnkill/"
+main_script_file="jvc-spawnkill.user.js"
 ```
 
 ### Sous Windows
 
+Le plus simple est de lancer le script du dessus depuis `git bash`.
+
 Le `repertoire_du_script` se trouve dans :
 
 ```
-C:\Users\<user>\AppData\Roaming\Mozilla\Firefox\Profiles\<profile_name>\gm_scripts\<script_name>\
-```
-
-Par exemple, chez moi, le répertoire de SpawnKill se trouve dans :
-
-```
-C:\Users\Dorian\AppData\Roaming\Mozilla\Firefox\Profiles\z8o408dk.default\gm_scripts\JVC_SpawnKill\
+c/Users/<user>/AppData/Roaming/Mozilla/Firefox/Profiles/<profile_name>/gm_scripts/<script_name>/
 ```
 
 Chrome
 ------
-
-
-Pistes :
-- Concaténation Script Shell : http://forum.hardware.fr/hfr/OSAlternatifs/shell-concatenation-string-sujet_38505_1.htm1
-- Concaténation batch : http://www.clubic.com/forum/microsoft-windows/batch-concatener-deux-variables-id498832-page1.html
