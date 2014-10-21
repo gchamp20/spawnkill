@@ -8,7 +8,7 @@ Si vous voulez améliorer ce guide, n'hésitez pas à faire une `Pull Request` :
 Firefox
 -------
 
-Le principe est de remplacer les fichiers du scripts par des liens symboliques vers votre script en local.
+Le principe est de remplacer les fichiers du script par des liens symboliques vers votre script en local.
 
 ### Sous Ubuntu
 
@@ -25,6 +25,7 @@ Le `repertoire_du_script` (`gm_script_path`) se trouve dans :
 ```
 /home/<user>/.mozilla/firefox/<profile_name>/gm_scripts/<script_name>/
 ```
+
 Le `repertoire_de_developpement` (`dev_script_path`) est le répertoire du
 script que vous modifiez
 
@@ -42,6 +43,7 @@ main_script_file="jvc-spawnkill.user.js"
 ### Sous Windows
 
 Le plus simple est de lancer le script du dessus depuis `git bash`.
+Si vous avez une solution plus "windowsienne" de prête à l'emploi, merci de m'en faire part :smile:
 
 Le `repertoire_du_script` se trouve dans :
 
