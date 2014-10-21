@@ -7,7 +7,7 @@ if [ ! -z "${gm_script_path}" ]; then
 
     # Pour une question de sécurité, on ne supprime que les types de fichiers suivants
     for ext in {".js",".png",".jpg",".gif",".jpeg",".ogg",".mp3"}; do
-        echo ${gm_script_path}*$ext
+        rm -f ${gm_script_path}*$ext
     done
 
     # On importe le script principal
