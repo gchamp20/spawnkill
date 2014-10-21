@@ -3,7 +3,7 @@
 // @description JVC SpawnKill est un plugin pour jeuxvideo.com ajoutant des fonctionnalités comme les avatars, les citations ou les signatures.
 // @author      Spixel_
 // @namespace   http://www.spawnkill.fr
-// @include     http://*.jeuxvideo.com*
+// @include     http://*.jeuxvideo.com/*
 // @version     1.15.1
 // @require     jquery-2.1.1.min.js?v1.15.1
 // @require     jquery-plugins.js?v1.15.1
