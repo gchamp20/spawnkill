@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# Prérequis :
+# -----------
+# Droits d'écriture sur /tmp
+# Google Chrome installé avec l'extension Tampermonkey
+# Droits d'ouvrir des urls locales à Tampermonkey
+# Possibilité de lancer Chrome via la commande "google-chrome" dans le terminal
+
+CURRENT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+source "${CURRENT_DIR}/update-plugin-config.sh"
+
+tmp_dir_name="chrome-script-update"
+tmp_dir_path="/tmp/${tmp_dir_name}"
+tmp_script_path="${tmp_dir_path}/$main_script_file"
+
+# On crée un répertoire temporaire pour placer le script test
+mkdir "${tmp_dir_path}" &> /dev/null
+
+# On vide le script de dev
+> "${tmp_script_path}"
+
+
+# On parcours le fichier principal pour produire un script temporaire
+# regex="^\/\/ @(require[[:space:]]*|resource[[:space:]]+[^[:space:]]+[[:space:]]+)([^[:space:]\?]*)(\?.*)?$"
+
+# http://regex101.com/r/xJ6dX4/1
+start_header_regex="\/\/[[:space:]]*==UserScript=="
+
+# http://regex101.com/r/bD6tJ9/1
+end_header_regex="\/\/[[:space:]]*==\/UserScript=="
+
+# http://regex101.com/r/nI4uA6/1
+require_regex="\/\/[[:space:]]*@require[[:space:]]+([^[:space:]\?]+)"
+
+# http://regex101.com/r/lP6xD2/2
+resource_regex="\/\/[[:space:]]*@resource[[:space:]]+([^[:space:]\?]+)[[:space:]]+([^[:space:]\.]+\.([a-zA-Z0-9]+))"
+
+while IFS="" read -r line; do
+
+    # Fin de l'entête, on inclut le script principal et on s'arrête
+    if [[ $line =~ $end_header_regex ]]; then
+        printf "%s\n%s" "// @require file://${dev_script_path}${main_script_file}" "$line" >> "${tmp_script_path}"
+        break
+
+    # Juste après le début de l'entête, on inclut le script permettant de corriger les ressources
+    elif [[ $line =~ $start_header_regex ]]; then
+        printf "%s\n%s\n" "$line" "// @require file://${dev_script_path}other/local-dev/correct-ressources-url.js" >> "${tmp_script_path}"
+
+    # On fait pointer les @require vers les fichiers locaux
+    elif [[ $line =~ $require_regex ]]; then
+        file="${BASH_REMATCH[1]}"
+        printf "%s\n" "// @require file://${dev_script_path}${file}" >> "${tmp_script_path}"
+
+    # On fait pointer les @resource vers les fichiers locaux et on ajoute
+    elif [[ $line =~ $resource_regex ]]; then
+        id="${BASH_REMATCH[1]}"
+        file="${BASH_REMATCH[2]}"
+        ext="${BASH_REMATCH[3]}"
+        printf "%s\n" "// @resource ${id} file://${dev_script_path}${file}" >> "${tmp_script_path}"
+
+    else
+        # On recopie le contenu du fichier
+        printf "%s\n" "$line" >> "${tmp_script_path}"
+    fi
+
+
+    # On converti les chemins vers des chemins locaux
+
+    #     file="${BASH_REMATCH[2]}"
+
+done < "${dev_script_path}${main_script_file}"
+
+# On ouvre le script dans chrome (avec une chaîne aléatoire pour éviter le cache)
+google-chrome "file://${tmp_script_path}"
