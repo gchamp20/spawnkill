@@ -17,11 +17,16 @@ function curly($url) {
 	$now = time();
 	$lastValidDataTimestamp = $now - (60); //1 minute
  
- 	$rows = $dbh->query("SELECT *
+ 	$stmt = $dbh->prepare("SELECT *
  		FROM api_cache_data
- 		WHERE url = '$url'
- 		AND timestamp > $lastValidDataTimestamp
+ 		WHERE url = :url
+ 		AND timestamp > :timestamp
  	");
+
+    $stmt->bindValue(':url', $url);
+    $stmt->bindValue(':timestamp', $lastValidDataTimestamp);
+
+    $rows = $stmt->execute();
 
  	$cache_data = current($rows->fetchAll(PDO::FETCH_ASSOC));
 
