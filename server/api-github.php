@@ -21,6 +21,7 @@ function curly($url) {
  		FROM api_cache_data
  		WHERE url = :url
  		AND timestamp > :timestamp
+        LIMIT 1
  	");
 
     $stmt->bindValue(':url', $url);
@@ -28,7 +29,7 @@ function curly($url) {
 
     $rows = $stmt->execute();
 
- 	$cache_data = current($rows->fetchAll(PDO::FETCH_ASSOC));
+ 	$cache_data = $rows->fetch(PDO::FETCH_ASSOC);
 
  	if(!empty($cache_data)) {
  		$output = $cache_data['data'];
