@@ -8,7 +8,7 @@
 # Possibilité de lancer Chrome via la commande "google-chrome" dans le terminal
 
 CURRENT_DIR="$( cd "$( dirname "$0" )" && pwd )"
-source "${CURRENT_DIR}/update-plugin-config.sh"
+source "${CURRENT_DIR}/local-dev-config.sh"
 
 tmp_dir_name="chrome-script-update"
 tmp_dir_path="/tmp/${tmp_dir_name}"
@@ -64,12 +64,8 @@ while IFS="" read -r line; do
         printf "%s\n" "$line" >> "${tmp_script_path}"
     fi
 
-
-    # On converti les chemins vers des chemins locaux
-
-    #     file="${BASH_REMATCH[2]}"
-
 done < "${dev_script_path}${main_script_file}"
 
+random_string=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 # On ouvre le script dans chrome (avec une chaîne aléatoire pour éviter le cache)
-google-chrome "file://${tmp_script_path}"
+google-chrome "file://${tmp_script_path}?${random_string}.user.js"
