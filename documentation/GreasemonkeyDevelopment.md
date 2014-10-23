@@ -2,21 +2,19 @@ Développer sans réinstallation avec Greasemonkey / TamperMoneky
 ===============================================================
 
 Il est possible de développer un userscript sans avoir besoin de réinstaller le script à chaque modification. Ce guide détaille les procédures à suivre pour Firefox et Chrome, sous Ubuntu.
-Si vous voulez améliorer ce guide, n'hésitez pas à faire une `Pull Request` :)
+Si vous voulez améliorer ce guide, notamment avec un guide pour Windows, n'hésitez pas à faire une `Pull Request` :)
 
-Firefox
--------
-
-Le principe est de remplacer les fichiers du script par des liens symboliques vers votre script en local.
+Configuration commune à Firefox et Chrome
+-----------------------------------------
 
 ### Sous Ubuntu
 
-Pour cela, configurez le script bash en le copiant puis en remplaçant les variables du fichier (depuis la racine du script) :
+Configurez le script bash en le copiant puis en remplaçant les variables du fichier (depuis la racine du script) :
 
 ```bash
-cp other/local-dev-config.default.sh other/local-dev-config.sh
-chmod u+x other/local-dev-config.sh
-nano other/local-dev-config.sh
+cp other/local-dev/local-dev-config.default.sh other/local-dev/local-dev-config.sh
+chmod u+x other/local-dev/local-dev-config.sh
+nano other/local-dev/local-dev-config.sh
 ```
 
 Le `repertoire_du_script` (`gm_script_path`) se trouve dans :
@@ -39,10 +37,21 @@ dev_script_path="/var/www/spawnkill/"
 main_script_file="jvc-spawnkill.user.js"
 ```
 
-Une fois cette configuration effectuée, il vous suffit d'installer SpawnKill sur Firefox et de lancer le script remplaçant les fichiers du scripts par vos fichiers de développement (depuis la racine du script) :
+Firefox
+-------
+
+Le principe est de remplacer les fichiers du script par des liens symboliques vers votre script en local.
+
+### Sous Ubuntu
+
+__Prérequis :__
+- Firefox doit être installé avec l'extension Greasemonkey
+- La [configuration](#configuration-commune---firefox-et-chrome) doit être effectuée
+
+Une fois la configuration effectuée, il vous suffit d'installer SpawnKill sur Firefox et de lancer le script remplaçant les fichiers du scripts par vos fichiers de développement (depuis la racine du script) :
 
 ```
-other/firefox-local-dev.sh
+other/local-dev/firefox-local-dev.sh
 ```
 
 __Attention__, à chaque fois que le fichier principal est modifié, il faut relancer le script ci-dessus.
@@ -57,3 +66,23 @@ Et supprimez toutes les occurences du script concerné.
 
 Chrome
 ------
+
+Le principe est d'indiquer au script qu'il doit utiliser des fichiers locaux plutôt que les fichiers en ligne.
+
+### Sous Ubuntu
+
+__Prérequis :__
+- Le script doit avoir les droits d'écriture sur `/tmp`
+- Chrome doit être installé avec l'extension Tampermonkey
+- Chrome doit pouvoir être lancé depuis la ligne de commande en tapant `google-chrome`
+- Tampermonkey doit pouvoir ouvrir des url du type `file://...` (voir plus bas)
+- La [configuration](#configuration-commune-à-firefox-et-chrome) doit être effectuée
+
+Tout d'abord, configurer Tampermonkey pour accepter les urls du type `file://...`. Pour cela, faites `Clic Droit > Gérer` sur l'icône de Tampermonkey et cocher la case `Autoriser l'accès aux URL de fichier `.
+
+Une fois la configuration effectuée, il vous suffit de désinstaller SpawnKill de Chrome et de lancer le script chargé de le remplacer par vos fichiers de développement (depuis la racine du script) :
+
+```
+other/local-dev/chrome-local-dev.sh
+```
+__Attention__, à chaque fois que le fichier principal est modifié, il faut relancer le script ci-dessus.
