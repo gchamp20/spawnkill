@@ -46,7 +46,7 @@ Le principe est de remplacer les fichiers du script par des liens symboliques ve
 
 __Prérequis :__
 - Firefox doit être installé avec l'extension Greasemonkey
-- La [configuration](#configuration-commune---firefox-et-chrome) doit être effectuée
+- La [configuration](#configuration-commune-à-firefox-et-chrome) doit être effectuée
 
 Une fois la configuration effectuée, il vous suffit d'installer SpawnKill sur Firefox et de lancer le script remplaçant les fichiers du scripts par vos fichiers de développement (depuis la racine du script) :
 
