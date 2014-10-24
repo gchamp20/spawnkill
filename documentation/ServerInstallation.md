@@ -79,7 +79,7 @@ Depuis la racine du dépôt
 
 ```
 cd server/socket/bin
-./start-server.sh
+./start-server
 ```
 
 Note : par défaut, le serveur se lance sur les ports 8080 et 8081, ceci peut être modifié dans le fichier de configuration.
@@ -87,7 +87,7 @@ Note : par défaut, le serveur se lance sur les ports 8080 et 8081, ceci peut ê
 
 ```
 cd server/socket/bin
-./start-server.sh &> /var/log/spawnkill/server.log
+./start-server &> /var/log/spawnkill/server.log
 ```
 
 Attention, si le shell est fermé, le serveur est coupé.
@@ -96,7 +96,7 @@ Pour éviter ça, il est possible d'utiliser screen pour détacher le processus 
 ```
 cd server/socket/bin
 screen
-./start-server.sh &> /var/log/spawnkill/server.log
+./start-server &> /var/log/spawnkill/server.log
 ```
 
 ### Couper le serveur
@@ -104,7 +104,7 @@ screen
 Depuis la racine du dépôt
 
 ```
-server/socket/bin/stop-server.sh
+server/socket/bin/stop-server
 ```
 
 Faire pointer le script vers le serveur

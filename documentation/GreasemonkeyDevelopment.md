@@ -51,7 +51,7 @@ __Prérequis :__
 Une fois la configuration effectuée, il vous suffit d'installer SpawnKill sur Firefox et de lancer le script remplaçant les fichiers du scripts par vos fichiers de développement (depuis la racine du script) :
 
 ```
-other/local-dev/firefox-local-dev.sh
+other/local-dev/firefox-local-dev
 ```
 
 __Attention__, à chaque fois que le fichier principal est modifié, il faut relancer le script ci-dessus.
@@ -83,6 +83,6 @@ Tout d'abord, configurer Tampermonkey pour accepter les urls du type `file://...
 Une fois la configuration effectuée, il vous suffit de désinstaller SpawnKill de Chrome et de lancer le script chargé de le remplacer par vos fichiers de développement (depuis la racine du script) :
 
 ```
-other/local-dev/chrome-local-dev.sh
+other/local-dev/chrome-local-dev
 ```
 __Attention__, à chaque fois que le fichier principal est modifié, il faut relancer le script ci-dessus.

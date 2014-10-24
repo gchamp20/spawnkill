@@ -8,7 +8,7 @@
 # Possibilité de lancer Chrome via la commande "google-chrome" dans le terminal
 
 CURRENT_DIR="$( cd "$( dirname "$0" )" && pwd )"
-source "${CURRENT_DIR}/local-dev-config.sh"
+. "${CURRENT_DIR}/local-dev-config.sh"
 
 tmp_dir_name="chrome-script-update"
 tmp_dir_path="/tmp/${tmp_dir_name}"
@@ -22,7 +22,6 @@ mkdir "${tmp_dir_path}" &> /dev/null
 
 
 # On parcours le fichier principal pour produire un script temporaire
-# regex="^\/\/ @(require[[:space:]]*|resource[[:space:]]+[^[:space:]]+[[:space:]]+)([^[:space:]\?]*)(\?.*)?$"
 
 # http://regex101.com/r/xJ6dX4/1
 start_header_regex="\/\/[[:space:]]*==UserScript=="

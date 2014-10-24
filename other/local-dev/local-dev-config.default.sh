@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # répertoire greasemonkey du script
 # /!\ Tout ce qui se trouve dans ce répertoire sera supprimé !
 # Veillez à ne pas vous tromper en saisissant cette variable !
