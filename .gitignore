@@ -1,8 +1,7 @@
 server.log
 no-git
 /index.php
-/other/update-plugin-config.sh
-/server/socket/composer.lock
+/other/local-dev/local-dev-config.sh
 /server/socket/vendor
 /server/socket/src/SpawnKill/Config.php
 /server/socket/bin/config.js
