@@ -7,6 +7,7 @@ Prérequis
 - Un serveur web
 - PHP (version minimum : 5.3.9)
 - Un serveur MySQL (notamment pour le cache des données)
+- Composer ([installation globale] recommandée)
 - Node.js
 - Git
 
@@ -24,7 +25,7 @@ Récupération du code
 
 Se placer à l'endroit souhaité et récupérer le dépôt de SpawnKill
 
-```
+```sh
 git clone https://github.com/dorian-marchal/spawnkill
 ```
 
@@ -33,34 +34,44 @@ Le dépôt est cloné dans le répertoire `spawnkill`. J'appellerai ce répertoi
 Installation
 ------------
 
-### Installation du serveur PHP
+### Installation des dépendances PHP
 
 Depuis la racine du dépôt :
 
-```
+```sh
 cd server/socket
-php5 composer.phar install
+composer install
 ```
+
+### Installation des dépendances Node
+
+Depuis la racine du dépôt :
+
+```sh
+cd server/socket/bin
+npm install
+```
+
 
 ### Configuration du serveur
 
 Ouvrir le fichier de configuration et ajuster les variables en fonction de votre configuration (depuis la racine du dépôt):
 
-```
+```sh
 cp server/socket/src/SpawnKill/Config.default.php server/socket/src/SpawnKill/Config.php
 nano server/socket/src/SpawnKill/Config.php
 ```
 
 Faites de même avec le fichier de configuration pour le javascript
 
-```
+```sh
 cp server/socket/bin/config.default.js server/socket/bin/config.js
 nano server/socket/bin/config.js
 ```
 
 Configurer ensuite la base de données (toujours depuis la racine du dépôt)
 
-```
+```sh
 cp server/config.default.php server/config.php
 nano server/config.php
 ```
@@ -69,7 +80,7 @@ Ce fichier permet aussi de configurer vos infos Github pour pouvoir proposer les
 
 Et lancer le script de création de la base de données (toujours depuis la racine du dépôt):
 
-```
+```sh
 php5 server/create-database.php
 ```
 
@@ -77,7 +88,7 @@ php5 server/create-database.php
 
 Depuis la racine du dépôt
 
-```
+```sh
 cd server/socket/bin
 ./start-server
 ```
@@ -85,7 +96,7 @@ cd server/socket/bin
 Note : par défaut, le serveur se lance sur les ports 8080 et 8081, ceci peut être modifié dans le fichier de configuration.
 `stdout` et `stderr` peuvent être redirigées vers un éventuel fichier de log de cette façon :
 
-```
+```sh
 cd server/socket/bin
 ./start-server &> /var/log/spawnkill/server.log
 ```
@@ -93,7 +104,7 @@ cd server/socket/bin
 Attention, si le shell est fermé, le serveur est coupé.
 Pour éviter ça, il est possible d'utiliser screen pour détacher le processus du shell :
 
-```
+```sh
 cd server/socket/bin
 screen
 ./start-server &> /var/log/spawnkill/server.log
@@ -103,7 +114,7 @@ screen
 
 Depuis la racine du dépôt
 
-```
+```sh
 server/socket/bin/stop-server
 ```
 
@@ -114,8 +125,10 @@ Afin que les utilisateurs de SpawnKill se connectent sur votre serveur, il faut 
 
 Dans le fichier `base.js`, modifiez les trois variables suivantes pour les faire pointer vers votre serveur :
 
-```
+```js
 SERVER_URL: "http://serveur.spawnkill.fr/", // url `http` pointant vers le répertoire `/server` du dépôt spawnkill (avec un slash à la fin)
 SOCKET_SERVER_URL: "ws://serveur.spawnkill.fr", // url `ws` pointant vers votre serveur
 SOCKET_SERVER_PORT: 4243 //Port du serveur (correspond à `$SERVER_PORT` dans Config.php)
 ```
+
+[installation globale]: https://getcomposer.org/doc/00-intro.md#globally
