@@ -2,7 +2,7 @@
 include "config.php";
 
 try {
-	$options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'); 
+	$options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
 	$dbh = new PDO("mysql:host=" . HOST . ";", LOGIN, PASS, $options);
 
 	$dbh->query('
@@ -26,6 +26,14 @@ try {
 		  PRIMARY KEY (`id`),
 		  KEY `ip` (`ip`)
 		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
+
+		CREATE TABLE IF NOT EXISTS `server_stats` (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `client_count` int(11) NOT NULL,
+		  `topic_count` int(11) NOT NULL,
+		  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		  PRIMARY KEY (`id`)
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
 	');
 
 }
@@ -33,6 +41,6 @@ catch (Exception $e) {
 	echo $e->getMessage();
 }
 
-	
+
 
 
