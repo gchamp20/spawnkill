@@ -1,7 +1,7 @@
 Développer sans réinstallation avec Greasemonkey / TamperMoneky
 ===============================================================
 
-Il est possible de développer un userscript sans avoir besoin de réinstaller le script à chaque modification. Ce guide détaille les procédures à suivre pour Firefox et Chrome, sous Ubuntu.
+Il est possible de développer un userscript sans avoir besoin de réinstaller le script à chaque modification. Ce guide détaille les procédures à suivre pour Firefox et Chrome, sous Ubuntu en prenant pour exemple le script SpawnKill. La procédure est la même pour tout autre script.
 Si vous voulez améliorer ce guide, notamment avec un guide pour Windows, n'hésitez pas à faire une `Pull Request` :)
 
 Configuration commune à Firefox et Chrome
