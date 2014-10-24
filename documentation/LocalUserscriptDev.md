@@ -13,7 +13,6 @@ Configurez le script bash en le copiant puis en remplaçant les variables du fic
 
 ```bash
 cp other/local-dev/local-dev-config.default.sh other/local-dev/local-dev-config.sh
-chmod u+x other/local-dev/local-dev-config.sh
 nano other/local-dev/local-dev-config.sh
 ```
 
@@ -45,6 +44,7 @@ Le principe est de remplacer les fichiers du script par des liens symboliques ve
 ### Sous Ubuntu
 
 __Prérequis :__
+- Votre distribution doit disposer de `/bin/bash`
 - Firefox doit être installé avec l'extension Greasemonkey
 - La [configuration](#configuration-commune-à-firefox-et-chrome) doit être effectuée
 
@@ -73,6 +73,7 @@ Le principe est d'indiquer au script qu'il doit utiliser des fichiers locaux plu
 
 __Prérequis :__
 - Le script doit avoir les droits d'écriture sur `/tmp`
+- Votre distribution doit disposer de `/bin/bash`
 - Chrome doit être installé avec l'extension Tampermonkey
 - Chrome doit pouvoir être lancé depuis la ligne de commande en tapant `google-chrome`
 - Tampermonkey doit pouvoir ouvrir des url du type `file://...` (voir plus bas)
