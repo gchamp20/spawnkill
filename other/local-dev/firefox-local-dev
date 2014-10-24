@@ -1,6 +1,6 @@
 #!/bin/bash
 CURRENT_DIR="$( cd "$( dirname "$0" )" && pwd )"
-source "${CURRENT_DIR}/update-plugin-config.sh"
+. "${CURRENT_DIR}/local-dev-config.sh"
 
 # On supprime tout ce qui se trouve dans le répertoire
 if [ ! -z "${gm_script_path}" ]; then
