@@ -46,7 +46,7 @@ Le principe est de remplacer les fichiers du script par des liens symboliques ve
 __Prérequis :__
 - Votre distribution doit disposer de `/bin/bash`
 - Firefox doit être installé avec l'extension Greasemonkey
-- La [configuration](#configuration-commune-à-firefox-et-chrome) doit être effectuée
+- La [configuration](#configuration-des-scripts-de-dev-local) doit être effectuée
 
 Une fois la configuration effectuée, il vous suffit d'installer SpawnKill sur Firefox et de lancer le script remplaçant les fichiers du scripts par vos fichiers de développement (depuis la racine du script) :
 
@@ -77,7 +77,7 @@ __Prérequis :__
 - Chrome doit être installé avec l'extension Tampermonkey
 - Chrome doit pouvoir être lancé depuis la ligne de commande en tapant `google-chrome`
 - Tampermonkey doit pouvoir ouvrir des url du type `file://...` (voir plus bas)
-- La [configuration](#configuration-commune-à-firefox-et-chrome) doit être effectuée
+- La [configuration](#configuration-des-scripts-de-dev-local) doit être effectuée
 
 Tout d'abord, configurer Tampermonkey pour accepter les urls du type `file://...`. Pour cela, faites `Clic Droit > Gérer` sur l'icône de Tampermonkey et cocher la case `Autoriser l'accès aux URL de fichier `.
 
