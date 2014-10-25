@@ -27,6 +27,7 @@
         "WebSocket": true,
         "jQuery": true,
         "$": true,
-        "SK": true
+        "SK": true,
+        "module": true
     }
 }
