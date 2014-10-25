@@ -736,9 +736,14 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
     /**
      * Lie un contenu au lien s'il match un type de media
      */
-    var queueCheckLinkForMedia = function($msg, $a) {
+    var queueCheckLinkForMedia = function($msg, $a, limit) {
 
         self.queueFunction(function() {
+
+            if (limit.isReached()) {
+                // Stoppe directement si la limite est atteinte
+                return;
+            }
 
             var messageId = $msg.attr("id");
 
@@ -767,6 +772,8 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
 
                     //Le lien correspond au media
                     if (matchMedia) {
+                        // Notifie le code parent qu'un media a été trouvé
+                        limit.increment();
 
                         //On remplace le lien par l'élément du media
                         var $mediaElement = mediaType.getEmbeddedMedia($a, matchMedia);
@@ -806,12 +813,19 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
     $(".msg").each(function(id, msg) {
 
         var $msg = $(msg);
+        var count = 0;
 
         //On parcourt tous les liens du post
         $msg.find(".post a").each(function(id, a) {
 
             //Et on cherche chaque type de media
-            queueCheckLinkForMedia($msg, $(a));
+            queueCheckLinkForMedia($msg, $(a), {
+                // Quand un media est trouvé
+                increment: function () {count++;},
+
+                // Retourne si la limite est atteinte (20 medias en dur)
+                isReached: function () {return count < 20;}
+            });
 
         });
     });
