@@ -271,7 +271,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         #recherche #suggest {\
             z-index: 41001 !important;\
         }\
-        .modal_generic_overflow {\
+        .modal_generic.modal_generic_overflow {\
             z-index: 41100 !important;\
         }\
         .modal_generic {\
