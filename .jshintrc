@@ -1,0 +1,13 @@
+{
+    "globalstrict": true,
+    "globals": {
+        "GM_xmlhttpRequest": true,
+        "GM_getResourceURL": true,
+        "GM_setClipboard": true,
+        "window": true,
+        "document": true,
+        "location": true,
+        "$": true,
+        "SK": true
+    }
+}
