@@ -21,7 +21,7 @@ SK.moduleConstructors.SocketConnection.prototype.onCloseListeners = [];
 
 SK.moduleConstructors.SocketConnection.prototype.init = function() {
 
-	this.openServerConnection();
+    this.openServerConnection();
 
 };
 
@@ -30,44 +30,44 @@ SK.moduleConstructors.SocketConnection.prototype.init = function() {
  */
 SK.moduleConstructors.SocketConnection.prototype.openServerConnection = function() {
 
-	//On ouvre une connexion au serveur
-	this.serverConnection = new WebSocket(SK.config.SOCKET_SERVER_URL + ":" + SK.config.SOCKET_SERVER_PORT);
+    //On ouvre une connexion au serveur
+    this.serverConnection = new WebSocket(SK.config.SOCKET_SERVER_URL + ":" + SK.config.SOCKET_SERVER_PORT);
 
-	//Connexion ouverte : On prévient les listeners
-	this.serverConnection.onopen = function() {
-		for (var i in this.onConnectListeners) {
-			this.onConnectListeners[i]();
-		}
+    //Connexion ouverte : On prévient les listeners
+    this.serverConnection.onopen = function() {
+        for (var i in this.onConnectListeners) {
+            this.onConnectListeners[i]();
+        }
 
-	}.bind(this);
+    }.bind(this);
 
-	//Nouveau message : On parse le message et on prévient les listeners
-	this.serverConnection.onmessage = function(event) {
+    //Nouveau message : On parse le message et on prévient les listeners
+    this.serverConnection.onmessage = function(event) {
 
-		var message = SK.SocketMessage.fromJson(event.data);
+        var message = SK.SocketMessage.fromJson(event.data);
 
-		//Message mal formaté, on laisse tomber
-		if (message === false) {
-			return;
-		}
+        //Message mal formaté, on laisse tomber
+        if (message === false) {
+            return;
+        }
 
-		//On averti tous les listeners
-		if (typeof this.onMessageListeners[message.id] !== "undefined") {
+        //On averti tous les listeners
+        if (typeof this.onMessageListeners[message.id] !== "undefined") {
 
-			for (var i in this.onMessageListeners[message.id]) {
-				this.onMessageListeners[message.id][i](message.data);
-			}
-		}
-	}.bind(this);
+            for (var i in this.onMessageListeners[message.id]) {
+                this.onMessageListeners[message.id][i](message.data);
+            }
+        }
+    }.bind(this);
 
-	//Connexion fermée : On prévient les listeners
-	this.serverConnection.onclose = function() {
+    //Connexion fermée : On prévient les listeners
+    this.serverConnection.onclose = function() {
 
-		for (var i in this.onCloseListeners) {
-			this.onCloseListeners[i]();
-		}
+        for (var i in this.onCloseListeners) {
+            this.onCloseListeners[i]();
+        }
 
-	}.bind(this);
+    }.bind(this);
 };
 
 /**
@@ -78,10 +78,10 @@ SK.moduleConstructors.SocketConnection.prototype.openServerConnection = function
  */
 SK.moduleConstructors.SocketConnection.prototype.addOnMessageListener = function(id, listener) {
 
-	if (typeof this.onMessageListeners[id] === "undefined") {
-		this.onMessageListeners[id] = [];
-	}
-	this.onMessageListeners[id].push(listener);
+    if (typeof this.onMessageListeners[id] === "undefined") {
+        this.onMessageListeners[id] = [];
+    }
+    this.onMessageListeners[id].push(listener);
 };
 
 /**
@@ -89,7 +89,7 @@ SK.moduleConstructors.SocketConnection.prototype.addOnMessageListener = function
  */
 SK.moduleConstructors.SocketConnection.prototype.addOnCloseListener = function(listener) {
 
-	this.onCloseListeners.push(listener);
+    this.onCloseListeners.push(listener);
 };
 
 /**
@@ -98,12 +98,12 @@ SK.moduleConstructors.SocketConnection.prototype.addOnCloseListener = function(l
  * sinon, ajoute la fonction aux listeners de l'onOpen event.
  */
 SK.moduleConstructors.SocketConnection.prototype.addOnConnectListener = function(listener) {
-	if(this.isConnected()) {
-		listener();
-	}
-	else {
-		this.onConnectListeners.push(listener);
-	}
+    if(this.isConnected()) {
+        listener();
+    }
+    else {
+        this.onConnectListeners.push(listener);
+    }
 };
 
 /**
@@ -112,14 +112,14 @@ SK.moduleConstructors.SocketConnection.prototype.addOnConnectListener = function
  */
 SK.moduleConstructors.SocketConnection.prototype.sendMessage = function(id, data) {
 
-	data = data || null;
-	var message = SK.SocketMessage.fromData(id, data);
-	this.serverConnection.send(message.toJson());
+    data = data || null;
+    var message = SK.SocketMessage.fromData(id, data);
+    this.serverConnection.send(message.toJson());
 };
 
 /**
  * @return {boolean} Vrai si la connexion est en place.
  */
 SK.moduleConstructors.SocketConnection.prototype.isConnected = function() {
-	return this.serverConnection !== null && this.serverConnection.readyState === 1;
+    return this.serverConnection !== null && this.serverConnection.readyState === 1;
 };

@@ -35,19 +35,19 @@ SK.moduleConstructors.PemtHighlight.prototype.init = function() {
         $(".date").each(function() {
 
             //Pour chaque PEMT
-    	    for (i = 0; i < results.length; i++) {
+            for (i = 0; i < results.length; i++) {
 
                 var re = new RegExp(results[i]);
                 //On teste si certaines dates ont la date d'un PEMT
-    	        if (re.test($(this).text())) {
+                if (re.test($(this).text())) {
                     var $date = $(this);
                     var fullDateHtml = $date.html().trim();
                     //Si oui, on colorie la date avec la couleur principale
-    	            $date.html(fullDateHtml.replace(/(\d{2}:\d{2}:\d{2})/, "<span class='pemt-highlight'>$1</span>"));
+                    $date.html(fullDateHtml.replace(/(\d{2}:\d{2}:\d{2})/, "<span class='pemt-highlight'>$1</span>"));
                 }
-    	    }
+            }
         });
-    }   
+    }
 };
 
 /**
@@ -65,7 +65,7 @@ SK.moduleConstructors.PemtHighlight.prototype.shouldBeActivated = function() {
  */
 SK.moduleConstructors.PemtHighlight.prototype.getCss = function() {
 
-	var css = "\
+    var css = "\
         .pemt-highlight {\
             color: " + SK.common.mainColor + " !important;\
         }\

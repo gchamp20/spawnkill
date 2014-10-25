@@ -39,7 +39,7 @@ SK.moduleConstructors.NouveauModule.prototype.shouldBeActivated = function() {
  */
 SK.moduleConstructors.NouveauModule.prototype.getCss = function() {
 
-	var css = "";
+    var css = "";
 
     return css;
 };
@@ -47,5 +47,5 @@ SK.moduleConstructors.NouveauModule.prototype.getCss = function() {
 /**
  * Options configurables du plugin.
  * Ces options apparaitront dans le panneau de configuration de SpawnKill
- */ 
+ */
 SK.moduleConstructors.NouveauModule.prototype.settings = {};
