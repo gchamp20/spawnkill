@@ -13,9 +13,6 @@ SK.moduleConstructors.SocketConnection.prototype.description = "Permet de se con
 SK.moduleConstructors.SocketConnection.prototype.required = true;
 SK.moduleConstructors.SocketConnection.prototype.hidden = true;
 
-/**
- * WebSocket object
- */
 SK.moduleConstructors.SocketConnection.prototype.serverConnection = null;
 
 SK.moduleConstructors.SocketConnection.prototype.onConnectListeners = [];

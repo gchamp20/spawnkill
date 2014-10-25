@@ -227,4 +227,4 @@ SK.Author.clearData = function() {
             }
         })
     ;
-}
+};

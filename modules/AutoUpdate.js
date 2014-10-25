@@ -68,7 +68,7 @@ SK.moduleConstructors.AutoUpdate.prototype.updateIsMinor = function(currentVersi
 
 	return false;
 
-}
+};
 
 /**
  * Retourne le tag de la release décomposé en fragments faciles à comparer

@@ -26,7 +26,7 @@ SK.FaviconNotificationUpdater = function(baseFaviconUrl) {
         color = color || "red";
 
         this.showFaviconNotification("!", "transparent", color, true);
-     }
+     };
 
     /**
      * Affiche une notification d'erreur dans le favicon (une croix)
