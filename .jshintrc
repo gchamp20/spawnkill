@@ -1,6 +1,11 @@
 {
     "browser": true,
     "globalstrict": true,
+    "esnext": true,
+    "quotmark": "double",
+    "curly": true,
+    "undef": true,
+    "unused": true,
     "globals": {
         "GM_xmlhttpRequest": true,
         "GM_getResourceURL": true,
