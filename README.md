@@ -265,3 +265,21 @@ SK.moduleConstructors.NouveauModule.prototype.settings = {
 	}
 };
 ```
+
+### Analyse de code
+
+[JSHint] est utilisé pour analyser le code JavaScript, et détecter
+d'éventuels problèmes dans le code.
+
+JSHint peut être installé avec [npm] simplement en exécutant `npm
+install`.
+
+Pour lancer la vérification, exécutez `make lint` (ou en l'absence de la
+commande `make`, `node_modules/jshint/bin/jshint .` à la racine du
+projet).
+
+Il est conseillé de vérifier le code avec JSHint avant de proposer une
+contribution.
+
+[JSHint]: http://www.jshint.com/
+[npm]: https://www.npmjs.org/
