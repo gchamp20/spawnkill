@@ -821,10 +821,14 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
             //Et on cherche chaque type de media
             queueCheckLinkForMedia($msg, $(a), {
                 // Quand un media est trouvé
-                increment: function () {count++;},
+                increment: function () {
+                    count++;
+                },
 
                 // Retourne si la limite est atteinte (20 medias en dur)
-                isReached: function () {return count < 20;}
+                isReached: function () {
+                    return count > 20;
+                }
             });
 
         });
