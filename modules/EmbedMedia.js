@@ -1,4 +1,5 @@
 "use strict";
+
 /* jshint multistr: true */
 /* jshint newcap: false */
 
@@ -236,7 +237,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
          * ne match pas :
          * https://www.dropbox.com/s/lfta3yd9tryotxp/screen2.png
          * http://www.hostingpics.net/viewer.php?id=785683.jpg
-         * Pour les tests : http://regex101.com/r/fD7bC3/1
+         * Pour les tests : http://regex101.com/r/fD7bC3/2
          */
         regex: /^https?:\/\/(?!www\.dropbox\.com|www\.hostingpics)(?:(?:(www\.hapshack\.com\/\?v=)|(www\.noelshack\.com\/([\d]{4})-([\d]{2})-))?(.*.(jpe?g|png|gif|bmp)))(?:[\?:].*)?$/i,
 
