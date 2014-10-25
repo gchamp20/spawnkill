@@ -73,6 +73,7 @@
 // @grant       GM_xmlhttpRequest
 // @grant       GM_getResourceURL
 // @grant       GM_setClipboard
+// @grant       GM_addStyle
 // @run-at document-start
 // ==/UserScript==
 
