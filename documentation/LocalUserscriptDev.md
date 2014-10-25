@@ -4,8 +4,8 @@ Développer sans réinstallation avec Greasemonkey / TamperMonkey
 Il est possible de développer un userscript sans avoir besoin de réinstaller le script à chaque modification. Ce guide détaille les procédures à suivre pour Firefox et Chrome, sous Ubuntu en prenant pour exemple le script SpawnKill. La procédure est la même pour tout autre script.
 Si vous voulez améliorer ce guide, notamment avec un guide pour Windows, n'hésitez pas à faire une `Pull Request` :)
 
-Configuration commune à Firefox et Chrome
------------------------------------------
+Configuration des scripts de dev local
+--------------------------------------
 
 ### Sous Ubuntu
 
@@ -16,7 +16,7 @@ cp other/local-dev/local-dev-config.default.sh other/local-dev/local-dev-config.
 nano other/local-dev/local-dev-config.sh
 ```
 
-Le `repertoire_du_script` (`gm_script_path`) se trouve dans :
+Le `repertoire_du_script` (`gm_script_path`) *(spécifique à Firefox)* se trouve dans :
 
 ```
 /home/<user>/.mozilla/firefox/<profile_name>/gm_scripts/<script_name>/
