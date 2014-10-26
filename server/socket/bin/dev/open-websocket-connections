@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+"use strict";
+
+/**
+ * Ce script ouvre un nombre de socket passé en paramètre
+ * sur `host`:`port`.
+ * Il est utilisé pour vérifier approximativement le nombre
+ * maximum de file descriptors pouvant être ouverts sur un
+ * serveur de socket.
+ */
+
+ var host = "localhost";
+ var port = 4243;
+
+var WSC = require("websocket").client;
+
+if (typeof process.argv[2] === "undefined") {
+    console.log("Utilisation: open-websocket-connections <int> <- nombre de connexions à ouvrir");
+}
+
+for (var i = 0; i < process.argv[2]; i++) {
+    openCon(i);
+}
+
+function openCon(i) {
+    setTimeout(function () {
+        new WSC().connect("ws://" + host + ":" + port);
+    }, 10 * i);
+}
