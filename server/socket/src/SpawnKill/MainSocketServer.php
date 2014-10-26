@@ -66,6 +66,7 @@ class MainSocketServer implements MessageComponentInterface {
         $this->clients->attach($client);
 
         $this->logger->ln("Nouvelle connexion : {$client->resourceId}");
+        $this->logger->ln('Clients connectes : ' . count($this->clients));
     }
 
     /**
