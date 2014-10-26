@@ -66,7 +66,9 @@ class MainSocketServer implements MessageComponentInterface {
         $this->clients->attach($client);
 
         $this->logger->ln("Nouvelle connexion : {$client->resourceId}");
-        $this->logger->ln('Clients connectes : ' . count($this->clients));
+        $this->logger->ln('Nombre de clients connectes : ' . count($this->clients));
+
+        $client->close();
     }
 
     /**
@@ -268,6 +270,20 @@ class MainSocketServer implements MessageComponentInterface {
     public function onClose(ConnectionInterface $client) {
 
         $this->logger->ln("Deconnexion : {$client->resourceId}");
+        $this->removeClient($client);
+
+    }
+
+    public function onError(ConnectionInterface $client, \Exception $e) {
+
+        $client->close();
+        $this->logger->ln("Erreur : {$e->getMessage()}");
+    }
+
+    /**
+     * Supprime un client du serveur.
+     */
+    private function removeClient($client) {
 
         //On parcourt tous les topics suivis
         foreach ($this->topics as $topic) {
@@ -286,11 +302,8 @@ class MainSocketServer implements MessageComponentInterface {
 
         //On supprime l'utilisateur
         $this->clients->detach($client);
-    }
 
-    public function onError(ConnectionInterface $client, \Exception $e) {
+        $this->logger->ln('Nombre de clients connectes : ' . count($this->clients));
 
-        $client->close();
-        $this->logger->ln("Erreur : {$e->getMessage()}");
     }
 }
