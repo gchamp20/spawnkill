@@ -1,8 +1,0 @@
-Notifications
-	- Réduire leur largeur
-	- Ajouter des animations
-	- Faire le test avec plusieurs notifications
-	- Vérifier le fonctionnement des notifications classiques
-
-InfosPseudo
-	- AJouter une notification au vidage du cache
