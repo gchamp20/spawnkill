@@ -35,6 +35,9 @@ require_regex="\/\/[[:space:]]*@require[[:space:]]+([^[:space:]\?]+)"
 # http://regex101.com/r/lP6xD2/2
 resource_regex="\/\/[[:space:]]*@resource[[:space:]]+([^[:space:]\?]+)[[:space:]]+([^[:space:]\.]+\.([a-zA-Z0-9]+))"
 
+# http://regex101.com/r/qU1cG1/1
+document_start_regex="\/\/[[:space:]]+@run-at"
+
 while IFS="" read -r line; do
 
     # Fin de l'entête, on inclut le script principal et on s'arrête
@@ -57,6 +60,10 @@ while IFS="" read -r line; do
         file="${BASH_REMATCH[2]}"
         ext="${BASH_REMATCH[3]}"
         printf "%s\n" "// @resource ${id} file://${dev_script_path}${file}" >> "${tmp_script_path}"
+
+    # On démarre le script au chargement de la page seulement (évite certains bugs avec les gros fichiers)
+    elif [[ $line =~ $resource_regex ]]; then
+        printf "%s\n" "// @un-at document-end" >> "${tmp_script_path}"
 
     else
         # On recopie le contenu du fichier
