@@ -470,13 +470,30 @@ SK.Util = {
         }
 
         //"Nettoyage" du post.
-        selection = selection.replace(/\n/g, "") //Suppression des linebreaks
-                             .replace(/<br ?\/?>/g, "\n") //<br> -> \n
-                             .replace(/<div class="quote-bloc">.*?<\/div>/g, "") //suppression des quotes
-                             .replace(/<div class="spawnkill-media-element(?:(?:.|\s)*?<\/div>){5}/g, "") //suppression des boutons de téléchargement
-                             .replace(/<img[^>]*alt="([^"]*)"[^>]*>/g, "$1") //img -> img[alt]
-                             .replace(/<a[^>]*href="([^"]*)".*<\/a>/g, "$1") //a -> a[href]
-                             .replace(/<li class="post">/g, "").replace(/<li class="ancre">[^>]*>/g, "").replace(/<\/li>/g, ""); //suppression des li
+        selection = selection
+            //Suppression des linebreaks
+            .replace(/\n/g, "")
+            //<br> -> \n
+            .replace(/<br ?\/?>/g, "\n")
+            //suppression des quotes
+            .replace(/<div class="quote-bloc">.*?<\/div>/g, "")
+            //suppression des boutons de téléchargement
+            .replace(/<div class="spawnkill-media-element(?:(?:.|\s)*?<\/div>){5}/g, "")
+            //suppression des vidéos youtube
+            .replace(/<iframe.*?class=".*?-media-element(?:(?:.|\s)*?<\/iframe>)/g, "")
+            //Normalisation des liens Noelshack
+            .replace(/http:\/\/www.noelshack.com\/(\d+)-(\d+)-([^\.]+\..{3})/g, "http://image.noelshack.com/fichiers/$1/$2/$3")
+            //Suppression des <object>
+            .replace(/<object[^>].*?<\/object>/g, "")
+            //img -> img[alt]
+            .replace(/<img[^>]*alt="([^"]*)"[^>]*>/g, "$1")
+            //a -> a[href]
+            .replace(/<a[^>]*href="([^"]*)".*<\/a>/g, "$1")
+            .replace(/<li class="post">/g, "")
+            .replace(/<li class="ancre">[^>]*>/g, "")
+            //suppression des li
+            .replace(/<\/li>/g, "")
+        ;
 
         return selection;
     },

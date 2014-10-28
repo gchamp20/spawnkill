@@ -4,7 +4,7 @@
 
 /**
  * Quote : Plugin de citation
- * 
+ *
  * TODO :
  * - Ajouter du CSS aux citations
  * - Embellir les citations de citations
@@ -56,7 +56,7 @@ SK.moduleConstructors.Quote.prototype.init = function() {
 SK.moduleConstructors.Quote.prototype.initPartialQuote = function() {
 
     var self = this;
-    
+
     //Suppression des boutons de citations existants au mouseup
     $(document).on("mouseup", function() {
         // Mise en file pour laisser le temps au click event de s'exécuter
@@ -78,19 +78,26 @@ SK.moduleConstructors.Quote.prototype.initPartialQuote = function() {
 
         // On affiche le bouton de citation partielle.
         // Le délai permet d'éviter qu'il soit supprimé sur le champ et laisse le navigateur
-        // retirer la sélection 
+        // retirer la sélection
         window.setTimeout(function() {
 
             var selectionText = SK.Util.getPostSelection();
             var $post = $(this).find(".post");
             var message = new SK.Message($post.parents(".msg"));
 
+            //On supprime les liens noelshacks (qui posent problème à cause des miniatures)
+            var comparableMessageText = message.text.replace(/http:\/\/www.noelshack.com\/(\d+)-(\d+)-([^\.]+\..{3})/g, "");
+            comparableMessageText = comparableMessageText.replace(/http:\/\/image.noelshack.com\/fichiers\/(\d+)\/(\d+)\/([^\.]+\..{3})/g, "");
+            var comparableSelectionText = selectionText.replace(/http:\/\/image.noelshack.com\/fichiers\/(\d+)\/(\d+)\/([^\.]+\..{3})/g, "");
+            comparableSelectionText = comparableSelectionText.replace(/http:\/\/image.noelshack.com\/fichiers\/(\d+)\/(\d+)\/([^\.]+\..{3})/g, "");
+
+            //De plus, on compare sans les espaces pour éviter les problèmes causés par les espace avant/après les images
+            comparableMessageText = comparableMessageText.replace(/\s/g, "");
+            comparableSelectionText = comparableSelectionText.replace(/\s/g, "");
+
             // Si la sélection est vide, ou que le texte sélectionné ne fait pas entièrement
             // partie du post, on n'affiche pas le bouton
-            if (selectionText === "" ||
-                //On compare sans les espaces pour éviter les problèmes causés par les espace avant/après les images
-                message.text.replace(/\s/g, "").indexOf(selectionText.replace(/\s/g, "")) === -1
-            ) {
+            if (selectionText === "" || comparableMessageText.indexOf(comparableSelectionText) === -1) {
                 return;
             }
 
@@ -208,7 +215,7 @@ SK.moduleConstructors.Quote.prototype.addToResponse = function(text) {
 
     var currentResponse = $("#newmessage").val();
 
-    //On supprime le message d'avertissement, s'il existe 
+    //On supprime le message d'avertissement, s'il existe
     if(currentResponse.indexOf("Ne postez pas d\'insultes") === 0) {
         currentResponse = "";
     }
@@ -295,7 +302,7 @@ SK.moduleConstructors.Quote.prototype.addToResponseThenFocus = function(citation
 
     //Focus sur la réponse
     $responseBox.focusWithoutScrolling();
-    
+
     //On force le curseur à la fin du textarea
     var response = $responseBox.val();
     $responseBox.val("");
@@ -325,7 +332,7 @@ SK.moduleConstructors.Quote.prototype.citationToHtml = function(pseudo, jour, mo
             "</div>" +
             "<hr>" +
             "<div class='quote-message' >" +
-                message + 
+                message +
             "</div>" +
         "</div>");
 
@@ -355,7 +362,7 @@ SK.moduleConstructors.Quote.prototype.citationToHtml = function(pseudo, jour, mo
 
 /* options : {
     id: nom du type de la citation
-    regex: regex de reconnaissance du type de citation 
+    regex: regex de reconnaissance du type de citation
     replaceCallback: callback appelé avec post.replace(regex, replaceCallback)
 }*/
 SK.moduleConstructors.Quote.QuoteType = function(options) {
@@ -459,9 +466,9 @@ SK.moduleConstructors.Quote.prototype.cleanUpMessage = function(message, separat
 
 /** Remplace les citations textes par du HTML dans le texte passé en paramètre */
 SK.moduleConstructors.Quote.prototype.htmlizeQuote = function(postText) {
-    
+
     var newPostText = postText;
-    
+
     for(var i in this.quoteTypes) {
         newPostText = newPostText.replace(this.quoteTypes[i].regex, this.quoteTypes[i].replaceCallback);
     }
@@ -476,7 +483,7 @@ SK.moduleConstructors.Quote.prototype.htmlizeQuote = function(postText) {
     }
 };
 
-/** 
+/**
  * Transforme toutes les citations textes de la page en Html
  */
 SK.moduleConstructors.Quote.prototype.htmlizeAllQuotes = function() {
@@ -506,7 +513,7 @@ SK.moduleConstructors.Quote.prototype.htmlizeAllQuotes = function() {
     });
 };
 
-/* Options modifiables du plugin */ 
+/* Options modifiables du plugin */
 SK.moduleConstructors.Quote.prototype.settings = {
     htmlQuote: {
         title: "Formatage des citations",
