@@ -470,7 +470,7 @@ SK.Util = {
         }
 
         //"Nettoyage" du post.
-        selection = selection
+        selection = SK.Util.decodeEntities(selection
             //Suppression des linebreaks
             .replace(/\n/g, "")
             //<br> -> \n
@@ -493,7 +493,7 @@ SK.Util = {
             .replace(/<li class="ancre">[^>]*>/g, "")
             //suppression des li
             .replace(/<\/li>/g, "")
-        ;
+        );
 
         return selection;
     },
@@ -511,6 +511,24 @@ SK.Util = {
     /** Retourne une chaîne pseudo aléatoire. */
     pseudoRandomString: function() {
         return new Array(16 + 1).join((Math.random().toString(36) + "00000000000000000").slice(2, 18)).slice(0, 10);
+    },
+
+    decodeEntities: function(str) {
+        var element = document.createElement("div");
+
+        function decodeHTMLEntities(str) {
+            if(str && typeof str === "string") {
+                str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, "");
+                str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, "");
+                element.innerHTML = str;
+                str = element.textContent;
+                element.textContent = "";
+            }
+
+            return str;
+        }
+
+        return decodeHTMLEntities(str);
     }
 
 };
