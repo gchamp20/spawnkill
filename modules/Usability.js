@@ -30,7 +30,7 @@ SK.moduleConstructors.Usability.prototype.init = function() {
 
         this.editRefreshLinks();
     }
-    
+
 };
 
 /**
@@ -47,7 +47,7 @@ SK.moduleConstructors.Usability.prototype.editRefreshLinks = function() {
         if (!this.isRefreshed()) {
             refreshUrl += "?refresh=1";
         }
-        
+
         $refreshButton.attr("href", refreshUrl);
 
     }.bind(this), 1500);
@@ -63,7 +63,7 @@ SK.moduleConstructors.Usability.prototype.editTopicListLinks = function() {
 
     var url = $topicListButtons.first().attr("href");
     var newUrl = url.replace(/forums\/26-(\d+)-\d+-/, "forums/26-$1-0-");
-    
+
     $topicListButtons.attr("href", newUrl);
 };
 
@@ -89,7 +89,13 @@ SK.moduleConstructors.Usability.prototype.settings = {
         description: "Le bouton \"Rafraîchir\" d'un topic amène directement au dernier post de ce topic",
         type: "boolean",
         default: true,
-    }
+    },
+    lastPageBookmark: {
+        title: "Raccourci vers la dernière page",
+        description: "Ajoute un lien \"Dernière page\" qui permet de mettre en raccourci la dernière page d'un topic",
+        type: "boolean",
+        default: true,
+    },
 };
 
 SK.moduleConstructors.Usability.prototype.shouldBeActivated = function() {
