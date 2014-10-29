@@ -15,21 +15,39 @@ SK.moduleConstructors.Usability.prototype.description = "Ajoute quelques fonctio
 SK.moduleConstructors.Usability.prototype.init = function() {
 
     //Retour liste des sujets -> première page
-    if(this.getSetting("firstPageTopicList")) {
+    if (this.getSetting("firstPageTopicList")) {
         this.editTopicListLinks();
     }
 
     //Rafraichir -> dernier post
-    if(this.getSetting("refreshToLastPost")) {
+    if (this.getSetting("refreshToLastPost")) {
 
         //La page vient d'être rafraichie
-        if(this.isRefreshed()) {
-            //Scrolle jusqu'au dernier message
-            window.scrollTo(0, $(".msg").last().position().top);
-        }
+        if (this.isJustRefreshed()) {
 
+            //Scrolle jusqu'au dernier message
+            this.scrollToLastPost();
+        }
         this.editRefreshLinks();
     }
+
+    // Lien vers la dernière page
+    if (this.getSetting("lastPageBookmark")) {
+
+        //Si le hash #last-page est présent, on switch à la dernière page
+        if (location.hash === "#last-page") {
+
+            // On scrolle sur la dernière page
+            var reloadToLastPage = this.goToLastPageIfPossible();
+
+            //Si on est déjà sur la dernière page, on va au dernier post
+            if(!reloadToLastPage) {
+                this.scrollToLastPost();
+            }
+        }
+    }
+
+
 
 };
 
@@ -44,7 +62,7 @@ SK.moduleConstructors.Usability.prototype.editRefreshLinks = function() {
         var refreshUrl = document.URL;
 
         //Modification du bouton Refresh
-        if (!this.isRefreshed()) {
+        if (!this.isJustRefreshed()) {
             refreshUrl += "?refresh=1";
         }
 
@@ -68,7 +86,7 @@ SK.moduleConstructors.Usability.prototype.editTopicListLinks = function() {
 };
 
 
-SK.moduleConstructors.Usability.prototype.isRefreshed = function() {
+SK.moduleConstructors.Usability.prototype.isJustRefreshed = function() {
     //Cette regexp teste si l'url contient ?refresh=1
     var regexp = /\?refresh=1/;
 
@@ -76,6 +94,31 @@ SK.moduleConstructors.Usability.prototype.isRefreshed = function() {
     return regexp.test(document.URL);
 };
 
+
+/**
+ * Scrolle la page au dernier message.
+ */
+SK.moduleConstructors.Usability.prototype.scrollToLastPost = function() {
+    $(".msg").last().scrollThere();
+};
+
+/**
+ * Si on n'est pas déjà sur la dernière page (bouton présent),
+ * on va sur cette dernière page.
+ * Sinon, retourne false
+ */
+SK.moduleConstructors.Usability.prototype.goToLastPageIfPossible = function() {
+
+    var lastPageUrl = $(".p_fin").first().attr("href");
+
+    if(typeof lastPageUrl !== "undefined") {
+        location.href = $(".p_fin").first().attr("href") + "#last-page";
+        return true;
+    }
+    else {
+        return false;
+    }
+};
 
 SK.moduleConstructors.Usability.prototype.settings = {
     firstPageTopicList: {
