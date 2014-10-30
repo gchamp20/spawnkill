@@ -9,7 +9,7 @@
     class: class de la tooltip
     position: placement de la tooltip ("top", "bottom" ou "right")
  }
- * wrapper : otpions du wrapper
+ * wrapper : options du wrapper
  * + autres options d'un objet jQuery
  */
 SK.Button = function(options) {
@@ -51,7 +51,7 @@ SK.Button = function(options) {
             width: $tooltip.width() + 20
         }));
     }
-    
+
     return $button;
-    
+
 };
