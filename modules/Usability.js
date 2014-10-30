@@ -31,8 +31,8 @@ SK.moduleConstructors.Usability.prototype.init = function() {
         this.editRefreshLinks();
     }
 
-    // Lien vers la dernière page
-    if (this.getSetting("lastPageBookmark")) {
+    // Si on est sur la page lecture et que lastPageBookmark est activé
+    if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ) && this.getSetting("lastPageBookmark")) {
 
         //Si le hash #last-page est présent, on switch à la dernière page
         if (location.hash === "#last-page") {
