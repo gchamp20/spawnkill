@@ -45,6 +45,22 @@ SK.moduleConstructors.Usability.prototype.init = function() {
                 this.scrollToLastPost();
             }
         }
+
+        // On ajoute un bouton "lien vers la dernière page"
+        $(".bloc_forum h3").prepend(new SK.Button({
+            text: ">>",
+            class: "last-page-link link",
+            href: "#last-page",
+            tooltip: {
+                position: "bottom",
+                text: "Lien vers la dernière page",
+            },
+            click: function(event) {
+                event.preventDefault();
+                location.hash = $(this).attr("href");
+                location.reload();
+            }
+        }));
     }
 
 
@@ -143,4 +159,31 @@ SK.moduleConstructors.Usability.prototype.settings = {
 
 SK.moduleConstructors.Usability.prototype.shouldBeActivated = function() {
     return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ, SK.common.Pages.TOPIC_RESPONSE);
+};
+
+SK.moduleConstructors.Usability.prototype.getCss = function() {
+
+    var css = "";
+
+    if (this.getSetting("lastPageBookmark")) {
+        css = "\
+            .bloc_forum h3 {\
+                overflow: visible !important;\
+            }\
+            .bloc_forum h3 span.txt {\
+                padding-left: 5px;\
+                background: none;\
+            }\
+            .bloc_forum h3 .sk-button {\
+                margin-top: 3px;\
+            }\
+            .sk-button .last-page-link {\
+                font-size: 0px;\
+                background-color: #6B8E00;\
+                border-bottom-color: #384900;\
+            }\
+        ";
+    }
+
+    return css;
 };
