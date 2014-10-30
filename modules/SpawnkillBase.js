@@ -517,6 +517,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             position: absolute;\
             padding: 4px;\
             background-color: #222;\
+            line-height: normal;\
             font-size: 10px;\
             font-weight: normal;\
             text-align: center;\
