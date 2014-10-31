@@ -47,10 +47,13 @@ SK.moduleConstructors.Usability.prototype.init = function() {
         }
 
         // On ajoute un bouton "lien vers la dernière page"
-        $(".bloc_forum h1 span").prepend(new SK.Button({
-            text: ">>",
+        $(".bloc_forum .sujet span, .bloc_inner .sujet span").prepend(new SK.Button({
+            text: document.title,
             class: "last-page-link minor link",
             href: "#last-page",
+            wrapper: {
+                class: "last-page-link-wrp",
+            },
             tooltip: {
                 text: "Lien vers la dernière page de ce topic",
             },
@@ -166,10 +169,11 @@ SK.moduleConstructors.Usability.prototype.getCss = function() {
 
     if (this.getSetting("lastPageBookmark")) {
         css = "\
-            .bloc_forum h1 {\
+            .bloc_forum h1,\
+            .bloc_inner h4 {\
                 overflow: visible !important;\
             }\
-            .bloc_forum h1 .sk-button {\
+            .last-page-link-wrp {\
                 margin-top: 2px;\
                 margin-right: 5px;\
             }\
