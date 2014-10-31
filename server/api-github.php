@@ -16,20 +16,14 @@ function curly($url) {
 	//On calcule le timestamp des dernières données valides
 	$now = time();
 	$lastValidDataTimestamp = $now - (60); //1 minute
- 
- 	$stmt = $dbh->prepare("SELECT *
- 		FROM api_cache_data
- 		WHERE url = :url
- 		AND timestamp > :timestamp
-        LIMIT 1
- 	");
 
-    $stmt->bindValue(':url', $url);
-    $stmt->bindValue(':timestamp', $lastValidDataTimestamp);
+	$rows = $dbh->query("SELECT *
+		FROM api_cache_data
+		WHERE url = '$url'
+		AND timestamp > $lastValidDataTimestamp
+	");
 
-    $rows = $stmt->execute();
-
- 	$cache_data = $rows->fetch(PDO::FETCH_ASSOC);
+	$cache_data = current($rows->fetchAll(PDO::FETCH_ASSOC));
 
  	if(!empty($cache_data)) {
  		$output = $cache_data['data'];
@@ -38,15 +32,15 @@ function curly($url) {
 	    if (!function_exists('curl_init')){
 	        die('Sorry cURL is not installed!');
 	    }
-	 
+
 	    $ch = curl_init();
-	 
+
 	    curl_setopt($ch, CURLOPT_URL, $url);
 	    curl_setopt($ch, CURLOPT_USERAGENT, "SpawnKill");
 	    curl_setopt($ch, CURLOPT_HEADER, 0);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-	 
+
 	    $output = curl_exec($ch);
 	    curl_close($ch);
 
@@ -61,7 +55,7 @@ function curly($url) {
     return $output;
 }
 
-$options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'); 
+$options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
 $dbh = new PDO("mysql:host=" . HOST . ";dbname=" . DATABASE . ";", LOGIN, PASS, $options);
 
 switch($action) {
