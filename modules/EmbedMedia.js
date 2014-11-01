@@ -422,6 +422,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         addHideButton: true,
         showButtonText: "Afficher les Vocaroos",
         hideButtonText: "Masquer les Vocaroos",
+  
 
         getEmbeddedMedia: function($a, match) {
 
@@ -607,6 +608,33 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                frameborder: 0,
             });
 
+            return $el;
+        }
+
+    }));
+
+    //Twitter
+    this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
+
+        id: "twitter",
+        settingId: "embedTweet",
+        regex: /https?:\/\/twitter\.com\/.+\/status\/(\d{18})/,
+        addHideButton: true,
+        showButtonText: "Afficher le tweet",
+        hideButtonText: "Masquer le tweet",
+
+        getEmbeddedMedia: function($a,match) {
+            var tweetId = match[1];
+            var tweetLink = "https://api.twitter.com/1/statuses/oembed.json?id=" + tweetId;
+            var tweetEmbed = null;
+            var tweetRequest = null;
+            tweetRequest = new GM_xmlhttpRequest({
+                method: "GET",
+                url: tweetLink,
+                synchronous: true,
+            });
+            var embedTweet = (JSON.parse(tweetRequest.responseText).html);
+            var $el = embedTweet;
             return $el;
         }
 
@@ -882,7 +910,13 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         description: "Les GIF démarrent lorsqu'ils sont entièrement visibles sur l'écran pour éviter d'en louper une partie.",
         type: "boolean",
         default: true,
-    }
+    },
+    embedTweet: {
+        title: "Intégration des tweeets",
+        description: "Intègre les tweets aux posts.",
+        type: "boolean",
+        default:true,
+    },
 };
 
 SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
