@@ -36,25 +36,6 @@ SK.moduleConstructors.SpawnkillBase.prototype.init = function() {
     if(SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW)) {
         this.preparePreview();
     }
-
-    this.initHalloween();
-};
-
-
-/**
- * Charge Halloween
- */
-SK.moduleConstructors.SpawnkillBase.prototype.initHalloween = function() {
-
-    $(document).on("mousedown", "#bouton_post", function() {
-        var message = $("#newmessage").val();
-        message = message.replace(/:hap:/g, ":mort:");
-        message = message.replace(/:noel:/g, ":diable:");
-        message = message.replace(/:pf:/g, ":peur:");
-        message = message.replace(/:\)/g, ":o))");
-        message = message.replace(/:rire:/g, ":fou:");
-        $("#newmessage").val(message);
-    });
 };
 
 /**
