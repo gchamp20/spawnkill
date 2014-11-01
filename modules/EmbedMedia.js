@@ -625,16 +625,18 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
 
         getEmbeddedMedia: function($a,match) {
             var tweetId = match[1];
-            var tweetLink = "https://api.twitter.com/1/statuses/oembed.json?id=" + tweetId;
-            var tweetEmbed = null;
+            var tweetLink = "https://api.twitter.com/1/statuses/oembed.json?omit_script=true&id=" + tweetId;
             var tweetRequest = null;
+            var $el = document.createElement("div");
             tweetRequest = new GM_xmlhttpRequest({
                 method: "GET",
                 url: tweetLink,
-                synchronous: true,
+                onload: function(data) {
+                    var json = JSON.parse(data.responseText);
+                    $el.innerHTML = json.html;
+                    $.getScript("http://platform.twitter.com/widgets.js");
+                },
             });
-            var embedTweet = (JSON.parse(tweetRequest.responseText).html);
-            var $el = embedTweet;
             return $el;
         }
 
