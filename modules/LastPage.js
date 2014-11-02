@@ -43,7 +43,7 @@ SK.moduleConstructors.LastPage.prototype.init = function() {
         // On ajoute un bouton "lien vers la dernière page"
         $(".bloc_forum .sujet span, .bloc_inner .sujet span").prepend(new SK.Button({
             text: document.title,
-            class: "last-page-link minor link",
+            class: "last-page-bookmark-link minor link",
             href: "#last-page",
             wrapper: {
                 class: "last-page-link-wrp",
@@ -65,6 +65,8 @@ SK.moduleConstructors.LastPage.prototype.init = function() {
  */
 SK.moduleConstructors.LastPage.prototype.addLastPageLinks = function() {
 
+    var self = this;
+
     //On parcourt la liste des topics
     $("#liste_topics tr:not(:first-child)").each(function() {
 
@@ -81,6 +83,13 @@ SK.moduleConstructors.LastPage.prototype.addLastPageLinks = function() {
 
         //Dans le lien, on remplace le numéro de la page par la dernière page
         var lastPageLink = topicLink.replace(/(http:\/\/www\.jeuxvideo\.com\/forums\/[\d]*-[\d]*-[\d]*-)[\d]*(-.*)/, "$1" + pageCount + "$2");
+
+        //Si lastPageBookmarkLink est activé, on ajoute le hash #last-page au lien pour que
+        //celui-ci pointe toujours vers la dernière page
+
+        if (self.getSetting("lastPageBookmarkLink")) {
+            lastPageLink += "#last-page";
+        }
 
         //On ajoute le lien dernière page à l'icone des topics
         $topic.find("td:eq(0) img").wrap($("<a>", {
@@ -155,7 +164,7 @@ SK.moduleConstructors.LastPage.prototype.getCss = function() {
 
     var css = "";
 
-    if(this.getSetting("showIndicator")) {
+    if (this.getSetting("showIndicator")) {
         css += "\
             #liste_topics th#c5 {\
                 width: auto;\
@@ -183,7 +192,7 @@ SK.moduleConstructors.LastPage.prototype.getCss = function() {
     }
 
     if (this.getSetting("lastPageBookmarkLink")) {
-        css = "\
+        css += "\
             .bloc_forum h1,\
             .bloc_inner h4 {\
                 overflow: visible !important;\
@@ -192,7 +201,7 @@ SK.moduleConstructors.LastPage.prototype.getCss = function() {
                 margin-top: 2px;\
                 margin-right: 5px;\
             }\
-            .sk-button .last-page-link {\
+            .sk-button .last-page-bookmark-link {\
                 font-size: 0px;\
             }\
         ";
