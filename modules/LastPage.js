@@ -4,13 +4,14 @@
 
 /**
  * LastPage : Ce module permet d'accéder à la dernière page d'un topic
- * directement depuis la liste des sujets
+ * directement depuis la liste des sujets et de mettre en favoris un
+ * lien pointant toujours vers la dernière page d'un topic.
  */
 SK.moduleConstructors.LastPage = SK.Module.new();
 
 SK.moduleConstructors.LastPage.prototype.id = "LastPage";
 SK.moduleConstructors.LastPage.prototype.title = "Dernière page";
-SK.moduleConstructors.LastPage.prototype.description = "Permet d'accéder à la dernière page d'un topic directement depuis la liste des sujets";
+SK.moduleConstructors.LastPage.prototype.description = "Permet d'accéder à la dernière page d'un topic directement depuis la liste des sujets et de conserver un lien vers la dernière page en favoris.";
 
 //Si le module est requis (impossible de le désactiver), décommenter cette ligne
 // SK.moduleConstructors.LastPage.prototype.required = true;
@@ -19,8 +20,44 @@ SK.moduleConstructors.LastPage.prototype.description = "Permet d'accéder à la 
  * Initialise le module, fonction appelée quand le module est chargé
  */
 SK.moduleConstructors.LastPage.prototype.init = function() {
-    //Code exécuté au chargement du module
-    this.addLastPageLinks();
+    // Ajoute un lien vers la dernière page du topic
+    if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST)) {
+        this.addLastPageLinks();
+    }
+
+    // Si on est sur la page lecture et que lastPageBookmarkLink est activé
+    else if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ) && this.getSetting("lastPageBookmarkLink")) {
+
+        //Si le hash #last-page est présent, on switch à la dernière page
+        if (location.hash === "#last-page") {
+
+            // On scrolle sur la dernière page
+            var reloadToLastPage = this.goToLastPageIfPossible();
+
+            //Si on est déjà sur la dernière page, on va au dernier post
+            if(!reloadToLastPage) {
+                this.scrollToLastPost();
+            }
+        }
+
+        // On ajoute un bouton "lien vers la dernière page"
+        $(".bloc_forum .sujet span, .bloc_inner .sujet span").prepend(new SK.Button({
+            text: document.title,
+            class: "last-page-link minor link",
+            href: "#last-page",
+            wrapper: {
+                class: "last-page-link-wrp",
+            },
+            tooltip: {
+                text: "Lien vers la dernière page de ce topic",
+            },
+            click: function(event) {
+                event.preventDefault();
+                location.hash = $(this).attr("href");
+                location.reload();
+            }
+        }));
+    }
 };
 
 /**
@@ -59,10 +96,55 @@ SK.moduleConstructors.LastPage.prototype.addLastPageLinks = function() {
 };
 
 /**
+ * Scrolle la page au dernier message.
+ */
+SK.moduleConstructors.LastPage.prototype.scrollToLastPost = function() {
+    $(".msg").last().scrollThere();
+};
+
+/**
+ * Si on n'est pas déjà sur la dernière page (bouton présent),
+ * on va sur cette dernière page.
+ * Sinon, retourne false
+ */
+SK.moduleConstructors.LastPage.prototype.goToLastPageIfPossible = function() {
+
+    var lastPageUrl = $(".p_fin").first().attr("href");
+
+    if(typeof lastPageUrl !== "undefined") {
+        location.href = $(".p_fin").first().attr("href") + "#last-page";
+        return true;
+    }
+    else {
+        return false;
+    }
+};
+
+/**
+ * Options configurables du plugin.
+ * Ces options apparaitront dans le panneau de configuration de SpawnKill
+ */
+SK.moduleConstructors.LastPage.prototype.settings = {
+    showIndicator: {
+        title: "Ajout d'un indicateur",
+        description: "Ajout d'une flèche à droite de l'image du topic pour indiquer l'intéractivité.",
+        type: "boolean",
+        default: true,
+    },
+    lastPageBookmarkLink: {
+        title: "Raccourci vers la dernière page depuis le topic",
+        description: "Ajoute un lien \"Dernière page\" qui permet de mettre en raccourci la dernière page d'un topic.",
+        type: "boolean",
+        default: true,
+    },
+};
+
+
+/**
  * Le script est exécuté sur la liste des sujets
  */
 SK.moduleConstructors.LastPage.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST);
+    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST, SK.common.Pages.TOPIC_READ);
 };
 
 /**
@@ -100,18 +182,21 @@ SK.moduleConstructors.LastPage.prototype.getCss = function() {
         ";
     }
 
-    return css;
-};
-
-/**
- * Options configurables du plugin.
- * Ces options apparaitront dans le panneau de configuration de SpawnKill
- */
-SK.moduleConstructors.LastPage.prototype.settings = {
-    showIndicator: {
-        title: "Ajout d'un indicateur",
-        description: "Ajout d'une flèche à droite de l'image du topic pour indiquer l'intéractivité.",
-        type: "boolean",
-        default: true,
+    if (this.getSetting("lastPageBookmarkLink")) {
+        css = "\
+            .bloc_forum h1,\
+            .bloc_inner h4 {\
+                overflow: visible !important;\
+            }\
+            .last-page-link-wrp {\
+                margin-top: 2px;\
+                margin-right: 5px;\
+            }\
+            .sk-button .last-page-link {\
+                font-size: 0px;\
+            }\
+        ";
     }
+
+    return css;
 };
