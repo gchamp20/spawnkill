@@ -826,9 +826,10 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                     count++;
                 },
 
-                // Retourne si la limite est atteinte (20 medias en dur)
+                // Retourne si la limite est atteinte
                 isReached: function () {
-                    return count > 20;
+                    var maxMediaPerPost = parseInt(self.getSetting("maxMediaPerPost"));
+                    return maxMediaPerPost !== 0 && count >= maxMediaPerPost;
                 }
             });
 
@@ -846,6 +847,19 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         description: "Cache le contenu par défaut, il faut d'abord cliquer sur le bouton pour le faire apparaître.",
         type: "boolean",
         default: false,
+    },
+    maxMediaPerPost: {
+        title: "Nombre maximum de media par post",
+        description: "Au delà de cette limite, les liens ne seront pas transformés.",
+        type: "select",
+        options: {
+            "5": "5",
+            "10": "10",
+            "20": "20",
+            "50": "50",
+            "0": "Pas de limite",
+        },
+        default: "20",
     },
     embedVideos: {
         title: "Intégration des vidéos",
