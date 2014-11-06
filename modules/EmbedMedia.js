@@ -12,9 +12,6 @@ SK.moduleConstructors.EmbedMedia.prototype.id = "EmbedMedia";
 SK.moduleConstructors.EmbedMedia.prototype.title = "Intégration de contenus";
 SK.moduleConstructors.EmbedMedia.prototype.description = "Remplace les liens vers les images, vidéos, sondages ou vocaroo par le contenu lui-même.";
 
-/** Vrai si l'API Twitter a été chargée. */
-SK.moduleConstructors.EmbedMedia.prototype.apiTwitterLoaded = false;
-
 SK.moduleConstructors.EmbedMedia.prototype.init = function() {
 
     var self = this;
@@ -620,19 +617,13 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "twitter",
-        settingId: "embedTweet",
+        settingId: "embedTweets",
         regex: /https?:\/\/twitter\.com\/.+\/status\/(\d{18})/,
         addHideButton: true,
-        showButtonText: "Afficher le tweet",
-        hideButtonText: "Masquer le tweet",
+        showButtonText: "Afficher les tweets",
+        hideButtonText: "Masquer les tweets",
 
         getEmbeddedMedia: function($a, match) {
-
-            // On ne charge qu'une seule fois l'API Twitter (au premier tweet rencontré)
-            if (!self.apiTwitterLoaded) {
-                $.getScript("http://platform.twitter.com/widgets.js");
-                self.apiTwitterLoaded = true;
-            }
 
             var tweetId = match[1];
             var tweetLink = "https://api.twitter.com/1/statuses/oembed.json?omit_script=true&id=" + tweetId;
@@ -647,6 +638,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                     $el.html(json.html);
                 },
             });
+
             return $el;
         }
 
@@ -872,7 +864,6 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                     return maxMediaPerPost !== 0 && count >= maxMediaPerPost;
                 }
             });
-
         });
     });
 };
@@ -925,6 +916,12 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         type: "boolean",
         default: true,
     },
+    embedTweets: {
+        title: "Intégration des tweets",
+        description: "Intègre les tweets aux posts.",
+        type: "boolean",
+        default:true,
+    },
     embedSpawnKill: {
         title: "Bouton de téléchargement SpawnKill",
         description: "Affiche un bouton à la place du lien de téléchargement SpawnKill.",
@@ -936,12 +933,6 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         description: "Les GIF démarrent lorsqu'ils sont entièrement visibles sur l'écran pour éviter d'en louper une partie.",
         type: "boolean",
         default: true,
-    },
-    embedTweet: {
-        title: "Intégration des tweeets",
-        description: "Intègre les tweets aux posts.",
-        type: "boolean",
-        default:true,
     },
 };
 
@@ -995,6 +986,12 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             background-image: url('" + GM_getResourceURL("sondageio") + "');\
             background-position: 0px 0px;\
         }\
+        [data-media-id='twitter'] {\
+            background-color: #55ACEE;\
+            border-bottom: solid 2px #2B76A8;\
+            background-image: url('" + GM_getResourceURL("tweet-mini") + "');\
+            background-position: 3px 2px;\
+        }\
         .donation-form {\
             display: inline-block;\
         }\
@@ -1038,6 +1035,48 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             max-width: 100%;\
         }\
     ";
+
+    if(this.getSetting("embedTweets")) {
+        css += "\
+            .twitter-media-element {\
+                padding-top: 32px;\
+                background-color: #F6F6F6;\
+                border-width: 1px;\
+                border-style: solid;\
+                border-color: #EEE #DDD #BBB;\
+                font: 16px \"Helvetica Neue\",Roboto,\"Segoe UI\",Calibri,sans-serif;\
+                color: #292F33;\
+                background-image: url('" + GM_getResourceURL("tweet") + "');\
+                background-position: 15px 8px;\
+                background-repeat: no-repeat;\
+                border-radius: 5px;\
+                box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.15);\
+            }\
+            .twitter-tweet {\
+                padding: 16px;\
+                padding-top: 8px;\
+                border-top: 1px solid rgba(0, 0, 0, 0.1);\
+                line-height: 1.4em;\
+                font-size: 14px;\
+                font-weight: bold;\
+                border-radius: 0px 0px 5px 5px;\
+                background-color: #FFF;\
+            }\
+            .twitter-tweet a {\
+                display: block;\
+                font-size: 14px;\
+                color: #0084B4;\
+            }\
+            .twitter-tweet p {\
+                font-size: 14px;\
+                font-weight: normal;\
+                margin-bottom: 5px;\
+            }\
+            .twitter-tweet p a {\
+                display: inline-block;\
+            }\
+        ";
+    }
 
     return css;
 };
