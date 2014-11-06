@@ -12,6 +12,9 @@ SK.moduleConstructors.EmbedMedia.prototype.id = "EmbedMedia";
 SK.moduleConstructors.EmbedMedia.prototype.title = "Intégration de contenus";
 SK.moduleConstructors.EmbedMedia.prototype.description = "Remplace les liens vers les images, vidéos, sondages ou vocaroo par le contenu lui-même.";
 
+/** Vrai si l'API Twitter a été chargée. */
+SK.moduleConstructors.EmbedMedia.prototype.apiTwitterLoaded = false;
+
 SK.moduleConstructors.EmbedMedia.prototype.init = function() {
 
     var self = this;
@@ -422,7 +425,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         addHideButton: true,
         showButtonText: "Afficher les Vocaroos",
         hideButtonText: "Masquer les Vocaroos",
-  
+
 
         getEmbeddedMedia: function($a, match) {
 
@@ -623,18 +626,25 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         showButtonText: "Afficher le tweet",
         hideButtonText: "Masquer le tweet",
 
-        getEmbeddedMedia: function($a,match) {
+        getEmbeddedMedia: function($a, match) {
+
+            // On ne charge qu'une seule fois l'API Twitter (au premier tweet rencontré)
+            if (!self.apiTwitterLoaded) {
+                $.getScript("http://platform.twitter.com/widgets.js");
+                self.apiTwitterLoaded = true;
+            }
+
             var tweetId = match[1];
             var tweetLink = "https://api.twitter.com/1/statuses/oembed.json?omit_script=true&id=" + tweetId;
-            var tweetRequest = null;
-            var $el = document.createElement("div");
-            tweetRequest = new GM_xmlhttpRequest({
+
+            var $el = $("<div>");
+
+            GM_xmlhttpRequest({
                 method: "GET",
                 url: tweetLink,
                 onload: function(data) {
                     var json = JSON.parse(data.responseText);
-                    $el.innerHTML = json.html;
-                    $.getScript("http://platform.twitter.com/widgets.js");
+                    $el.html(json.html);
                 },
             });
             return $el;
