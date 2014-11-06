@@ -69,6 +69,8 @@
 // @resource    loader                images/loader.gif
 // @resource    big-loader            images/big-loader.gif
 // @resource    error                 images/error.png
+// @resource    tweet                 images/tweet.png
+// @resource    tweet-mini            images/tweet-mini.png
 // @resource    notification          audio/notification.ogg
 // @grant       GM_xmlhttpRequest
 // @grant       GM_getResourceURL
