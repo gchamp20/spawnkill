@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name        JVC SpawnKill
 // @description JVC SpawnKill est une extension entièrement paramétrable permettant d'ajouter de nombreuses fonctionnalités à jeuxvideo.com
 // @author      Spixel_
