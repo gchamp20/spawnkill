@@ -34,7 +34,7 @@ SK.moduleConstructors.WarnOnNewPost.prototype.init = function() {
     }
 
     //Si l'option Websocket est activée
-    if(self.getSetting("useWebsocket")) {
+    if(self.getSetting("useWebsocketServer")) {
         this.requestTopicUpdates();
     }
     //Pas de websocket, on switch sur le mode HTTP
@@ -167,10 +167,11 @@ SK.moduleConstructors.WarnOnNewPost.prototype.settings = {
         type: "boolean",
         default: true,
     },
-    useWebsocket: {
-        title: "[Beta] Utiliser le nouveau serveur de Websocket",
-        description: "Passe par le nouveau serveur pour récupérer les infos des topics. Peut-être instable.",
+    useWebsocketServer: {
+        title: "[Désactivé] Utiliser le nouveau serveur de Websocket",
+        description: "Passe par le nouveau serveur pour récupérer les infos des topics. (désactivé car trop instable)",
         type: "boolean",
+        disabled: true,
         default: false,
     }
 };
