@@ -168,7 +168,7 @@ SK.moduleConstructors.LastPage.prototype.getCss = function() {
 ### Ajout d'options au module
 
 Il est possible d'ajouter facilement des options au module avec l'attribut `settings`. Ces options apparaitront automatiquement dans le panneau de configuration de SpawnKill.
-Plusieurs types d'options sont possibles (voir l'annexe : [Les types de d'options](#les-types-doptions))
+Plusieurs types d'options sont possibles (voir l'annexe : [Les types d'options](#les-types-doptions))
 Pour l'exemple, nous allons rendre optionnel l'affichage de la petite flèche à droite du topic avec un booléen :
 
 ```javascript
@@ -245,12 +245,15 @@ SK.moduleConstructors.NouveauModule.prototype.settings = {
 	    title: "Titre de l'option",
 	    description: "Description de l'option",
 	    type: "boolean",
-	    default: true
+	    default: true,
+	    disabled: false, // Optionnel, si `true`, le bouton est grisé
 	}
 };
+
 ```
 
 #### Les selects (listes déroulantes)
+
 ```javascript
 /**
  * Select option
@@ -265,6 +268,28 @@ SK.moduleConstructors.NouveauModule.prototype.settings = {
 	}
 };
 ```
+
+#### Les boutons d'action
+
+```javascript
+/**
+ * Action button
+ */
+SK.moduleConstructors.NouveauModule.prototype.settings = {
+	actionId: {
+	    title: "Titre de l'action",
+	    description: "Description de l'action",
+	    type: "button",
+	    buttonLabel: "Label du bouton",
+	    default: function() {
+	        // Fonction exécutée au click sur le bouton
+	    },
+	}
+};
+
+```
+
+---
 
 ### Analyse de code
 
