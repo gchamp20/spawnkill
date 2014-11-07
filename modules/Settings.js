@@ -194,7 +194,7 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
             }
         });
 
-        if(subOptions.length > 0) {
+        if (subOptions.length > 0) {
             $mainSetting.append($settingButton);
         }
 
@@ -204,18 +204,27 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
             var $option = $(this);
             var option = module.settings[$option.attr("data-id")];
 
-            if(option.type === "boolean") {
-                $option.append(new SK.SlideToggle({
+            if (option.type === "boolean") {
+
+                var toggleOptions = {
                     value: option.value,
-                }));
+                };
+
+                if (option.disabled === true) {
+                    toggleOptions.checkbox = {
+                        disabled: "disabled"
+                    };
+                }
+
+                $option.append(new SK.SlideToggle(toggleOptions));
             }
-            else if(option.type === "select") {
+            else if (option.type === "select") {
                 $option.append(new SK.DropdownList({
                     values: option.options,
                     value: option.value
                 }));
             }
-            else if(option.type === "button") {
+            else if (option.type === "button") {
                 $option.append(new SK.Button({
                     text: option.buttonLabel,
                     class: "large",
