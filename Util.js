@@ -186,8 +186,19 @@ SK.Util = {
         }, delay);
     },
 
-    /* Montre une fenêtre modale passée en paramètre */
+    /**
+     * Montre une fenêtre modale passée en paramètre sauf si un élément
+     * de même id que la modale est présent à l'écran
+     */
     showModal: function($modal) {
+
+        var modalId = $modal.attr("id");
+
+        // On n'ouvre pas la modale si un élément de même id est présent à l'écran
+        if (typeof modalId !== "undefined" && $("#" + modalId).length > 0) {
+            return;
+        }
+
         var $background = $("#modal-background");
         $background.after($modal);
 
