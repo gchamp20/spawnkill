@@ -26,6 +26,7 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
             // ENTER_KEY = 13,
             SPACE_KEY = 32,
             ESCAPE_KEY = 27,
+            QUESTION_MARK_KEY = 188,
             F_CHAR_KEY = 70;
 
         // Si l'on se trouve dans un champ de texte, on désactive les raccourcis
@@ -110,6 +111,11 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 
         //Sur toutes les pages
 
+        // Ctrl + ? : Affichage des raccourcis claviers disponibles
+        if (event.ctrlKey && event.keyCode === QUESTION_MARK_KEY) {
+            SK.modules.Shortcuts.showShortcutsOverlay();
+        }
+
         //Si le module Settings est activé, Ctrl + down -> Configuration
         if (SK.modules.Settings.activated && event.ctrlKey && event.keyCode === DOWN_ARROW_KEY) {
             SK.modules.Settings.showSettings();
@@ -123,6 +129,13 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
     });
 };
 
+/**
+ * Affiche un overlay indiquant les raccourcis claviers disponibles.
+ */
+SK.moduleConstructors.Shortcuts.prototype.showShortcutsOverlay = function() {
+    alert("shortcuts overlay");
+};
+
 SK.moduleConstructors.Shortcuts.prototype.settings = {
     showShortcutsOverlay: {
         title: "Afficher les raccourcis claviers disponibles",
@@ -130,6 +143,7 @@ SK.moduleConstructors.Shortcuts.prototype.settings = {
         type: "button",
         buttonLabel: "Voir les raccourcis",
         default: function() {
+            SK.modules.Shortcuts.showShortcutsOverlay();
         },
     },
 };
