@@ -130,10 +130,22 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
 };
 
 /**
- * Affiche un overlay indiquant les raccourcis claviers disponibles.
+ * Affiche un overlay indiquant les raccourcis claviers disponibles
+ * si l'overlay n'est pas déjà affiché à l'écran
  */
 SK.moduleConstructors.Shortcuts.prototype.showShortcutsOverlay = function() {
-    alert("shortcuts overlay");
+
+    if ($("#shortcuts-modal").length === 0) {
+        // On ferme d'abord toutes les modales
+        SK.Util.hideModal(false);
+
+        SK.Util.showModal(new SK.Modal({
+            id: "shortcuts-modal",
+            location: "center",
+            title: "Raccourcis disponibles",
+            content: "Contenu à venir...",
+        }));
+    }
 };
 
 SK.moduleConstructors.Shortcuts.prototype.settings = {
