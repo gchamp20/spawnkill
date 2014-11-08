@@ -17,7 +17,7 @@ SK.Modal = function(options) {
 
     var title = options.title || "";
     delete options.title;
-    var buttons = options.buttons.length > 0 ? options.buttons : [];
+    var buttons = options.buttons && options.buttons.length > 0 ? options.buttons : [];
     delete options.buttons;
     var content = options.content || "";
     delete options.content;
@@ -77,13 +77,13 @@ SK.Modal = function(options) {
             }
         }));
     }
-    
+
     //Si la modale doit être centrée, on récupère ses dimensions
     if(location === "center") {
 
         $modal.hide();
         $("#footer").append($modal);
-        
+
         var windowWidth = $(window).width();
         var windowHeight = $(window).height();
 
