@@ -123,6 +123,17 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
     });
 };
 
+SK.moduleConstructors.Shortcuts.prototype.settings = {
+    showShortcutsOverlay: {
+        title: "Afficher les raccourcis claviers disponibles",
+        description: "Affiche un overlay indiquant les raccourcis disponibles.",
+        type: "button",
+        buttonLabel: "Voir les raccourcis",
+        default: function() {
+        },
+    },
+};
+
 SK.moduleConstructors.Shortcuts.prototype.getCss = function() {
 
     var css = "\
