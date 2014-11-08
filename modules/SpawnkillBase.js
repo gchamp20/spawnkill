@@ -216,6 +216,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.addModalBackground = function() {
     $("body")
         .prepend("<div id='modal-loader'></div>")
         .prepend("<div id='sk-notifications'></div>")
+        .prepend("<div id='modals'></div>")
         .prepend($("<div>", {
             id: "modal-background",
             click: function() {

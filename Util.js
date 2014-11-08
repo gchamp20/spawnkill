@@ -199,15 +199,14 @@ SK.Util = {
             return;
         }
 
-        var $background = $("#modal-background");
-        $background.after($modal);
+        $("#modals").append($modal);
 
         SK.Util.fetchStyle($modal);
 
         $("#modal-loader").hide();
 
         if(!$modal.hasClass("notification")) {
-            $background.fadeIn();
+            $("#modal-background").fadeIn();
         }
 
         //On appelle l'éventuelle fonction onModalShow de la modale
@@ -232,7 +231,7 @@ SK.Util = {
         $("#modal-background").fadeOut();
         $("#modal-loader").hide();
 
-        var $modals = $("body > .modal-box");
+        var $modals = $("#modals > .modal-box");
 
         $modals.on("transitionend webkitTransitionEnd", function() {
             $modals.remove();
