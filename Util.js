@@ -226,9 +226,19 @@ SK.Util = {
             .fadeIn();
     },
 
-    /* Cache une fenêtre modale si elle est ouverte */
-    hideModal: function() {
-        $("#modal-background").fadeOut();
+    /**
+    * Cache toutes les fenêtre modales ouvertes
+    * @param {boolean} hideBackground true par défaut, si false,
+    *                  le background des modales n'est pas caché.
+    */
+    hideModal: function(hideBackground) {
+
+        hideBackground = hideBackground === false ? false: true;
+
+        if (hideBackground) {
+            $("#modal-background").fadeOut();
+        }
+
         $("#modal-loader").hide();
 
         var $modals = $("#modals > .modal-box");
