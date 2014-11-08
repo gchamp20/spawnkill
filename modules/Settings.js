@@ -101,7 +101,7 @@ SK.moduleConstructors.Settings.prototype.getModal = function() {
     });
 
     var $modal = new SK.Modal({
-        class: "setting-modal",
+        id: "setting-modal",
         location: "top",
         title: "Configuration de SpawnKill",
         hasCloseButton: false,
@@ -247,7 +247,7 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
  */
 SK.moduleConstructors.Settings.prototype.shrinkSettingsModal = function() {
 
-    var $settingsModal = $(".setting-modal").first();
+    var $settingsModal = $("#setting-modal").first();
     var contentsHeight = $settingsModal.find(".content").prop("scrollHeight");
     var screenHeight = $(window).height();
 
@@ -317,48 +317,48 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         #ft2 {\
             right: 23px !important;\
         }\
-        .setting-modal {\
+        #setting-modal {\
             width: 420px !important;\
             padding: 10px 0px;\
         }\
-        .setting-modal h3 {\
+        #setting-modal h3 {\
             padding: 0 10px !important;\
         }\
-        .setting-modal hr {\
+        #setting-modal hr {\
             left: auto !important;\
         }\
-        .setting-modal .buttons {\
+        #setting-modal .buttons {\
             box-sizing: border-box;\
             padding: 0px 10px;\
         }\
-        .setting-modal.scroll {\
+        #setting-modal.scroll {\
             width: 440px;\
         }\
-        .setting-modal.scroll > hr {\
+        #setting-modal.scroll > hr {\
             display: none;\
         }\
-        .setting-modal.scroll h3 {\
+        #setting-modal.scroll h3 {\
             box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.15);\
             border-bottom: 1px solid #DDD;\
             padding-bottom: 10px !important;\
         }\
-        .setting-modal.scroll .content {\
+        #setting-modal.scroll .content {\
             overflow-x: hidden;\
             overflow-y: scroll;\
         }\
-        .setting-modal.scroll .options {\
+        #setting-modal.scroll .options {\
             width: 100%;\
             padding-right: 20px;\
         }\
-        .setting-modal.scroll .buttons {\
+        #setting-modal.scroll .buttons {\
             padding-top: 10px;\
             box-shadow: 0px -4px 6px -2px rgba(0, 0, 0, 0.15);\
         }\
-        .setting-modal.scroll #settings-form {\
+        #setting-modal.scroll #settings-form {\
             width: 408px;\
             margin-bottom: 0px;\
         }\
-        .setting-modal.scroll .tooltip {\
+        #setting-modal.scroll .tooltip {\
             display: none;\
         }\
         #settings-button {\
