@@ -143,7 +143,53 @@ SK.moduleConstructors.Shortcuts.prototype.showShortcutsOverlay = function() {
             id: "shortcuts-modal",
             location: "center",
             title: "Raccourcis disponibles",
-            content: "Contenu à venir...",
+            content: "\
+                <h4>Sur la liste des sujets</h4>\
+                <ul class='shortcut-list' >\
+                    <li class='shortcut' >\
+                        - `Ctrl +` :arrow_left: : Page précédente\
+                    </li>\
+                    <li class='shortcut' >\
+                        - `Ctrl +` :arrow_right: : Page suivante\
+                    </li>\
+                    <li class='shortcut' >\
+                        - `Ctrl + Espace` : Nouveau topic\
+                    </li>\
+                    <li class='shortcut' >\
+                        - `Ctrl + F` : Rechercher\
+                    </li>\
+                </ul>\
+                <h4>Sur un topic</h4>\
+                <ul class='shortcut-list' >\
+                    <li class='shortcut' >\
+                        - `Ctrl +` :arrow_left: : Page précédente\
+                    </li>\
+                    <li class='shortcut' >\
+                        - `Ctrl +` :arrow_right: : Page suivante\
+                    </li>\
+                    <li class='shortcut' >\
+                        - `Ctrl + Maj +` :arrow_left: : Première page\
+                    </li>\
+                    <li class='shortcut' >\
+                        - `Ctrl + Maj +` :arrow_right: : Dernière page\
+                    </li>\
+                    <li class='shortcut' >\
+                        - `Ctrl + Espace` : Répondre au topic\
+                    </li>\
+                    <li class='shortcut' >\
+                        - `Ctrl + Haut` : Retour à la liste des sujets\
+                    </li>\
+                </ul>\
+                <h4>Partout</h4>\
+                <ul class='shortcut-list' >\
+                    <li class='shortcut' >\
+                        - `Ctrl +` :arrow_down: : Ouvrir les paramètres\
+                    </li>\
+                    <li class='shortcut' >\
+                        - `Echap` : Ferme les fenêtres modales\
+                    </li>\
+                </ul>\
+            ",
         }));
     }
 };
