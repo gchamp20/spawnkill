@@ -144,49 +144,91 @@ SK.moduleConstructors.Shortcuts.prototype.showShortcutsOverlay = function() {
             location: "center",
             title: "Raccourcis disponibles",
             content: "\
+                <h4>Général</h4>\
+                <ul class='shortcut-list' >\
+                    <li class='shortcut' >\
+                        <span class='keys' >\
+                            <span class='key' >Ctrl</span> + <span class='key' >Bas</span>\
+                        </span>\
+                        Ouvrir les paramètres\
+                    </li>\
+                    <li class='shortcut' >\
+                        <span class='keys' >\
+                            <span class='key' >Echap</span>\
+                        </span>\
+                        Ferme les fenêtres modales\
+                    </li>\
+                    <li class='shortcut' >\
+                        <span class='keys' >\
+                            <span class='key' >Ctrl</span> + <span class='key' >?</span>\
+                        </span>\
+                        Ouvrir ce panneau\
+                    </li>\
+                </ul>\
                 <h4>Sur la liste des sujets</h4>\
                 <ul class='shortcut-list' >\
                     <li class='shortcut' >\
-                        - `Ctrl +` :arrow_left: : Page précédente\
+                        <span class='keys' >\
+                            <span class='key' >Ctrl</span> + <span class='key' >Gauche</span>\
+                        </span>\
+                        Page précédente\
                     </li>\
                     <li class='shortcut' >\
-                        - `Ctrl +` :arrow_right: : Page suivante\
+                        <span class='keys' >\
+                            <span class='key' >Ctrl</span> + <span class='key' >Droite</span>\
+                        </span>\
+                        Page suivante\
                     </li>\
                     <li class='shortcut' >\
-                        - `Ctrl + Espace` : Nouveau topic\
+                        <span class='keys' >\
+                            <span class='key' >Ctrl</span> + <span class='key' >Espace</span>\
+                        </span>\
+                        Nouveau topic\
                     </li>\
                     <li class='shortcut' >\
-                        - `Ctrl + F` : Rechercher\
+                        <span class='keys' >\
+                            <span class='key' >Ctrl</span> + <span class='key' >F</span>\
+                        </span>\
+                        Rechercher\
                     </li>\
                 </ul>\
                 <h4>Sur un topic</h4>\
                 <ul class='shortcut-list' >\
                     <li class='shortcut' >\
-                        - `Ctrl +` :arrow_left: : Page précédente\
+                        <span class='keys' >\
+                            <span class='key' >Ctrl</span> + <span class='key' >Gauche</span>\
+                        </span>\
+                        Page précédente\
                     </li>\
                     <li class='shortcut' >\
-                        - `Ctrl +` :arrow_right: : Page suivante\
+                        <span class='keys' >\
+                            <span class='key' >Ctrl</span> + <span class='key' >Droite</span>\
+                        </span>\
+                        Page suivante\
                     </li>\
                     <li class='shortcut' >\
-                        - `Ctrl + Maj +` :arrow_left: : Première page\
+                        <span class='keys' >\
+                            <span class='key' >Ctrl</span> + <span class='key' >Maj</span> + <span class='key' >Gauche</span>\
+                        </span>\
+                        Première page\
                     </li>\
                     <li class='shortcut' >\
-                        - `Ctrl + Maj +` :arrow_right: : Dernière page\
+                        <span class='keys' >\
+                            <span class='key' >Ctrl</span> + <span class='key' >Maj</span> + <span class='key' >Droite</span>\
+                        </span>\
+                        Dernière page\
                     </li>\
                     <li class='shortcut' >\
-                        - `Ctrl + Espace` : Répondre au topic\
+                        <span class='keys' >\
+                            <span class='key' >Ctrl</span> + <span class='key' >Espace</span>\
+                        </span>\
+                        Répondre au topic\
                     </li>\
                     <li class='shortcut' >\
-                        - `Ctrl + Haut` : Retour à la liste des sujets\
-                    </li>\
-                </ul>\
-                <h4>Partout</h4>\
-                <ul class='shortcut-list' >\
-                    <li class='shortcut' >\
-                        - `Ctrl +` :arrow_down: : Ouvrir les paramètres\
-                    </li>\
-                    <li class='shortcut' >\
-                        - `Echap` : Ferme les fenêtres modales\
+                        <span class='keys' >\
+                            <span class='key' >Ctrl</span> + <span class='key' >Haut</span>\
+                        </span>\
+                        Retour à la liste des sujets\
                     </li>\
                 </ul>\
             ",
@@ -196,7 +238,7 @@ SK.moduleConstructors.Shortcuts.prototype.showShortcutsOverlay = function() {
 
 SK.moduleConstructors.Shortcuts.prototype.settings = {
     showShortcutsOverlay: {
-        title: "Afficher les raccourcis claviers disponibles",
+        title: "Affiche les raccourcis claviers disponibles",
         description: "Affiche un overlay indiquant les raccourcis disponibles.",
         type: "button",
         buttonLabel: "Voir les raccourcis",
@@ -215,6 +257,35 @@ SK.moduleConstructors.Shortcuts.prototype.getCss = function() {
         .sk-outline {\
             background-color: " + SK.common.mainColor + " !important;\
             outline: solid 3px " + SK.common.mainColor + " !important;\
+        }\
+        #shortcuts-modal {\
+            padding: 10px 0px;\
+        }\
+        #shortcuts-modal h3 {\
+            padding: 0px 10px;\
+        }\
+        #shortcuts-modal .content {\
+            padding: 0px 10px;\
+            font-size: 1.2em;\
+            color: #666;\
+        }\
+        #shortcuts-modal .shortcut-list {\
+            margin: 5px 10px;\
+            line-height: 1.6em;\
+        }\
+        #shortcuts-modal .keys {\
+            display: inline-block;\
+            width: 160px;\
+        }\
+        #shortcuts-modal .key {\
+            font-family: monospace, monospace;\
+            font-size: 0.9em;\
+            color: " + SK.common.darkColor + ";\
+            opacity: 0.7;\
+        }\
+        #shortcuts-modal h4 {\
+            margin-top: 16px;\
+            color: #333;\
         }\
     ";
 
