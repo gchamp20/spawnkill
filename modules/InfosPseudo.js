@@ -677,6 +677,12 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         type: "boolean",
         default: false,
     },
+    enableBlockList: {
+        title: "Possibilité d'ignorer des membres",
+        description: "Ajoute un bouton aux posts permettant d'ignorer un auteur. Les messages des membres ignorés ne seront pas affichés.",
+        type: "boolean",
+        default: false,
+    },
     clearAuthorCache: {
         title: "Vider le cache des auteurs",
         description: "Permet de vider le cache des auteurs pour voir votre nouvel avatar, par exemple.",
