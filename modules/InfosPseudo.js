@@ -202,6 +202,24 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
 
     SK.Util.addButton(message.$msg, profileButtonOptions);
 
+    //Bouton ignorer
+    if(this.getSetting("enableBlockList")) {
+        var blockButtonOptions = {
+            class: "block",
+            location: "right",
+            index: 50,
+            tooltip: {
+                text: "Masquer les posts de cet auteur"
+            },
+            click: function() {
+                console.log("block");
+            }
+        };
+
+        SK.Util.addButton(message.$msg, blockButtonOptions);
+    }
+
+
     //Bouton Avertir
     if(this.getSetting("enableAlert")) {
 
