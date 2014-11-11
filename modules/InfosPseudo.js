@@ -40,6 +40,12 @@ SK.moduleConstructors.InfosPseudo.prototype.init = function() {
                 this.crownTopicAuthor();
             }
 
+            // Si l'option est activée, on masque les posts des auteurs ignorés
+            if (this.getSetting("enableBlockList")) {
+
+                this.hideBlockedPosts();
+            }
+
         }
     }
 };
@@ -600,6 +606,13 @@ SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function() {
             }
         });
     });
+
+};
+
+/**
+ * Masque les posts des auteurs ignorés sur la page
+ */
+SK.moduleConstructors.InfosPseudo.prototype.hideBlockedPosts = function() {
 
 };
 
