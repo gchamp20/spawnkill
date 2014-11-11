@@ -1,6 +1,8 @@
 Fonction ignorer
 - Ignore un auteur et pas un post en particulier
-- Ajouter le bouton "ignorer" -> se transforme en "afficher" quand le post est ignoré
-- Animation pour masquer les posts de l'auteur
-- On enregistre dans le localStore sous la forme blockedAuthors.<pseudo>
-- à l'affichage de la page et pour chaque post, on masque les auteurs ignorés
+
+InfosPseudo
+    - Ajouter le bouton "ignorer" -> se transforme en "afficher" quand le post est ignoré
+    - Animation pour masquer les posts de l'auteur
+    - On enregistre dans le localStore sous la forme blockedAuthors.<pseudo>
+    - à l'affichage de la page et pour chaque post, on masque les auteurs ignorés
