@@ -212,7 +212,11 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
                 text: "Masquer les posts de cet auteur"
             },
             click: function() {
-                console.log("block");
+                // Ajoute l'auteur du post aux membres bloqués
+                //self.addToBlockList();
+
+                // Masque les posts de l'auteur
+                //self.hidePostFrom();
             }
         };
 
@@ -598,6 +602,23 @@ SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function() {
     });
 
 };
+
+/**
+ * Ajoute un auteur à la liste des pseudos bloqués.
+ * @param {String} authorPseudo pseudo de l'auteur à bloquer
+ */
+SK.moduleConstructors.InfosPseudo.prototype.addToBlockList = function(authorPseudo) {
+
+};
+
+/**
+ * Masque les posts de l'auteur passé en paramètre sur la page.
+ * @param {String} authorPseudo pseudo de l'auteur à masquer
+ */
+SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo) {
+
+};
+
 
 SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
     return SK.Util.currentPageIn(
