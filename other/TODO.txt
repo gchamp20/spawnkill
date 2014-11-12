@@ -6,3 +6,4 @@ InfosPseudo
     - Animation pour masquer les posts de l'auteur
     - On enregistre dans le localStore sous la forme blockedAuthors.<pseudo>
     - à l'affichage de la page et pour chaque post, on masque les auteurs ignorés
+    - Permettre le bloquage total des posts des auteurs ignotés
