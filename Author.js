@@ -5,8 +5,9 @@
 /* Représente un auteur de JVC */
 SK.Author = function(pseudo) {
     this.version = SK.Author.VERSION;
-    this.pseudo = pseudo;
-    this.key = "authors." + pseudo.toLowerCase();
+    this.pseudoWithCase = pseudo;
+    this.pseudo = pseudo.toLowerCase();
+    this.key = "authors." + pseudo;
     this.rank = "";
     this.messageCount = 0;
     this.avatar = "";
@@ -22,7 +23,7 @@ SK.Author = function(pseudo) {
 };
 
 /** Version du modèle. Permet de déprecier le cache si la structure change */
-SK.Author.VERSION = "2.4";
+SK.Author.VERSION = "2.5";
 
 /** Durée de validité du localStorage en jours */
 SK.Author.DATA_TTL = 4;

@@ -7,6 +7,7 @@ SK.Message = function($msg) {
 
     this.$msg = $msg;
     this.text = "";
+    this.authorPseudoWithCase = "";
     this.authorPseudo = "";
     this.date = "";
     this.time = "";
@@ -19,7 +20,7 @@ SK.Message = function($msg) {
 
 SK.Message.prototype.init = function() {
 
-    /* Récupère le texte présent dans le post $(.msg) passé en paramètre 
+    /* Récupère le texte présent dans le post $(.msg) passé en paramètre
     * Note : remplace les images par leur attribut alt */
     var $message = this.$msg.find(".post").clone();
 
@@ -41,8 +42,9 @@ SK.Message.prototype.init = function() {
 
     /* Retourne le pseudo de l'auteur du post  */
     this.alertUrl = this.$msg.find("[target=avertir]").first().attr("href");
-    
-    this.authorPseudo = this.$msg.find(".pseudo > strong").first().html().trim();
+
+    this.authorPseudoWithCase = this.$msg.find(".pseudo > strong").first().html().trim();
+    this.authorPseudo = this.authorPseudoWithCase.toLowerCase();
 
     /* Retourne la date du post  */
     var $dateBloc = this.$msg.find(".date");

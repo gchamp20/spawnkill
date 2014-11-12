@@ -246,7 +246,7 @@ SK.moduleConstructors.Quote.prototype.createCitationBlock = function(message) {
             }.bind(this));
             lines.splice(0, 0, "┊");
             lines.splice(0, 0, "┊ " + message.permalink);
-            lines.splice(0, 0, "┊ " + message.authorPseudo + ", le " +
+            lines.splice(0, 0, "┊ " + message.authorPseudoWithCase + ", le " +
                     message.date + " à " + message.time);
             lines.splice(0, 0, "╭");
             //Fin de la citation
@@ -260,7 +260,7 @@ SK.moduleConstructors.Quote.prototype.createCitationBlock = function(message) {
                 lines[i] = "| " + line;
             }.bind(this));
             lines.splice(0, 0, "| " + message.permalink);
-            lines.splice(0, 0, "| " + message.authorPseudo + " " + SK.Util._(1) + "-" +
+            lines.splice(0, 0, "| " + message.authorPseudoWithCase + " " + SK.Util._(1) + "-" +
                     SK.Util._(1) + " le " + message.date);
             lines.push("");
             lines.push("> ");
@@ -276,7 +276,7 @@ SK.moduleConstructors.Quote.prototype.createCitationBlock = function(message) {
                 lines[i] = "| " + line;
             }.bind(this));
 
-            lines.splice(0, 0, "| Ecrit par « " + message.authorPseudo + " », " +
+            lines.splice(0, 0, "| Ecrit par « " + message.authorPseudoWithCase + " », " +
                     message.date + " à " + message.time);
             lines.splice(0, 0, "| " + message.permalink);
             lines.push("");

@@ -296,7 +296,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             class: "searchTopics",
             href: topicsUrl,
             tooltip: {
-                text: "Rechercher les topics de " + message.authorPseudo
+                text: "Rechercher les topics de " + message.authorPseudoWithCase
             },
             click: function(event) {
                 event.preventDefault();
@@ -391,8 +391,8 @@ SK.moduleConstructors.InfosPseudo.prototype.addAvatar = function(message) {
     var $avatar = $avatarWrapper.find(".avatar");
 
     var $avatarImg = $("<img />", {
-        title: message.authorPseudo,
-        alt: message.authorPseudo,
+        title: message.authorPseudoWithCase,
+        alt: message.authorPseudoWithCase,
     });
 
     //Si la cdv n'est pas disponible
