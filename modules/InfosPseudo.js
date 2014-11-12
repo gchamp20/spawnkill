@@ -810,6 +810,32 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
             .msg {\
                 min-height: " + (this.avatarSize + 18) + "px;\
             }\
+            .msg.hidden {\
+                min-height: 0px;\
+                background-color: #FFF;\
+                border-color: #E8E8E8;\
+            }\
+            .msg.hidden ul {\
+                margin-left: 0px;\
+                color: #999;\
+            }\
+            .msg.hidden .post,\
+            .msg.hidden .pseudo,\
+            .msg.hidden .ancre,\
+            .msg.hidden .buttons.top,\
+            .msg.hidden .sk-button,\
+            .msg.hidden .avatar-wrapper {\
+                display: none !important;\
+            }\
+            .msg.hidden .sk-button.block-wrapper {\
+                display: inline-block !important;\
+            }\
+            .msg.hidden .date {\
+                color: rgba(0, 0, 0, 0);\
+            }\
+            .msg.hidden ul::after {\
+                content: \"Vous avez ignoré l'auteur de ce message\";\
+            }\
             .msg .avatar-wrapper {\
                 display: block;\
                 position: absolute;\
