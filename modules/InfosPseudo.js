@@ -48,7 +48,9 @@ SK.moduleConstructors.InfosPseudo.prototype.init = function() {
             // Si l'option est activée, on masque les posts des auteurs ignorés
             if (this.getSetting("enableBlockList")) {
 
-                this.hideBlockedPosts();
+                this.queueFunction(function() {
+                    this.hideBlockedPosts();
+                }.bind(this));
             }
 
         }
@@ -216,15 +218,18 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             class: "block",
             location: "right",
             index: 50,
+            wrapper: {
+                class: "block-wrapper",
+            },
             tooltip: {
                 text: "Masquer les posts de cet auteur"
             },
             click: function() {
                 // Ajoute l'auteur du post aux membres bloqués
-                self.addToBlockList();
+                self.addToBlockList(message.authorPseudo);
 
                 // Masque les posts de l'auteur
-                self.hidePostFrom();
+                self.hidePostFrom(message.authorPseudo);
             }
         };
 
@@ -616,6 +621,13 @@ SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function() {
  */
 SK.moduleConstructors.InfosPseudo.prototype.hideBlockedPosts = function() {
 
+    for (var authorKey in this.authors) {
+        // Si l'auteur fait partie des auteurs bloqué
+        if (SK.Util.getValue("blockedAuthors." + authorKey)) {
+            // On masque ses posts
+            this.hidePostFrom(authorKey);
+        }
+    }
 };
 
 /**
@@ -623,15 +635,21 @@ SK.moduleConstructors.InfosPseudo.prototype.hideBlockedPosts = function() {
  * @param {String} authorPseudo pseudo de l'auteur à bloquer
  */
 SK.moduleConstructors.InfosPseudo.prototype.addToBlockList = function(authorPseudo) {
-    SK.Util.setValue("blockedAuthor." + authorPseudo);
+    SK.Util.setValue("blockedAuthors." + authorPseudo, true);
 };
 
 /**
- * Masque les posts de l'auteur passé en paramètre sur la page.
+ * Ajoute une class "hidden" aux posts de l'auteur passé en paramètre.
  * @param {String} authorPseudo pseudo de l'auteur à masquer
  */
 SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo) {
-    console.log(this.authors);
+    var toBlocked = this.authors[authorPseudo];
+
+    if (typeof toBlocked !== "undefined") {
+        for (var i in toBlocked.messages) {
+            toBlocked.messages[i].$msg.addClass("hidden");
+        }
+    }
 };
 
 
