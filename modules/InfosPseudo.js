@@ -8,6 +8,11 @@ SK.moduleConstructors.InfosPseudo.prototype.id = "InfosPseudo";
 SK.moduleConstructors.InfosPseudo.prototype.title = "Avatars et autres infos";
 SK.moduleConstructors.InfosPseudo.prototype.description = "Affiche les avatars des membres à gauche des posts ainsi que leur rangs et leur sexe. Ajoute aussi des boutons pour envoyer un MP ou copier le lien permanent.";
 
+/**
+ * Pseudos des auteurs présents sur la page.
+ */
+SK.moduleConstructors.InfosPseudo.prototype.authors = {};
+
 /** Calcule la taille de l'avatar avant le chargement du CSS */
 SK.moduleConstructors.InfosPseudo.prototype.beforeInit = function() {
     this.avatarSize = parseInt(this.getSetting("avatarSize"));
@@ -70,9 +75,6 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
         var toLoadAuthors = [];
         var toLoadAuthorPseudos = [];
 
-        //Auteurs sur la page
-        var authors = {};
-
         //On parcourt tous les messages
         $(".msg .pseudo").each(function() {
 
@@ -89,11 +91,11 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
                 }
 
                 //On récupère l'auteur correspondant au post
-                if(typeof authors[message.authorPseudo] === "undefined") {
-                    authors[message.authorPseudo] = new SK.Author(message.authorPseudo);
-                    authors[message.authorPseudo].loadLocalData();
+                if(typeof self.authors[message.authorPseudo] === "undefined") {
+                    self.authors[message.authorPseudo] = new SK.Author(message.authorPseudo);
+                    self.authors[message.authorPseudo].loadLocalData();
                 }
-                var author = authors[message.authorPseudo];
+                var author = self.authors[message.authorPseudo];
                 author.addMessage(message);
 
 
@@ -138,7 +140,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
                         var $author = $(this);
                         var pseudo = $author.attr("pseudo");
                         var $cdv = $author.find("cdv");
-                        var author = authors[pseudo];
+                        var author = self.authors[pseudo];
                         queueInitAuthor(author, $cdv);
                     });
                 });
@@ -219,10 +221,10 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             },
             click: function() {
                 // Ajoute l'auteur du post aux membres bloqués
-                //self.addToBlockList();
+                self.addToBlockList();
 
                 // Masque les posts de l'auteur
-                //self.hidePostFrom();
+                self.hidePostFrom();
             }
         };
 
@@ -621,7 +623,7 @@ SK.moduleConstructors.InfosPseudo.prototype.hideBlockedPosts = function() {
  * @param {String} authorPseudo pseudo de l'auteur à bloquer
  */
 SK.moduleConstructors.InfosPseudo.prototype.addToBlockList = function(authorPseudo) {
-
+    SK.Util.setValue("blockedAuthor." + authorPseudo);
 };
 
 /**
@@ -629,7 +631,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addToBlockList = function(authorPseu
  * @param {String} authorPseudo pseudo de l'auteur à masquer
  */
 SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo) {
-
+    console.log(this.authors);
 };
 
 
