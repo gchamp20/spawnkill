@@ -214,10 +214,12 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
 
     //Bouton ignorer
     if(this.getSetting("enableBlockList")) {
+
         var blockButtonOptions = {
-            class: "block",
+            class: "block minor minus",
             location: "right",
-            index: 50,
+            index: 200,
+            "data-blocked": "0",
             wrapper: {
                 class: "block-wrapper",
             },
@@ -225,6 +227,8 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
                 text: "Masquer les posts de cet auteur"
             },
             click: function() {
+
+                this.remove();
                 // Ajoute l'auteur du post aux membres bloqués
                 self.addToBlockList(message.authorPseudo);
 
@@ -647,9 +651,20 @@ SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo
 
     if (typeof toBlocked !== "undefined") {
         for (var i in toBlocked.messages) {
-            toBlocked.messages[i].$msg.addClass("hidden");
+            toBlocked.messages[i].$msg
+                .addClass("hidden")
+                // On change le bouton du post
+                .find(".sk-button-content.block")
+                    .attr("data-blocked", "1")
+                    .removeClass("minus")
+                    .addClass("plus")
+                    .siblings(".tooltip")
+                        .html("Afficher les posts de cet auteur")
+            ;
         }
     }
+
+
 };
 
 
@@ -815,6 +830,10 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
                 background-color: #FFF;\
                 border-color: #E8E8E8;\
             }\
+            .msg.msg1.hidden {\
+                background-color: #F5F8FD;\
+                border-color: #D9E7F4;\
+            }\
             .msg.hidden ul {\
                 margin-left: 0px;\
                 color: #999;\
@@ -830,8 +849,9 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
             .msg.hidden .sk-button.block-wrapper {\
                 display: inline-block !important;\
             }\
+            .msg.hidden .date > *,\
             .msg.hidden .date {\
-                color: rgba(0, 0, 0, 0);\
+                color: rgba(0, 0, 0, 0) !important;\
             }\
             .msg.hidden ul::after {\
                 content: \"Vous avez ignoré l'auteur de ce message\";\
