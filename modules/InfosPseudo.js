@@ -228,7 +228,6 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             },
             click: function() {
 
-                this.remove();
                 // Ajoute l'auteur du post aux membres bloqués
                 self.addToBlockList(message.authorPseudo);
 
