@@ -769,6 +769,12 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         type: "boolean",
         default: false,
     },
+    fullyHideBlockedPosts: {
+        title: "Masquer totalement les posts ignorés",
+        description: "Si cette option est activée, les posts ignorés sont supprimés totalement de la page.",
+        type: "boolean",
+        default: false,
+    },
     clearAuthorCache: {
         title: "Vider le cache des auteurs",
         description: "Permet de vider le cache des auteurs pour voir votre nouvel avatar, par exemple.",
