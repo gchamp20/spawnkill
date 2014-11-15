@@ -642,6 +642,14 @@ SK.moduleConstructors.InfosPseudo.prototype.addToBlockList = function(authorPseu
 };
 
 /**
+ * Supprime un auteur de la liste des pseudos bloqués.
+ * @param {String} authorPseudo pseudo de l'auteur à débloquer
+ */
+SK.moduleConstructors.InfosPseudo.prototype.removeFromBlockList = function(authorPseudo) {
+    SK.Util.deleteValue("blockedAuthors." + authorPseudo);
+};
+
+/**
  * Ajoute une class "hidden" aux posts de l'auteur passé en paramètre.
  * @param {String} authorPseudo pseudo de l'auteur à masquer
  */
