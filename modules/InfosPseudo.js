@@ -654,11 +654,11 @@ SK.moduleConstructors.InfosPseudo.prototype.removeFromBlockList = function(autho
  * @param {String} authorPseudo pseudo de l'auteur à masquer
  */
 SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo) {
-    var toBlocked = this.authors[authorPseudo];
+    var toBlock = this.authors[authorPseudo];
 
-    if (typeof toBlocked !== "undefined") {
-        for (var i in toBlocked.messages) {
-            toBlocked.messages[i].$msg
+    if (typeof toBlock !== "undefined") {
+        for (var i in toBlock.messages) {
+            toBlock.messages[i].$msg
                 .addClass("hidden")
                 // On change le bouton du post
                 .find(".sk-button-content.block")
@@ -670,8 +670,29 @@ SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo
             ;
         }
     }
+};
 
+/**
+ * Supprime la class "hidden" des posts de l'auteur passé en paramètre.
+ * @param {String} authorPseudo pseudo de l'auteur à réafficher
+ */
+SK.moduleConstructors.InfosPseudo.prototype.showPostFrom = function(authorPseudo) {
+    var toShow = this.authors[authorPseudo];
 
+    if (typeof toShow !== "undefined") {
+        for (var i in toShow.messages) {
+            toShow.messages[i].$msg
+                .removeClass("hidden")
+                // On change le bouton du post
+                .find(".sk-button-content.block")
+                    .attr("data-blocked", "0")
+                    .removeClass("plus")
+                    .addClass("minus")
+                    .siblings(".tooltip")
+                        .html("Masquer les posts de cet auteur")
+            ;
+        }
+    }
 };
 
 
