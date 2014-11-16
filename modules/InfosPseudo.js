@@ -228,11 +228,24 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             },
             click: function() {
 
-                // Ajoute l'auteur du post aux membres bloqués
-                self.addToBlockList(message.authorPseudo);
+                // Affichage
+                if ($(this).attr("data-blocked") === "1") {
 
-                // Masque les posts de l'auteur
-                self.hidePostFrom(message.authorPseudo);
+                    // Supprime l'auteur du post des membres bloqués
+                    self.removeFromBlockList(message.authorPseudo);
+
+                    // Affiche les posts de l'auteur
+                    self.showPostFrom(message.authorPseudo);
+                }
+                // Masquage
+                else {
+                    // Ajoute l'auteur du post aux membres bloqués
+                    self.addToBlockList(message.authorPseudo);
+
+                    // Masque les posts de l'auteur
+                    self.hidePostFrom(message.authorPseudo);
+
+                }
             }
         };
 
