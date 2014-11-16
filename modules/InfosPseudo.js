@@ -667,22 +667,7 @@ SK.moduleConstructors.InfosPseudo.prototype.removeFromBlockList = function(autho
  * @param {String} authorPseudo pseudo de l'auteur à masquer
  */
 SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo) {
-    var toBlock = this.authors[authorPseudo];
-
-    if (typeof toBlock !== "undefined") {
-        for (var i in toBlock.messages) {
-            toBlock.messages[i].$msg
-                .addClass("hidden")
-                // On change le bouton du post
-                .find(".sk-button-content.block")
-                    .attr("data-blocked", "1")
-                    .removeClass("minus")
-                    .addClass("plus")
-                    .siblings(".tooltip")
-                        .html("Afficher les posts de cet auteur")
-            ;
-        }
-    }
+    this.togglePostFrom(authorPseudo, false);
 };
 
 /**
@@ -690,20 +675,44 @@ SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo
  * @param {String} authorPseudo pseudo de l'auteur à réafficher
  */
 SK.moduleConstructors.InfosPseudo.prototype.showPostFrom = function(authorPseudo) {
-    var toShow = this.authors[authorPseudo];
+    this.togglePostFrom(authorPseudo, true);
+};
 
-    if (typeof toShow !== "undefined") {
-        for (var i in toShow.messages) {
-            toShow.messages[i].$msg
-                .removeClass("hidden")
-                // On change le bouton du post
-                .find(".sk-button-content.block")
+/**
+ * Affiche ou masque les posts de l'auteur passés en paramètre.
+ * Le bouton d'affichage ou de masquage du post est modifié en fonction de l'action
+ * @param {String} authorPseudo pseudo de l'auteur à masquer ou afficher
+ * @param {boolean} show Si true, les posts seront affichés, sinon ils seront masqués.
+ */
+SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseudo, show) {
+
+    var toToggle = this.authors[authorPseudo];
+
+    if (typeof toToggle !== "undefined") {
+        for (var i in toToggle.messages) {
+
+            var $msg = toToggle.messages[i].$msg;
+            var $button = $msg.find(".sk-button-content.block");
+            var $tooltip = $button.siblings(".tooltip");
+
+            if (show) {
+                $msg.removeClass("hidden");
+                $button
                     .attr("data-blocked", "0")
                     .removeClass("plus")
                     .addClass("minus")
-                    .siblings(".tooltip")
-                        .html("Masquer les posts de cet auteur")
-            ;
+                ;
+                $tooltip.html("Masquer les posts de cet auteur");
+            }
+            else {
+                $msg.addClass("hidden");
+                $button
+                    .attr("data-blocked", "1")
+                    .removeClass("minus")
+                    .addClass("plus")
+                ;
+                $tooltip.html("Afficher les posts de cet auteur");
+            }
         }
     }
 };
