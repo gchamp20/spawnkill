@@ -239,7 +239,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
          * http://www.hostingpics.net/viewer.php?id=785683.jpg
          * Pour les tests : http://regex101.com/r/fD7bC3/2
          */
-        regex: /^https?:\/\/(?!www\.dropbox\.com|www\.hostingpics)(?:(?:(www\.hapshack\.com\/\?v=)|(www\.noelshack\.com\/([\d]{4})-([\d]{2})-))?(.*.(jpe?g|png|gif|bmp)))(?:[\?:].*)?$/i,
+        regex: /^https?:\/\/(?!www\.dropbox\.com|www\.hostingpics)(?:(?:(www\.hapshack\.com\/\?v=)|(www\.noelshack\.com\/([\d]{4})-([\d]{2})-))?(.*.(jp(e|g|eg)|png|gif|bmp)))(?:[\?:].*)?$/i,
 
         addHideButton: true,
         showButtonText: "Afficher les images",
