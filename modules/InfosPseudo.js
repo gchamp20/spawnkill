@@ -665,9 +665,16 @@ SK.moduleConstructors.InfosPseudo.prototype.removeFromBlockList = function(autho
 /**
  * Ajoute une class "hidden" aux posts de l'auteur passé en paramètre.
  * @param {String} authorPseudo pseudo de l'auteur à masquer
+ * @param {boolean} removePost Optionnel, defaut : false. Si true,
+ *                  les posts sont totalement supprimés et pas masqués
  */
 SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo) {
-    this.togglePostFrom(authorPseudo, false);
+    if (this.getSetting("fullyHideBlockedPosts")) {
+        this.togglePostFrom(authorPseudo, "removed");
+    }
+    else {
+        this.togglePostFrom(authorPseudo, "hidden");
+    }
 };
 
 /**
@@ -675,16 +682,16 @@ SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo
  * @param {String} authorPseudo pseudo de l'auteur à réafficher
  */
 SK.moduleConstructors.InfosPseudo.prototype.showPostFrom = function(authorPseudo) {
-    this.togglePostFrom(authorPseudo, true);
+    this.togglePostFrom(authorPseudo, "visible");
 };
 
 /**
  * Affiche ou masque les posts de l'auteur passés en paramètre.
  * Le bouton d'affichage ou de masquage du post est modifié en fonction de l'action
  * @param {String} authorPseudo pseudo de l'auteur à masquer ou afficher
- * @param {boolean} show Si true, les posts seront affichés, sinon ils seront masqués.
+ * @param {String} newState Nouvel état des posts "visible", "hidden", ou "removed"
  */
-SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseudo, show) {
+SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseudo, newState) {
 
     var toToggle = this.authors[authorPseudo];
 
@@ -695,23 +702,31 @@ SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseu
             var $button = $msg.find(".sk-button-content.block");
             var $tooltip = $button.siblings(".tooltip");
 
-            if (show) {
-                $msg.removeClass("hidden");
-                $button
-                    .attr("data-blocked", "0")
-                    .removeClass("plus")
-                    .addClass("minus")
-                ;
-                $tooltip.html("Masquer les posts de cet auteur");
-            }
-            else {
-                $msg.addClass("hidden");
-                $button
-                    .attr("data-blocked", "1")
-                    .removeClass("minus")
-                    .addClass("plus")
-                ;
-                $tooltip.html("Afficher les posts de cet auteur");
+            switch (newState) {
+
+                case "visible":
+                    $msg.removeClass("hidden");
+                    $button
+                        .attr("data-blocked", "0")
+                        .removeClass("plus")
+                        .addClass("minus")
+                    ;
+                    $tooltip.html("Masquer les posts de cet auteur");
+                    break;
+
+                case "hidden":
+                    $msg.addClass("hidden");
+                    $button
+                        .attr("data-blocked", "1")
+                        .removeClass("minus")
+                        .addClass("plus")
+                    ;
+                    $tooltip.html("Afficher les posts de cet auteur");
+                    break;
+
+                case "removed":
+                    $msg.remove();
+                    break;
             }
         }
     }

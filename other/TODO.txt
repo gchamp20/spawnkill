@@ -1,3 +1,3 @@
 InfosPseudo
     - Animation pour masquer les posts de l'auteur
-    - Permettre le bloquage total des posts des auteurs ignorés
+        hide, show, remove
