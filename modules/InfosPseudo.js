@@ -705,7 +705,10 @@ SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseu
             switch (newState) {
 
                 case "visible":
-                    $msg.removeClass("hidden");
+                    $msg
+                        .removeClass("hidden")
+                        .attr("title", "")
+                    ;
                     $button
                         .attr("data-blocked", "0")
                         .removeClass("plus")
@@ -715,7 +718,10 @@ SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseu
                     break;
 
                 case "hidden":
-                    $msg.addClass("hidden");
+                    $msg
+                        .addClass("hidden")
+                        .attr("title", "Cliquez sur le + à droite du post pour réafficher les posts de cet auteur")
+                    ;
                     $button
                         .attr("data-blocked", "1")
                         .removeClass("minus")
