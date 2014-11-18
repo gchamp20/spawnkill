@@ -1,3 +1,0 @@
-InfosPseudo
-    - Animation pour masquer les posts de l'auteur
-        hide, show, remove
