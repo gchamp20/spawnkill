@@ -224,7 +224,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
                 class: "block-wrapper",
             },
             tooltip: {
-                text: "Masquer les posts de cet auteur"
+                text: "Masquer les posts de " + message.authorPseudoWithCase
             },
             click: function() {
 
@@ -714,20 +714,20 @@ SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseu
                         .removeClass("plus")
                         .addClass("minus")
                     ;
-                    $tooltip.html("Masquer les posts de cet auteur");
+                    $tooltip.html("Masquer les posts de " + authorPseudo);
                     break;
 
                 case "hidden":
                     $msg
                         .addClass("hidden")
-                        .attr("title", "Cliquez sur le + à droite du post pour réafficher les posts de cet auteur")
+                        .attr("title", "Cliquez sur le + à droite du post pour réafficher les posts de " + authorPseudo)
                     ;
                     $button
                         .attr("data-blocked", "1")
                         .removeClass("minus")
                         .addClass("plus")
                     ;
-                    $tooltip.html("Afficher les posts de cet auteur");
+                    $tooltip.html("Afficher les posts de " + authorPseudo);
                     break;
 
                 case "removed":
