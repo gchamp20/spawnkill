@@ -206,6 +206,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     if(this.getSetting("modalProfile")) {
         profileButtonOptions["data-popin"] = profileUrl;
         profileButtonOptions["data-popin-type"] = "iframe";
+        profileButtonOptions.index = 20;
         profileButtonOptions.title = " ";
         profileButtonOptions.href += "?popup=0";
     }
@@ -300,6 +301,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
         SK.Util.addButton(message.$msg, {
             class: "mp",
             href: mpUrl,
+            index: 30,
             tooltip: {
                 text: "Envoyer un MP"
             },
@@ -316,6 +318,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
         SK.Util.addButton(message.$msg, {
             class: "searchTopics",
             href: topicsUrl,
+            index: 40,
             tooltip: {
                 text: "Rechercher les topics de " + message.authorPseudoWithCase
             },
@@ -396,6 +399,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addRank = function(message) {
         else {
             SK.Util.addButton(message.$msg, {
                 class: "rank " + message.author.rank,
+                index: 10,
                 tooltip: {
                     text: rankString
                 }
