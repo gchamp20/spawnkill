@@ -309,19 +309,20 @@ SK.Util = {
             $buttons.append($button.fadeIn());
         }
         else {
-            $existingButtons.each(function() {
+            $existingButtons.each(function(i) {
                 var $existingButton = $(this);
-                var buttonIndex = parseInt($existingButton.attr("data-index"));
-                if(buttonIndex <= index) {
-                    $existingButton.after($button.fadeIn());
-                }
-                else {
+
+                var existingIndex = parseInt($existingButton.attr("data-index"));
+                // $existingButtons.length - 1 === i
+                if(index <= existingIndex) {
                     $existingButton.before($button.fadeIn());
+                    return false;
+                }
+                else if($existingButtons.length - 1 === i) {
+                    $existingButton.after($button.fadeIn());
                 }
             });
         }
-
-
     },
 
     addCss: function(css) {
