@@ -1,0 +1,25 @@
+Nouvelle structure SpawnKill
+
+À prendre en compte :
+
+    - Performances (Gros point noir dans la structure actuelle)
+        - Limiter les modifications du DOM
+        - Mettre en place une API sur plusieurs niveaux :
+            Script (modules, fonctions, ...)
+            Page (messages, auteurs, url, ...)
+
+    - Communication entre modules
+        - Eventuel benchmark :
+                - Evenements ?
+                - Callbacks ?
+        - Permettre aux modules de déclencher des actions au
+          niveau du script (par exemple pour un module du type
+          TurboForum)
+
+    - Dépendances entre modules
+
+    - Paramètres
+        - Dissocier les modules des paramètres : possibilité de
+          mettre des options de deux modules différents dans le
+          même paramètre, et inversement.
+
