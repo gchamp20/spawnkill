@@ -2,11 +2,18 @@ Nouvelle structure SpawnKill
 
 À prendre en compte :
 
+    - Structure
+      - Donner une meilleure place aux fonctions de type utilitaire
+
     - Performances (Gros point noir dans la structure actuelle)
         - Limiter les modifications du DOM
         - Mettre en place une API sur plusieurs niveaux :
             Script (modules, fonctions, ...)
             Page (messages, auteurs, url, ...)
+        - Centraliser les paramètres dans le localStorage pour éviter les accès trop fréquents
+        - Créer des modules plus "légers" pour qu'un nouveau module ne soit pas pénalisant
+        - Mettre en place un moyen de compresser le JS (voir pour faire un hook) pour amléiorer les performances
+        - Trouver un meilleur moyen pour tester si le document est prêt
 
     - Communication entre modules
         - Eventuel benchmark :
