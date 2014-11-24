@@ -524,19 +524,19 @@ SK.moduleConstructors.InfosPseudo.prototype.resizeAndCenterAvatar = function($av
  */
 SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
     //Cherche le pseudonyme de l'utilisateur
-    var currentUserPseudo = $("#compte strong").first().text().trim();
+    var currentUserPseudo = $("#compte strong").first().text().trim().toLowerCase();
 
-    //On teste dans chaque message
-    $(".msg .pseudo").each(function() {
+    for (var authorKey in this.authors) {
+        if (authorKey === currentUserPseudo) {
 
-        var $postPseudo = $(this).find("strong").first();
-        var postTextPseudo = $postPseudo.text().trim();
-        // Si l'auteur du message correspond à ce pseudonyme
-        if (postTextPseudo === currentUserPseudo) {
+            var messages = this.authors[authorKey].messages;
 
-            $postPseudo.addClass("current-user");
+            for (var i in messages) {
+                messages[i].$msg.find(".pseudo strong").first().addClass("current-user");
+            }
         }
-    });
+    }
+
 };
 
 
