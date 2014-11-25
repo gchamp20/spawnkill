@@ -492,7 +492,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         hideButtonText: "Masquer les sondages Sondage.io",
 
         getEmbeddedMedia: function($a, match) {
-            
+
 
             //On ne remplace pas les sondages dans les citations
             if($a.parents(".quote-message").length > 0) {
@@ -711,38 +711,38 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     
     //Pogo
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
-    id: "pogo",
-    settingId: "embedPogos",
+        id: "pogo",
+        settingId: "embedPogos",
 
-    regex: /^http:\/\/f\.angiva\.re\/(.{5,5})$/,
+        regex: /^http:\/\/f\.angiva\.re\/(.{5,5})$/,
 
-    addHideButton: true,
-    showButtonText: "Afficher les miniatures pogo",
-    hideButtonText: "Masquer les miniatures pogo",
+        addHideButton: true,
+        showButtonText: "Afficher les miniatures pogo",
+        hideButtonText: "Masquer les miniatures pogo",
 
 
-    getEmbeddedMedia: function($a, match) {
-        var stamp = match[1];
+        getEmbeddedMedia: function($a, match) {
+            var stamp = match[1];
 
-        GM_xmlhttpRequest({
-            method: "GET",
-            url: "http://f.angiva.re/get_thumb.php?f=" + stamp,
-            onload: function(data) {
-                if(data.status == 200 || data.status == 304)
-                    //Si on a bel et bien chargé une miniature, on l'affiche dans le lien
-                    $el.html("<img src=\"http://f.angiva.re/get_thumb.php?f=" + stamp + "\">");
-            },
-        });
+            GM_xmlhttpRequest({
+                method: "GET",
+                url: "http://f.angiva.re/get_thumb.php?f=" + stamp,
+                onload: function(data) {
+                    if(data.status == 200 || data.status == 304)
+                        //Si on a bel et bien chargé une miniature, on l'affiche dans le lien
+                        $el.html("<img src=\"http://f.angiva.re/get_thumb.php?f=" + stamp + "\">");
+                },
+            });
 
-        //Par défaut, on affiche seulement le lien
-        var $el = $("<a>", { href: "http://f.angiva.re/" + stamp, target: "_blank" });
-        $el.html("http://f.angiva.re/" + stamp);
+            //Par défaut, on affiche seulement le lien
+            var $el = $("<a>", { href: "http://f.angiva.re/" + stamp, target: "_blank" });
+            $el.html("http://f.angiva.re/" + stamp);
 
-        return $el;
-    }
-}));
+            return $el;
+        }
+    }));
 
-};
+    };
 
 /**
  * Parcourt tous les liens des posts à la recherche de contenu à intégrer.
