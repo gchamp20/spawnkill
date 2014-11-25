@@ -63,7 +63,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.initCommonVars = function() {
  */
 SK.moduleConstructors.SpawnkillBase.prototype.getCurrentPage = function() {
 
-    var regex = "http:\\/\\/www\\.jeuxvideo\\.com\\/forums\\/(0|1|2|3)";
+    var regex = "http:\\/\\/(?:www\\.jeuxvideo\\.com\\/forums|[^\\/]*\\.forumjv\\.com)\\/(0|1|2|3)";
     var match = window.location.href.match(regex);
 
     var currentPage = null;
@@ -282,6 +282,9 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         }\
         .msg .post {\
             overflow: visible !important;\
+        }\
+        #modals {\
+            font-size: 12px;\
         }\
         #modal-background {\
             display: none;\
