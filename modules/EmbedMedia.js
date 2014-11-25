@@ -492,7 +492,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         hideButtonText: "Masquer les sondages Sondage.io",
 
         getEmbeddedMedia: function($a, match) {
-
+            
 
             //On ne remplace pas les sondages dans les citations
             if($a.parents(".quote-message").length > 0) {
@@ -729,10 +729,12 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
             url: "http://f.angiva.re/get_thumb.php?f=" + stamp,
             onload: function(data) {
                 if(data.status == 200 || data.status == 304)
+                    //Si on a bel et bien chargé une miniature, on l'affiche dans le lien
                     $el.html("<img src=\"http://f.angiva.re/get_thumb.php?f=" + stamp + "\">");
-            }
-        })
+            },
+        });
 
+        //Par défaut, on affiche seulement le lien
         var $el = $("<a>", { href: "http://f.angiva.re/" + stamp, target: "_blank" });
         $el.html("http://f.angiva.re/" + stamp);
 
