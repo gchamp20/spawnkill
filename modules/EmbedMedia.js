@@ -708,7 +708,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         }
 
     }));
-    
+
     //Pogo
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
         id: "pogo",
@@ -953,7 +953,7 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         title: "Intégration des tweets",
         description: "Intègre les tweets aux posts.",
         type: "boolean",
-        default:true,
+        default: true,
     },
     embedSpawnKill: {
         title: "Bouton de téléchargement SpawnKill",
@@ -971,7 +971,7 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         title: "Intégrations des pogos",
         description: "Intègre les miniatures pogos aux posts.",
         type: "boolean",
-        default: "true",
+        default: false,
     },
 };
 
