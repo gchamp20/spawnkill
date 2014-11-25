@@ -953,7 +953,7 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         title: "Intégration des tweets",
         description: "Intègre les tweets aux posts.",
         type: "boolean",
-        default: true,
+        default: false,
     },
     embedSpawnKill: {
         title: "Bouton de téléchargement SpawnKill",
