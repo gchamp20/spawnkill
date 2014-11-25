@@ -708,6 +708,37 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         }
 
     }));
+    
+    //Pogo
+    this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
+    id: "pogo",
+    settingId: "embedPogos",
+
+    regex: /^http:\/\/f\.angiva\.re\/(.{5,5})$/,
+
+    addHideButton: true,
+    showButtonText: "Afficher les miniatures pogo",
+    hideButtonText: "Masquer les miniatures pogo",
+
+
+    getEmbeddedMedia: function($a, match) {
+        var stamp = match[1];
+
+        GM_xmlhttpRequest({
+            method: "GET",
+            url: "http://f.angiva.re/get_thumb.php?f=" + stamp,
+            onload: function(data) {
+                if(data.status == 200 || data.status == 304)
+                    $el.html("<img src=\"http://f.angiva.re/get_thumb.php?f=" + stamp + "\">");
+            }
+        })
+
+        var $el = $("<a>", { href: "http://f.angiva.re/" + stamp, target: "_blank" });
+        $el.html("http://f.angiva.re/" + stamp);
+
+        return $el;
+    }
+}));
 
 };
 
@@ -934,6 +965,12 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         type: "boolean",
         default: true,
     },
+    embedPogos: {
+        title: "Intégrations des pogos",
+        description: "Intègre les miniatures pogos aux posts.",
+        type: "boolean",
+        default: "true",
+    },
 };
 
 SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
@@ -1035,6 +1072,19 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             max-width: 100%;\
         }\
     ";
+
+    if(this.getSetting("embedPogos")) {
+        css += "\
+            .pogo-media-element img {\
+                display: inline-block;\
+                background-color: #fff;\
+                border: 1px solid #666;\
+                border-radius: 4px;\
+                width: 128px; height: 94px;\
+                overflow: hidden;\
+            }\
+        ";
+    }
 
     if(this.getSetting("embedTweets")) {
         css += "\
