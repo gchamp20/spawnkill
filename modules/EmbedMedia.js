@@ -1033,6 +1033,12 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             background-image: url('" + GM_getResourceURL("tweet-mini") + "');\
             background-position: 3px 2px;\
         }\
+        [data-media-id='pogo'] {\
+            background-color: #18428D;\
+            border-bottom: solid 2px #0C2144;\
+            background-image: url('" + GM_getResourceURL("pogo") + "');\
+            background-position: 3px 2px;\
+        }\
         .donation-form {\
             display: inline-block;\
         }\

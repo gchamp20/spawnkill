@@ -71,6 +71,7 @@
 // @resource    error                 images/error.png
 // @resource    tweet                 images/tweet.png
 // @resource    tweet-mini            images/tweet-mini.png
+// @resource    pogo                  images/pogo.png
 // @resource    notification          audio/notification.ogg
 // @grant       GM_xmlhttpRequest
 // @grant       GM_getResourceURL
