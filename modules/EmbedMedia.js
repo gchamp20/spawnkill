@@ -742,7 +742,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
         }
     }));
 
-    };
+};
 
 /**
  * Parcourt tous les liens des posts à la recherche de contenu à intégrer.
