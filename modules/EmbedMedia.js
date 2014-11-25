@@ -10,7 +10,9 @@ SK.moduleConstructors.EmbedMedia = SK.Module.new();
 
 SK.moduleConstructors.EmbedMedia.prototype.id = "EmbedMedia";
 SK.moduleConstructors.EmbedMedia.prototype.title = "Intégration de contenus";
-SK.moduleConstructors.EmbedMedia.prototype.description = "Remplace les liens vers les images, vidéos, sondages ou vocaroo par le contenu lui-même.";
+SK.moduleConstructors.EmbedMedia.prototype.description = "Remplace les liens vers les images, vidéos, " +
+    "sondages ou vocaroo par le contenu lui-même. Attention, si trop de contenu est activé, le chargement" +
+    "de la page êut être ralenti.";
 
 SK.moduleConstructors.EmbedMedia.prototype.init = function() {
 
