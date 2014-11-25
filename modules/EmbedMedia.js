@@ -730,9 +730,11 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
                 method: "GET",
                 url: "http://f.angiva.re/get_thumb.php?f=" + stamp,
                 onload: function(data) {
-                    if(data.status == 200 || data.status == 304)
-                        //Si on a bel et bien chargé une miniature, on l'affiche dans le lien
+
+                    //Si on a bel et bien chargé une miniature, on l'affiche dans le lien
+                    if(data.status === 200 || data.status === 304) {
                         $el.html("<img src=\"http://f.angiva.re/get_thumb.php?f=" + stamp + "\">");
+                    }
                 },
             });
 
