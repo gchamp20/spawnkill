@@ -4,7 +4,7 @@
 
 /**
  * QuickResponse : Ajoute le formulaire de réponse en bas de toutes les pages
- * 
+ *
  * TODO :
  * - Réactiver Noelshack
  */
@@ -35,13 +35,13 @@ SK.moduleConstructors.QuickResponse.prototype.addResponseForm = function() {
             var data = response.responseText;
 
             $quickResponseForm.hide();
-            $quickResponseForm.html($(data.replace(/<p class="lien_base">\n.*\n<\/p>/, "")).find(".bloc_forum:last, form[name=post2]"));
+            $quickResponseForm.html($(data.replace(/<p class="lien_base">\n.*\n<\/p>/, "")).find(".bloc_forum:last, .bloc2:last"));
             $quickResponseForm.addClass("quick-response");
             $quickResponseForm.fadeIn();
         }
     });
 
-    $(".bloc_forum").after($quickResponseForm);
+    $(".bloc_forum, .bloc2:last").after($quickResponseForm);
 };
 
 /* Transforme le lien "Répondre" en ancre vers le formulaire. */

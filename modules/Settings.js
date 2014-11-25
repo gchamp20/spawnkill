@@ -62,7 +62,8 @@ SK.moduleConstructors.Settings.prototype.addSettingsButton = function() {
         }.bind(this)
     });
 
-    $(".titre_page").after($settingsButton);
+    //#select_taille pour les forumsjv
+    $(".titre_page, #select_taille").after($settingsButton);
 
 };
 
@@ -316,6 +317,10 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         #ft2 {\
             right: 23px !important;\
+        }\
+        #select_taille {\
+            margin-right: 22px;\
+            margin-top: 3px;\
         }\
         #setting-modal {\
             width: 420px !important;\

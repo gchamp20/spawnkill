@@ -4,6 +4,7 @@
 // @author      Spixel_
 // @namespace   http://www.spawnkill.fr
 // @include     http://*.jeuxvideo.com/*
+// @include     http://*.forumjv.com/*
 // @version     1.17
 // @require     jquery-2.1.1.min.js?v1.17
 // @require     jquery-plugins.js?v1.17
