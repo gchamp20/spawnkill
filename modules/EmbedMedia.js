@@ -10,7 +10,9 @@ SK.moduleConstructors.EmbedMedia = SK.Module.new();
 
 SK.moduleConstructors.EmbedMedia.prototype.id = "EmbedMedia";
 SK.moduleConstructors.EmbedMedia.prototype.title = "Intégration de contenus";
-SK.moduleConstructors.EmbedMedia.prototype.description = "Remplace les liens vers les images, vidéos, sondages ou vocaroo par le contenu lui-même.";
+SK.moduleConstructors.EmbedMedia.prototype.description = "Remplace les liens vers les images, vidéos, " +
+    "sondages ou vocaroo par le contenu lui-même. Attention, si trop de contenu est activé, le chargement" +
+    "de la page êut être ralenti.";
 
 SK.moduleConstructors.EmbedMedia.prototype.init = function() {
 
@@ -709,6 +711,41 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
 
     }));
 
+    //Pogo
+    this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
+        id: "pogo",
+        settingId: "embedPogos",
+
+        regex: /^http:\/\/f\.angiva\.re\/(.{5,5})$/,
+
+        addHideButton: true,
+        showButtonText: "Afficher les miniatures pogo",
+        hideButtonText: "Masquer les miniatures pogo",
+
+
+        getEmbeddedMedia: function($a, match) {
+            var stamp = match[1];
+
+            GM_xmlhttpRequest({
+                method: "GET",
+                url: "http://f.angiva.re/get_thumb.php?f=" + stamp,
+                onload: function(data) {
+
+                    //Si on a bel et bien chargé une miniature, on l'affiche dans le lien
+                    if(data.status === 200 || data.status === 304) {
+                        $el.html("<img src=\"http://f.angiva.re/get_thumb.php?f=" + stamp + "\">");
+                    }
+                },
+            });
+
+            //Par défaut, on affiche seulement le lien
+            var $el = $("<a>", { href: "http://f.angiva.re/" + stamp, target: "_blank" });
+            $el.html("http://f.angiva.re/" + stamp);
+
+            return $el;
+        }
+    }));
+
 };
 
 /**
@@ -920,7 +957,7 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         title: "Intégration des tweets",
         description: "Intègre les tweets aux posts.",
         type: "boolean",
-        default:true,
+        default: false,
     },
     embedSpawnKill: {
         title: "Bouton de téléchargement SpawnKill",
@@ -933,6 +970,12 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         description: "Les GIF démarrent lorsqu'ils sont entièrement visibles sur l'écran pour éviter d'en louper une partie.",
         type: "boolean",
         default: true,
+    },
+    embedPogos: {
+        title: "Intégrations des pogos",
+        description: "Intègre les miniatures pogos aux posts.",
+        type: "boolean",
+        default: false,
     },
 };
 
@@ -992,6 +1035,12 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             background-image: url('" + GM_getResourceURL("tweet-mini") + "');\
             background-position: 3px 2px;\
         }\
+        [data-media-id='pogo'] {\
+            background-color: #18428D;\
+            border-bottom: solid 2px #0C2144;\
+            background-image: url('" + GM_getResourceURL("pogo") + "');\
+            background-position: 3px 2px;\
+        }\
         .donation-form {\
             display: inline-block;\
         }\
@@ -1035,6 +1084,19 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             max-width: 100%;\
         }\
     ";
+
+    if(this.getSetting("embedPogos")) {
+        css += "\
+            .pogo-media-element img {\
+                display: inline-block;\
+                background-color: #fff;\
+                border: 1px solid #666;\
+                border-radius: 4px;\
+                width: 128px; height: 94px;\
+                overflow: hidden;\
+            }\
+        ";
+    }
 
     if(this.getSetting("embedTweets")) {
         css += "\
