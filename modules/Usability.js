@@ -30,6 +30,11 @@ SK.moduleConstructors.Usability.prototype.init = function() {
         }
         this.editRefreshLinks();
     }
+
+    // Boutons de modération
+    if (this.getSetting("replaceModerationButton")) {
+        this.replaceModerationButton();
+    }
 };
 
 /**
@@ -77,6 +82,14 @@ SK.moduleConstructors.Usability.prototype.isJustRefreshed = function() {
 
 
 /**
+ * Remplace les boutons de modération par des boutons SpawnKill
+ */
+SK.moduleConstructors.Usability.prototype.replaceModerationButton = function() {
+
+}
+
+
+/**
  * Scrolle la page au dernier message.
  */
 SK.moduleConstructors.Usability.prototype.scrollToLastPost = function() {
@@ -97,7 +110,7 @@ SK.moduleConstructors.Usability.prototype.settings = {
         type: "boolean",
         default: true,
     },
-    spawnkillModerationButtons: {
+    replaceModerationButton: {
         title: "Changer le look des boutons de modération",
         description: "Remplace les boutons de modération par des boutons SpawnKill",
         type: "boolean",
