@@ -147,7 +147,7 @@ SK.moduleConstructors.Usability.prototype.getCss = function() {
             .mod-kick-wrp {\
                 position: relative;\
                 top: -1px;\
-                right: -4px;\
+                right: -6px;\
             }\
             .mod-kick {\
                 background-color: #84D41B;\
