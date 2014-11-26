@@ -95,6 +95,7 @@ SK.moduleConstructors.Usability.prototype.replaceModerationButton = function() {
         $button
             .addClass("sk-button-content mod-" + (isDeleteButton ? "delete" : "kick"))
             .wrap("<div class='sk-button mod-" + (isDeleteButton ? "delete" : "kick") + "-wrp'>")
+            .after("<div style='width: " + (isDeleteButton ? "130" : "180") + "px;' class='tooltip top'>" + (isDeleteButton ? "Supprimer ce message" : "Kicker cet utilisateur de ce forum") + "</div>")
             .find("img")
                 .remove()
         ;
@@ -152,11 +153,13 @@ SK.moduleConstructors.Usability.prototype.getCss = function() {
                 background-color: #84D41B;\
                 border-bottom-color: #578911;\
                 background-image: url('" + GM_getResourceURL("cross") + "');\
+                background-position: 1px 0px;\
             }\
             .mod-delete {\
                 background-color: #FE2711;\
                 border-bottom-color: #A0170B;\
                 background-image: url('" + GM_getResourceURL("s") + "');\
+                background-position: 0px -2px;\
             }\
         ";
     }
