@@ -95,6 +95,7 @@ SK.moduleConstructors.Usability.prototype.replaceModerationButton = function() {
         $button
             .addClass("sk-button-content mod-" + (isDeleteButton ? "delete" : "kick"))
             .wrap("<div class='sk-button mod-" + (isDeleteButton ? "delete" : "kick") + "-wrp'>")
+            .attr("title", "")
             .after("<div style='width: " + (isDeleteButton ? "130" : "180") + "px;' class='tooltip top'>" + (isDeleteButton ? "Supprimer ce message" : "Kicker cet utilisateur de ce forum") + "</div>")
             .find("img")
                 .remove()
