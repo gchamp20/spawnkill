@@ -73,6 +73,8 @@
 // @resource    tweet                 images/tweet.png
 // @resource    tweet-mini            images/tweet-mini.png
 // @resource    pogo                  images/pogo.png
+// @resource    s                     images/s.png
+// @resource    cross                 images/cross.png
 // @resource    notification          audio/notification.ogg
 // @grant       GM_xmlhttpRequest
 // @grant       GM_getResourceURL
