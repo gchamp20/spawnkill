@@ -97,6 +97,12 @@ SK.moduleConstructors.Usability.prototype.settings = {
         type: "boolean",
         default: true,
     },
+    spawnkillModerationButtons: {
+        title: "Changer le look des boutons de modération",
+        description: "Remplace les boutons de modération par des boutons SpawnKill",
+        type: "boolean",
+        default: false,
+    },
 };
 
 SK.moduleConstructors.Usability.prototype.shouldBeActivated = function() {
