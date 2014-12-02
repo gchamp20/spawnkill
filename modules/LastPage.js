@@ -204,6 +204,11 @@ SK.moduleConstructors.LastPage.prototype.getCss = function() {
             .sk-button .last-page-bookmark-link {\
                 font-size: 0px;\
             }\
+            .sk-button-content.link {\
+                background-image: url('" + GM_getResourceURL("link") + "');\
+                background-color: #A3A3A3;\
+                border-bottom-color: #525252;\
+            }\
         ";
     }
 
