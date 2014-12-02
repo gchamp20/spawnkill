@@ -60,7 +60,7 @@ SK.Author.prototype.initFromCdv = function($cdv) {
         this.avatar = $cdv.find("petite_image").text();
         this.fullSizeAvatar = $cdv.find("image").text();
         if(this.fullSizeAvatar === "http://image.jeuxvideo.com/avatars/default.jpg")
-            this.fullSizeAvatar = this.Avatar;
+            this.fullSizeAvatar = this.avatar;
         this.gender = $cdv.find("couleur_pseudo").text() === "#0066CC" ? "male" : "female";
     }
     else {
