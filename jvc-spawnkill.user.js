@@ -87,13 +87,18 @@
 /* jshint unused: false */
 /* jshint multistr: true */
 /* jshint newcap: false */
-
 SK.VERSION = "v1.18";
+
+// On bloque le script dans les iframes
+if (window.top != window.self) {
+    console.log("iframe");
+    return;
+}
 
 var modulesStyle = "";
 
 //On charge seulement les modules nécessaires
-for(var key in SK.moduleConstructors) {
+for (var key in SK.moduleConstructors) {
 
     var moduleName = key;
     var module = new SK.moduleConstructors[key]();
@@ -102,13 +107,13 @@ for(var key in SK.moduleConstructors) {
     SK.modules[moduleName] = module;
 
     //On récupère les préférences courantes des options du module
-    for(var settingKey in module.settings) {
+    for (var settingKey in module.settings) {
         var setting = module.settings[settingKey];
         var settingLabel = settingKey;
         var settingValue = SK.Util.getValue(moduleName + "." + settingLabel);
 
         //Si la préférence n'est pas enregistrée, on prend la valeur par défaut
-        if(settingValue === null) {
+        if (settingValue === null) {
             settingValue = setting.default;
         }
 
@@ -117,7 +122,7 @@ for(var key in SK.moduleConstructors) {
     }
 
     //Si le module est requis, qu'il n'y a pas de préférences ou que la préférence est activé
-    if(module.required || moduleSettings === null || moduleSettings) {
+    if (module.required || moduleSettings === null || moduleSettings) {
 
         //On autorise le module à exécuter du code avant le chargement du CSS
         module.beforeInit();
@@ -137,7 +142,6 @@ for(var key in SK.moduleConstructors) {
 //On ajoute le style de tous les modules actifs
 SK.Util.addCss(modulesStyle);
 
-
 //document.ready ne fonctionne pas sur GM.
 //Pour vérifier que le DOM est chargé, on vérifie que le footer est présent.
 var checkDomReady = setInterval(function() {
@@ -146,13 +150,12 @@ var checkDomReady = setInterval(function() {
         module.internal_init();
     };
 
-    if($(".stats").length > 0) {
-
+    if ($(".stats").length > 0) {
         clearInterval(checkDomReady);
 
         //On initialise les modules actifs
-        for(var key in SK.modules) {
-            if(SK.modules[key].activated) {
+        for (var key in SK.modules) {
+            if (SK.modules[key].activated) {
                 initModule(SK.modules[key]);
             }
         }
