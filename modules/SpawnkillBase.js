@@ -63,7 +63,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.initCommonVars = function() {
  */
 SK.moduleConstructors.SpawnkillBase.prototype.getCurrentPage = function() {
 
-    var regex = "http:\\/\\/(?:www\\.jeuxvideo\\.com\\/forums|[^\\/]*\\.forumjv\\.com)\\/(0|1|2|3)";
+    var regex = "http:\\/\\/(?:www\\.jeuxvideo\\.com\\/forums|[^\\/]*\\.forumjv\\.com)\\/(0|1|42)";
     var match = window.location.href.match(regex);
 
     var currentPage = null;
@@ -75,13 +75,8 @@ SK.moduleConstructors.SpawnkillBase.prototype.getCurrentPage = function() {
                 currentPage = SK.common.Pages.TOPIC_LIST;
                 break;
             case "1" :
+            case "42" :
                 currentPage = SK.common.Pages.TOPIC_READ;
-                break;
-            case "2" :
-                currentPage = SK.common.Pages.TOPIC_FORM;
-                break;
-            case "3" :
-                currentPage = SK.common.Pages.TOPIC_RESPONSE;
                 break;
         }
     }
@@ -89,14 +84,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.getCurrentPage = function() {
     //Si on n'est pas sur une page forum
     if(currentPage === null) {
 
-        //Le titre de la page identifie l'aperçu
-        if ($("title").html() === "Aperçu d'un message sur JeuxVideo.com") {
-            currentPage = SK.common.Pages.POST_PREVIEW;
-        }
-        //Toutes les autres pages
-        else {
-            currentPage = SK.common.Pages.OTHER;
-        }
+        currentPage = SK.common.Pages.OTHER;
     }
 
     return currentPage;
