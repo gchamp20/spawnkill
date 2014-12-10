@@ -222,24 +222,6 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
     var darkColor = SK.common.darkColor;
 
     var css = "\
-        #new_header #header {\
-            z-index: 41000 !important;\
-        }\
-        #recherche #suggest {\
-            z-index: 41001 !important;\
-        }\
-        .modal_generic.modal_generic_overflow {\
-            z-index: 41100 !important;\
-        }\
-        .modal_generic {\
-            z-index: 41101 !important;\
-        }\
-        .msg {\
-            position: relative;\
-        }\
-        .msg .post {\
-            overflow: visible !important;\
-        }\
         #modals {\
             font-size: 12px;\
         }\
