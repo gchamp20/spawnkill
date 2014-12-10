@@ -16,12 +16,7 @@ SK.moduleConstructors.Settings.prototype.hidden = true;
 SK.moduleConstructors.Settings.prototype.init = function() {
 
     //On n'ajoute le bouton de paramètres que sur les pages du forum
-    if (SK.Util.currentPageIn(
-            SK.common.Pages.TOPIC_LIST,
-            SK.common.Pages.TOPIC_READ,
-            SK.common.Pages.TOPIC_RESPONSE,
-            SK.common.Pages.TOPIC_FORM)
-    ) {
+    if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST, SK.common.Pages.TOPIC_READ)) {
         this.addSettingsButton();
     }
 
@@ -63,8 +58,7 @@ SK.moduleConstructors.Settings.prototype.addSettingsButton = function() {
     });
 
     //#select_taille pour les forumsjv
-    $(".titre_page, #select_taille").after($settingsButton);
-
+    $(".options-crumb").append($settingsButton);
 };
 
 /* Retourne la fenêtre modale de configuration */
@@ -309,18 +303,14 @@ SK.moduleConstructors.Settings.prototype.saveSettings = function() {
 
 SK.moduleConstructors.Settings.prototype.getCss = function() {
     var css = "\
-        #col1 {\
-            position: relative; \
+        .options-crumb span,\
+        .options-crumb a,\
+        .options-crumb div {\
+            margin: 0px !important;\
         }\
-        #ft1 {\
-            right: 67px !important;\
-        }\
-        #ft2 {\
-            right: 23px !important;\
-        }\
-        #select_taille {\
-            margin-right: 22px;\
-            margin-top: 3px;\
+        .options-crumb span,\
+        .options-crumb a {\
+            margin-left: 8px !important;\
         }\
         #setting-modal {\
             width: 420px !important;\
@@ -367,9 +357,8 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
             display: none;\
         }\
         #settings-button {\
-            position: absolute;\
-                right: 1px;\
-                top: 3px;\
+            position: relative;\
+                top: 2px;\
         }\
         .settings-spawnkill-version {\
             position: absolute;\
