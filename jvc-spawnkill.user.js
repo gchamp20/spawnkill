@@ -5,36 +5,36 @@
 // @namespace   http://www.spawnkill.fr
 // @include     http://*.jeuxvideo.com/*
 // @include     http://*.forumjv.com/*
-// @version     1.18
-// @require     jquery-2.1.1.min.js?v1.18
-// @require     jquery-plugins.js?v1.18
-// @require     base.js?v1.18
-// @require     Util.js?v1.18
-// @require     Message.js?v1.18
-// @require     Author.js?v1.18
-// @require     Button.js?v1.18
-// @require     SlideToggle.js?v1.18
-// @require     Modal.js?v1.18
-// @require     DropdownList.js?v1.18
-// @require     FaviconNotificationUpdater.js?v1.18
-// @require     SocketMessage.js?v1.18
-// @require     modules/Module.js?v1.18
-// @require     modules/SpawnkillBase.js?v1.18
-// @require     modules/Settings.js?v1.18
-// @-require     modules/SocketConnection.js?v1.18
-// @-require     modules/Quote.js?v1.18
-// @require     modules/Shortcuts.js?v1.18
-// @-require     modules/InfosPseudo.js?v1.18
-// @-require     modules/HilightNewTopic.js?v1.18
-// @-require     modules/LastPage.js?v1.18
-// @-require     modules/EmbedMedia.js?v1.18
-// @-require     modules/WarnOnNewPost.js?v1.18
-// @-require     modules/AutoUpdate.js?v1.18
-// @-require     modules/PemtHighlight.js?v1.18
-// @-require     modules/Usability.js?v1.18
+// @version     1.18.1
+// @require     jquery-2.1.1.min.js?v1.18.1
+// @require     jquery-plugins.js?v1.18.1
+// @require     base.js?v1.18.1
+// @require     Util.js?v1.18.1
+// @require     Message.js?v1.18.1
+// @require     Author.js?v1.18.1
+// @require     Button.js?v1.18.1
+// @require     SlideToggle.js?v1.18.1
+// @require     Modal.js?v1.18.1
+// @require     DropdownList.js?v1.18.1
+// @require     FaviconNotificationUpdater.js?v1.18.1
+// @require     SocketMessage.js?v1.18.1
+// @require     modules/Module.js?v1.18.1
+// @require     modules/SpawnkillBase.js?v1.18.1
+// @require     modules/Settings.js?v1.18.1
+// @-require     modules/SocketConnection.js?v1.18.1
+// @-require     modules/Quote.js?v1.18.1
+// @require     modules/Shortcuts.js?v1.18.1
+// @-require     modules/InfosPseudo.js?v1.18.1
+// @require     modules/HilightNewTopic.js?v1.18.1
+// @-require     modules/LastPage.js?v1.18.1
+// @-require     modules/EmbedMedia.js?v1.18.1
+// @-require     modules/WarnOnNewPost.js?v1.18.1
+// @-require     modules/AutoUpdate.js?v1.18.1
+// @-require     modules/PemtHighlight.js?v1.18.1
+// @-require     modules/Usability.js?v1.18.1
 // @resource    close                 images/close.png
 // @resource    banImage              images/ban.png
-// @resource    newTopic              images/topic_new.gif
+// @resource    newTopic              images/new-topic.png
 // @resource    carton                images/carton.png
 // @resource    bronze                images/bronze.png
 // @resource    argent                images/argent.png
@@ -86,7 +86,7 @@
 /* jshint unused: false */
 /* jshint multistr: true */
 /* jshint newcap: false */
-SK.VERSION = "v1.18";
+SK.VERSION = "v1.18.1";
 
 // On ne charge pas le script dans les iframes
 if (window.top === window.self) {
