@@ -13,9 +13,6 @@ SK.moduleConstructors.LastPage.prototype.id = "LastPage";
 SK.moduleConstructors.LastPage.prototype.title = "Dernière page";
 SK.moduleConstructors.LastPage.prototype.description = "Permet d'accéder à la dernière page d'un topic directement depuis la liste des sujets et de conserver un lien vers la dernière page en favoris.";
 
-//Si le module est requis (impossible de le désactiver), décommenter cette ligne
-// SK.moduleConstructors.LastPage.prototype.required = true;
-
 /**
  * Initialise le module, fonction appelée quand le module est chargé
  */
@@ -68,14 +65,15 @@ SK.moduleConstructors.LastPage.prototype.addLastPageLinks = function() {
     var self = this;
 
     //On parcourt la liste des topics
-    $("#liste_topics tr:not(:first-child)").each(function() {
+    $("#table-liste-topic-forum tbody tr").each(function() {
 
         var $topic = $(this);
 
         var POST_PER_PAGE = 20;
 
         //Nombre de posts
-        var postCount = parseInt($topic.find("td:eq(3)").html());
+        var postCount = parseInt($topic.find("td:eq(2)").html());
+
         //Nombre de pages
         var pageCount = Math.floor(postCount / POST_PER_PAGE + 1);
 
@@ -98,9 +96,7 @@ SK.moduleConstructors.LastPage.prototype.addLastPageLinks = function() {
             title: "Accéder à la dernière page du sujet"
         }));
 
-        //On réduit la taille de la date pour ne pas casser l'affichage
-        $topic.find("td:eq(4)").html($topic.find("td:eq(4)").text().trim().replace(/\/[\d]{4}/, ""));
-        $("#liste_topics #c5").html("Dern. Msg.");
+        $("#head-dernier-msg").html("Dern. Msg.");
     });
 };
 
@@ -166,23 +162,16 @@ SK.moduleConstructors.LastPage.prototype.getCss = function() {
 
     if (this.getSetting("showIndicator")) {
         css += "\
-            #liste_topics th#c5 {\
-                width: auto;\
-            }\
-            #liste_topics th#c1 {\
-                min-width: 26px;\
-            }\
-            a.last-page-link {\
-              position: relative;\
-              width: 27px;\
+            .titre-topic {\
+                margin-left: 32px !important;\
             }\
             a.last-page-link::after {\
               content: \"\";\
               display: block;\
               position: absolute;\
                 left: 20px;\
-                top: 2px;\
-              border: solid 5px transparent;\
+                top: 4px;\
+              border: solid 4px transparent;\
               border-left-color: #999;\
             }\
             a.last-page-link:hover::after {\
