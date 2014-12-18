@@ -95,8 +95,6 @@ SK.moduleConstructors.LastPage.prototype.addLastPageLinks = function() {
             href: lastPageLink,
             title: "Accéder à la dernière page du sujet"
         }));
-
-        $("#head-dernier-msg").html("Dern. Msg.");
     });
 };
 
