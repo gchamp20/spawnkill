@@ -77,10 +77,10 @@ SK.moduleConstructors.LastPage.prototype.addLastPageLinks = function() {
         //Nombre de pages
         var pageCount = Math.floor(postCount / POST_PER_PAGE + 1);
 
-        var topicLink = $topic.find("td:eq(1) a").attr("href");
+        var topicLink = $topic.find(".titre-topic a").attr("href");
 
         //Dans le lien, on remplace le numéro de la page par la dernière page
-        var lastPageLink = topicLink.replace(/(http:\/\/www\.jeuxvideo\.com\/forums\/[\d]*-[\d]*-[\d]*-)[\d]*(-.*)/, "$1" + pageCount + "$2");
+        var lastPageLink = topicLink.replace(/(\/forums\/[\d]*-[\d]*-[\d]*-)[\d]*(-.*)/, "$1" + pageCount + "$2");
 
         //Si lastPageBookmarkLink est activé, on ajoute le hash #last-page au lien pour que
         //celui-ci pointe toujours vers la dernière page
