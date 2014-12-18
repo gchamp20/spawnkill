@@ -112,10 +112,10 @@ SK.moduleConstructors.LastPage.prototype.scrollToLastPost = function() {
  */
 SK.moduleConstructors.LastPage.prototype.goToLastPageIfPossible = function() {
 
-    var lastPageUrl = $(".p_fin").first().attr("href");
+    var lastPageUrl = $(".pagi-fin-actif").first().attr("href");
 
     if(typeof lastPageUrl !== "undefined") {
-        location.href = $(".p_fin").first().attr("href") + "#last-page";
+        location.href = $(".pagi-fin-actif").first().attr("href") + "#last-page";
         return true;
     }
     else {
