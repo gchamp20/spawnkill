@@ -102,7 +102,7 @@ SK.moduleConstructors.LastPage.prototype.addLastPageLinks = function() {
  * Scrolle la page au dernier message.
  */
 SK.moduleConstructors.LastPage.prototype.scrollToLastPost = function() {
-    $(".msg").last().scrollThere();
+    $(".bloc-message-forum").last().scrollThere();
 };
 
 /**
