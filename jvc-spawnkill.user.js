@@ -26,7 +26,7 @@
 // @require     modules/Shortcuts.js?v1.18.1
 // @-require     modules/InfosPseudo.js?v1.18.1
 // @require     modules/HilightNewTopic.js?v1.18.1
-// @-require     modules/LastPage.js?v1.18.1
+// @require     modules/LastPage.js?v1.18.1
 // @-require     modules/EmbedMedia.js?v1.18.1
 // @-require     modules/WarnOnNewPost.js?v1.18.1
 // @-require     modules/AutoUpdate.js?v1.18.1
