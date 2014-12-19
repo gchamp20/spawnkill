@@ -38,7 +38,7 @@ SK.moduleConstructors.LastPage.prototype.init = function() {
         }
 
         // On ajoute un bouton "lien vers la dernière page"
-        $(".bloc_forum .sujet span, .bloc_inner .sujet span").prepend(new SK.Button({
+        $(".titre-head-bloc-forum").prepend(new SK.Button({
             text: document.title,
             class: "last-page-bookmark-link minor link",
             href: "#last-page",
@@ -180,16 +180,17 @@ SK.moduleConstructors.LastPage.prototype.getCss = function() {
 
     if (this.getSetting("lastPageBookmarkLink")) {
         css += "\
-            .bloc_forum h1,\
-            .bloc_inner h4 {\
-                overflow: visible !important;\
-            }\
-            .last-page-link-wrp {\
-                margin-top: 2px;\
-                margin-right: 5px;\
+            .titre-bloc-forum {\
+                display: inline-block;\
+                width: calc(100% - 30px) !important;\
             }\
             .sk-button .last-page-bookmark-link {\
                 font-size: 0px;\
+            }\
+            .last-page-link-wrp {\
+                float: left;\
+                margin-right: 6px;\
+                margin-top: 1px;\
             }\
             .sk-button-content.link {\
                 background-image: url('" + GM_getResourceURL("link") + "');\
