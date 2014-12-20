@@ -21,17 +21,17 @@
 // @require     modules/Module.js?v1.18.1
 // @require     modules/SpawnkillBase.js?v1.18.1
 // @require     modules/Settings.js?v1.18.1
-// @-require     modules/SocketConnection.js?v1.18.1
-// @-require     modules/Quote.js?v1.18.1
+// @----require     modules/SocketConnection.js?v1.18.1
+// @----require     modules/Quote.js?v1.18.1
 // @require     modules/Shortcuts.js?v1.18.1
-// @-require     modules/InfosPseudo.js?v1.18.1
+// @----require     modules/InfosPseudo.js?v1.18.1
 // @require     modules/HilightNewTopic.js?v1.18.1
 // @require     modules/LastPage.js?v1.18.1
-// @-require     modules/EmbedMedia.js?v1.18.1
+// @----require     modules/EmbedMedia.js?v1.18.1
 // @require     modules/WarnOnNewPost.js?v1.18.1
-// @-require     modules/AutoUpdate.js?v1.18.1
-// @-require     modules/PemtHighlight.js?v1.18.1
-// @-require     modules/Usability.js?v1.18.1
+// @----require     modules/AutoUpdate.js?v1.18.1
+// @----require     modules/PemtHighlight.js?v1.18.1
+// @----require     modules/Usability.js?v1.18.1
 // @resource    close                 images/close.png
 // @resource    banImage              images/ban.png
 // @resource    newTopic              images/new-topic.png
