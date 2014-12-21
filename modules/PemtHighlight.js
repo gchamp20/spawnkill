@@ -30,7 +30,7 @@ SK.moduleConstructors.PemtHighlight.prototype.init = function() {
     //Boucle de test de PEMT
     for (var i = 0; i < dates.length; i++) {
         //Si la date est similaire à celle du post suivant
-        if (dates[i] == dates[i+1]) {
+        if (dates[i] === dates[i + 1]) {
             //Alors on l'ajoute au tableau des PEMT
             results.push(dates[i]);
         }
