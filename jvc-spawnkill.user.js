@@ -30,7 +30,7 @@
 // @----require     modules/EmbedMedia.js?v1.18.1
 // @require     modules/WarnOnNewPost.js?v1.18.1
 // @----require     modules/AutoUpdate.js?v1.18.1
-// @----require     modules/PemtHighlight.js?v1.18.1
+// @require     modules/PemtHighlight.js?v1.18.1
 // @----require     modules/Usability.js?v1.18.1
 // @resource    close                 images/close.png
 // @resource    banImage              images/ban.png
