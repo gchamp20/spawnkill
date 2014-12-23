@@ -13,7 +13,7 @@ SK.moduleConstructors.AutoUpdate.prototype.description = "Affiche une alerte en 
 SK.moduleConstructors.AutoUpdate.prototype.required = false;
 
 /** Délais entre deux notifications en secondes */
-SK.moduleConstructors.AutoUpdate.NOTIFICATION_INTERVAL = 3600;
+SK.moduleConstructors.AutoUpdate.NOTIFICATION_INTERVAL = 7200;
 
 /**
  * Initialise le module, fonction appelée quand le module est chargé
