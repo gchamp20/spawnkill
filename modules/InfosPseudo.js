@@ -548,17 +548,19 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicListAuthors = function() {
     var currentForumId = document.URL.split("-")[1];
 
     //On parcourt tous les topics de la liste
-    $(".ltopic").each(function() {
+    $(".titre-topic > a").each(function() {
+
+        var $topicLink = $(this);
 
         //On récupère l'id du topic
-        var topicId = $(this).attr("href").split("-")[2];
+        var topicId = $topicLink.attr("href").split("-")[2];
         var topicKey = "topics." + currentForumId + "-" + topicId;
 
         //Puis, si on n'a pas déjà les infos en localStorage
         if (SK.Util.getValue(topicKey) === null) {
 
             //On récupère le pseudo de l'auteur et on l'enregistre
-            var topicAuthor = $(this).parent().siblings(".pseudo").text().toLowerCase();
+            var topicAuthor = $topicLink.parents("tr").find(".auteur-topic > a").text().trim().toLowerCase();
             SK.Util.setValue(topicKey, topicAuthor);
         }
 
