@@ -524,7 +524,7 @@ SK.moduleConstructors.InfosPseudo.prototype.resizeAndCenterAvatar = function($av
  */
 SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
     //Cherche le pseudonyme de l'utilisateur
-    var currentUserPseudo = $("#compte strong").first().text().trim().toLowerCase();
+    var currentUserPseudo = $(".nom-head-avatar").text().trim().toLowerCase();
 
     for (var authorKey in this.authors) {
         if (authorKey === currentUserPseudo) {
