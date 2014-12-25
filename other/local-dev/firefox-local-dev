@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# L'utilisation de ce script est documentée à cette adresse :
+# https://github.com/dorian-marchal/spawnkill/blob/master/documentation/LocalUserscriptDev.md
+
 CURRENT_DIR="$( cd "$( dirname "$0" )" && pwd )"
 . "${CURRENT_DIR}/local-dev-config.sh"
 

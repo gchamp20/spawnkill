@@ -1,3 +1,6 @@
+# L'utilisation de ce script est documentée à cette adresse :
+# https://github.com/dorian-marchal/spawnkill/blob/master/documentation/LocalUserscriptDev.md
+
 # répertoire de développement du script
 dev_script_path="/path/to/www/spawnkill/"
 
