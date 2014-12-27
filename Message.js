@@ -47,8 +47,8 @@ SK.Message.prototype.init = function() {
     var dateString = $dateBloc.text().trim();
 
     var match = dateString.match(/[\s]*(\d{1,2}(?:er)? [^\s]* \d{4}) à (\d{2}:\d{2}:\d{2})/);
-    this.date = match[2];
-    this.time = match[3];
+    this.date = match[1];
+    this.time = match[2];
 };
 
 SK.Message.prototype.setAuthor = function(author) {
