@@ -66,85 +66,81 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
 
     var self = this;
 
-    //:not(.lecture_msg) evite les MP
-    if($(":not(.lecture_msg) .msg").length > 0) {
+    //Auteurs dont on n'a pas les données
+    var toLoadAuthors = [];
+    var toLoadAuthorPseudos = [];
 
-        //Auteurs dont on n'a pas les données
-        var toLoadAuthors = [];
-        var toLoadAuthorPseudos = [];
+    //On parcourt tous les messages
+    $(".msg .pseudo").each(function() {
 
-        //On parcourt tous les messages
-        $(".msg .pseudo").each(function() {
-
-            self.queueFunction(function() {
-                var $msg = $(this).parents(".msg").first();
-
-                //On crée le Message
-                var message = new SK.Message($msg);
-
-                //Ajout du placeholder de l'avatar
-                if(self.getSetting("enableAvatar")) {
-
-                    self.addAvatarPlaceholder(message);
-                }
-
-                //On récupère l'auteur correspondant au post
-                if(typeof self.authors[message.authorPseudo] === "undefined") {
-                    self.authors[message.authorPseudo] = new SK.Author(message.authorPseudo);
-                    self.authors[message.authorPseudo].loadLocalData();
-                }
-                var author = self.authors[message.authorPseudo];
-                author.addMessage(message);
-
-
-                //Et on l'ajoute au message
-                message.setAuthor(author);
-
-                //On affiche les données des auteurs qu'on a en localStorage
-                if(author.hasLocalData) {
-                    self.showMessageInfos(message);
-                }
-                else {
-
-                    //On conserve les auteurs dont on n'a pas les données
-                    if(toLoadAuthorPseudos.indexOf(message.authorPseudo) === -1) {
-                        toLoadAuthors.push(author);
-                        toLoadAuthorPseudos.push(message.authorPseudo);
-                    }
-                }
-            }, this);
-
-        });
-
-        //On récupères les infos des auteurs dont on n'a pas les données
         self.queueFunction(function() {
-            var queueInitAuthor = function(author, $cdv) {
-                setTimeout(function() {
+            var $msg = $(this).parents(".msg").first();
 
-                    author.initFromCdv($cdv);
-                    //On enregistre les données dans le localStorage
-                    author.saveLocalData();
+            //On crée le Message
+            var message = new SK.Message($msg);
 
-                    for(var message in author.messages) {
-                        self.showMessageInfos(author.messages[message]);
-                    }
-                }, 0);
-            };
+            //Ajout du placeholder de l'avatar
+            if(self.getSetting("enableAvatar")) {
 
-            //On récupère les infos des auteurs périmées ou qu'on n'a pas encore dans le localStorage
-            if(toLoadAuthorPseudos.length > 0) {
-                SK.Util.api("pseudos", toLoadAuthorPseudos, function($api) {
-                    $api.find("author").each(function() {
-                        var $author = $(this);
-                        var pseudo = $author.attr("pseudo");
-                        var $cdv = $author.find("cdv");
-                        var author = self.authors[pseudo];
-                        queueInitAuthor(author, $cdv);
-                    });
-                });
+                self.addAvatarPlaceholder(message);
+            }
+
+            //On récupère l'auteur correspondant au post
+            if(typeof self.authors[message.authorPseudo] === "undefined") {
+                self.authors[message.authorPseudo] = new SK.Author(message.authorPseudo);
+                self.authors[message.authorPseudo].loadLocalData();
+            }
+            var author = self.authors[message.authorPseudo];
+            author.addMessage(message);
+
+
+            //Et on l'ajoute au message
+            message.setAuthor(author);
+
+            //On affiche les données des auteurs qu'on a en localStorage
+            if(author.hasLocalData) {
+                self.showMessageInfos(message);
+            }
+            else {
+
+                //On conserve les auteurs dont on n'a pas les données
+                if(toLoadAuthorPseudos.indexOf(message.authorPseudo) === -1) {
+                    toLoadAuthors.push(author);
+                    toLoadAuthorPseudos.push(message.authorPseudo);
+                }
             }
         }, this);
-    }
+
+    });
+
+    //On récupères les infos des auteurs dont on n'a pas les données
+    self.queueFunction(function() {
+        var queueInitAuthor = function(author, $cdv) {
+            setTimeout(function() {
+
+                author.initFromCdv($cdv);
+                //On enregistre les données dans le localStorage
+                author.saveLocalData();
+
+                for(var message in author.messages) {
+                    self.showMessageInfos(author.messages[message]);
+                }
+            }, 0);
+        };
+
+        //On récupère les infos des auteurs périmées ou qu'on n'a pas encore dans le localStorage
+        if(toLoadAuthorPseudos.length > 0) {
+            SK.Util.api("pseudos", toLoadAuthorPseudos, function($api) {
+                $api.find("author").each(function() {
+                    var $author = $(this);
+                    var pseudo = $author.attr("pseudo");
+                    var $cdv = $author.find("cdv");
+                    var author = self.authors[pseudo];
+                    queueInitAuthor(author, $cdv);
+                });
+            });
+        }
+    }, this);
 };
 
 /** Affiche les infos du post et de l'auteur au message */
@@ -528,7 +524,7 @@ SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
             var messages = this.authors[authorKey].messages;
 
             for (var i in messages) {
-                messages[i].$msg.find(".pseudo strong").first().addClass("current-user");
+                messages[i].$msg.find(".bloc-pseudo-msg").first().addClass("current-user");
             }
         }
     }
