@@ -71,10 +71,10 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
     var toLoadAuthorPseudos = [];
 
     //On parcourt tous les messages
-    $(".msg .pseudo").each(function() {
+    $(".bloc-message-forum").each(function() {
 
         self.queueFunction(function() {
-            var $msg = $(this).parents(".msg").first();
+            var $msg = $(this);
 
             //On crée le Message
             var message = new SK.Message($msg);
@@ -163,7 +163,6 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
 
     var self = this;
     var permalink = message.permalink;
-    var avertirUrl = message.alertUrl;
     var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + ".html";
     var mpUrl = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + message.authorPseudo;
     var topicsUrl = "http://www.jeuxvideo.com/forums/0-" + permalink.split("-")[1] + "-0-1-0-1-1-%22" +
@@ -246,48 +245,6 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     }
 
 
-    //Bouton Avertir
-    if(this.getSetting("enableAlert")) {
-
-        var alertButtonOptions = {
-            class: "alert",
-            location: "right",
-            index: 100,
-            href: avertirUrl,
-            tooltip: {
-                text: "Avertir un administrateur"
-            },
-            click: function(event) {
-                event.preventDefault();
-
-                //On ne bloque pas le Ctrl + Clic et le middle clic
-                if(!event.ctrlKey && event.which !== 2) {
-
-                    //On n'ouvre la popup que si l'option modalProfile est désactivée
-                    if(!self.getSetting("modalAlert")) {
-
-                        window.open(avertirUrl, "avertir", "width=700,height=470,scrollbars=no,status=no");
-                    }
-                }
-                else {
-                    window.open(avertirUrl, "_blank");
-                }
-            }
-        };
-
-        //Si l'option est activée, la DDB s'affichera dans une popin
-        if(this.getSetting("modalAlert")) {
-            alertButtonOptions["data-popin"] = avertirUrl;
-            alertButtonOptions["data-popin-type"] = "iframe";
-            alertButtonOptions["data-popin-width"] = "560";
-            alertButtonOptions["data-popin-height"] = "400";
-            alertButtonOptions.title = " ";
-        }
-
-        SK.Util.addButton(message.$msg, alertButtonOptions);
-    }
-
-
     //Bouton MP
     if(this.getSetting("enableMP")) {
         SK.Util.addButton(message.$msg, {
@@ -351,7 +308,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     }
 
     //Supprimer boutons par défaut
-    message.$msg.find("[target='avertir'], .ancre > a:first, [target='profil']").remove();
+    message.$msg.find(".ancre > a:first, [target='profil']").remove();
 };
 
 /** Préparer une place pour l'avatar de l'auteur */
@@ -791,12 +748,6 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         type: "boolean",
         default: true,
     },
-    enableAlert: {
-        title: "Bouton d'avertissement",
-        description: "Ajoute un bouton permettant d'avertir un administrateur.",
-        type: "boolean",
-        default: true,
-    },
     enablePermalinkAnchor: {
         title: "Bouton ancre Permalien",
         description: "Ajoute un bouton ancre du permalien d'un post.",
@@ -1038,7 +989,6 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
 
     css += "\
         .msg [src='http://image.jeuxvideo.com/pics/forums/bt_forum_profil.gif'],\
-        .msg [alt='Avertir un administrateur'],\
         .ancre > a:first-child {\
           display: none !important;\
         }\
