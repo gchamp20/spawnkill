@@ -31,11 +31,7 @@ SK.moduleConstructors.InfosPseudo.prototype.init = function() {
         this.addPostInfos();
 
         if (this.getSetting("enableUserHighlight")) {
-            //On attend quelques secondes que le pseudo soit chargé en Ajax
-            //Sale mais sera modifié avec l'arrivée de SpawnKill
-            window.setTimeout(function() {
-                this.highlightCurrentUser();
-            }.bind(this), 1000);
+            this.highlightCurrentUser();
         }
 
         if(!SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW)) {
