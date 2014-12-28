@@ -556,9 +556,7 @@ SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseu
 SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
     return SK.Util.currentPageIn(
         SK.common.Pages.TOPIC_LIST,
-        SK.common.Pages.TOPIC_READ,
-        SK.common.Pages.TOPIC_RESPONSE,
-        SK.common.Pages.POST_PREVIEW
+        SK.common.Pages.TOPIC_READ
     );
 };
 
