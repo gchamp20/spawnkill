@@ -25,15 +25,16 @@ SK.moduleConstructors.InfosPseudo.prototype.init = function() {
     }
 
     else {
-        this.addPostInfos();
 
         // On ajoute l'hilight des auteurs
         if (this.getSetting("enableUserHighlight")) {
 
-            SK.Util.bindEventOrExecute(true, "authorNamesLoaded", function() {
+            SK.Util.bindEvent("authorNamesLoaded", function() {
                 self.highlightCurrentUser();
             });
         }
+
+        this.addPostInfos();
 
         if(!SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW)) {
 

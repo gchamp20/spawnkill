@@ -474,10 +474,15 @@ SK.Util = {
         $("body").get(0).dispatchEvent(new Event(eventName));
     },
 
+    /** Bind une fonction à un événement */
+    bindEvent: function(event, fn) {
+        $("body").on(event, fn);
+    },
+
     /** Bind une fonction à un événement si la condition est vraie, sinon exécute la fonction */
     bindEventOrExecute: function(condition, event, fn) {
         if(condition) {
-            $("body").on(event, fn);
+            SK.Util.bindEvent(event, fn);
         }
         else {
            fn();
