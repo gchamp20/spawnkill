@@ -183,7 +183,7 @@ SK.Util.preload($img, function() {
 
 ----
 
-* **SK.Util.dispatch** : Permet de propager l'évènement `eventName` dans le système d'évènements sur <body>
+* **SK.Util.dispatchEvent** : Permet de propager l'évènement `eventName` dans le système d'évènements sur <body>
 	* `eventName` (string) : Nom de l'événement à propager
 
 ```javascript
@@ -201,7 +201,7 @@ $posts.each(function(i, post)) {
      
     if(i === postCount - 1) {
         // SpawnKill envoie l'évènement "htmlQuoteLoaded" lorsque toutes les quotes ont été "htmlisées"
-        SK.Util.dispatch("htmlQuoteLoaded");
+        SK.Util.dispatchEvent("htmlQuoteLoaded");
     }
 }
  
@@ -213,7 +213,7 @@ $posts.each(function(i, post)) {
 var mustWaitQuote = SK.modules.Quote.activated && SK.modules.Quote.getSetting("htmlQuote");
 
 // Si on doit attendre les quotes, alors on attend que l'évènement "htmlQuoteLoaded" soit envoyé, sinon on éxecute directement la fonction callback
-SK.Util.bindOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
+SK.Util.bindEventOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
     this.embedMedia();
 }.bind(this));
  
@@ -225,7 +225,7 @@ SK.Util.bindOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
 
 ----
 
-* **SK.Util.bindOrExecute** : Bind une fonction à un évènement si la condition est vraie, sinon, elle est directement exécutée
+* **SK.Util.bindEventOrExecute** : Bind une fonction à un évènement si la condition est vraie, sinon, elle est directement exécutée
 	* `condition` (boolean) : Condition à tester 
 	* `eventName` (string) : Nom de l'événement
 	* `fn` (function) : Fonction à exécuter
@@ -236,7 +236,7 @@ SK.Util.bindOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
  */
  
  // Si on doit attendre les quotes, alors on attend que l'évènement "htmlQuoteLoaded" soit envoyé, sinon on éxecute directement la fonction callback
-SK.Util.bindOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
+SK.Util.bindEventOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
     this.embedMedia();
 }.bind(this));
 ```

@@ -507,7 +507,7 @@ SK.moduleConstructors.Quote.prototype.htmlizeAllQuotes = function() {
             $post.html(postText.replace(/\n/g, "\n<br>"));
 
             if(i === postCount - 1) {
-                SK.Util.dispatch("htmlQuoteLoaded");
+                SK.Util.dispatchEvent("htmlQuoteLoaded");
             }
         }, this);
     });

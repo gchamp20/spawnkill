@@ -30,7 +30,7 @@ SK.moduleConstructors.InfosPseudo.prototype.init = function() {
         // On ajoute l'hilight des auteurs
         if (this.getSetting("enableUserHighlight")) {
 
-            SK.Util.bindOrExecute(true, "authorNamesLoaded", function() {
+            SK.Util.bindEventOrExecute(true, "authorNamesLoaded", function() {
                 self.highlightCurrentUser();
             });
         }
@@ -103,7 +103,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
 
             // On dispatche un événement indiquant que tous les auteurs de la page sont définis
             if (isLastMessageOnPage) {
-                SK.Util.dispatch("authorNamesLoaded");
+                SK.Util.dispatchEvent("authorNamesLoaded");
             }
 
         }, this);

@@ -470,8 +470,18 @@ SK.Util = {
     },
 
     /** Dispatch un evenement sur <body> */
-    dispatch: function(eventName) {
+    dispatchEvent: function(eventName) {
         $("body").get(0).dispatchEvent(new Event(eventName));
+    },
+
+    /** Bind une fonction à un événement si la condition est vraie, sinon exécute la fonction */
+    bindEventOrExecute: function(condition, event, fn) {
+        if(condition) {
+            $("body").on(event, fn);
+        }
+        else {
+           fn();
+        }
     },
 
     /**
@@ -517,16 +527,6 @@ SK.Util = {
         );
 
         return selection;
-    },
-
-    /** Bind une fonction à un événement si la condition est vraie, sinon exécute la fonction */
-    bindOrExecute: function(condition, event, fn) {
-        if(condition) {
-            $("body").on(event, fn);
-        }
-        else {
-           fn();
-        }
     },
 
     /** Retourne une chaîne pseudo aléatoire. */

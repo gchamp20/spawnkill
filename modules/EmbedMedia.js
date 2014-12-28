@@ -22,7 +22,7 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
 
     //Si htmlQuote est activé, on a besoin que les citations soient chargées pour calculer la taille des vidéos
     var mustWaitQuote = SK.modules.Quote.activated && SK.modules.Quote.getSetting("htmlQuote");
-    SK.Util.bindOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
+    SK.Util.bindEventOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
         this.embedMedia();
     }.bind(this));
 
