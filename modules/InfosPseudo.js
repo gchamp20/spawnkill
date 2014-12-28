@@ -15,6 +15,8 @@ SK.moduleConstructors.InfosPseudo.prototype.authors = {};
 
 SK.moduleConstructors.InfosPseudo.prototype.init = function() {
 
+    var self = this;
+
     //Sur la page liste des sujets, on récupère les auteurs des topics
     if(SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST)) {
         if (this.getSetting("enableAuthorHighlight")) {
@@ -25,8 +27,12 @@ SK.moduleConstructors.InfosPseudo.prototype.init = function() {
     else {
         this.addPostInfos();
 
+        // On ajoute l'hilight des auteurs
         if (this.getSetting("enableUserHighlight")) {
-            this.highlightCurrentUser();
+
+            SK.Util.bindOrExecute(true, "authorNamesLoaded", function() {
+                self.highlightCurrentUser();
+            });
         }
 
         if(!SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW)) {
@@ -57,8 +63,13 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
     var toLoadAuthors = [];
     var toLoadAuthorPseudos = [];
 
+    // Messages de la page
+    var $messages = $(".bloc-message-forum");
+
     //On parcourt tous les messages
-    $(".bloc-message-forum").each(function() {
+    $messages.each(function(index) {
+
+        var isLastMessageOnPage = $messages.length === index + 1;
 
         self.queueFunction(function() {
             var $msg = $(this);
@@ -73,7 +84,6 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
             }
             var author = self.authors[message.authorPseudo];
             author.addMessage(message);
-
 
             //Et on l'ajoute au message
             message.setAuthor(author);
@@ -90,9 +100,16 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
                     toLoadAuthorPseudos.push(message.authorPseudo);
                 }
             }
+
+            // On dispatche un événement indiquant que tous les auteurs de la page sont définis
+            if (isLastMessageOnPage) {
+                SK.Util.dispatch("authorNamesLoaded");
+            }
+
         }, this);
 
     });
+
 
     //On récupères les infos des auteurs dont on n'a pas les données
     self.queueFunction(function() {
@@ -311,10 +328,12 @@ SK.moduleConstructors.InfosPseudo.prototype.addRank = function(message) {
  * Change la couleur du pseudo posts de l'utilisateur courant.
  */
 SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
+
     //Cherche le pseudonyme de l'utilisateur
     var currentUserPseudo = $(".nom-head-avatar").text().trim().toLowerCase();
 
     for (var authorKey in this.authors) {
+
         if (authorKey === currentUserPseudo) {
 
             var messages = this.authors[authorKey].messages;
@@ -642,7 +661,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
     if(this.getSetting("enableUserHighlight")) {
         css += "\
             .current-user {\
-                color: " + SK.common.darkColor + ";\
+                color: " + SK.common.darkColor + " !important;\
             }\
         ";
     }
