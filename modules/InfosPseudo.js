@@ -578,12 +578,6 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         type: "boolean",
         default: true,
     },
-    modalAlert: {
-        title: "Charger l'alerte administrateur dans une modale",
-        description: "Affiche la fenêtre d'alerte administrateur dans une fenêtre modale au clic.",
-        type: "boolean",
-        default: true,
-    },
     enableUserHighlight: {
         title: "Mise en valeur de vos messages",
         description: "Affiche votre pseudonyme en bleu pour les messages que vous avez postés.",
@@ -696,11 +690,6 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
             background-position: 0px -1px;\
             background-color: #6EBD1A;\
             border-bottom-color: #4D8412;\
-        }\
-        .sk-button-content.alert {\
-            background-image: url('" + GM_getResourceURL("alert") + "');\
-            background-color: #FE2711;\
-            border-bottom-color: #A0170B;\
         }\
     ";
 
