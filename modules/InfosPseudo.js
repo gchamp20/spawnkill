@@ -147,9 +147,6 @@ SK.moduleConstructors.InfosPseudo.prototype.showMessageInfos = function(message)
 
     var self = this;
 
-    if(self.getSetting("enableRank")) {
-        self.addRank(message);
-    }
     self.addPostButtons(message);
 };
 
@@ -307,23 +304,6 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     message.$msg.find(".ancre > a:first, [target='profil']").remove();
 };
 
-/* Ajoute le rang de l'auteur */
-SK.moduleConstructors.InfosPseudo.prototype.addRank = function(message) {
-
-    if(message.author.rank !== "") {
-
-        var rankString = "Rang " + message.author.rank.charAt(0).toUpperCase() + message.author.rank.slice(1);
-
-        SK.Util.addButton(message.$msg, {
-            class: "rank " + message.author.rank,
-            index: 10,
-            tooltip: {
-                text: rankString
-            }
-        });
-
-    }
-};
 
 /**
  * Change la couleur du pseudo posts de l'utilisateur courant.
@@ -562,19 +542,6 @@ SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.settings = {
-    enableRank: {
-        title: "Affichage des rangs",
-        description: "Affiche le rang de l'auteur sur les posts à la lecture d'un topic.",
-        type: "boolean",
-        default: true,
-    },
-    rankLocation: {
-        title: "Emplacement du rang",
-        description: "Permet de choisir où le rang doit apparaître sur le post",
-        type: "select",
-        options: { avatar: "Sur l'avatar", topBar: "À gauche du bouton CDV" },
-        default: "avatar",
-    },
     enableMP: {
         title: "Bouton de MP",
         description: "Permet d'envoyer un MP à un utilisateur directement depuis un post.",
@@ -734,48 +701,6 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
             background-image: url('" + GM_getResourceURL("alert") + "');\
             background-color: #FE2711;\
             border-bottom-color: #A0170B;\
-        }\
-        .sk-button-content.rank {\
-            position: static;\
-            border: none !important;\
-            height: 15px !important;\
-            cursor: default;\
-        }\
-        .sk-button-content.rank:active {\
-            margin-top: 0px !important;\
-            border-bottom: none !important;\
-        }\
-        .sk-button-content.rank.argent {\
-            background-image: url('" + GM_getResourceURL("argent") + "');\
-            background-color: #A7A9AC;\
-        }\
-        .sk-button-content.rank.carton {\
-            background-image: url('" + GM_getResourceURL("carton") + "');\
-            background-color: #C49A6C;\
-        }\
-        .sk-button-content.rank.bronze {\
-            background-image: url('" + GM_getResourceURL("bronze") + "');\
-            background-color: #C57E16;\
-        }\
-        .sk-button-content.rank.diamant {\
-            background-image: url('" + GM_getResourceURL("diamant") + "');\
-            background-color: #27AAE1;\
-        }\
-        .sk-button-content.rank.emeraude {\
-            background-image: url('" + GM_getResourceURL("emeraude") + "');\
-            background-color: #39B54A;\
-        }\
-        .sk-button-content.rank.or {\
-            background-image: url('" + GM_getResourceURL("or") + "');\
-            background-color: #DBB71D;\
-        }\
-        .sk-button-content.rank.rubis {\
-            background-image: url('" + GM_getResourceURL("rubis") + "');\
-            background-color: #BE1E2D;\
-        }\
-        .sk-button-content.rank.saphir {\
-            background-image: url('" + GM_getResourceURL("saphir") + "');\
-            background-color: #4D57BC;\
         }\
     ";
 
