@@ -391,11 +391,12 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function(callback) 
 
     var topicAuthor = SK.Util.getValue(topicKey);
 
-    //Si la clé n'est pas présente dans le sessionStorage
+    //Si la clé n'est pas présente dans le localStorage
     if (topicAuthor === null) {
         //Si on est sur la première page du topic, on récupère directement l'auteur
         if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ) && currentPage === "1") {
-            topicAuthor = $("#col1 .msg .pseudo > strong").first().text().trim().toLowerCase();
+
+            topicAuthor = $(".bloc-pseudo-msg").first().text().trim().toLowerCase();
 
             //On enregistre l'info en localStorage
             SK.Util.setValue(topicKey, topicAuthor);
@@ -430,9 +431,9 @@ SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function() {
     this.getTopicAuthor(function(topicAuthor) {
 
         //On teste dans chaque message
-        $(".msg .pseudo").each(function() {
+        $(".bloc-pseudo-msg").each(function() {
 
-            var $postPseudo = $(this).find("strong").first();
+            var $postPseudo = $(this);
             var postTextPseudo = $postPseudo.text().trim().toLowerCase();
             // Si l'auteur du message correspond à ce pseudonyme
             if (postTextPseudo === topicAuthor) {
