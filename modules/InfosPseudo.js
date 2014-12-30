@@ -159,7 +159,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + ".html";
     var mpUrl = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + message.authorPseudo;
     var topicsUrl = location.protocol + "//" + location.host + location.pathname + "?type_search_in_forum=auteur_topic&search_in_forum=" + message.authorPseudo;
-    console.log(topicsUrl);
+
     var profileButtonOptions = {
         class: (message.author.gender && this.getSetting("enableSex")) ? message.author.gender : "unknown",
         href: profileUrl,
