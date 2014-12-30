@@ -158,10 +158,8 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     var permalink = message.permalink;
     var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + ".html";
     var mpUrl = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + message.authorPseudo;
-    var topicsUrl = "http://www.jeuxvideo.com/forums/0-" + permalink.split("-")[1] + "-0-1-0-1-1-%22" +
-            message.authorPseudo + "%22.htm";
-
-    //Bouton CDV
+    var topicsUrl = location.protocol + "//" + location.host + location.pathname + "?type_search_in_forum=auteur_topic&search_in_forum=" + message.authorPseudo;
+    console.log(topicsUrl);
     var profileButtonOptions = {
         class: (message.author.gender && this.getSetting("enableSex")) ? message.author.gender : "unknown",
         href: profileUrl,
@@ -566,12 +564,12 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         type: "boolean",
         default: false,
     },
-    enableSearchTopics: {
-        title: "Bouton de recherche des topics d'un auteur",
-        description: "Ajoute un bouton permettant de rechercher les topics créés par l'utilisateur dans le forum courant.",
-        type: "boolean",
-        default: false,
-    },
+    // enableSearchTopics: {
+    //     title: "Bouton de recherche des topics d'un auteur",
+    //     description: "Ajoute un bouton permettant de rechercher les topics créés par l'utilisateur dans le forum courant.",
+    //     type: "boolean",
+    //     default: false,
+    // },
     modalProfile: {
         title: "Charger la CDV dans une modale",
         description: "Affiche le profil de l'auteur dans une fenêtre modale au clic.",
