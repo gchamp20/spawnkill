@@ -278,7 +278,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             left: auto;\
             top: -400px;\
             right: 10px;\
-            width: 340px;\
+            width: 380px;\
             transition-duration: 600ms;\
         }\
         .modal-box.active {\
@@ -295,8 +295,14 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             top: 10px;\
         }\
         .modal-box h3 {\
+            margin-top: 8px;\
+            margin-bottom: 12px;\
+            font-size: 18px;\
             color: " + mainColor + ";\
             overflow: visible !important;\
+        }\
+        .modal-box h4 {\
+            color: #555;\
         }\
         .modal-box hr {\
             display: block;\
@@ -322,7 +328,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             border-bottom: solid 1px #DDD;\
         }\
         .modal-box.notification hr {\
-            width: 360px;\
+            width: 380px;\
         }\
         .popin-modal h3,\
         .popin-modal .content,{\
