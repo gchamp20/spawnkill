@@ -381,6 +381,9 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             display: inline-block !important;\
             margin-left: 4px;\
             vertical-align: top;\
+            text-transform: uppercase;\
+            font-weight: bold;\
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);\
         }\
         .buttons {\
             display: inline-block;\
