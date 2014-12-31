@@ -295,8 +295,8 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             top: 10px;\
         }\
         .modal-box h3 {\
-            margin-top: 8px;\
-            margin-bottom: 12px;\
+            margin-top: 6px;\
+            margin-bottom: 14px;\
             font-size: 18px;\
             color: " + mainColor + ";\
             overflow: visible !important;\
