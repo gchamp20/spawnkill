@@ -353,7 +353,7 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
             width: 408px;\
             margin-bottom: 0px;\
         }\
-        #setting-modal.scroll .tooltip {\
+        #setting-modal.scroll .sk-tooltip {\
             display: none;\
         }\
         #settings-button {\

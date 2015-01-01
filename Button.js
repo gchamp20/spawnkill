@@ -36,7 +36,7 @@ SK.Button = function(options) {
         tooltip.position = tooltip.position || "top";
 
         var $tooltip = $("<div>", {
-            class: "tooltip " + tooltip.position,
+            class: "sk-tooltip " + tooltip.position,
             text: tooltip.text
         });
 

@@ -463,7 +463,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             float: right;\
             margin-left: 10px;\
         }\
-        .tooltip {\
+        .sk-tooltip {\
             display: none;\
             position: absolute;\
             padding: 4px;\
@@ -476,55 +476,55 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             opacity: 0.8;\
             z-index: 100;\
         }\
-        .tooltip:after {\
+        .sk-tooltip:after {\
             content: \"\";\
             position: absolute;\
             left: 8px;\
             border: solid 4px transparent;\
         }\
-        .tooltip.large:after {\
+        .sk-tooltip.large:after {\
             left: 28px;\
         }\
-        .tooltip.top {\
+        .sk-tooltip.top {\
             top: -27px;\
             left: -4px;\
         }\
-        .tooltip.bottom {\
+        .sk-tooltip.bottom {\
             bottom: -27px;\
         }\
-        .tooltip.bottom.large {\
+        .sk-tooltip.bottom.large {\
             bottom: -28px;\
         }\
-        .tooltip.bottom-right {\
+        .sk-tooltip.bottom-right {\
             bottom: -28px;\
             right: 0px;\
         }\
-        .tooltip.right {\
+        .sk-tooltip.right {\
             top: -3px;\
             left: 24px;\
         }\
-        .tooltip.top:after {\
+        .sk-tooltip.top:after {\
             bottom: -8px;\
             border-top-color: #222;\
         }\
-        .tooltip.bottom:after {\
+        .sk-tooltip.bottom:after {\
             top: -8px;\
             border-bottom-color: #222;\
         }\
-        .tooltip.bottom-right:after {\
+        .sk-tooltip.bottom-right:after {\
             top: -8px;\
             right: 8px;\
             left: auto;\
             border-bottom-color: #222;\
         }\
-        .tooltip.bottom-right.large:after {\
+        .sk-tooltip.bottom-right.large:after {\
             right: 28px;\
         }\
-        .tooltip.right:after {\
+        .sk-tooltip.right:after {\
             left: -8px;\
             border-right-color: #222;\
         }\
-        .sk-button:hover .tooltip {\
+        .sk-button:hover .sk-tooltip {\
             display: block;\
         }\
         .slide-toggle {\
