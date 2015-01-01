@@ -59,13 +59,13 @@ SK.Modal = function(options) {
     //Si besoin, on ajoute un bouton fermer à la modale
     if(hasCloseButton) {
         $modal.find("h3").append(new SK.Button({
-            class: "close transparent",
+            class: "sk-close transparent",
             tooltip: {
                 position: "bottom" + (location === "notification" ? "-right" : ""),
                 text: "Fermer la box"
             },
             wrapper: {
-                class: "close"
+                class: "sk-close"
             },
             click: function() {
                 if(typeof closeButtonAction === "function") {

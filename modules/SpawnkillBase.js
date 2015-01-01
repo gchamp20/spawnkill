@@ -450,11 +450,11 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             background-color: transparent;\
             border-bottom-color: transparent;\
         }\
-        .sk-button.close {\
+        .sk-button.sk-close {\
             float: right;\
             margin-top: 1px;\
         }\
-        .sk-button-content.close {\
+        .sk-button-content.sk-close {\
             width: 18px;\
             height: 18px;\
             background-image: url('" + GM_getResourceURL("close") + "');\
