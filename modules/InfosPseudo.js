@@ -69,10 +69,10 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
 
     //On parcourt tous les messages
     $messages.each(function(index) {
-
         var isLastMessageOnPage = $messages.length === index + 1;
 
         self.queueFunction(function() {
+
             var $msg = $(this);
 
             //On crée le Message
@@ -284,7 +284,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
         });
     }
 
-    //Bouton permalien
+    //Bouton permalien (Ancre)
     if(this.getSetting("enablePermalink")) {
         SK.Util.addButton(message.$msg, {
             class: "link",
