@@ -158,6 +158,8 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     var permalink = message.permalink;
     var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + ".html";
     var mpUrl = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + message.authorPseudo;
+
+    // Cette URL n'est plus la bonne depuis Respawn.
     var topicsUrl = location.protocol + "//" + location.host + location.pathname + "?type_search_in_forum=auteur_topic&search_in_forum=" + message.authorPseudo;
 
     var profileButtonOptions = {
