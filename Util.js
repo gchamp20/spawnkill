@@ -274,23 +274,13 @@ SK.Util = {
             //On place la box .buttons en fonction de l'emplacement
             switch(location) {
                 case "top":
-                    $msg.find(".pseudo > strong").first().after($buttons);
+                    $msg.find(".bloc-pseudo-msg").first().after($buttons);
                     break;
                 case "bottom":
-                    //Si le li .ancre n'existe pas, on la crée
-                    var $ancre = $msg.find(".ancre").first();
-
-                    if($ancre.length === 0) {
-                        $ancre = $("<li>", {
-                            class: "ancre"
-                        });
-                        $msg.find(".post").after($ancre);
-                    }
-
-                    $ancre.append($buttons);
+                    $msg.find(".inner-head-content").after($buttons);
                     break;
                 case "right":
-                    $msg.find(".date").first().append($buttons);
+                    $msg.find(".bloc-options-msg").first().append($buttons);
                     break;
             }
 
