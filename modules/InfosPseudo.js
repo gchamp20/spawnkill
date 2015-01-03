@@ -156,7 +156,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
 
     var self = this;
     var permalink = message.permalink;
-    var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + ".html";
+    var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + "?mode=infos";
     var mpUrl = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + message.authorPseudo;
 
     // Cette URL n'est plus la bonne depuis Respawn.
