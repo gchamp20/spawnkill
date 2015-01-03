@@ -177,7 +177,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
                 //On n'ouvre la popup que si l'option modalProfile est désactivée
                 if(!self.getSetting("modalProfile")) {
 
-                    window.open(profileUrl, "profil", "width=800,height=570,scrollbars=no,status=no");
+                    window.open(profileUrl, "profil", "width=980,height=620,scrollbars=no,status=no");
                 }
             }
             else {
@@ -190,9 +190,12 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     if(this.getSetting("modalProfile")) {
         profileButtonOptions["data-popin"] = profileUrl;
         profileButtonOptions["data-popin-type"] = "iframe";
+        profileButtonOptions["data-popin-width"] = 1000;
+        profileButtonOptions["data-popin-height"] = 660;
+        profileButtonOptions["data-popin-scroll-position"] = 64;
         profileButtonOptions.index = 20;
         profileButtonOptions.title = " ";
-        profileButtonOptions.href += "?popup=0";
+        profileButtonOptions.href += "&popup=0";
     }
 
     SK.Util.addButton(message.$msg, profileButtonOptions);

@@ -319,14 +319,14 @@ SK.moduleConstructors.Quote.prototype.addToResponseThenFocus = function(citation
 SK.moduleConstructors.Quote.prototype.citationToHtml = function(pseudo, jour, mois, annee, heure, permalien, message) {
 
     //CDV de l'auteur cité
-    var profileUrl = "http://www.jeuxvideo.com/profil/" + pseudo + ".html";
+    var profileUrl = "http://www.jeuxvideo.com/profil/" + pseudo + "?mode=infos";
 
     if(heure !== "") {
         heure = "<div class='quote-hour' >" + heure + "</div>";
     }
     var $quote = $("<div class='quote-bloc' >" +
             "<div class='quote-header' >" +
-                "<a class='quote-pseudo' href='" + profileUrl + "?popup=0' data-popin='" + profileUrl + "' data-popin-type='iframe' >" + pseudo + "</a>" +
+                "<a class='quote-pseudo' href='" + profileUrl + "&popup=0' data-popin='" + profileUrl + "' data-popin-type='iframe' >" + pseudo + "</a>" +
                 heure +
                 "<div class='quote-date' >" + jour + " " + mois + " " + annee + "</div>" +
             "</div>" +
