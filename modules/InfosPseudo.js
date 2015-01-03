@@ -566,12 +566,13 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         type: "boolean",
         default: false,
     },
-    // enableSearchTopics: {
-    //     title: "Bouton de recherche des topics d'un auteur",
-    //     description: "Ajoute un bouton permettant de rechercher les topics créés par l'utilisateur dans le forum courant.",
-    //     type: "boolean",
-    //     default: false,
-    // },
+    enableSearchTopics: {
+        title: "Bouton de recherche des topics d'un auteur",
+        description: "Ajoute un bouton permettant de rechercher les topics créés par l'utilisateur dans le forum courant.",
+        type: "boolean",
+        default: false,
+        disabled: true,
+    },
     modalProfile: {
         title: "Charger la CDV dans une modale",
         description: "Affiche le profil de l'auteur dans une fenêtre modale au clic.",
