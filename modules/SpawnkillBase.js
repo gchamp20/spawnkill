@@ -222,6 +222,9 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
     var darkColor = SK.common.darkColor;
 
     var css = "\
+        .conteneur-message .bloc-header {\
+            overflow: visible !important;\
+        }\
         #modals {\
             font-size: 12px;\
         }\
@@ -396,6 +399,10 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             -webkit-user-select: none;\
             -moz-user-select: none;\
             user-select: none;\
+        }\
+        .buttons.top {\
+            position: relative;\
+            top: 11px;\
         }\
         .buttons.right {\
             position: relative;\
