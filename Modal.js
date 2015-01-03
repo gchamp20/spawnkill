@@ -82,7 +82,7 @@ SK.Modal = function(options) {
     if(location === "center") {
 
         $modal.hide();
-        $("#footer").append($modal);
+        $("#jv-footer").append($modal);
 
         var windowWidth = $(window).width();
         var windowHeight = $(window).height();
