@@ -233,6 +233,12 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         #modals {\
             font-size: 12px;\
         }\
+        #modals ul {\
+            padding: 0px;\
+        }\
+        #modals li {\
+            list-style: none !important;\
+        }\
         #modal-background {\
             display: none;\
             position: fixed;\
@@ -303,8 +309,9 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             top: 10px;\
         }\
         .modal-box h3 {\
-            margin-top: 6px;\
-            margin-bottom: 14px;\
+            padding-top: 6px;\
+            padding-bottom: 4px;\
+            margin: 0px;\
             font-size: 18px;\
             color: " + mainColor + ";\
             overflow: visible !important;\

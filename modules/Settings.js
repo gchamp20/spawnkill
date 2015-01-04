@@ -335,7 +335,7 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         #setting-modal.scroll h3 {\
             box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.15);\
             border-bottom: 1px solid #DDD;\
-            padding-bottom: 10px !important;\
+            padding-bottom: 12px !important;\
         }\
         #setting-modal.scroll .content {\
             overflow-x: hidden;\
@@ -343,7 +343,7 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         #setting-modal.scroll .options {\
             width: 100%;\
-            padding-right: 20px;\
+            padding-right: 12px;\
         }\
         #setting-modal.scroll .buttons {\
             padding-top: 10px;\
@@ -383,6 +383,7 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
             position: static;\
         }\
         .main-setting {\
+            box-sizing: content-box;\
             position: relative;\
             height: 18px;\
             padding: 8px 10px;\
