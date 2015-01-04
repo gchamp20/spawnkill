@@ -343,7 +343,6 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         #setting-modal.scroll .options {\
             width: 100%;\
-            padding-right: 12px;\
         }\
         #setting-modal.scroll .buttons {\
             padding-top: 10px;\
@@ -359,6 +358,9 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         #settings-button {\
             position: relative;\
                 top: 2px;\
+        }\
+        #settings-button .sk-tooltip {\
+            left: 32px;\
         }\
         .settings-spawnkill-version {\
             position: absolute;\
