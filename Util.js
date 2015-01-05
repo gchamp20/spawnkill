@@ -134,6 +134,13 @@ SK.Util = {
     },
 
     /**
+     * Retourne l'url courante amputée des éventuels queryStrings / hash
+     */
+    currentSimpleUrl: function() {
+        return location.protocol + "//" + location.host + location.pathname;
+    },
+
+    /**
      * Retourne vrai si l'utilisateur est sur l'une des pages passée en paramètre.
      * pages (SK.common.Pages...) : Liste des pages possibles (voir SK.common.Pages)
      */
