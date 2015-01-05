@@ -561,13 +561,15 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         title: "Bouton Permalien",
         description: "Ajoute un bouton permettant de copier directement le permalien d'un post.",
         type: "boolean",
-        default: true,
+        default: false,
+        disabled: true,
     },
     enablePermalinkAnchor: {
         title: "Bouton ancre Permalien",
         description: "Ajoute un bouton ancre du permalien d'un post.",
         type: "boolean",
         default: false,
+        disabled: true,
     },
     enableSearchTopics: {
         title: "Bouton de recherche des topics d'un auteur",
@@ -599,12 +601,14 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         description: "Ajoute un bouton aux posts permettant d'ignorer un auteur. Les messages des membres ignorés ne seront pas affichés.",
         type: "boolean",
         default: false,
+        disabled: true,
     },
     fullyHideBlockedPosts: {
         title: "Masquer totalement les posts ignorés",
         description: "Si cette option est activée, les posts ignorés sont supprimés totalement de la page.",
         type: "boolean",
         default: false,
+        disabled: true,
     },
     clearAuthorCache: {
         title: "Vider le cache des auteurs",
