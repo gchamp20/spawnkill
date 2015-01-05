@@ -13,20 +13,16 @@ SK.moduleConstructors.Usability.prototype.description = "Ajoute quelques fonctio
 
 
 SK.moduleConstructors.Usability.prototype.init = function() {
-
-    //Retour liste des sujets -> première page
-    if (this.getSetting("firstPageTopicList")) {
-        this.editTopicListLinks();
-    }
-
     //Rafraichir -> dernier post
     if (this.getSetting("refreshToLastPost")) {
 
         //La page vient d'être rafraichie
         if (this.isJustRefreshed()) {
-
             //Scrolle jusqu'au dernier message
             this.scrollToLastPost();
+
+            // Nettoie l'URL
+            window.location.hash = "";
         }
         this.editRefreshLinks();
     }
@@ -42,39 +38,19 @@ SK.moduleConstructors.Usability.prototype.init = function() {
  */
 SK.moduleConstructors.Usability.prototype.editRefreshLinks = function() {
 
-    setTimeout(function() {
-
-        var $refreshButton = $(".bt_rafraichir");
-        var refreshUrl = document.URL;
-
-        //Modification du bouton Refresh
-        if (!this.isJustRefreshed()) {
-            refreshUrl += "?refresh=1";
-        }
-
-        $refreshButton.attr("href", refreshUrl);
-
-    }.bind(this), 1500);
+    // On supprime la classe du bouton actualiser pour modifier son comportement
+    $(".btn-actualiser-forum")
+        .removeClass("btn-actualiser-forum")
+        .on("click", function() {
+            window.location.href = SK.Util.currentSimpleUrl() + "#refresh";
+            window.location.reload();
+        })
+    ;
 };
-
-/**
- * Modifie les liens de retour à la liste des sujets pour qu'ils renvoient vers la première page
- */
-SK.moduleConstructors.Usability.prototype.editTopicListLinks = function() {
-
-    //On parcourt les boutons de retour à la liste des sujets
-    var $topicListButtons = $(".liste > a");
-
-    var url = $topicListButtons.first().attr("href");
-    var newUrl = url.replace(/forums\/26-(\d+)-\d+-/, "forums/26-$1-0-");
-
-    $topicListButtons.attr("href", newUrl);
-};
-
 
 SK.moduleConstructors.Usability.prototype.isJustRefreshed = function() {
     //Cette regexp teste si l'url contient ?refresh=1
-    var regexp = /\?refresh=1/;
+    var regexp = /#refresh/;
 
     //Teste si la requête vient du bouton Rafraichir
     return regexp.test(document.URL);
@@ -109,17 +85,11 @@ SK.moduleConstructors.Usability.prototype.replaceModerationButton = function() {
  * Scrolle la page au dernier message.
  */
 SK.moduleConstructors.Usability.prototype.scrollToLastPost = function() {
-    $(".msg").last().scrollThere();
+    $(".conteneur-message").last().scrollThere();
 };
 
 
 SK.moduleConstructors.Usability.prototype.settings = {
-    firstPageTopicList: {
-        title: "Retourner à la première page de la liste des sujets",
-        description: "Le bouton \"liste des sujets\" retourne directement à la première page de la liste",
-        type: "boolean",
-        default: true,
-    },
     refreshToLastPost: {
         title: "Rafraîchir au dernier message",
         description: "Le bouton \"Rafraîchir\" d'un topic amène directement au dernier post de ce topic",
