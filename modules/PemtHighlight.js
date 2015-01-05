@@ -77,6 +77,9 @@ SK.moduleConstructors.PemtHighlight.prototype.getCss = function() {
         .pemt-highlight {\
             color: " + SK.common.mainColor + " !important;\
         }\
+        .lien-jv:hover .pemt-highlight {\
+            color: #FF4000 !important;\
+        }\
     ";
 
     return css;
