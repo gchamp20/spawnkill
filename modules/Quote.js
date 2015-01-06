@@ -74,7 +74,7 @@ SK.moduleConstructors.Quote.prototype.initPartialQuote = function() {
     });
 
     //bind de l'evenement au mouse up sur un post
-    $("#col1").on("mouseup", ".msg", function(event) {
+    $(".conteneur-messages-pagi").on("mouseup", ".bloc-message-forum", function(event) {
 
         // On affiche le bouton de citation partielle.
         // Le délai permet d'éviter qu'il soit supprimé sur le champ et laisse le navigateur
@@ -82,8 +82,8 @@ SK.moduleConstructors.Quote.prototype.initPartialQuote = function() {
         window.setTimeout(function() {
 
             var selectionText = SK.Util.getPostSelection();
-            var $post = $(this).find(".post");
-            var message = new SK.Message($post.parents(".msg"));
+            var $post = $(this).find(".text-enrichi-forum");
+            var message = new SK.Message($post.parents(".bloc-message-forum"));
 
             //On supprime les liens noelshacks (qui posent problème à cause des miniatures)
             var comparableMessageText = message.text.replace(/http:\/\/www.noelshack.com\/(\d+)-(\d+)-([^\.]+\..{3})/g, "");
@@ -188,7 +188,7 @@ SK.moduleConstructors.Quote.prototype.addQuoteButtons = function() {
         }, this);
     };
 
-    $(".msg").each(function() {
+    $(".bloc-message-forum").each(function() {
         queueQuoteButton($(this));
     });
 };
@@ -196,29 +196,13 @@ SK.moduleConstructors.Quote.prototype.addQuoteButtons = function() {
 /* Ajoute le bloc de citation passé en paramètre au formulaire de réponse. */
 SK.moduleConstructors.Quote.prototype.doQuotePost = function(citationBlock) {
 
-    //Si QuickResponse n'est pas activé et qu'on est sur la page de lecture,
-    //le bouton de citation dirige vers la page de réponse en remplissant
-    //le formulaire de réponse
-    if(!SK.modules.QuickResponse.activated &&
-        window.location.href.match(/http:\/\/www\.jeuxvideo\.com\/forums\/1/))
-    {
-        SK.Util.setValue("responseContent", citationBlock);
-        window.location.href = $(".bt_repondre").attr("href");
-    }
-    else {
-        this.addToResponseThenFocus(citationBlock);
-    }
+    this.addToResponseThenFocus(citationBlock);
 };
 
 /* Ajoute le texte passé en paramètre à la fin de la réponse. */
 SK.moduleConstructors.Quote.prototype.addToResponse = function(text) {
 
-    var currentResponse = $("#newmessage").val();
-
-    //On supprime le message d'avertissement, s'il existe
-    if(currentResponse.indexOf("Ne postez pas d\'insultes") === 0) {
-        currentResponse = "";
-    }
+    var currentResponse = $("#message_topic").val();
 
     //On passe une ligne si la réponse n'est pas vide
     if(currentResponse.trim() !== "") {
@@ -230,7 +214,7 @@ SK.moduleConstructors.Quote.prototype.addToResponse = function(text) {
         }
     }
 
-    $("#newmessage").val(currentResponse + text);
+    $("#message_topic").val(currentResponse + text);
 };
 
 /* Crée un bloc de citation à partir du Message passées en paramètre */
@@ -295,7 +279,7 @@ SK.moduleConstructors.Quote.prototype.createCitationBlock = function(message) {
 SK.moduleConstructors.Quote.prototype.addToResponseThenFocus = function(citationBlock) {
     this.addToResponse(citationBlock);
 
-    var $responseBox = $("#newmessage");
+    var $responseBox = $("#message_topic");
 
     //Scrolling vers la réponse
     $responseBox.scrollThere();
