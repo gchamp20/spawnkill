@@ -420,6 +420,18 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             position: relative;\
             top: -1px;\
         }\
+        .buttons-row-wrapper {\
+            display: table-row;\
+        }\
+        .buttons.bottom,\
+        .buttons-cell-placeholder {\
+            display: table-cell;\
+        }\
+        .buttons.bottom {\
+            float: right;\
+            margin-right: 10px;\
+            margin-bottom: 8px;\
+        }\
         .buttons.box {\
             width: 100%;\
         }\
