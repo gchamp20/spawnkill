@@ -189,10 +189,6 @@ SK.moduleConstructors.AutoUpdate.prototype.dissmisUpdateNotification = function(
 };
 
 
-SK.moduleConstructors.AutoUpdate.prototype.shouldBeActivated = function() {
-    return !SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW);
-};
-
 /**
  * Retourne le CSS à injecter si le plugin est activé.
  * Par défaut, aucun CSS n'est injecté.
