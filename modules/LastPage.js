@@ -180,6 +180,10 @@ SK.moduleConstructors.LastPage.prototype.getCss = function() {
 
     if (this.getSetting("lastPageBookmarkLink")) {
         css += "\
+            .titre-head-bloc-forum {\
+                overflow: visible !important;\
+                margin-bottom: 26px !important;\
+            }\
             .titre-bloc-forum {\
                 display: inline-block;\
                 width: calc(100% - 30px) !important;\
