@@ -36,22 +36,19 @@ SK.moduleConstructors.InfosPseudo.prototype.init = function() {
 
         this.addPostInfos();
 
-        if(!SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW)) {
-
-            if (this.getSetting("enableAuthorHighlight")) {
-                //On ajoute la couronne à l'auteur
-                this.crownTopicAuthor();
-            }
-
-            // Si l'option est activée, on masque les posts des auteurs ignorés
-            if (this.getSetting("enableBlockList")) {
-
-                this.queueFunction(function() {
-                    this.hideBlockedPosts();
-                }.bind(this));
-            }
-
+        if (this.getSetting("enableAuthorHighlight")) {
+            //On ajoute la couronne à l'auteur
+            this.crownTopicAuthor();
         }
+
+        // Si l'option est activée, on masque les posts des auteurs ignorés
+        if (this.getSetting("enableBlockList")) {
+
+            this.queueFunction(function() {
+                this.hideBlockedPosts();
+            }.bind(this));
+        }
+
     }
 };
 
