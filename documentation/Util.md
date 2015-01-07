@@ -200,8 +200,8 @@ $posts.each(function(i, post)) {
     // ...
      
     if(i === postCount - 1) {
-        // SpawnKill envoie l'évènement "htmlQuoteLoaded" lorsque toutes les quotes ont été "htmlisées"
-        SK.Util.dispatchEvent("htmlQuoteLoaded");
+        // SpawnKill envoie l'évènement "betterQuoteLoaded" lorsque toutes les quotes ont été "htmlisées"
+        SK.Util.dispatchEvent("betterQuoteLoaded");
     }
 }
  
@@ -209,11 +209,11 @@ $posts.each(function(i, post)) {
  * EmbedMedia.js - SK.moduleConstructors.EmbedMedia.prototype.init()
  */
  
-// Si htmlQuote est activé, on a besoin que les citations soient chargées pour calculer la taille des vidéos
-var mustWaitQuote = SK.modules.Quote.activated && SK.modules.Quote.getSetting("htmlQuote");
+// Si betterQuote est activé, on a besoin que les citations soient chargées pour calculer la taille des vidéos
+var mustWaitQuote = SK.modules.Quote.activated && SK.modules.Quote.getSetting("betterQuote");
 
-// Si on doit attendre les quotes, alors on attend que l'évènement "htmlQuoteLoaded" soit envoyé, sinon on éxecute directement la fonction callback
-SK.Util.bindEventOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
+// Si on doit attendre les quotes, alors on attend que l'évènement "betterQuoteLoaded" soit envoyé, sinon on éxecute directement la fonction callback
+SK.Util.bindEventOrExecute(mustWaitQuote, "betterQuoteLoaded", function() {
     this.embedMedia();
 }.bind(this));
  
@@ -235,8 +235,8 @@ SK.Util.bindEventOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
  * EmbedMedia.js - SK.moduleConstructors.EmbedMedia.prototype.init()
  */
  
- // Si on doit attendre les quotes, alors on attend que l'évènement "htmlQuoteLoaded" soit envoyé, sinon on éxecute directement la fonction callback
-SK.Util.bindEventOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
+ // Si on doit attendre les quotes, alors on attend que l'évènement "betterQuoteLoaded" soit envoyé, sinon on éxecute directement la fonction callback
+SK.Util.bindEventOrExecute(mustWaitQuote, "betterQuoteLoaded", function() {
     this.embedMedia();
 }.bind(this));
 ```
