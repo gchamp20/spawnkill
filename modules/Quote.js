@@ -4,13 +4,6 @@
 
 /**
  * Quote : Plugin de citation
- *
- * TODO :
- * - Ajouter du CSS aux citations
- * - Embellir les citations de citations
- * - Ajouter un lien vers le message dans les citations
- * - Permettre la citation du texte sélectionné
- * - Si réponse déjà focus, ajoute la citation à l'endroit du cursuer
  */
 SK.moduleConstructors.Quote = SK.Module.new();
 
@@ -21,24 +14,9 @@ SK.moduleConstructors.Quote.prototype.description = "Permet de citer un message 
 SK.moduleConstructors.Quote.prototype.init = function() {
 
     //On transforme les citations en Html
-    if(this.getSetting("htmlQuote")) {
+    if(this.getSetting("betterQuote")) {
         this.initQuoteTypes();
         this.htmlizeAllQuotes();
-    }
-
-    //Bouton de citation
-    if(this.getSetting("quoteButton")) {
-
-        //Si une citation est prévue, on l'affiche
-        var quotePending = SK.Util.getValue("responseContent");
-
-        if(quotePending) {
-            this.addToResponseThenFocus(quotePending);
-            SK.Util.deleteValue("responseContent");
-        }
-
-        //On veut que le bouton soit inséré après le lien
-        this.addQuoteButtons();
     }
 
     //Citations partielles
@@ -158,39 +136,6 @@ SK.moduleConstructors.Quote.prototype.addPartialQuoteButton = function(message, 
     SK.Util.fetchStyle($partialQuoteButton);
     $partialQuoteButton.addClass("active");
 
-};
-
-/*
- * Ajoute les boutons de citation dans l'entete du post
- */
-SK.moduleConstructors.Quote.prototype.addQuoteButtons = function() {
-
-    var self = this;
-
-    //On passe les fonctions dans la file pour éviter de bloquer l'UI
-    var queueQuoteButton = function($msg) {
-
-        self.queueFunction(function() {
-            SK.Util.addButton($msg, {
-                class: "quote",
-                location: "bottom",
-                index: 100,
-                tooltip: {
-                    text: "Citer ce message",
-                },
-                click: function() {
-
-                    var citationBlock = self.createCitationBlock(new SK.Message($msg));
-
-                    self.doQuotePost(citationBlock);
-                }
-            });
-        }, this);
-    };
-
-    $(".bloc-message-forum").each(function() {
-        queueQuoteButton($(this));
-    });
 };
 
 /* Ajoute le bloc de citation passé en paramètre au formulaire de réponse. */
@@ -320,7 +265,7 @@ SK.moduleConstructors.Quote.prototype.citationToHtml = function(pseudo, jour, mo
             "</div>" +
         "</div>");
 
-    //Permlien vers le message
+    //Permalien vers le message
     if(permalien !== "") {
         $quote.find(".quote-pseudo").first().after(new SK.Button({
             class: "link-gray",
@@ -491,7 +436,7 @@ SK.moduleConstructors.Quote.prototype.htmlizeAllQuotes = function() {
             $post.html(postText.replace(/\n/g, "\n<br>"));
 
             if(i === postCount - 1) {
-                SK.Util.dispatchEvent("htmlQuoteLoaded");
+                SK.Util.dispatchEvent("betterQuoteLoaded");
             }
         }, this);
     });
@@ -499,15 +444,9 @@ SK.moduleConstructors.Quote.prototype.htmlizeAllQuotes = function() {
 
 /* Options modifiables du plugin */
 SK.moduleConstructors.Quote.prototype.settings = {
-    htmlQuote: {
+    betterQuote: {
         title: "Formatage des citations",
         description: "Améliore le style des citations pour qu'elles se détachent plus du message.",
-        type: "boolean",
-        default: true,
-    },
-    quoteButton: {
-        title: "Bouton de citation",
-        description: "Ajoute un bouton de citation permettant de répondre à un post.",
         type: "boolean",
         default: true,
     },
@@ -516,34 +455,18 @@ SK.moduleConstructors.Quote.prototype.settings = {
         description: "Permet de ne citer qu'une partie d'un post en sélectionnant le texte avec la souris.",
         type: "boolean",
         default: true,
-    },
-    quoteType: {
-        title: "Type de citation",
-        description: "Choix du type de citation en mode texte (citations que verront ceux qui n'ont pas SpawnKill).",
-        type: "select",
-        options: { spawnkill: "SpawnKill", turboforum: "JVC TurboForum", jvcmaster: "JVC Master" },
-        default: "spawnkill",
     }
 };
 
 SK.moduleConstructors.Quote.prototype.shouldBeActivated = function() {
     /* On affiche le bloc de citation sur la page réponse et les pages de lecture */
-    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ, SK.common.Pages.TOPIC_RESPONSE, SK.common.Pages.POST_PREVIEW);
+    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ);
 };
 
 SK.moduleConstructors.Quote.prototype.getCss = function() {
     var css = "";
 
     var mainColor = SK.common.mainColor;
-
-    if(this.getSetting("quoteButton") || this.getSetting("partialQuote")) {
-        css += "\
-            .sk-button-content.quote {\
-                background-image: url('" + GM_getResourceURL("quote") + "');\
-                background-position: -1px -1px;\
-            }\
-        ";
-    }
 
     if(this.getSetting("partialQuote")) {
         css += "\
@@ -584,7 +507,7 @@ SK.moduleConstructors.Quote.prototype.getCss = function() {
         ";
     }
 
-    if(this.getSetting("htmlQuote")) {
+    if(this.getSetting("betterQuote")) {
         css += "\
             .quote-bloc {\
                 position: relative;\
