@@ -13,19 +13,12 @@ SK.moduleConstructors.Quote.prototype.description = "Permet de citer un message 
 
 SK.moduleConstructors.Quote.prototype.init = function() {
 
-    //On transforme les citations en Html
-    if(this.getSetting("betterQuote")) {
-        this.initQuoteTypes();
-        this.htmlizeAllQuotes();
-    }
-
     //Citations partielles
     if(this.getSetting("partialQuote")) {
         this.initPartialQuote();
     }
 
 };
-
 
 /**
  * Ajoute une fonction de citation partielle d'un message quand un utilisateur
@@ -214,155 +207,8 @@ SK.moduleConstructors.Quote.prototype.addToResponseThenFocus = function(citation
 
 };
 
-/**
- * Retourne un bloc de citation html à partir des infos passées en paramètre
- */
-SK.moduleConstructors.Quote.prototype.citationToHtml = function(pseudo, jour, mois, annee, heure, permalien, message) {
-
-    //CDV de l'auteur cité
-    var profileUrl = "http://www.jeuxvideo.com/profil/" + pseudo + "?mode=infos";
-
-    if(heure !== "") {
-        heure = "<div class='quote-hour' >" + heure + "</div>";
-    }
-    var $quote = $("<div class='quote-bloc' >" +
-            "<div class='quote-header' >" +
-                "<a class='quote-pseudo' href='" + profileUrl + "&popup=0' \
-                    data-popin='" + profileUrl + "'  \
-                    data-popin-type='iframe' \
-                    data-popin-width='1000' \
-                    data-popin-height='660' \
-                    data-popin-scroll-position='64' >" + pseudo + "</a>" +
-                heure +
-                "<div class='quote-date' >" + jour + " " + mois + " " + annee + "</div>" +
-            "</div>" +
-            "<hr>" +
-            "<div class='quote-message' >" +
-                message +
-            "</div>" +
-        "</div>");
-
-    //Permalien vers le message
-    if(permalien !== "") {
-        $quote.find(".quote-pseudo").first().after(new SK.Button({
-            class: "link-gray",
-            href: permalien,
-            tooltip: {
-                text: "Lien vers ce message",
-                position: "right"
-            },
-            wrapper: {
-                class: "quote-link"
-            }
-        }));
-    }
-
-    //Popup CDV de l'auteur
-    $quote.find(".quote-pseudo").first().on("click", function(event) {
-        event.preventDefault();
-        window.open(profileUrl, "profil", "width=800,height=570,scrollbars=no,status=no");
-    });
-
-    return $quote[0].outerHTML;
-};
-
-/* options : {
-    id: nom du type de la citation
-    regex: regex de reconnaissance du type de citation
-    replaceCallback: callback appelé avec post.replace(regex, replaceCallback)
-}*/
-SK.moduleConstructors.Quote.QuoteType = function(options) {
-    this.regex = options.regex;
-    this.replaceCallback = options.replaceCallback;
-};
-
-/**
- * Tous les types de citations pris en compte par le plugin
- * pour le passge à l'HTML
- */
-SK.moduleConstructors.Quote.prototype.quoteTypes = [];
-
-/**
- * Prépare les styles de citations supportés
- */
-SK.moduleConstructors.Quote.prototype.initQuoteTypes = function() {
-
-    var self = this;
-
-    self.quoteTypes.push(new SK.moduleConstructors.Quote.QuoteType({
-        id: "respawn",
-        /* $1: jour, $2: mois, $3: année, $4: heure, $5: message */
-        regex: /<blockquote class="blockquote-jv">[^L]*Le (\d{1,2}(?:er)?) ([^\s]*) (\d{4}) à (\d{2}:\d{2}):\d{2} ([^\s]+) a écrit :((?:.|[\n\r])*)<\/blockquote>[\s]*/gm,
-
-        replaceCallback: function(match, jour, mois, annee, heure, pseudo, message) {
-
-            return self.citationToHtml(pseudo, jour, mois, annee, heure, "", message);
-        }
-    }));
-};
-
-/** Remplace les citations textes par du HTML dans le texte passé en paramètre */
-SK.moduleConstructors.Quote.prototype.htmlizeQuote = function(postText) {
-
-    var newPostText = postText;
-
-    for(var i in this.quoteTypes) {
-        newPostText = newPostText.replace(this.quoteTypes[i].regex, this.quoteTypes[i].replaceCallback);
-    }
-
-    //Si aucun remplacement n'a été fait, on a terminé.
-    if(postText === newPostText) {
-        return newPostText;
-    }
-    //Sinon, on cherche des citations un niveau plus bas
-    else {
-        return this.htmlizeQuote(newPostText);
-    }
-};
-
-/**
- * Transforme toutes les citations textes de la page en Html
- */
-SK.moduleConstructors.Quote.prototype.htmlizeAllQuotes = function() {
-
-    var self = this;
-    var $posts = $(".txt-msg.text-enrichi-forum");
-    var postCount = $posts.length;
-
-    //On remplace les citations textes par de l'Html dans tous les posts
-    $posts.each(function(i, post) {
-
-        var $post = $(post);
-        self.queueFunction(function() {
-
-            var postText = $post.html()
-                //On retire les <br> pour le parsing, on les ajoutera par la suite
-                .replace(/\n/g, "").replace(/[ ]*<br>/g, "\n")
-                // On supprime les espaces multiples
-                .replace(/[ ]+/g, " ")
-            ;
-
-            //On converti les citations en html
-            postText = self.htmlizeQuote(postText);
-
-            //On remet les <br>
-            $post.html(postText.replace(/\n/g, "\n<br>"));
-
-            if(i === postCount - 1) {
-                SK.Util.dispatchEvent("betterQuoteLoaded");
-            }
-        }, this);
-    });
-};
-
 /* Options modifiables du plugin */
 SK.moduleConstructors.Quote.prototype.settings = {
-    betterQuote: {
-        title: "Formatage des citations",
-        description: "Améliore le style des citations pour qu'elles se détachent plus du message.",
-        type: "boolean",
-        default: true,
-    },
     partialQuote: {
         title: "Citations partielles",
         description: "Permet de ne citer qu'une partie d'un post en sélectionnant le texte avec la souris.",
@@ -416,86 +262,6 @@ SK.moduleConstructors.Quote.prototype.getCss = function() {
             }\
             .partial-quote:active::after {\
                 top: -14px;\
-            }\
-        ";
-    }
-
-    if(this.getSetting("betterQuote")) {
-        css += "\
-            .quote-bloc {\
-                position: relative;\
-                background-color: #FFF;\
-                box-shadow: 1px 1px 3px -0px rgba(0, 0, 0, 0.3);\
-                border-left: solid 3px " + mainColor + ";\
-                margin-bottom: 10px;\
-                color: #444;\
-            }\
-            .quote-bloc::after {\
-                content: \"\";\
-                display: block;\
-                width: 0px;\
-                height: 0px;\
-                position: absolute;\
-                top: 28px;\
-                left: -3px;\
-                border: solid 7px transparent;\
-                border-left-color: " + mainColor + ";\
-            }\
-            .quote-header {\
-                padding: 3px 10px;\
-                padding-right: 5px;\
-            }\
-            .quote-bloc hr {\
-                display: block;\
-                border: none;\
-                border-bottom: solid 1px #E0E0E0;\
-                margin: 0 5px;\
-                margin-left: 10px;\
-                height: 0px;\
-            }\
-            .quote-pseudo {\
-                display: inline-block;\
-                font-weight: bold;\
-                color: #444;\
-            }\
-            .quote-pseudo:hover {\
-                color: " + mainColor + ";\
-            }\
-            .quote-date {\
-                float: right;\
-                display: inline-block;\
-                position: relative;\
-                top: 1px;\
-                padding-left: 18px;\
-                font-size: 0.9em;\
-                background-image: url('" + GM_getResourceURL("calendar") + "');\
-                background-position: 1px -1px;\
-                background-repeat: no-repeat;\
-            }\
-            .quote-hour {\
-                float: right;\
-                display: inline-block;\
-                position: relative;\
-                top: 1px;\
-                padding-left: 26px;\
-                font-size: 0.9em;\
-                background-image: url('" + GM_getResourceURL("clock") + "');\
-                background-position: 10px -1px;\
-                background-repeat: no-repeat;\
-            }\
-            .quote-message {\
-                padding: 5px;\
-                padding-left: 10px;\
-                min-height: 10px;\
-            }\
-            .quote-bloc .sk-button.quote-link {\
-                float: right;\
-                margin-left: 8px;\
-            }\
-            .sk-button-content.link-gray {\
-                background-image: url('" + GM_getResourceURL("link-gray") + "');\
-                background-color: transparent;\
-                border-bottom-color: transparent;\
             }\
         ";
     }
