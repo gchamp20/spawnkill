@@ -229,6 +229,10 @@ SK.moduleConstructors.Quote.prototype.getCss = function() {
 
     if(this.getSetting("partialQuote")) {
         css += "\
+            .sk-button-content.quote {\
+                background-image: url('" + GM_getResourceURL("quote") + "');\
+                background-position: -1px -1px;\
+            }\
             .msg .post::-moz-selection,\
             .msg .post *::-moz-selection {\
                 background-color: " + mainColor + ";\
