@@ -313,6 +313,17 @@ SK.moduleConstructors.Quote.prototype.initQuoteTypes = function() {
     var self = this;
 
     self.quoteTypes.push(new SK.moduleConstructors.Quote.QuoteType({
+        id: "respawn",
+        /* $1: jour, $2: mois, $3: année, $4: heure, $5: message */
+        regex: /<blockquote class="blockquote-jv">[^L]*Le (\d{1,2}(?:er)?) ([^\s]*) (\d{4}) à (\d{2}:\d{2}):\d{2} ([^\s]+) a écrit :((?:.|[\n\r])*)<\/blockquote>[\s]*/gm,
+
+        replaceCallback: function(match, jour, mois, annee, heure, pseudo, message) {
+
+            return self.citationToHtml(pseudo, jour, mois, annee, heure, "", message);
+        }
+    }));
+
+    self.quoteTypes.push(new SK.moduleConstructors.Quote.QuoteType({
         id: "beatrice",
         /* $1: pseudo, $2: jour, $3: mois, $4: année, $5: heure, $6: message, $7: permalien */
         regex: /# (.*)\n^# Posté le (\d{1,2}(?:er)?) ([^\s]*) (\d{4}) à (\d{2}:\d{2}):\d{2}\n((?:.|[\n\r])*?)\n^# *<a(?:.*?)href="(http[^"]*)".*[\s]*/gm,
@@ -418,7 +429,7 @@ SK.moduleConstructors.Quote.prototype.htmlizeQuote = function(postText) {
 SK.moduleConstructors.Quote.prototype.htmlizeAllQuotes = function() {
 
     var self = this;
-    var $posts = $(".post");
+    var $posts = $(".txt-msg.text-enrichi-forum");
     var postCount = $posts.length;
 
     //On remplace les citations textes par de l'Html dans tous les posts
@@ -426,8 +437,16 @@ SK.moduleConstructors.Quote.prototype.htmlizeAllQuotes = function() {
 
         var $post = $(post);
         self.queueFunction(function() {
-            //On retire les <br> pour le parsing, on les ajoutera par la suite
-            var postText = $post.html().replace(/\n/g, "").replace(/[ ]*<br>/g, "\n");
+
+            var postText = $post.html()
+                //On retire les <br> pour le parsing, on les ajoutera par la suite
+                .replace(/\n/g, "").replace(/[ ]*<br>/g, "\n")
+                //On converti les paragraphes en passage à la ligne
+                // .replace(/<p>/g, "")
+                // .replace(/<\/p>/g, "\n\n")
+                // On supprime les espaces multiples
+                .replace(/[ ]+/g, " ")
+            ;
 
             //On converti les citations en html
             postText = self.htmlizeQuote(postText);
