@@ -183,34 +183,6 @@ SK.moduleConstructors.Quote.prototype.createCitationBlock = function(message) {
             //On passe une ligne après la citation
             lines.push("\n");
             break;
-
-        case "turboforum" :
-            $.each(lines, function(i, line) {
-                lines[i] = "| " + line;
-            }.bind(this));
-            lines.splice(0, 0, "| " + message.permalink);
-            lines.splice(0, 0, "| " + message.authorPseudoWithCase + " " + SK.Util._(1) + "-" +
-                    SK.Util._(1) + " le " + message.date);
-            lines.push("");
-            lines.push("> ");
-            break;
-
-        case "jvcmaster" :
-            if(lines.length > 0) {
-                lines[0] = "« " + lines[0];
-                lines[lines.length - 1] = lines[lines.length - 1] + " »";
-            }
-
-            $.each(lines, function(i, line) {
-                lines[i] = "| " + line;
-            }.bind(this));
-
-            lines.splice(0, 0, "| Ecrit par « " + message.authorPseudoWithCase + " », " +
-                    message.date + " à " + message.time);
-            lines.splice(0, 0, "| " + message.permalink);
-            lines.push("");
-            lines.push("> ");
-            break;
     }
 
     //On n'autorise pas les sauts de ligne consécutifs dans les citations
@@ -322,86 +294,6 @@ SK.moduleConstructors.Quote.prototype.initQuoteTypes = function() {
             return self.citationToHtml(pseudo, jour, mois, annee, heure, "", message);
         }
     }));
-
-    self.quoteTypes.push(new SK.moduleConstructors.Quote.QuoteType({
-        id: "beatrice",
-        /* $1: pseudo, $2: jour, $3: mois, $4: année, $5: heure, $6: message, $7: permalien */
-        regex: /# (.*)\n^# Posté le (\d{1,2}(?:er)?) ([^\s]*) (\d{4}) à (\d{2}:\d{2}):\d{2}\n((?:.|[\n\r])*?)\n^# *<a(?:.*?)href="(http[^"]*)".*[\s]*/gm,
-
-        replaceCallback: function(match, pseudo, jour, mois, annee, heure, message, permalien) {
-
-            //On retire les # au début du message
-            message = self.cleanUpMessage(message, "#");
-            return self.citationToHtml(pseudo, jour, mois, annee, heure, permalien, message);
-
-        }
-    }));
-
-    self.quoteTypes.push(new SK.moduleConstructors.Quote.QuoteType({
-        id: "spawnkill",
-        /* $1: pseudo, $2: jour, $3: mois, $4: année, $5: heure, $6: permalien, $7: message (à épurer en retirant le cadre) */
-        regex: /╭(?:┄┄┄)?(?:\n *┊)? ([^,]*), le (\d{1,2}(?:er)?) ([^\s]*) (\d{4}) à (\d{2}:\d{2}):\d{2}\n^ *┊ *<a(?:.*?)href="(http[^"]*)".*\n *┊(?:┄┄┄)?\n((?:.|[\n\r])*?)\n^ *╰(?:┄┄┄)?[\s]*/gm,
-
-        replaceCallback: function(match, pseudo, jour, mois, annee, heure, permalien, message) {
-
-            //On retire les | au début du message
-            message = self.cleanUpMessage(message, "┊");
-            return self.citationToHtml(pseudo, jour, mois, annee, heure, permalien, message);
-        }
-    }));
-
-    self.quoteTypes.push(new SK.moduleConstructors.Quote.QuoteType({
-        id: "turboforum",
-        /* $1: pseudo, $2: jour (peut être vide), $3: mois (peut être vide), $4: année (peut être vide),
-         * $5: heure (peut être vide), $6: permalien (peut être vide), $6: message (à épurer en retirant le cadre), pas d'heure */
-        regex: /\| ([^\s]*)(?:(?:&nbsp;)|[\s])*-(?:(?:&nbsp;)|[\s])*(?:(?:le (\d{1,2}(?:er)?) ([^\s]*) (\d{4}))|(?:aujourd’hui à (\d{2}:\d{2})))[ ]*(?:\n\| <a(?:.*?)href="(http[^"]*)".*)?\n((?:(?:\n*^\|.*)*)*)(?:(?:[\s]*)&gt; )*/gm,
-
-        replaceCallback: function(match, pseudo, jour, mois, annee, heure, permalien, message) {
-
-            //On retire les | au début du message
-            message = self.cleanUpMessage(message, "|");
-            return self.citationToHtml(pseudo, jour, mois, annee, heure, permalien, message);
-        }
-    }));
-
-    self.quoteTypes.push(new SK.moduleConstructors.Quote.QuoteType({
-        id: "jvcmaster",
-        /* $1: permalien (peut être vide), $2: pseudo, $3: jour, $4: mois, $5: année, $6: heure, $7: message (à épurer en retirant le cadre) */
-        regex: /(?:(?: *\| *<a(?:.*?)href="(http[^"]*)".*\n))* *\| Ecrit par « ([^\s]*) »(?:[^\d]*)(\d{1,2}(?:er)?) ([^\s]*) (\d{4}) à (\d{2}:\d{2}):\d{2}\n((?:\n? *\|.*)*)(?:(?:[\s]*)(?:&gt;)? *)?/gm,
-
-        replaceCallback: function(match, permalien, pseudo, jour, mois, annee, heure, message) {
-
-            //On retire les | au début du message
-            message = self.cleanUpMessage(message, "|");
-            return self.citationToHtml(pseudo, jour, mois, annee, heure, permalien, message);
-        }
-    }));
-};
-
-
-/**
- * Retire les séparateurs et les guillemets des citations récupérées.
- */
-SK.moduleConstructors.Quote.prototype.cleanUpMessage = function(message, separator) {
-    //On "nettoie" le message en retirant les séparateurs et les guillemets
-    var lines = message.split("\n");
-
-    for(var i in lines) {
-
-        //Suppression des séparateurs
-        var regex = new RegExp("^ *\\" + separator + " *");
-        lines[i] = lines[i].replace(regex, "");
-
-        //Suppression des guillemets
-        lines[i] = lines[i].replace(/^ *« */, "");
-
-        //Si les citations ne sont pas imbriquées, on supprime le »
-        if(!lines[i].match(/^ *[\||#|┊] *.*/)) {
-            lines[i] = lines[i].replace(/ *» *$/, "");
-        }
-    }
-
-    return lines.join("\n");
 };
 
 /** Remplace les citations textes par du HTML dans le texte passé en paramètre */
@@ -441,9 +333,6 @@ SK.moduleConstructors.Quote.prototype.htmlizeAllQuotes = function() {
             var postText = $post.html()
                 //On retire les <br> pour le parsing, on les ajoutera par la suite
                 .replace(/\n/g, "").replace(/[ ]*<br>/g, "\n")
-                //On converti les paragraphes en passage à la ligne
-                // .replace(/<p>/g, "")
-                // .replace(/<\/p>/g, "\n\n")
                 // On supprime les espaces multiples
                 .replace(/[ ]+/g, " ")
             ;
