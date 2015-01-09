@@ -233,6 +233,7 @@ SK.moduleConstructors.Quote.prototype.getCss = function() {
             }\
             .partial-quote {\
                 position: absolute;\
+                font-size: 0 !important;\
                 opacity: 0.2;\
                 transform: scale(0.2);\
                 transition-duration: 200ms;\
