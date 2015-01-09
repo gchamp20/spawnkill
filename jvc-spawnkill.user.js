@@ -22,7 +22,7 @@
 // @require     modules/SpawnkillBase.js?v1.18.1
 // @require     modules/Settings.js?v1.18.1
 // @----require     modules/SocketConnection.js?v1.18.1
-// @----require     modules/Quote.js?v1.18.1
+// @require     modules/Quote.js?v1.18.1
 // @require     modules/Shortcuts.js?v1.18.1
 // @require     modules/InfosPseudo.js?v1.18.1
 // @require     modules/HilightNewTopic.js?v1.18.1
