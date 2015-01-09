@@ -514,7 +514,7 @@ SK.Util = {
             //<br> -> \n
             .replace(/<br ?\/?>/g, "\n")
             //suppression des quotes
-            .replace(/<blockquote class="blockquote-jv">.*?<\/blockquote>/g, "")
+            .replace(/<blockquote class="blockquote-jv">.*<\/blockquote>/g, "")
             //suppression des boutons de téléchargement
             .replace(/<div class="spawnkill-media-element(?:(?:.|\s)*?<\/div>){5}/g, "")
             //suppression des vidéos youtube
@@ -532,7 +532,6 @@ SK.Util = {
             //suppression des li
             .replace(/<\/li>/g, "")
         );
-
         return selection;
     },
 

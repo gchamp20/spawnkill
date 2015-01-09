@@ -24,7 +24,7 @@ SK.Message.prototype.init = function() {
     var $message = this.$msg.find(".text-enrichi-forum").clone();
 
     //On supprime les éventuelles citations
-    $message.find(".quote-bloc").remove();
+    $message.find("blockquote").remove();
 
     //On supprime les éventuels boutons de téléchargement
     $message.find(".spawnkill-media-element").remove();
