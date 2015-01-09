@@ -831,7 +831,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                     var showMedia = SK.Util.getValue(messageId + "." + mediaType.id +".show");
 
                     //On cache tous les medias des citations, par défaut
-                    if($a.parents(".quote-message").length > 0) {
+                    if($a.parents("blockquote").length > 0) {
                         showMedia = false;
                     }
 
@@ -886,7 +886,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
         var count = 0;
 
         //On parcourt tous les liens du post
-        $msg.find(".post a").each(function(id, a) {
+        $msg.find(".text-enrichi-forum a").each(function(id, a) {
 
             //Et on cherche chaque type de media
             queueCheckLinkForMedia($msg, $(a), {
