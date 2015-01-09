@@ -160,23 +160,11 @@ SK.moduleConstructors.Quote.prototype.createCitationBlock = function(message) {
 
     var lines = message.text.split("\n");
 
-    switch(this.getSetting("quoteType")) {
-
-        case "spawnkill" :
-            $.each(lines, function(i, line) {
-                lines[i] = "┊ " + line;
-            }.bind(this));
-            lines.splice(0, 0, "┊");
-            lines.splice(0, 0, "┊ " + message.permalink);
-            lines.splice(0, 0, "┊ " + message.authorPseudoWithCase + ", le " +
-                    message.date + " à " + message.time);
-            lines.splice(0, 0, "╭");
-            //Fin de la citation
-            lines.push("╰");
-            //On passe une ligne après la citation
-            lines.push("\n");
-            break;
-    }
+    $.each(lines, function(i, line) {
+        lines[i] = "> " + line;
+    }.bind(this));
+    lines.splice(0, 0, "> Le " + message.date + " à " + message.time + " " + message.authorPseudoWithCase + " a écrit :");
+    lines.push("\n");
 
     //On n'autorise pas les sauts de ligne consécutifs dans les citations
     var quote = lines.join("\n");
