@@ -21,10 +21,7 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
     this.initMediaTypes();
 
     //Si betterQuote est activé, on a besoin que les citations soient chargées pour calculer la taille des vidéos
-    var mustWaitQuote = SK.modules.Quote.activated && SK.modules.Quote.getSetting("betterQuote");
-    SK.Util.bindEventOrExecute(mustWaitQuote, "betterQuoteLoaded", function() {
-        this.embedMedia();
-    }.bind(this));
+    this.embedMedia();
 
     this.userSettings = {};
 
