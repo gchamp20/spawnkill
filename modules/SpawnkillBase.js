@@ -418,7 +418,17 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         }\
         .buttons.right {\
             position: relative;\
-            top: -1px;\
+            top: 10px;\
+            left: -4px;\
+            line-height: 0;\
+            font-size: 0;\
+        }\
+        .bloc-message-forum .bloc-options-msg {\
+            margin-left: 3px;\
+        }\
+        .bloc-message-forum .bloc-options-msg a,\
+        .bloc-message-forum .bloc-options-msg span {\
+            margin-left: 2px !important;\
         }\
         .buttons-row-wrapper {\
             display: table-row;\
