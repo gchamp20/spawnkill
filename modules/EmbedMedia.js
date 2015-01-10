@@ -929,7 +929,8 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         title: "Intégration des vidéos",
         description: "Intégre les vidéos Youtube, DailyMotion, Vimeo et Vine aux posts.",
         type: "boolean",
-        default: true,
+        default: false,
+        disabled: true,
     },
     embedImages: {
         title: "Intégration des images",
@@ -941,7 +942,8 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         title: "Intégration des sondages",
         description: "Intégre les sondages Pixule et Sondage.io aux posts.",
         type: "boolean",
-        default: true,
+        default: false,
+        disabled: true,
     },
     embedRecords: {
         title: "Intégration des Vocaroos",
