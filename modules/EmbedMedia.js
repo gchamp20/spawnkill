@@ -751,7 +751,6 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
 SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
 
     var self = this;
-
     /**
      * Fonction qui ajoute le bouton afficher/masquer les media d'un post.
      */
@@ -877,13 +876,13 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
      * remplacement des liens pas l'intégration du media correspondant
      *  et ajout d'un bouton masquer/afficher au post si nécessaire.
      */
-    $(".msg").each(function(id, msg) {
+    $(".bloc-message-forum").each(function(id, msg) {
 
         var $msg = $(msg);
         var count = 0;
 
         //On parcourt tous les liens du post
-        $msg.find(".text-enrichi-forum a").each(function(id, a) {
+        $msg.find(".text-enrichi-forum:first a").each(function(id, a) {
 
             //Et on cherche chaque type de media
             queueCheckLinkForMedia($msg, $(a), {
