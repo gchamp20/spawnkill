@@ -26,11 +26,6 @@ SK.moduleConstructors.Usability.prototype.init = function() {
         }
         this.editRefreshLinks();
     }
-
-    // Boutons de modération
-    if (this.getSetting("replaceModerationButton")) {
-        this.replaceModerationButton();
-    }
 };
 
 /**
