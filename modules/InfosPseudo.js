@@ -142,11 +142,22 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
 /** Affiche les infos du post et de l'auteur au message */
 SK.moduleConstructors.InfosPseudo.prototype.showMessageInfos = function(message) {
 
-    var self = this;
+    this.addPostButtons(message);
+    this.addAvatarModalMarkup(message);
 
-    self.addPostButtons(message);
 };
 
+
+/**
+ * Ajoute le markup permettant aux avatars de s'ouvrir dans une fenêtre modale
+ */
+SK.moduleConstructors.InfosPseudo.prototype.addAvatarModalMarkup = function(message) {
+    message.$msg.find(".bloc-avatar-msg a")
+        .attr("data-popin", message.author.fullSizeAvatar)
+        .attr("data-popin-type", "image")
+        .attr("title", message.authorPseudoWithCase)
+    ;
+};
 
 /** Ajoute les différents boutons et remplace ceux par défaut */
 SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
@@ -574,6 +585,12 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         type: "boolean",
         default: false,
         disabled: true,
+    },
+    modalAvatar: {
+        title: "Charger l'avatar dans une modale'",
+        description: "Agrandit l'avatar de l'auteur au clic.",
+        type: "boolean",
+        default: true,
     },
     modalProfile: {
         title: "Charger la CDV dans une modale",
