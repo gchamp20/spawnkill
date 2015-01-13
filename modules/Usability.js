@@ -26,6 +26,7 @@ SK.moduleConstructors.Usability.prototype.init = function() {
         }
         this.editRefreshLinks();
     }
+    this.bindFocusOnNewMessage();
 };
 
 /**
@@ -56,8 +57,19 @@ SK.moduleConstructors.Usability.prototype.isJustRefreshed = function() {
  */
 SK.moduleConstructors.Usability.prototype.scrollToLastPost = function() {
     $(".conteneur-message").last().scrollThere();
+
 };
 
+/**
+ * Ajoute le focus sur le sujet au clic sur "Nouveau topic"
+ */
+SK.moduleConstructors.Usability.prototype.bindFocusOnNewMessage = function() {
+    $(".btn-repondre-msg").on("mousedown", function() {
+        setTimeout(function() {
+            $("#message_topic").focus();
+        }, 500);
+    });
+};
 
 SK.moduleConstructors.Usability.prototype.settings = {
     refreshToLastPost: {
@@ -69,5 +81,5 @@ SK.moduleConstructors.Usability.prototype.settings = {
 };
 
 SK.moduleConstructors.Usability.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ, SK.common.Pages.TOPIC_RESPONSE);
+    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ, SK.common.Pages.TOPIC_LIST);
 };
