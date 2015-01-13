@@ -143,7 +143,10 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
 SK.moduleConstructors.InfosPseudo.prototype.showMessageInfos = function(message) {
 
     this.addPostButtons(message);
-    this.addAvatarModalMarkup(message);
+
+    if (this.getSetting("modalAvatar")) {
+        this.addAvatarModalMarkup(message);
+    }
 
 };
 
