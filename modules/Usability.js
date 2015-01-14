@@ -26,7 +26,9 @@ SK.moduleConstructors.Usability.prototype.init = function() {
         }
         this.editRefreshLinks();
     }
-    this.bindFocusOnNewMessage();
+    if (this.getSetting("focusOnNewMessage")) {
+        this.bindFocusOnNewMessage();
+    }
 };
 
 /**
@@ -85,6 +87,12 @@ SK.moduleConstructors.Usability.prototype.settings = {
     refreshToLastPost: {
         title: "Rafraîchir au dernier message",
         description: "Le bouton \"Rafraîchir\" d'un topic amène directement au dernier post de ce topic",
+        type: "boolean",
+        default: true,
+    },
+    focusOnNewMessage: {
+        title: "Focus au nouveau message",
+        description: "les boutons \"Nouveau sujet\" et \"Répondre\" donnent le focus sur le champ de réponse",
         type: "boolean",
         default: true,
     },
