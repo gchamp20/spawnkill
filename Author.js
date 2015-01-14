@@ -63,7 +63,19 @@ SK.Author.prototype.initFromCdv = function($cdv) {
         if(this.fullSizeAvatar === "http://image.jeuxvideo.com/avatars/default.jpg") {
             this.fullSizeAvatar = this.avatar;
         }
-        this.gender = $cdv.find("couleur_pseudo").text() === "#000000" ? "male" : "female";
+
+        switch ($cdv.find("couleur_pseudo").text()) {
+            case "#0066CC":
+                this.gender = "male";
+                break;
+            case "#FF0099":
+                this.gender = "female";
+                break;
+            default:
+                this.gender = "unknown";
+                break;
+
+        }
     }
     else {
         this.profileUnavailable = true;
