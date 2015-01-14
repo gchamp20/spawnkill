@@ -62,8 +62,18 @@ SK.moduleConstructors.Usability.prototype.scrollToLastPost = function() {
 
 /**
  * Ajoute le focus sur le sujet au clic sur "Nouveau topic"
+ * ainsi que le focus sur le message au clic sur "Nouveau message"
  */
 SK.moduleConstructors.Usability.prototype.bindFocusOnNewMessage = function() {
+
+    // Nouveau topic
+    $(".bloc-pre-left:first .btn-actu-new-list-forum").on("mousedown", function() {
+        setTimeout(function() {
+            $("#titre_topic").focus();
+        }, 500);
+    });
+
+    // Nouveau message
     $(".btn-repondre-msg").on("mousedown", function() {
         setTimeout(function() {
             $("#message_topic").focus();
