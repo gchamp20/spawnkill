@@ -487,7 +487,7 @@ SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo
 };
 
 /**
- * Supprime la class "hidden" des posts de l'auteur passé en paramètre.
+ * Supprime la class "sk-hidden" des posts de l'auteur passé en paramètre.
  * @param {String} authorPseudo pseudo de l'auteur à réafficher
  */
 SK.moduleConstructors.InfosPseudo.prototype.showPostFrom = function(authorPseudo) {
@@ -509,13 +509,13 @@ SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseu
 
             var $msg = toToggle.messages[i].$msg;
             var $button = $msg.find(".sk-button-content.block");
-            var $tooltip = $button.siblings(".tooltip");
+            var $tooltip = $button.siblings(".sk-tooltip");
 
             switch (newState) {
 
                 case "visible":
                     $msg
-                        .removeClass("hidden")
+                        .removeClass("sk-hidden")
                         .attr("title", "")
                     ;
                     $button
@@ -528,7 +528,7 @@ SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseu
 
                 case "hidden":
                     $msg
-                        .addClass("hidden")
+                        .addClass("sk-hidden")
                         .attr("title", "Cliquez sur le + à droite du post pour réafficher les posts de " + authorPseudo)
                     ;
                     $button
@@ -618,14 +618,12 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         description: "Ajoute un bouton aux posts permettant d'ignorer un auteur. Les messages des membres ignorés ne seront pas affichés.",
         type: "boolean",
         default: false,
-        disabled: true,
     },
     fullyHideBlockedPosts: {
         title: "Masquer totalement les posts ignorés",
         description: "Si cette option est activée, les posts ignorés sont supprimés totalement de la page.",
         type: "boolean",
         default: false,
-        disabled: true,
     },
     clearAuthorCache: {
         title: "Vider le cache des auteurs",
@@ -644,7 +642,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
     var css = "";
 
     //Si on met en valeur les posts de l'utilisateur
-    if(this.getSetting("enableUserHighlight")) {
+    if (this.getSetting("enableUserHighlight")) {
         css += "\
             .current-user {\
                 color: " + SK.common.darkColor + " !important;\
@@ -653,7 +651,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
     }
 
     //Si on met en valeur les posts de l'auteur
-    if(this.getSetting("enableAuthorHighlight")) {
+    if (this.getSetting("enableAuthorHighlight")) {
         css += "\
             .current-topic-author {\
                 vertical-align: top;\
@@ -661,6 +659,37 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
                 width:16px;\
                 height:16px;\
                 background-image: url('" + GM_getResourceURL("crown") + "');\
+            }\
+        ";
+    }
+
+    if (this.getSetting("enableBlockList")) {
+        css += "\
+            .bloc-message-forum.sk-hidden .bloc-options-msg {\
+                line-height: 0px !important;\
+            }\
+            .bloc-message-forum.sk-hidden .bloc-avatar-msg,\
+            .bloc-message-forum.sk-hidden .bloc-options-msg span,\
+            .bloc-message-forum.sk-hidden .bloc-contenu,\
+            .bloc-message-forum.sk-hidden .bloc-date-msg,\
+            .bloc-message-forum.sk-hidden .bloc-pseudo-msg,\
+            .bloc-message-forum.sk-hidden .bloc-mp-pseudo,\
+            .bloc-message-forum.sk-hidden .sk-button:not(.block-wrapper) {\
+                display: none !important;\
+            }\
+            .bloc-message-forum.sk-hidden .bloc-header {\
+                position: relative;\
+                    top: -5px;\
+                height: 24px;\
+                margin: 0px !important;\
+                border: none !important;\
+                color: #999;\
+            }\
+            .bloc-message-forum.sk-hidden .bloc-header::after {\
+                content: \"Vous avez ignoré l'auteur de ce message\";\
+                position: absolute;\
+                    top: 9px;\
+                    left: 14px;\
             }\
         ";
     }
