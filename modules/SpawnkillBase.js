@@ -384,13 +384,14 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             left: auto;\
             top: -200px;\
             right: 0px;\
+            font-size: 12px;\
             box-shadow: 0 5px 10px 1px rgba(0, 0, 0, 0.4);\
         }\
         #sk-notifications .notification .content {\
-            margin-top: 10px;\
-            margin-bottom: 2px;\
+            margin-top: 22px;\
+            margin-bottom: 0px;\
             font-size: 1.2em;\
-            line-height: 1.6;\
+            line-height: 1;\
             color: #555;\
         }\
         #sk-notifications .notification.active {\
