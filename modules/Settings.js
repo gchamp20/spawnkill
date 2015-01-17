@@ -140,7 +140,7 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
                             var setting = module.settings[settingKey];
                             ui += "<li class='option' title='" + SK.Util.htmlEncode(setting.description) +
                               "' data-id='" + settingKey + "' >";
-                                ui += SK.Util.htmlEncode(module.settings[settingKey].title);
+                                ui += (setting.disabled ? "[Désactivé] " : "") + SK.Util.htmlEncode(setting.title);
                             ui += "</li>";
                         }
                     ui += "</ul>";

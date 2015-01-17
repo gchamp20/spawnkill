@@ -511,11 +511,8 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             float: right;\
             margin-left: 10px;\
         }\
-        .bloc-message-forum .sk-button-content {\
+        .bloc-message-forum .buttons .sk-button-content {\
             opacity: 0.4;\
-        }\
-        .bloc-message-forum .partial-quote .sk-button-content {\
-            opacity: 1;\
         }\
         .bloc-message-forum .sk-button-content:hover {\
             opacity: 1;\
