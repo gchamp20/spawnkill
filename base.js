@@ -29,9 +29,6 @@ window.SK = {
 
             TOPIC_LIST:     "topic-list",
             TOPIC_READ:     "topic-read",
-            TOPIC_FORM:     "topic-form",
-            TOPIC_RESPONSE: "topic-response",
-            POST_PREVIEW:   "post-preview",
             OTHER:          "other"
 
         })

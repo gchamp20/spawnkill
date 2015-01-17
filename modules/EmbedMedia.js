@@ -12,7 +12,7 @@ SK.moduleConstructors.EmbedMedia.prototype.id = "EmbedMedia";
 SK.moduleConstructors.EmbedMedia.prototype.title = "Intégration de contenus";
 SK.moduleConstructors.EmbedMedia.prototype.description = "Remplace les liens vers les images, vidéos, " +
     "sondages ou vocaroo par le contenu lui-même. Attention, si trop de contenu est activé, le chargement" +
-    "de la page êut être ralenti.";
+    "de la page peut être ralenti.";
 
 SK.moduleConstructors.EmbedMedia.prototype.init = function() {
 
@@ -20,11 +20,8 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
 
     this.initMediaTypes();
 
-    //Si htmlQuote est activé, on a besoin que les citations soient chargées pour calculer la taille des vidéos
-    var mustWaitQuote = SK.modules.Quote.activated && SK.modules.Quote.getSetting("htmlQuote");
-    SK.Util.bindOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
-        this.embedMedia();
-    }.bind(this));
+    //Si betterQuote est activé, on a besoin que les citations soient chargées pour calculer la taille des vidéos
+    this.embedMedia();
 
     this.userSettings = {};
 
@@ -754,7 +751,6 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
 SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
 
     var self = this;
-
     /**
      * Fonction qui ajoute le bouton afficher/masquer les media d'un post.
      */
@@ -831,7 +827,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                     var showMedia = SK.Util.getValue(messageId + "." + mediaType.id +".show");
 
                     //On cache tous les medias des citations, par défaut
-                    if($a.parents(".quote-message").length > 0) {
+                    if($a.parents("blockquote").length > 0) {
                         showMedia = false;
                     }
 
@@ -880,13 +876,13 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
      * remplacement des liens pas l'intégration du media correspondant
      *  et ajout d'un bouton masquer/afficher au post si nécessaire.
      */
-    $(".msg").each(function(id, msg) {
+    $(".bloc-message-forum").each(function(id, msg) {
 
         var $msg = $(msg);
         var count = 0;
 
         //On parcourt tous les liens du post
-        $msg.find(".post a").each(function(id, a) {
+        $msg.find(".text-enrichi-forum:first a").each(function(id, a) {
 
             //Et on cherche chaque type de media
             queueCheckLinkForMedia($msg, $(a), {
@@ -933,7 +929,8 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         title: "Intégration des vidéos",
         description: "Intégre les vidéos Youtube, DailyMotion, Vimeo et Vine aux posts.",
         type: "boolean",
-        default: true,
+        default: false,
+        disabled: true,
     },
     embedImages: {
         title: "Intégration des images",
@@ -945,7 +942,8 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         title: "Intégration des sondages",
         description: "Intégre les sondages Pixule et Sondage.io aux posts.",
         type: "boolean",
-        default: true,
+        default: false,
+        disabled: true,
     },
     embedRecords: {
         title: "Intégration des Vocaroos",

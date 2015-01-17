@@ -36,7 +36,7 @@ SK.Button = function(options) {
         tooltip.position = tooltip.position || "top";
 
         var $tooltip = $("<div>", {
-            class: "tooltip " + tooltip.position,
+            class: "sk-tooltip " + tooltip.position,
             text: tooltip.text
         });
 
@@ -45,7 +45,7 @@ SK.Button = function(options) {
         }
 
         //On ajoute la tooltip dans le vide et on calcule sa taille
-        $("#footer").append($tooltip);
+        $("#jv-footer").append($tooltip);
 
         $button.append($tooltip.css({
             width: $tooltip.width() + 20

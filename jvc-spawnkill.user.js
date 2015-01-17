@@ -5,37 +5,36 @@
 // @namespace   http://www.spawnkill.fr
 // @include     http://*.jeuxvideo.com/*
 // @include     http://*.forumjv.com/*
-// @version     1.18
-// @require     jquery-2.1.1.min.js?v1.18
-// @require     jquery-plugins.js?v1.18
-// @require     base.js?v1.18
-// @require     Util.js?v1.18
-// @require     Message.js?v1.18
-// @require     Author.js?v1.18
-// @require     Button.js?v1.18
-// @require     SlideToggle.js?v1.18
-// @require     Modal.js?v1.18
-// @require     DropdownList.js?v1.18
-// @require     FaviconNotificationUpdater.js?v1.18
-// @require     SocketMessage.js?v1.18
-// @require     modules/Module.js?v1.18
-// @require     modules/SpawnkillBase.js?v1.18
-// @require     modules/Settings.js?v1.18
-// @require     modules/SocketConnection.js?v1.18
-// @require     modules/QuickResponse.js?v1.18
-// @require     modules/Quote.js?v1.18
-// @require     modules/Shortcuts.js?v1.18
-// @require     modules/InfosPseudo.js?v1.18
-// @require     modules/HilightNewTopic.js?v1.18
-// @require     modules/LastPage.js?v1.18
-// @require     modules/EmbedMedia.js?v1.18
-// @require     modules/WarnOnNewPost.js?v1.18
-// @require     modules/AutoUpdate.js?v1.18
-// @require     modules/PemtHighlight.js?v1.18
-// @require     modules/Usability.js?v1.18
+// @version     1.18.1
+// @require     jquery-2.1.1.min.js?v1.18.1
+// @require     jquery-plugins.js?v1.18.1
+// @require     base.js?v1.18.1
+// @require     Util.js?v1.18.1
+// @require     Message.js?v1.18.1
+// @require     Author.js?v1.18.1
+// @require     Button.js?v1.18.1
+// @require     SlideToggle.js?v1.18.1
+// @require     Modal.js?v1.18.1
+// @require     DropdownList.js?v1.18.1
+// @require     FaviconNotificationUpdater.js?v1.18.1
+// @require     SocketMessage.js?v1.18.1
+// @require     modules/Module.js?v1.18.1
+// @require     modules/SpawnkillBase.js?v1.18.1
+// @require     modules/Settings.js?v1.18.1
+// @----require     modules/SocketConnection.js?v1.18.1
+// @require     modules/Quote.js?v1.18.1
+// @require     modules/Shortcuts.js?v1.18.1
+// @require     modules/InfosPseudo.js?v1.18.1
+// @require     modules/HilightNewTopic.js?v1.18.1
+// @require     modules/LastPage.js?v1.18.1
+// @require     modules/EmbedMedia.js?v1.18.1
+// @require     modules/WarnOnNewPost.js?v1.18.1
+// @require     modules/AutoUpdate.js?v1.18.1
+// @require     modules/PemtHighlight.js?v1.18.1
+// @require     modules/Usability.js?v1.18.1
 // @resource    close                 images/close.png
 // @resource    banImage              images/ban.png
-// @resource    newTopic              images/topic_new.gif
+// @resource    newTopic              images/new-topic.png
 // @resource    carton                images/carton.png
 // @resource    bronze                images/bronze.png
 // @resource    argent                images/argent.png
@@ -87,75 +86,76 @@
 /* jshint unused: false */
 /* jshint multistr: true */
 /* jshint newcap: false */
+SK.VERSION = "v1.18.1";
 
-SK.VERSION = "v1.18";
+// On ne charge pas le script dans les iframes
+if (window.top === window.self) {
 
-var modulesStyle = "";
+    var modulesStyle = "";
 
-//On charge seulement les modules nécessaires
-for(var key in SK.moduleConstructors) {
+    //On charge seulement les modules nécessaires
+    for (var key in SK.moduleConstructors) {
 
-    var moduleName = key;
-    var module = new SK.moduleConstructors[key]();
-    var moduleSettings = SK.Util.getValue(moduleName);
-    //On prépare le chargement du module
-    SK.modules[moduleName] = module;
+        var moduleName = key;
+        var module = new SK.moduleConstructors[key]();
+        var moduleSettings = SK.Util.getValue(moduleName);
+        //On prépare le chargement du module
+        SK.modules[moduleName] = module;
 
-    //On récupère les préférences courantes des options du module
-    for(var settingKey in module.settings) {
-        var setting = module.settings[settingKey];
-        var settingLabel = settingKey;
-        var settingValue = SK.Util.getValue(moduleName + "." + settingLabel);
+        //On récupère les préférences courantes des options du module
+        for (var settingKey in module.settings) {
+            var setting = module.settings[settingKey];
+            var settingLabel = settingKey;
+            var settingValue = SK.Util.getValue(moduleName + "." + settingLabel);
 
-        //Si la préférence n'est pas enregistrée, on prend la valeur par défaut
-        if(settingValue === null) {
-            settingValue = setting.default;
+            //Si la préférence n'est pas enregistrée, on prend la valeur par défaut
+            if (settingValue === null) {
+                settingValue = setting.default;
+            }
+
+            //On enregistre la préférence dans le module
+            setting.value = settingValue;
         }
 
-        //On enregistre la préférence dans le module
-        setting.value = settingValue;
+        //Si le module est requis, qu'il n'y a pas de préférences ou que la préférence est activé
+        if (module.required || moduleSettings === null || moduleSettings) {
+
+            //On autorise le module à exécuter du code avant le chargement du CSS
+            module.beforeInit();
+
+            //On charge le CSS du module
+            modulesStyle += module.internal_getCss();
+
+            //On indique que le module est chargé
+            module.activated = true;
+        }
+        else {
+            module.activated = false;
+        }
+
     }
 
-    //Si le module est requis, qu'il n'y a pas de préférences ou que la préférence est activé
-    if(module.required || moduleSettings === null || moduleSettings) {
+    //On ajoute le style de tous les modules actifs
+    SK.Util.addCss(modulesStyle);
 
-        //On autorise le module à exécuter du code avant le chargement du CSS
-        module.beforeInit();
+    //document.ready ne fonctionne pas sur GM.
+    //Pour vérifier que le DOM est chargé, on vérifie que le footer est présent.
+    var checkDomReady = setInterval(function() {
 
-        //On charge le CSS du module
-        modulesStyle += module.internal_getCss();
+        var initModule = function(module) {
+            module.internal_init();
+        };
 
-        //On indique que le module est chargé
-        module.activated = true;
-    }
-    else {
-        module.activated = false;
-    }
+        if ($(".stats").length > 0) {
+            clearInterval(checkDomReady);
 
-}
-
-//On ajoute le style de tous les modules actifs
-SK.Util.addCss(modulesStyle);
-
-
-//document.ready ne fonctionne pas sur GM.
-//Pour vérifier que le DOM est chargé, on vérifie que le footer est présent.
-var checkDomReady = setInterval(function() {
-
-    var initModule = function(module) {
-        module.internal_init();
-    };
-
-    if($(".stats").length > 0) {
-
-        clearInterval(checkDomReady);
-
-        //On initialise les modules actifs
-        for(var key in SK.modules) {
-            if(SK.modules[key].activated) {
-                initModule(SK.modules[key]);
+            //On initialise les modules actifs
+            for (var key in SK.modules) {
+                if (SK.modules[key].activated) {
+                    initModule(SK.modules[key]);
+                }
             }
         }
-    }
 
-}, 50);
+    }, 50);
+}

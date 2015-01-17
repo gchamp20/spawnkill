@@ -78,7 +78,14 @@ SK.Module.prototype.beforeInit = function() {};
  * Retourne la valeur d'un paramètre
  */
 SK.Module.prototype.getSetting = function(settingKey) {
-    return this.settings[settingKey].value;
+
+    if (typeof this.settings[settingKey] === "undefined") {
+        console.trace();
+        throw new Error("Le paramètre " + this.id + "." + settingKey + " n'existe pas.");
+    }
+    else {
+        return this.settings[settingKey].value;
+    }
 };
 
 /**

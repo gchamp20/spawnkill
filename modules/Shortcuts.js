@@ -41,28 +41,28 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
             //Ctrl + Shift + fleche gauche -> Première page
             if (event.ctrlKey && event.shiftKey && event.keyCode === LEFT_ARROW_KEY) {
                 event.preventDefault();
-                $(".navig_prec a:first-child").addClass("sk-hilight").get(0).click();
+                $(".pagi-debut-actif").addClass("sk-outline").get(0).click();
                 return;
             }
 
             //Ctrl + Shift + fleche droite -> Dernière page
             if (event.ctrlKey && event.shiftKey && event.keyCode === RIGHT_ARROW_KEY) {
                 event.preventDefault();
-                $(".navig_suiv a:last-child").addClass("sk-hilight").get(0).click();
+                $(".pagi-fin-actif").addClass("sk-outline").get(0).click();
                 return;
             }
 
             //Ctrl + fleche gauche -> page précedente
             if (event.ctrlKey && event.keyCode === LEFT_ARROW_KEY) {
                 event.preventDefault();
-                $(".navig_prec a:last-child").addClass("sk-hilight").get(0).click();
+                $(".pagi-precedent-actif").addClass("sk-outline").get(0).click();
                 return;
             }
 
             //Ctrl + fleche droite -> page suivante
             if (event.ctrlKey && event.keyCode === RIGHT_ARROW_KEY) {
                 event.preventDefault();
-                $(".navig_suiv a:first-child").addClass("sk-hilight").get(0).click();
+                $(".pagi-suivant-actif").addClass("sk-outline").get(0).click();
                 return;
             }
 
@@ -72,14 +72,14 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
                 //Ctrl + flèche haut -> Retour liste des sujets
                 if (event.ctrlKey && event.keyCode === UP_ARROW_KEY) {
                     event.preventDefault();
-                    $(".boutons_sujet .liste a").addClass("sk-outline").get(0).click();
+                    $(".btn-actu-new-list-forum:contains(Liste des sujets)").addClass("sk-btn-hilight").get(0).click();
                     return;
                 }
 
                 //Ctrl + Espace -> Répondre
                 if (event.ctrlKey && event.keyCode === SPACE_KEY) {
                     event.preventDefault();
-                    $(".bt_repondre").get(0).click();
+                    $(".btn-repondre-msg").get(0).click();
                     return;
                 }
             }
@@ -90,9 +90,7 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
                 //Ctrl + Espace -> Nouveau topic
                 if (event.ctrlKey && event.keyCode === SPACE_KEY) {
                     event.preventDefault();
-                    $("#newsujet")
-                        .scrollThere()
-                        .focus();
+                    $(".btn-actu-new-list-forum:contains(Nouveau sujet)").get(0).click();
                     return;
                 }
 
@@ -100,13 +98,11 @@ SK.moduleConstructors.Shortcuts.prototype.init = function() {
                 if (event.ctrlKey && event.keyCode === F_CHAR_KEY) {
                     event.preventDefault();
                     $("body").scrollThere();
-                    $("#textfield_forum").focus();
+                    $("#search_in_forum").focus();
                     return;
                 }
             }
         }
-
-
 
 
         //Sur toutes les pages
@@ -251,12 +247,12 @@ SK.moduleConstructors.Shortcuts.prototype.settings = {
 SK.moduleConstructors.Shortcuts.prototype.getCss = function() {
 
     var css = "\
-        .sk-hilight {\
-            color: " + SK.common.mainColor + " !important;\
-        }\
         .sk-outline {\
-            background-color: " + SK.common.mainColor + " !important;\
             outline: solid 3px " + SK.common.mainColor + " !important;\
+        }\
+        .sk-btn-hilight {\
+            background-color: " + SK.common.mainColor + " !important;\
+            border: solid 1px " + SK.common.mainColor + " !important;\
         }\
         #shortcuts-modal {\
             padding: 10px 0px;\

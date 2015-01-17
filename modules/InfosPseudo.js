@@ -13,12 +13,9 @@ SK.moduleConstructors.InfosPseudo.prototype.description = "Affiche les avatars d
  */
 SK.moduleConstructors.InfosPseudo.prototype.authors = {};
 
-/** Calcule la taille de l'avatar avant le chargement du CSS */
-SK.moduleConstructors.InfosPseudo.prototype.beforeInit = function() {
-    this.avatarSize = parseInt(this.getSetting("avatarSize"));
-};
-
 SK.moduleConstructors.InfosPseudo.prototype.init = function() {
+
+    var self = this;
 
     //Sur la page liste des sujets, on récupère les auteurs des topics
     if(SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST)) {
@@ -28,41 +25,31 @@ SK.moduleConstructors.InfosPseudo.prototype.init = function() {
     }
 
     else {
+
+        // On ajoute l'hilight des auteurs
+        if (this.getSetting("enableUserHighlight")) {
+
+            SK.Util.bindEvent("authorNamesLoaded", function() {
+                self.highlightCurrentUser();
+            });
+        }
+
         this.addPostInfos();
 
-        if (this.getSetting("enableUserHighlight")) {
-            //On attend quelques secondes que le pseudo soit chargé en Ajax
-            //Sale mais sera modifié avec l'arrivée de SpawnKill
-            window.setTimeout(function() {
-                this.highlightCurrentUser();
-            }.bind(this), 1000);
+        if (this.getSetting("enableAuthorHighlight")) {
+            //On ajoute la couronne à l'auteur
+            this.crownTopicAuthor();
         }
 
-        if(!SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW)) {
+        // Si l'option est activée, on masque les posts des auteurs ignorés
+        if (this.getSetting("enableBlockList")) {
 
-            if (this.getSetting("enableAuthorHighlight")) {
-                //On ajoute la couronne à l'auteur
-                this.crownTopicAuthor();
-            }
-
-            // Si l'option est activée, on masque les posts des auteurs ignorés
-            if (this.getSetting("enableBlockList")) {
-
-                this.queueFunction(function() {
-                    this.hideBlockedPosts();
-                }.bind(this));
-            }
-
+            this.queueFunction(function() {
+                this.hideBlockedPosts();
+            }.bind(this));
         }
+
     }
-};
-
-/* Taille des avatars en pixels */
-SK.moduleConstructors.InfosPseudo.prototype.avatarSize = 0;
-
-/** Retourne un entier sur [1 ; 151] */
-SK.moduleConstructors.InfosPseudo.prototype.getRandomPokemon = function() {
-    return ("00" + Math.floor((Math.random() * 151) + 1)).slice(-3);
 };
 
 /** Ajoute les infos à tous les posts */
@@ -70,114 +57,122 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
 
     var self = this;
 
-    //:not(.lecture_msg) evite les MP
-    if($(":not(.lecture_msg) .msg").length > 0) {
+    //Auteurs dont on n'a pas les données
+    var toLoadAuthors = [];
+    var toLoadAuthorPseudos = [];
 
-        //Auteurs dont on n'a pas les données
-        var toLoadAuthors = [];
-        var toLoadAuthorPseudos = [];
+    // Messages de la page
+    var $messages = $(".bloc-message-forum");
 
-        //On parcourt tous les messages
-        $(".msg .pseudo").each(function() {
+    //On parcourt tous les messages
+    $messages.each(function(index) {
+        var isLastMessageOnPage = $messages.length === index + 1;
 
-            self.queueFunction(function() {
-                var $msg = $(this).parents(".msg").first();
-
-                //On crée le Message
-                var message = new SK.Message($msg);
-
-                //Ajout du placeholder de l'avatar
-                if(self.getSetting("enableAvatar")) {
-
-                    self.addAvatarPlaceholder(message);
-                }
-
-                //On récupère l'auteur correspondant au post
-                if(typeof self.authors[message.authorPseudo] === "undefined") {
-                    self.authors[message.authorPseudo] = new SK.Author(message.authorPseudo);
-                    self.authors[message.authorPseudo].loadLocalData();
-                }
-                var author = self.authors[message.authorPseudo];
-                author.addMessage(message);
-
-
-                //Et on l'ajoute au message
-                message.setAuthor(author);
-
-                //On affiche les données des auteurs qu'on a en localStorage
-                if(author.hasLocalData) {
-                    self.showMessageInfos(message);
-                }
-                else {
-
-                    //On conserve les auteurs dont on n'a pas les données
-                    if(toLoadAuthorPseudos.indexOf(message.authorPseudo) === -1) {
-                        toLoadAuthors.push(author);
-                        toLoadAuthorPseudos.push(message.authorPseudo);
-                    }
-                }
-            }, this);
-
-        });
-
-        //On récupères les infos des auteurs dont on n'a pas les données
         self.queueFunction(function() {
-            var queueInitAuthor = function(author, $cdv) {
-                setTimeout(function() {
 
-                    author.initFromCdv($cdv);
-                    //On enregistre les données dans le localStorage
-                    author.saveLocalData();
+            var $msg = $(this);
 
-                    for(var message in author.messages) {
-                        self.showMessageInfos(author.messages[message]);
-                    }
-                }, 0);
-            };
+            //On crée le Message
+            var message = new SK.Message($msg);
 
-            //On récupère les infos des auteurs périmées ou qu'on n'a pas encore dans le localStorage
-            if(toLoadAuthorPseudos.length > 0) {
-                SK.Util.api("pseudos", toLoadAuthorPseudos, function($api) {
-                    $api.find("author").each(function() {
-                        var $author = $(this);
-                        var pseudo = $author.attr("pseudo");
-                        var $cdv = $author.find("cdv");
-                        var author = self.authors[pseudo];
-                        queueInitAuthor(author, $cdv);
-                    });
-                });
+            //On récupère l'auteur correspondant au post
+            if(typeof self.authors[message.authorPseudo] === "undefined") {
+                self.authors[message.authorPseudo] = new SK.Author(message.authorPseudo);
+                self.authors[message.authorPseudo].loadLocalData();
             }
+            var author = self.authors[message.authorPseudo];
+            author.addMessage(message);
+
+            //Et on l'ajoute au message
+            message.setAuthor(author);
+
+            //On affiche les données des auteurs qu'on a en localStorage
+            if(author.hasLocalData) {
+                self.showMessageInfos(message);
+            }
+            else {
+
+                //On conserve les auteurs dont on n'a pas les données
+                if(toLoadAuthorPseudos.indexOf(message.authorPseudo) === -1) {
+                    toLoadAuthors.push(author);
+                    toLoadAuthorPseudos.push(message.authorPseudo);
+                }
+            }
+
+            // On dispatche un événement indiquant que tous les auteurs de la page sont définis
+            if (isLastMessageOnPage) {
+                SK.Util.dispatchEvent("authorNamesLoaded");
+            }
+
         }, this);
-    }
+
+    });
+
+
+    //On récupères les infos des auteurs dont on n'a pas les données
+    self.queueFunction(function() {
+        var queueInitAuthor = function(author, $cdv) {
+            setTimeout(function() {
+
+                author.initFromCdv($cdv);
+                //On enregistre les données dans le localStorage
+                author.saveLocalData();
+
+                for(var message in author.messages) {
+                    self.showMessageInfos(author.messages[message]);
+                }
+            }, 0);
+        };
+
+        //On récupère les infos des auteurs périmées ou qu'on n'a pas encore dans le localStorage
+        if(toLoadAuthorPseudos.length > 0) {
+            SK.Util.api("pseudos", toLoadAuthorPseudos, function($api) {
+                $api.find("author").each(function() {
+                    var $author = $(this);
+                    var pseudo = $author.attr("pseudo");
+                    var $cdv = $author.find("cdv");
+                    var author = self.authors[pseudo];
+                    queueInitAuthor(author, $cdv);
+                });
+            });
+        }
+    }, this);
 };
 
 /** Affiche les infos du post et de l'auteur au message */
 SK.moduleConstructors.InfosPseudo.prototype.showMessageInfos = function(message) {
 
-    var self = this;
+    this.addPostButtons(message);
 
-    if(self.getSetting("enableAvatar")) {
-        self.addAvatar(message);
+    if (this.getSetting("modalAvatar")) {
+        this.addAvatarModalMarkup(message);
     }
-    if(self.getSetting("enableRank")) {
-        self.addRank(message);
-    }
-    self.addPostButtons(message);
+
 };
 
+
+/**
+ * Ajoute le markup permettant aux avatars de s'ouvrir dans une fenêtre modale
+ */
+SK.moduleConstructors.InfosPseudo.prototype.addAvatarModalMarkup = function(message) {
+    message.$msg.find(".bloc-avatar-msg a")
+        .attr("data-popin", message.author.fullSizeAvatar)
+        .attr("data-popin-type", "image")
+        .attr("title", message.authorPseudoWithCase)
+    ;
+};
 
 /** Ajoute les différents boutons et remplace ceux par défaut */
 SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
 
     var self = this;
     var permalink = message.permalink;
-    var avertirUrl = message.alertUrl;
-    var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + ".html";
+    var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + "?mode=infos";
     var mpUrl = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + message.authorPseudo;
-    var topicsUrl = "http://www.jeuxvideo.com/forums/0-" + permalink.split("-")[1] + "-0-1-0-1-1-%22" +
-            message.authorPseudo + "%22.htm";
 
-    //Bouton CDV
+    // Cette URL n'est plus la bonne depuis Respawn.
+    var topicsUrl = SK.Util.currentSimpleUrl() + "?type_search_in_forum=auteur_topic&search_in_forum=" + message.authorPseudo;
+
     var profileButtonOptions = {
         class: (message.author.gender && this.getSetting("enableSex")) ? message.author.gender : "unknown",
         href: profileUrl,
@@ -193,7 +188,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
                 //On n'ouvre la popup que si l'option modalProfile est désactivée
                 if(!self.getSetting("modalProfile")) {
 
-                    window.open(profileUrl, "profil", "width=800,height=570,scrollbars=no,status=no");
+                    window.open(profileUrl, "profil", "width=980,height=620,scrollbars=no,status=no");
                 }
             }
             else {
@@ -206,9 +201,12 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     if(this.getSetting("modalProfile")) {
         profileButtonOptions["data-popin"] = profileUrl;
         profileButtonOptions["data-popin-type"] = "iframe";
+        profileButtonOptions["data-popin-width"] = 1000;
+        profileButtonOptions["data-popin-height"] = 660;
+        profileButtonOptions["data-popin-scroll-position"] = 64;
         profileButtonOptions.index = 20;
         profileButtonOptions.title = " ";
-        profileButtonOptions.href += "?popup=0";
+        profileButtonOptions.href += "&popup=0";
     }
 
     SK.Util.addButton(message.$msg, profileButtonOptions);
@@ -251,48 +249,6 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
         };
 
         SK.Util.addButton(message.$msg, blockButtonOptions);
-    }
-
-
-    //Bouton Avertir
-    if(this.getSetting("enableAlert")) {
-
-        var alertButtonOptions = {
-            class: "alert",
-            location: "right",
-            index: 100,
-            href: avertirUrl,
-            tooltip: {
-                text: "Avertir un administrateur"
-            },
-            click: function(event) {
-                event.preventDefault();
-
-                //On ne bloque pas le Ctrl + Clic et le middle clic
-                if(!event.ctrlKey && event.which !== 2) {
-
-                    //On n'ouvre la popup que si l'option modalProfile est désactivée
-                    if(!self.getSetting("modalAlert")) {
-
-                        window.open(avertirUrl, "avertir", "width=700,height=470,scrollbars=no,status=no");
-                    }
-                }
-                else {
-                    window.open(avertirUrl, "_blank");
-                }
-            }
-        };
-
-        //Si l'option est activée, la DDB s'affichera dans une popin
-        if(this.getSetting("modalAlert")) {
-            alertButtonOptions["data-popin"] = avertirUrl;
-            alertButtonOptions["data-popin-type"] = "iframe";
-            alertButtonOptions["data-popin-width"] = "560";
-            alertButtonOptions["data-popin-height"] = "400";
-            alertButtonOptions.title = " ";
-        }
-
-        SK.Util.addButton(message.$msg, alertButtonOptions);
     }
 
 
@@ -342,7 +298,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
         });
     }
 
-    //Bouton permalien
+    //Bouton permalien (Ancre)
     if(this.getSetting("enablePermalink")) {
         SK.Util.addButton(message.$msg, {
             class: "link",
@@ -359,180 +315,26 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     }
 
     //Supprimer boutons par défaut
-    message.$msg.find("[target='avertir'], .ancre > a:first, [target='profil']").remove();
+    message.$msg.find(".ancre > a:first, [target='profil']").remove();
 };
 
-/** Préparer une place pour l'avatar de l'auteur */
-SK.moduleConstructors.InfosPseudo.prototype.addAvatarPlaceholder = function(message) {
-
-    //On ajoute déjà le wrapper de l'avatar
-    var $avatarWrapper = $("<div />", {
-        class: "avatar-wrapper",
-    });
-
-    //Lien vers la CDV
-    var $avatar = $("<a />", {
-        class: "avatar"
-    });
-
-    $avatarWrapper.append($avatar);
-    message.$msg.append($avatarWrapper);
-};
-
-/* Ajoute le rang de l'auteur */
-SK.moduleConstructors.InfosPseudo.prototype.addRank = function(message) {
-
-    if(message.author.rank !== "") {
-
-        var rankString = "Rang " + message.author.rank.charAt(0).toUpperCase() + message.author.rank.slice(1);
-
-        //Si l'avatar est pas disponible et que le rang doit être positionné sur l'avatar
-        if(this.getSetting("enableAvatar") && this.getSetting("rankLocation") === "avatar") {
-
-            var $rank = $("<span />", {
-                class: "rank " + message.author.rank,
-                title: rankString
-            });
-            var $avatarWrapper = message.$msg.find(".avatar-wrapper");
-            $avatarWrapper.append($rank.hide().fadeIn());
-        }
-        else {
-            SK.Util.addButton(message.$msg, {
-                class: "rank " + message.author.rank,
-                index: 10,
-                tooltip: {
-                    text: rankString
-                }
-            });
-        }
-
-    }
-};
-
-/** Remplace le loader de l'avatar du post par l'image de l'auteur */
-SK.moduleConstructors.InfosPseudo.prototype.addAvatar = function(message) {
-
-    var $avatarWrapper = message.$msg.find(".avatar-wrapper");
-    var $avatar = $avatarWrapper.find(".avatar");
-
-    var $avatarImg = $("<img />", {
-        title: message.authorPseudoWithCase,
-        alt: message.authorPseudoWithCase,
-    });
-
-    //Si la cdv n'est pas disponible
-    if(message.author.profileUnavailable) {
-
-        $avatar.css("cursor", "default");
-        //ban
-        if(message.author.errorType === "ban def" || message.author.errorType === "ban tempo") {
-            message.author.avatar = "http://www.serebii.net/battletrozei/pokemon/" + this.getRandomPokemon() + ".png";
-            $avatar.addClass(message.author.errorType);
-        }
-        //Autre erreur
-        else {
-            message.author.avatar = GM_getResourceURL("error");
-        }
-
-
-    }
-    else {
-        //On ajoute pas le lien vers l'image si l'auteur est banni
-        $avatarImg
-            .attr("data-popin", message.author.fullSizeAvatar)
-            .attr("data-popin-type", "image");
-        $avatar.attr("href", message.author.fullSizeAvatar);
-    }
-
-
-    $avatarImg.hide();
-
-    //Au chargement de l'avatar
-    $avatarImg.on("load", function() {
-
-        //On n'execute pas l'événement si l'avatar est l'image d'erreur
-        if($avatar.attr("data-error") !== "1") {
-
-            $avatar.append($avatarImg);
-
-            $avatarImg.fadeIn(function() {
-                message.$msg.addClass("not-loading");
-            });
-            this.resizeAndCenterAvatar($avatarImg);
-        }
-
-    }.bind(this));
-
-    //Si l'avatar ne charge pas (par exemple, si le cache est obsolète)
-    $avatarImg.on("error", function() {
-
-        //Affichage d'un avatar d'erreur
-        $avatarImg.attr("src", GM_getResourceURL("error"));
-
-        $avatar.attr("data-error", "1");
-
-        $avatar.append($avatarImg);
-
-        $avatarImg.fadeIn(function() {
-            message.$msg.addClass("not-loading");
-        });
-
-        //Suppression du cache local
-        SK.Util.deleteValue("authors." + message.author.pseudo);
-
-        //Rechargement du cache distant
-        SK.Util.api("pseudos", [ message.author.pseudo ], false, true, false);
-
-    });
-
-    //On met seulement src pour que l'event onload soit en place avant
-    $avatarImg.attr("src", message.author.avatar);
-
-    //Permet de régler les problèmes de cache sur certains navigateurs
-    if(this.complete) {
-        $(this).trigger("load");
-    }
-};
-
-/** Calcule et redimensionne (en CSS) l'avatar passé en parametre */
-SK.moduleConstructors.InfosPseudo.prototype.resizeAndCenterAvatar = function($avatarImg) {
-
-    var imageDimensions = {
-        w: $avatarImg.width(),
-        h: $avatarImg.height()
-    };
-
-    if(imageDimensions.h > imageDimensions.w) {
-        $avatarImg.css({
-            width: this.avatarSize + "px",
-        });
-    }
-    else {
-        $avatarImg.css({
-            height: this.avatarSize + "px",
-        });
-
-        //On execute l'opération en deux fois, car les dimensions changent dynamiquement
-        $avatarImg.css({
-            left: (this.avatarSize - $avatarImg.width()) / 2
-        });
-    }
-};
 
 /**
  * Change la couleur du pseudo posts de l'utilisateur courant.
  */
 SK.moduleConstructors.InfosPseudo.prototype.highlightCurrentUser = function() {
+
     //Cherche le pseudonyme de l'utilisateur
-    var currentUserPseudo = $("#compte strong").first().text().trim().toLowerCase();
+    var currentUserPseudo = $(".nom-head-avatar").text().trim().toLowerCase();
 
     for (var authorKey in this.authors) {
+
         if (authorKey === currentUserPseudo) {
 
             var messages = this.authors[authorKey].messages;
 
             for (var i in messages) {
-                messages[i].$msg.find(".pseudo strong").first().addClass("current-user");
+                messages[i].$msg.find(".bloc-pseudo-msg").first().addClass("current-user");
             }
         }
     }
@@ -548,17 +350,19 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicListAuthors = function() {
     var currentForumId = document.URL.split("-")[1];
 
     //On parcourt tous les topics de la liste
-    $(".ltopic").each(function() {
+    $(".titre-topic > a").each(function() {
+
+        var $topicLink = $(this);
 
         //On récupère l'id du topic
-        var topicId = $(this).attr("href").split("-")[2];
+        var topicId = $topicLink.attr("href").split("-")[2];
         var topicKey = "topics." + currentForumId + "-" + topicId;
 
         //Puis, si on n'a pas déjà les infos en localStorage
         if (SK.Util.getValue(topicKey) === null) {
 
             //On récupère le pseudo de l'auteur et on l'enregistre
-            var topicAuthor = $(this).parent().siblings(".pseudo").text().toLowerCase();
+            var topicAuthor = $topicLink.parents("tr").find(".auteur-topic > a").text().trim().toLowerCase();
             SK.Util.setValue(topicKey, topicAuthor);
         }
 
@@ -581,11 +385,12 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function(callback) 
 
     var topicAuthor = SK.Util.getValue(topicKey);
 
-    //Si la clé n'est pas présente dans le sessionStorage
+    //Si la clé n'est pas présente dans le localStorage
     if (topicAuthor === null) {
         //Si on est sur la première page du topic, on récupère directement l'auteur
         if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ) && currentPage === "1") {
-            topicAuthor = $("#col1 .msg .pseudo > strong").first().text().trim().toLowerCase();
+
+            topicAuthor = $(".bloc-pseudo-msg").first().text().trim().toLowerCase();
 
             //On enregistre l'info en localStorage
             SK.Util.setValue(topicKey, topicAuthor);
@@ -620,9 +425,9 @@ SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function() {
     this.getTopicAuthor(function(topicAuthor) {
 
         //On teste dans chaque message
-        $(".msg .pseudo").each(function() {
+        $(".bloc-pseudo-msg").each(function() {
 
-            var $postPseudo = $(this).find("strong").first();
+            var $postPseudo = $(this);
             var postTextPseudo = $postPseudo.text().trim().toLowerCase();
             // Si l'auteur du message correspond à ce pseudonyme
             if (postTextPseudo === topicAuthor) {
@@ -682,7 +487,7 @@ SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo
 };
 
 /**
- * Supprime la class "hidden" des posts de l'auteur passé en paramètre.
+ * Supprime la class "sk-hidden" des posts de l'auteur passé en paramètre.
  * @param {String} authorPseudo pseudo de l'auteur à réafficher
  */
 SK.moduleConstructors.InfosPseudo.prototype.showPostFrom = function(authorPseudo) {
@@ -704,13 +509,13 @@ SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseu
 
             var $msg = toToggle.messages[i].$msg;
             var $button = $msg.find(".sk-button-content.block");
-            var $tooltip = $button.siblings(".tooltip");
+            var $tooltip = $button.siblings(".sk-tooltip");
 
             switch (newState) {
 
                 case "visible":
                     $msg
-                        .removeClass("hidden")
+                        .removeClass("sk-hidden")
                         .attr("title", "")
                     ;
                     $button
@@ -723,7 +528,7 @@ SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseu
 
                 case "hidden":
                     $msg
-                        .addClass("hidden")
+                        .addClass("sk-hidden")
                         .attr("title", "Cliquez sur le + à droite du post pour réafficher les posts de " + authorPseudo)
                     ;
                     $button
@@ -746,39 +551,11 @@ SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseu
 SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
     return SK.Util.currentPageIn(
         SK.common.Pages.TOPIC_LIST,
-        SK.common.Pages.TOPIC_READ,
-        SK.common.Pages.TOPIC_RESPONSE,
-        SK.common.Pages.POST_PREVIEW
+        SK.common.Pages.TOPIC_READ
     );
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.settings = {
-    enableAvatar: {
-        title: "Affichage des avatars",
-        description: "Affiche les avatars à gauche des posts à la lecture d'un topic.",
-        type: "boolean",
-        default: true,
-    },
-    avatarSize: {
-        title: "Taille des avatars",
-        description: "Choix de la taille des avatars",
-        type: "select",
-        options: { "40": "Petit", "60": "Moyen", "80": "Grand" },
-        default: "60",
-    },
-    enableRank: {
-        title: "Affichage des rangs",
-        description: "Affiche le rang de l'auteur sur les posts à la lecture d'un topic.",
-        type: "boolean",
-        default: true,
-    },
-    rankLocation: {
-        title: "Emplacement du rang",
-        description: "Permet de choisir où le rang doit apparaître sur le post",
-        type: "select",
-        options: { avatar: "Sur l'avatar", topBar: "À gauche du bouton CDV" },
-        default: "avatar",
-    },
     enableMP: {
         title: "Bouton de MP",
         description: "Permet d'envoyer un MP à un utilisateur directement depuis un post.",
@@ -795,13 +572,7 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         title: "Bouton Permalien",
         description: "Ajoute un bouton permettant de copier directement le permalien d'un post.",
         type: "boolean",
-        default: true,
-    },
-    enableAlert: {
-        title: "Bouton d'avertissement",
-        description: "Ajoute un bouton permettant d'avertir un administrateur.",
-        type: "boolean",
-        default: true,
+        default: false,
     },
     enablePermalinkAnchor: {
         title: "Bouton ancre Permalien",
@@ -814,16 +585,17 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         description: "Ajoute un bouton permettant de rechercher les topics créés par l'utilisateur dans le forum courant.",
         type: "boolean",
         default: false,
+        disabled: true,
+    },
+    modalAvatar: {
+        title: "Charger l'avatar dans une modale'",
+        description: "Agrandit l'avatar de l'auteur au clic.",
+        type: "boolean",
+        default: true,
     },
     modalProfile: {
         title: "Charger la CDV dans une modale",
         description: "Affiche le profil de l'auteur dans une fenêtre modale au clic.",
-        type: "boolean",
-        default: true,
-    },
-    modalAlert: {
-        title: "Charger l'alerte administrateur dans une modale",
-        description: "Affiche la fenêtre d'alerte administrateur dans une fenêtre modale au clic.",
         type: "boolean",
         default: true,
     },
@@ -868,16 +640,16 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
     var css = "";
 
     //Si on met en valeur les posts de l'utilisateur
-    if(this.getSetting("enableUserHighlight")) {
+    if (this.getSetting("enableUserHighlight")) {
         css += "\
             .current-user {\
-                color: " + SK.common.darkColor + ";\
+                color: " + SK.common.darkColor + " !important;\
             }\
         ";
     }
 
     //Si on met en valeur les posts de l'auteur
-    if(this.getSetting("enableAuthorHighlight")) {
+    if (this.getSetting("enableAuthorHighlight")) {
         css += "\
             .current-topic-author {\
                 vertical-align: top;\
@@ -889,162 +661,40 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
         ";
     }
 
-    //Seulement si les avatars sont affichés
-    if(this.getSetting("enableAvatar")) {
-
-        var littleAvatar = this.avatarSize === 40;
-        var banTempoLabel = littleAvatar ? "tempo" : "ban tempo";
-        var banDefLabel = littleAvatar ? "def" : "ban def";
-
+    if (this.getSetting("enableBlockList")) {
         css += "\
-            .msg ul {\
-                margin-left: " + (this.avatarSize + 18) + "px;\
+            .bloc-message-forum.sk-hidden .bloc-options-msg {\
+                line-height: 0px !important;\
             }\
-            .msg ul li.suite_sujet {\
-                margin-left: -" + (this.avatarSize + 18) + "px;\
-            }\
-            .msg {\
-                min-height: " + (this.avatarSize + 18) + "px;\
-            }\
-            .msg.hidden {\
-                min-height: 0px;\
-                background-color: #FFF;\
-                border-color: #E8E8E8;\
-            }\
-            .msg.msg1.hidden {\
-                background-color: #F5F8FD;\
-                border-color: #D9E7F4;\
-            }\
-            .msg.hidden ul {\
-                margin-left: 0px;\
-                color: #999;\
-            }\
-            .msg.hidden .post,\
-            .msg.hidden .pseudo,\
-            .msg.hidden .ancre,\
-            .msg.hidden .buttons.top,\
-            .msg.hidden .sk-button,\
-            .msg.hidden .avatar-wrapper {\
+            .bloc-message-forum.sk-hidden .bloc-avatar-msg,\
+            .bloc-message-forum.sk-hidden .bloc-options-msg span,\
+            .bloc-message-forum.sk-hidden .bloc-contenu,\
+            .bloc-message-forum.sk-hidden .bloc-date-msg,\
+            .bloc-message-forum.sk-hidden .bloc-pseudo-msg,\
+            .bloc-message-forum.sk-hidden .bloc-mp-pseudo,\
+            .bloc-message-forum.sk-hidden .buttons-row-wrapper,\
+            .bloc-message-forum.sk-hidden .sk-button:not(.block-wrapper) {\
                 display: none !important;\
             }\
-            .msg.hidden .sk-button.block-wrapper {\
-                display: inline-block !important;\
+            .bloc-message-forum.sk-hidden .bloc-header {\
+                position: relative;\
+                    top: -5px;\
+                height: 24px;\
+                margin: 0px !important;\
+                border: none !important;\
+                color: #999;\
             }\
-            .msg.hidden .date > *,\
-            .msg.hidden .date {\
-                color: rgba(0, 0, 0, 0) !important;\
-            }\
-            .msg.hidden ul::after {\
+            .bloc-message-forum.sk-hidden .bloc-header::after {\
                 content: \"Vous avez ignoré l'auteur de ce message\";\
-            }\
-            .msg .avatar-wrapper {\
-                display: block;\
-                position: absolute;\
-                    left: 9px;\
-                    top: 9px;\
-                width: " + (this.avatarSize) + "px;\
-                height: " + (this.avatarSize) + "px;\
-            }\
-            .msg .avatar {\
-                position: relative;\
-                display: block;\
-                width: 100%;\
-                height: 100%;\
-                overflow: hidden;\
-                box-shadow: 0px 2px 3px -2px rgba(0, 0, 0, 0.8);\
-                cursor: pointer;\
-                z-index: 100;\
-            }\
-            .msg:not(.not-loading)::after {\
-                content: \"\";\
-                display: block;\
-                width: " + (this.avatarSize) + "px;\
-                height: " + (this.avatarSize) + "px;\
                 position: absolute;\
                     top: 9px;\
-                    left: 9px;\
-                background-color: #FFF;\
-                box-shadow: 0px 2px 3px -2px rgba(0, 0, 0, 0.8);\
-                background-image: url('" + GM_getResourceURL("loader") + "');\
-                background-repeat: no-repeat;\
-                background-position: " + (this.avatarSize / 2 - 8) + "px;\
-                z-index: 10;\
-            }\
-            .msg .avatar img {\
-                position: relative;\
-            }\
-            .avatar.ban img {\
-                background-color: #FFF;\
-                width: 100%;\
-            }\
-            .avatar.ban::after {\
-                content: \"banni\";\
-                position: absolute;\
-                bottom: 0px;\
-                left: 0px;\
-                width: 100%;\
-                text-align: center;\
-                padding: 1px 0px;\
-                background-color: #000;\
-                color: #FFF;\
-            }\
-            .avatar.ban.def::after {\
-                content: \"" + banDefLabel + "\";\
-            }\
-            .avatar.ban.tempo::after {\
-                content: \"" + banTempoLabel + "\";\
-            }\
-            .avatar[data-error=\"1\"] img {\
-                width: 100%;\
-            }\
-            .rank {\
-                position: absolute;\
-                    bottom: 0px;\
-                    right: 0px;\
-                display: block;\
-                width: 16px;\
-                height: 16px;\
-                background-repeat: no-repeat;\
-                z-index: 200;\
-            }\
-            .rank.argent {\
-                background-image: url('" + GM_getResourceURL("argent") + "');\
-                background-color: #A7A9AC;\
-            }\
-            .rank.carton {\
-                background-image: url('" + GM_getResourceURL("carton") + "');\
-                background-color: #C49A6C;\
-            }\
-            .rank.bronze {\
-                background-image: url('" + GM_getResourceURL("bronze") + "');\
-                background-color: #C57E16;\
-            }\
-            .rank.diamant {\
-                background-image: url('" + GM_getResourceURL("diamant") + "');\
-                background-color: #27AAE1;\
-            }\
-            .rank.emeraude {\
-                background-image: url('" + GM_getResourceURL("emeraude") + "');\
-                background-color: #39B54A;\
-            }\
-            .rank.or {\
-                background-image: url('" + GM_getResourceURL("or") + "');\
-                background-color: #DBB71D;\
-            }\
-            .rank.rubis {\
-                background-image: url('" + GM_getResourceURL("rubis") + "');\
-                background-color: #BE1E2D;\
-            }\
-            .rank.saphir {\
-                background-image: url('" + GM_getResourceURL("saphir") + "');\
-                background-color: #4D57BC;\
+                    left: 1px;\
             }\
         ";
     }
 
     css += "\
         .msg [src='http://image.jeuxvideo.com/pics/forums/bt_forum_profil.gif'],\
-        .msg [alt='Avertir un administrateur'],\
         .ancre > a:first-child {\
           display: none !important;\
         }\
@@ -1093,53 +743,6 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
             background-position: 0px -1px;\
             background-color: #6EBD1A;\
             border-bottom-color: #4D8412;\
-        }\
-        .sk-button-content.alert {\
-            background-image: url('" + GM_getResourceURL("alert") + "');\
-            background-color: #FE2711;\
-            border-bottom-color: #A0170B;\
-        }\
-        .sk-button-content.rank {\
-            position: static;\
-            border: none !important;\
-            height: 15px !important;\
-            cursor: default;\
-        }\
-        .sk-button-content.rank:active {\
-            margin-top: 0px !important;\
-            border-bottom: none !important;\
-        }\
-        .sk-button-content.rank.argent {\
-            background-image: url('" + GM_getResourceURL("argent") + "');\
-            background-color: #A7A9AC;\
-        }\
-        .sk-button-content.rank.carton {\
-            background-image: url('" + GM_getResourceURL("carton") + "');\
-            background-color: #C49A6C;\
-        }\
-        .sk-button-content.rank.bronze {\
-            background-image: url('" + GM_getResourceURL("bronze") + "');\
-            background-color: #C57E16;\
-        }\
-        .sk-button-content.rank.diamant {\
-            background-image: url('" + GM_getResourceURL("diamant") + "');\
-            background-color: #27AAE1;\
-        }\
-        .sk-button-content.rank.emeraude {\
-            background-image: url('" + GM_getResourceURL("emeraude") + "');\
-            background-color: #39B54A;\
-        }\
-        .sk-button-content.rank.or {\
-            background-image: url('" + GM_getResourceURL("or") + "');\
-            background-color: #DBB71D;\
-        }\
-        .sk-button-content.rank.rubis {\
-            background-image: url('" + GM_getResourceURL("rubis") + "');\
-            background-color: #BE1E2D;\
-        }\
-        .sk-button-content.rank.saphir {\
-            background-image: url('" + GM_getResourceURL("saphir") + "');\
-            background-color: #4D57BC;\
         }\
     ";
 
