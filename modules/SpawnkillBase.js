@@ -505,6 +505,15 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             float: right;\
             margin-left: 10px;\
         }\
+        .bloc-message-forum .sk-button {\
+            opacity: 0.4;\
+        }\
+        .bloc-message-forum .buttons.right .sk-button {\
+            opacity: 1;\
+        }\
+        .bloc-message-forum .sk-button:hover {\
+            opacity: 1;\
+        }\
         .sk-tooltip {\
             display: none;\
             position: absolute;\
