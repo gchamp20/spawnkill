@@ -573,14 +573,12 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         description: "Ajoute un bouton permettant de copier directement le permalien d'un post.",
         type: "boolean",
         default: false,
-        disabled: true,
     },
     enablePermalinkAnchor: {
         title: "Bouton ancre Permalien",
         description: "Ajoute un bouton ancre du permalien d'un post.",
         type: "boolean",
         default: false,
-        disabled: true,
     },
     enableSearchTopics: {
         title: "Bouton de recherche des topics d'un auteur",
