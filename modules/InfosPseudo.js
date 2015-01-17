@@ -253,7 +253,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
 
 
     //Bouton MP
-    if(this.getSetting("enableMP")) {
+    if(this.getSetting("enablePrivateMessage")) {
         SK.Util.addButton(message.$msg, {
             class: "mp",
             href: mpUrl,
@@ -556,11 +556,12 @@ SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.settings = {
-    enableMP: {
+    enablePrivateMessage: {
         title: "Bouton de MP",
         description: "Permet d'envoyer un MP à un utilisateur directement depuis un post.",
         type: "boolean",
-        default: true,
+        default: false,
+        disabled: true,
     },
     enableSex: {
         title: "Affichage du sexe de l'auteur",
@@ -588,7 +589,7 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         disabled: true,
     },
     modalAvatar: {
-        title: "Charger l'avatar dans une modale'",
+        title: "Charger l'avatar dans une modale",
         description: "Agrandit l'avatar de l'auteur au clic.",
         type: "boolean",
         default: true,

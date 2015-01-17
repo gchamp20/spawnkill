@@ -168,7 +168,7 @@ SK.moduleConstructors.WarnOnNewPost.prototype.settings = {
         default: true,
     },
     useWebsocketServer: {
-        title: "[Désactivé] Utiliser le nouveau serveur de Websocket",
+        title: "Utiliser le nouveau serveur de Websocket",
         description: "Passe par le nouveau serveur pour récupérer les infos des topics. (désactivé car trop instable)",
         type: "boolean",
         disabled: true,
