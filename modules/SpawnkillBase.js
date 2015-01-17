@@ -309,6 +309,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             top: 10px;\
         }\
         .modal-box h3 {\
+            min-height: 28px !important;\
             padding-top: 6px;\
             padding-bottom: 4px;\
             margin: 0px;\
