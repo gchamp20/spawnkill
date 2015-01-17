@@ -104,7 +104,7 @@ SK.moduleConstructors.WarnOnNewPost.prototype.requestTopicUpdates = function() {
  * Check régulièrement le nombre de posts du topic pour informer
  * l'utilisateur des nouveaux posts.
  */
-SK.moduleConstructors.WarnOnNewPost.prototype.httpPolling = function(checkInterval) {
+SK.moduleConstructors.WarnOnNewPost.prototype.httpPolling = function(checkingInterval) {
 
         //On récupère les infos initiales du topic
         this.getPostCount(SK.common.topicId, function(postCount) {
@@ -138,7 +138,7 @@ SK.moduleConstructors.WarnOnNewPost.prototype.httpPolling = function(checkInterv
 
                 }.bind(this));
 
-            }.bind(this), checkInterval);
+            }.bind(this), checkingInterval);
         }.bind(this));
 };
 
@@ -168,7 +168,7 @@ SK.moduleConstructors.WarnOnNewPost.prototype.settings = {
         default: true,
     },
     useWebsocketServer: {
-        title: "[Désactivé] Utiliser le nouveau serveur de Websocket",
+        title: "Utiliser le nouveau serveur de Websocket",
         description: "Passe par le nouveau serveur pour récupérer les infos des topics. (désactivé car trop instable)",
         type: "boolean",
         disabled: true,

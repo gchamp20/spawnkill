@@ -4,7 +4,7 @@
 
 /**
  * HilightNewTopic : met en valeur les topics sans réponses
- * 
+ *
  */
 SK.moduleConstructors.HilightNewTopic = SK.Module.new();
 
@@ -21,15 +21,15 @@ SK.moduleConstructors.HilightNewTopic.prototype.hilightNewTopic = function() {
 
     var self = this;
 
-    $("#liste_topics tr td:nth-child(4)").each(function() {
+    $("#table-liste-topic-forum .nb-reponse-topic").each(function() {
 
         var $postCount = $(this);
 
         self.queueFunction(function() {
 
-            if(parseInt($postCount.html().trim()) === 0) {
+            if (parseInt($postCount.html().trim()) === 0) {
                 //On remplace l'image du topic, sauf si c'est une épingle
-                $postCount.parent().find("img[src='http://image.jeuxvideo.com/pics/forums/topic_dossier1.gif']")
+                $postCount.parent().find("img[src='/img/forums/topic-dossier1.png']")
                     .attr("src", GM_getResourceURL("newTopic"))
                     .addClass("new-topic");
             }

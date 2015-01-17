@@ -12,7 +12,7 @@ SK.moduleConstructors.EmbedMedia.prototype.id = "EmbedMedia";
 SK.moduleConstructors.EmbedMedia.prototype.title = "Intégration de contenus";
 SK.moduleConstructors.EmbedMedia.prototype.description = "Remplace les liens vers les images, vidéos, " +
     "sondages ou vocaroo par le contenu lui-même. Attention, si trop de contenu est activé, le chargement" +
-    "de la page êut être ralenti.";
+    "de la page peut être ralenti.";
 
 SK.moduleConstructors.EmbedMedia.prototype.init = function() {
 
@@ -20,11 +20,8 @@ SK.moduleConstructors.EmbedMedia.prototype.init = function() {
 
     this.initMediaTypes();
 
-    //Si htmlQuote est activé, on a besoin que les citations soient chargées pour calculer la taille des vidéos
-    var mustWaitQuote = SK.modules.Quote.activated && SK.modules.Quote.getSetting("htmlQuote");
-    SK.Util.bindOrExecute(mustWaitQuote, "htmlQuoteLoaded", function() {
-        this.embedMedia();
-    }.bind(this));
+    //Si betterQuote est activé, on a besoin que les citations soient chargées pour calculer la taille des vidéos
+    this.embedMedia();
 
     this.userSettings = {};
 
@@ -324,7 +321,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "youtube",
-        settingId: "embedVideos",
+        settingId: "embedVideos_disabled",
 
         // http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
         // http://regex101.com/r/cJ5xN3/1 pour les tests de la regex
@@ -447,7 +444,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "pixule",
-        settingId: "embedSurveys",
+        settingId: "embedSurveys_disabled",
 
         regex: /^http:\/\/www\.pixule\.com.*\/(\d+).*$/,
 
@@ -485,7 +482,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "sondageio",
-        settingId: "embedSurveys",
+        settingId: "embedSurveys_disabled",
 
         regex: /^http:\/\/sondage\.io\/([\d]*).*$/,
 
@@ -522,7 +519,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "dailymotion",
-        settingId: "embedVideos",
+        settingId: "embedVideos_disabled",
 
         regex: /^http:\/\/www\.dailymotion\.com\/video\/([^_]*)/,
 
@@ -554,7 +551,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "vimeo",
-        settingId: "embedVideos",
+        settingId: "embedVideos_disabled",
 
         regex: /^http:\/\/vimeo.com\/(?:\w*\/)*(\d*)/,
 
@@ -586,7 +583,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "vine",
-        settingId: "embedVideos",
+        settingId: "embedVideos_disabled",
 
         regex: /(^(https?:\/\/vine.co\/v\/[a-zA-Z0-9]*)|(https?:\/\/v\.cdn\.vine\.co\/r\/videos\/[\w\.\-]+\.mp4))/,
 
@@ -754,7 +751,6 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
 SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
 
     var self = this;
-
     /**
      * Fonction qui ajoute le bouton afficher/masquer les media d'un post.
      */
@@ -831,7 +827,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                     var showMedia = SK.Util.getValue(messageId + "." + mediaType.id +".show");
 
                     //On cache tous les medias des citations, par défaut
-                    if($a.parents(".quote-message").length > 0) {
+                    if($a.parents("blockquote").length > 0) {
                         showMedia = false;
                     }
 
@@ -880,13 +876,13 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
      * remplacement des liens pas l'intégration du media correspondant
      *  et ajout d'un bouton masquer/afficher au post si nécessaire.
      */
-    $(".msg").each(function(id, msg) {
+    $(".bloc-message-forum").each(function(id, msg) {
 
         var $msg = $(msg);
         var count = 0;
 
         //On parcourt tous les liens du post
-        $msg.find(".post a").each(function(id, a) {
+        $msg.find(".text-enrichi-forum:first a").each(function(id, a) {
 
             //Et on cherche chaque type de media
             queueCheckLinkForMedia($msg, $(a), {
@@ -929,11 +925,12 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         },
         default: "20",
     },
-    embedVideos: {
+    embedVideos_disabled: {
         title: "Intégration des vidéos",
         description: "Intégre les vidéos Youtube, DailyMotion, Vimeo et Vine aux posts.",
         type: "boolean",
-        default: true,
+        default: false,
+        disabled: true,
     },
     embedImages: {
         title: "Intégration des images",
@@ -941,11 +938,12 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         type: "boolean",
         default: true,
     },
-    embedSurveys: {
+    embedSurveys_disabled: {
         title: "Intégration des sondages",
         description: "Intégre les sondages Pixule et Sondage.io aux posts.",
         type: "boolean",
-        default: true,
+        default: false,
+        disabled: true,
     },
     embedRecords: {
         title: "Intégration des Vocaroos",

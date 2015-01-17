@@ -59,7 +59,23 @@ SK.Author.prototype.initFromCdv = function($cdv) {
         this.messageCount = parseInt($cdv.find("nb_messages").text());
         this.avatar = $cdv.find("petite_image").text();
         this.fullSizeAvatar = $cdv.find("image").text();
-        this.gender = $cdv.find("couleur_pseudo").text() === "#0066CC" ? "male" : "female";
+
+        if(this.fullSizeAvatar === "http://image.jeuxvideo.com/avatars/default.jpg") {
+            this.fullSizeAvatar = this.avatar;
+        }
+
+        switch ($cdv.find("couleur_pseudo").text()) {
+            case "#0066CC":
+                this.gender = "male";
+                break;
+            case "#FF0099":
+                this.gender = "female";
+                break;
+            default:
+                this.gender = "unknown";
+                break;
+
+        }
     }
     else {
         this.profileUnavailable = true;

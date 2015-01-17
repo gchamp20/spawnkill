@@ -16,12 +16,7 @@ SK.moduleConstructors.Settings.prototype.hidden = true;
 SK.moduleConstructors.Settings.prototype.init = function() {
 
     //On n'ajoute le bouton de paramètres que sur les pages du forum
-    if (SK.Util.currentPageIn(
-            SK.common.Pages.TOPIC_LIST,
-            SK.common.Pages.TOPIC_READ,
-            SK.common.Pages.TOPIC_RESPONSE,
-            SK.common.Pages.TOPIC_FORM)
-    ) {
+    if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST, SK.common.Pages.TOPIC_READ)) {
         this.addSettingsButton();
     }
 
@@ -63,8 +58,7 @@ SK.moduleConstructors.Settings.prototype.addSettingsButton = function() {
     });
 
     //#select_taille pour les forumsjv
-    $(".titre_page, #select_taille").after($settingsButton);
-
+    $(".options-crumb").append($settingsButton);
 };
 
 /* Retourne la fenêtre modale de configuration */
@@ -146,7 +140,7 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
                             var setting = module.settings[settingKey];
                             ui += "<li class='option' title='" + SK.Util.htmlEncode(setting.description) +
                               "' data-id='" + settingKey + "' >";
-                                ui += SK.Util.htmlEncode(module.settings[settingKey].title);
+                                ui += (setting.disabled ? "[Désactivé] " : "") + SK.Util.htmlEncode(setting.title);
                             ui += "</li>";
                         }
                     ui += "</ul>";
@@ -309,18 +303,14 @@ SK.moduleConstructors.Settings.prototype.saveSettings = function() {
 
 SK.moduleConstructors.Settings.prototype.getCss = function() {
     var css = "\
-        #col1 {\
-            position: relative; \
+        .options-crumb span,\
+        .options-crumb a,\
+        .options-crumb div {\
+            margin: 0px !important;\
         }\
-        #ft1 {\
-            right: 67px !important;\
-        }\
-        #ft2 {\
-            right: 23px !important;\
-        }\
-        #select_taille {\
-            margin-right: 22px;\
-            margin-top: 3px;\
+        .options-crumb span,\
+        .options-crumb a {\
+            margin-left: 8px !important;\
         }\
         #setting-modal {\
             width: 420px !important;\
@@ -345,7 +335,7 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         #setting-modal.scroll h3 {\
             box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.15);\
             border-bottom: 1px solid #DDD;\
-            padding-bottom: 10px !important;\
+            padding-bottom: 12px !important;\
         }\
         #setting-modal.scroll .content {\
             overflow-x: hidden;\
@@ -353,7 +343,6 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         #setting-modal.scroll .options {\
             width: 100%;\
-            padding-right: 20px;\
         }\
         #setting-modal.scroll .buttons {\
             padding-top: 10px;\
@@ -363,13 +352,27 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
             width: 408px;\
             margin-bottom: 0px;\
         }\
-        #setting-modal.scroll .tooltip {\
+        #setting-modal.scroll .sk-tooltip {\
             display: none;\
         }\
         #settings-button {\
-            position: absolute;\
-                right: 1px;\
-                top: 3px;\
+            position: relative;\
+                top: 1px;\
+        }\
+        #settings-button .sk-button-content {\
+            width: 20px;\
+            height: 18px;\
+            background-position: 2px 1px;\
+            opacity: 0.4;\
+        }\
+        #settings-button .sk-button-content:hover {\
+            opacity: 1;\
+        }\
+        #settings-button .sk-button-content:active {\
+            margin-top: 1px !important;\
+        }\
+        #settings-button .sk-tooltip {\
+            left: 32px;\
         }\
         .settings-spawnkill-version {\
             position: absolute;\
@@ -379,10 +382,10 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
             color: #BBB;\
         }\
         .sk-button-content.settings {\
-            width: 18px;\
-            height: 15px;\
+            width: 20px;\
+            height: 18px;\
             background-image: url('" + GM_getResourceURL("settings") + "');\
-            background-position: 1px 0px;\
+            background-position: 2px 1px;\
         }\
         #settings-form {\
             position: relative;\
@@ -394,6 +397,7 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
             position: static;\
         }\
         .main-setting {\
+            box-sizing: content-box;\
             position: relative;\
             height: 18px;\
             padding: 8px 10px;\
@@ -447,7 +451,8 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         .subsettings-button {\
             position: absolute !important;\
-            right: 10px;\
+            right: 8px;\
+            top: 7px;\
         }\
         #settings-form .option .sk-button {\
             float: right;\

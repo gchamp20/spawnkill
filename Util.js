@@ -134,6 +134,13 @@ SK.Util = {
     },
 
     /**
+     * Retourne l'url courante amputée des éventuels queryStrings / hash
+     */
+    currentSimpleUrl: function() {
+        return location.protocol + "//" + location.host + location.pathname;
+    },
+
+    /**
      * Retourne vrai si l'utilisateur est sur l'une des pages passée en paramètre.
      * pages (SK.common.Pages...) : Liste des pages possibles (voir SK.common.Pages)
      */
@@ -274,23 +281,18 @@ SK.Util = {
             //On place la box .buttons en fonction de l'emplacement
             switch(location) {
                 case "top":
-                    $msg.find(".pseudo > strong").first().after($buttons);
+                    $msg.find(".bloc-pseudo-msg").first().after($buttons);
                     break;
                 case "bottom":
-                    //Si le li .ancre n'existe pas, on la crée
-                    var $ancre = $msg.find(".ancre").first();
+                    // Les boutons du dessous ont besoin d'un wrapper en table-row
+                    var $buttonsWrapper = $("<div>").addClass("buttons-row-wrapper");
+                    $buttonsWrapper.append($("<div>").addClass("buttons-cell-placeholder"));
+                    $buttonsWrapper.append($buttons);
 
-                    if($ancre.length === 0) {
-                        $ancre = $("<li>", {
-                            class: "ancre"
-                        });
-                        $msg.find(".post").after($ancre);
-                    }
-
-                    $ancre.append($buttons);
+                    $msg.find(".inner-head-content").after($buttonsWrapper);
                     break;
                 case "right":
-                    $msg.find(".date").first().append($buttons);
+                    $msg.find(".bloc-options-msg").first().append($buttons);
                     break;
             }
 
@@ -470,8 +472,23 @@ SK.Util = {
     },
 
     /** Dispatch un evenement sur <body> */
-    dispatch: function(eventName) {
+    dispatchEvent: function(eventName) {
         $("body").get(0).dispatchEvent(new Event(eventName));
+    },
+
+    /** Bind une fonction à un événement */
+    bindEvent: function(event, fn) {
+        $("body").on(event, fn);
+    },
+
+    /** Bind une fonction à un événement si la condition est vraie, sinon exécute la fonction */
+    bindEventOrExecute: function(condition, event, fn) {
+        if(condition) {
+            SK.Util.bindEvent(event, fn);
+        }
+        else {
+           fn();
+        }
     },
 
     /**
@@ -497,7 +514,7 @@ SK.Util = {
             //<br> -> \n
             .replace(/<br ?\/?>/g, "\n")
             //suppression des quotes
-            .replace(/<div class="quote-bloc">.*?<\/div>/g, "")
+            .replace(/<blockquote class="blockquote-jv">.*<\/blockquote>/g, "")
             //suppression des boutons de téléchargement
             .replace(/<div class="spawnkill-media-element(?:(?:.|\s)*?<\/div>){5}/g, "")
             //suppression des vidéos youtube
@@ -515,18 +532,7 @@ SK.Util = {
             //suppression des li
             .replace(/<\/li>/g, "")
         );
-
         return selection;
-    },
-
-    /** Bind une fonction à un événement si la condition est vraie, sinon exécute la fonction */
-    bindOrExecute: function(condition, event, fn) {
-        if(condition) {
-            $("body").on(event, fn);
-        }
-        else {
-           fn();
-        }
     },
 
     /** Retourne une chaîne pseudo aléatoire. */

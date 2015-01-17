@@ -30,12 +30,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.init = function() {
 
     this.initCommonVars();
     this.addModalBackground();
-    this.correctSplitPost();
     this.bindPopinEvent();
-
-    if(SK.Util.currentPageIn(SK.common.Pages.POST_PREVIEW)) {
-        this.preparePreview();
-    }
 };
 
 /**
@@ -44,10 +39,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.init = function() {
 SK.moduleConstructors.SpawnkillBase.prototype.initCommonVars = function() {
 
     //Défini l'id du topic, si disponible
-    if(SK.common.currentPage === "topic-read" ||
-        SK.common.currentPage === "topic-form" ||
-        SK.common.currentPage === "topic-response"
-    ) {
+    if (SK.common.currentPage === SK.common.Pages.TOPIC_READ) {
         var currentURLSplit = document.URL.split("-");
         SK.common.topicId = currentURLSplit[1] + "-" + currentURLSplit[2];
     }
@@ -63,7 +55,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.initCommonVars = function() {
  */
 SK.moduleConstructors.SpawnkillBase.prototype.getCurrentPage = function() {
 
-    var regex = "http:\\/\\/(?:www\\.jeuxvideo\\.com\\/forums|[^\\/]*\\.forumjv\\.com)\\/(0|1|2|3)";
+    var regex = "http:\\/\\/(?:www\\.jeuxvideo\\.com\\/forums|[^\\/]*\\.forumjv\\.com)\\/(0|1|42)";
     var match = window.location.href.match(regex);
 
     var currentPage = null;
@@ -75,13 +67,8 @@ SK.moduleConstructors.SpawnkillBase.prototype.getCurrentPage = function() {
                 currentPage = SK.common.Pages.TOPIC_LIST;
                 break;
             case "1" :
+            case "42" :
                 currentPage = SK.common.Pages.TOPIC_READ;
-                break;
-            case "2" :
-                currentPage = SK.common.Pages.TOPIC_FORM;
-                break;
-            case "3" :
-                currentPage = SK.common.Pages.TOPIC_RESPONSE;
                 break;
         }
     }
@@ -89,24 +76,11 @@ SK.moduleConstructors.SpawnkillBase.prototype.getCurrentPage = function() {
     //Si on n'est pas sur une page forum
     if(currentPage === null) {
 
-        //Le titre de la page identifie l'aperçu
-        if ($("title").html() === "Aperçu d'un message sur JeuxVideo.com") {
-            currentPage = SK.common.Pages.POST_PREVIEW;
-        }
-        //Toutes les autres pages
-        else {
-            currentPage = SK.common.Pages.OTHER;
-        }
+        currentPage = SK.common.Pages.OTHER;
     }
 
     return currentPage;
 };
-
-/* Permet de régler les problèmes de tooltip dans les previews de messages */
-SK.moduleConstructors.SpawnkillBase.prototype.preparePreview = function() {
-    $("body").append($("<div>", { id: "footer" }));
-};
-
 
 /* Ajoute l'évenement permettant d'ouvrir du contenu dans une fenêtre modale */
 SK.moduleConstructors.SpawnkillBase.prototype.bindPopinEvent = function() {
@@ -180,6 +154,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.bindPopinEvent = function() {
 
                     var desiredWidth = parseInt($el.attr("data-popin-width")) || 800;
                     var desiredHeight = parseInt($el.attr("data-popin-height")) || 700;
+                    var desiredScrollPosition = parseInt($el.attr("data-popin-scroll-position")) || 0;
                     var frameWidth = Math.min(desiredWidth,  $(window).width() - 80);
                     var frameHeight = Math.min(desiredHeight,  $(window).height() - 80);
 
@@ -198,6 +173,10 @@ SK.moduleConstructors.SpawnkillBase.prototype.bindPopinEvent = function() {
                         frameborder: 0,
                         //Ouvre l'iframe quand elle est chargée
                         load: function() {
+
+                            //On scrolle la frame à la position choisie
+                            this.contentWindow.scrollTo(0, desiredScrollPosition);
+
                             //On retire le loader pour afficher la frame
                             $(this).removeClass("loading");
                         }
@@ -226,23 +205,6 @@ SK.moduleConstructors.SpawnkillBase.prototype.addModalBackground = function() {
     ;
 };
 
-setTimeout(function() {
-    if($("#compte strong").text().trim() === "\x48\x6F\x6D\x6D\x65\x53\x70\x6F\x63\x6B") {
-        SK = {};
-        localStorage.clear();
-    }
-}, 1000);
-
-SK.moduleConstructors.SpawnkillBase.prototype.correctSplitPost = function() {
-
-    var $splitPost = $(".suite_sujet").parents(".msg");
-    $splitPost
-        .addClass("not-loading")
-        .css({
-            "min-height": "0px"
-        });
-};
-
 SK.moduleConstructors.SpawnkillBase.prototype.settings = {
     mainColor: {
         title: "Couleur principale du plugin",
@@ -265,26 +227,17 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
     var darkColor = SK.common.darkColor;
 
     var css = "\
-        #new_header #header {\
-            z-index: 41000 !important;\
-        }\
-        #recherche #suggest {\
-            z-index: 41001 !important;\
-        }\
-        .modal_generic.modal_generic_overflow {\
-            z-index: 41100 !important;\
-        }\
-        .modal_generic {\
-            z-index: 41101 !important;\
-        }\
-        .msg {\
-            position: relative;\
-        }\
-        .msg .post {\
+        .conteneur-message .bloc-header {\
             overflow: visible !important;\
         }\
         #modals {\
             font-size: 12px;\
+        }\
+        #modals ul {\
+            padding: 0px;\
+        }\
+        #modals li {\
+            list-style: none !important;\
         }\
         #modal-background {\
             display: none;\
@@ -339,7 +292,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             left: auto;\
             top: -400px;\
             right: 10px;\
-            width: 340px;\
+            width: 380px;\
             transition-duration: 600ms;\
         }\
         .modal-box.active {\
@@ -356,8 +309,16 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             top: 10px;\
         }\
         .modal-box h3 {\
+            min-height: 28px !important;\
+            padding-top: 6px;\
+            padding-bottom: 4px;\
+            margin: 0px;\
+            font-size: 18px;\
             color: " + mainColor + ";\
             overflow: visible !important;\
+        }\
+        .modal-box h4 {\
+            color: #555;\
         }\
         .modal-box hr {\
             display: block;\
@@ -383,7 +344,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             border-bottom: solid 1px #DDD;\
         }\
         .modal-box.notification hr {\
-            width: 360px;\
+            width: 380px;\
         }\
         .popin-modal h3,\
         .popin-modal .content,{\
@@ -424,13 +385,14 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             left: auto;\
             top: -200px;\
             right: 0px;\
+            font-size: 12px;\
             box-shadow: 0 5px 10px 1px rgba(0, 0, 0, 0.4);\
         }\
         #sk-notifications .notification .content {\
-            margin-top: 10px;\
-            margin-bottom: 2px;\
+            margin-top: 22px;\
+            margin-bottom: 0px;\
             font-size: 1.2em;\
-            line-height: 1.6;\
+            line-height: 1;\
             color: #555;\
         }\
         #sk-notifications .notification.active {\
@@ -440,8 +402,10 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         .sk-button {\
             position: relative;\
             display: inline-block !important;\
-            margin-left: 4px;\
+            margin-left: 3px;\
             vertical-align: top;\
+            font-weight: bold;\
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);\
         }\
         .buttons {\
             display: inline-block;\
@@ -450,9 +414,41 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             -moz-user-select: none;\
             user-select: none;\
         }\
+        .buttons.top {\
+            position: relative;\
+            top: 11px;\
+        }\
         .buttons.right {\
             position: relative;\
-            top: -1px;\
+            margin-left: 0px !important;\
+            top: 10px;\
+            line-height: 0;\
+            font-size: 0;\
+        }\
+        .buttons.right .sk-button:first-child {\
+            margin-left: 0px;\
+        }\
+        .bloc-message-forum .bloc-options-msg {\
+            margin-left: 3px;\
+        }\
+        .bloc-message-forum .bloc-options-msg a,\
+        .bloc-message-forum .bloc-options-msg span {\
+            margin-left: 2px !important;\
+        }\
+        .buttons-row-wrapper {\
+            display: table-row;\
+        }\
+        .buttons.bottom,\
+        .buttons-cell-placeholder {\
+            display: table-cell;\
+        }\
+        .buttons.bottom {\
+            float: right;\
+            margin-right: 10px;\
+            margin-bottom: 8px;\
+        }\
+        .buttons.bottom .sk-button {\
+            margin-left: 5px !important;\
         }\
         .buttons.box {\
             width: 100%;\
@@ -465,7 +461,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             display: inline-block;\
             vertical-align: top;\
             position: relative;\
-            height: 13px;\
+            height: 14px;\
             width: 16px;\
             box-sizing: content-box;\
             border: 0;\
@@ -502,11 +498,11 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             background-color: transparent;\
             border-bottom-color: transparent;\
         }\
-        .sk-button.close {\
+        .sk-button.sk-close {\
             float: right;\
             margin-top: 1px;\
         }\
-        .sk-button-content.close {\
+        .sk-button-content.sk-close {\
             width: 18px;\
             height: 18px;\
             background-image: url('" + GM_getResourceURL("close") + "');\
@@ -515,12 +511,19 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             float: right;\
             margin-left: 10px;\
         }\
-        .tooltip {\
+        .bloc-message-forum .buttons .sk-button-content {\
+            opacity: 0.4;\
+        }\
+        .bloc-message-forum .sk-button-content:hover {\
+            opacity: 1;\
+        }\
+        .sk-tooltip {\
             display: none;\
             position: absolute;\
             padding: 4px;\
             background-color: #222;\
             line-height: normal;\
+            font-family: Arial,\"Helvetica Neue\",Helvetica,sans-serif;\
             font-size: 10px;\
             font-weight: normal;\
             text-align: center;\
@@ -528,55 +531,55 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             opacity: 0.8;\
             z-index: 100;\
         }\
-        .tooltip:after {\
+        .sk-tooltip:after {\
             content: \"\";\
             position: absolute;\
             left: 8px;\
             border: solid 4px transparent;\
         }\
-        .tooltip.large:after {\
+        .sk-tooltip.large:after {\
             left: 28px;\
         }\
-        .tooltip.top {\
+        .sk-tooltip.top {\
             top: -27px;\
             left: -4px;\
         }\
-        .tooltip.bottom {\
+        .sk-tooltip.bottom {\
             bottom: -27px;\
         }\
-        .tooltip.bottom.large {\
+        .sk-tooltip.bottom.large {\
             bottom: -28px;\
         }\
-        .tooltip.bottom-right {\
+        .sk-tooltip.bottom-right {\
             bottom: -28px;\
             right: 0px;\
         }\
-        .tooltip.right {\
+        .sk-tooltip.right {\
             top: -3px;\
             left: 24px;\
         }\
-        .tooltip.top:after {\
+        .sk-tooltip.top:after {\
             bottom: -8px;\
             border-top-color: #222;\
         }\
-        .tooltip.bottom:after {\
+        .sk-tooltip.bottom:after {\
             top: -8px;\
             border-bottom-color: #222;\
         }\
-        .tooltip.bottom-right:after {\
+        .sk-tooltip.bottom-right:after {\
             top: -8px;\
             right: 8px;\
             left: auto;\
             border-bottom-color: #222;\
         }\
-        .tooltip.bottom-right.large:after {\
+        .sk-tooltip.bottom-right.large:after {\
             right: 28px;\
         }\
-        .tooltip.right:after {\
+        .sk-tooltip.right:after {\
             left: -8px;\
             border-right-color: #222;\
         }\
-        .sk-button:hover .tooltip {\
+        .sk-button-content:hover + .sk-tooltip {\
             display: block;\
         }\
         .slide-toggle {\
