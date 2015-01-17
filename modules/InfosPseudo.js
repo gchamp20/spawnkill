@@ -672,6 +672,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
             .bloc-message-forum.sk-hidden .bloc-date-msg,\
             .bloc-message-forum.sk-hidden .bloc-pseudo-msg,\
             .bloc-message-forum.sk-hidden .bloc-mp-pseudo,\
+            .bloc-message-forum.sk-hidden .buttons-row-wrapper,\
             .bloc-message-forum.sk-hidden .sk-button:not(.block-wrapper) {\
                 display: none !important;\
             }\
@@ -687,7 +688,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
                 content: \"Vous avez ignoré l'auteur de ce message\";\
                 position: absolute;\
                     top: 9px;\
-                    left: 14px;\
+                    left: 1px;\
             }\
         ";
     }

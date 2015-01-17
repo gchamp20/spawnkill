@@ -511,13 +511,13 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             float: right;\
             margin-left: 10px;\
         }\
-        .bloc-message-forum .sk-button {\
+        .bloc-message-forum .sk-button-content {\
             opacity: 0.4;\
         }\
-        .bloc-message-forum .buttons.right .sk-button {\
+        .bloc-message-forum .partial-quote .sk-button-content {\
             opacity: 1;\
         }\
-        .bloc-message-forum .sk-button:hover {\
+        .bloc-message-forum .sk-button-content:hover {\
             opacity: 1;\
         }\
         .sk-tooltip {\
@@ -582,7 +582,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             left: -8px;\
             border-right-color: #222;\
         }\
-        .sk-button:hover .sk-tooltip {\
+        .sk-button-content:hover + .sk-tooltip {\
             display: block;\
         }\
         .slide-toggle {\

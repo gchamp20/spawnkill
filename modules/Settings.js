@@ -359,6 +359,18 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
             position: relative;\
                 top: 1px;\
         }\
+        #settings-button .sk-button-content {\
+            width: 20px;\
+            height: 18px;\
+            background-position: 2px 1px;\
+            opacity: 0.4;\
+        }\
+        #settings-button .sk-button-content:hover {\
+            opacity: 1;\
+        }\
+        #settings-button .sk-button-content:active {\
+            margin-top: 1px !important;\
+        }\
         #settings-button .sk-tooltip {\
             left: 32px;\
         }\
@@ -371,16 +383,9 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         .sk-button-content.settings {\
             width: 20px;\
-            height: 17px;\
+            height: 18px;\
             background-image: url('" + GM_getResourceURL("settings") + "');\
             background-position: 2px 1px;\
-            opacity: 0.4;\
-        }\
-        .sk-button-content.settings:hover {\
-            opacity: 1;\
-        }\
-        .sk-button-content.settings:active {\
-            margin-top: 1px !important;\
         }\
         #settings-form {\
             position: relative;\
@@ -446,7 +451,8 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         .subsettings-button {\
             position: absolute !important;\
-            right: 10px;\
+            right: 8px;\
+            top: 7px;\
         }\
         #settings-form .option .sk-button {\
             float: right;\
