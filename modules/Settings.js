@@ -357,7 +357,7 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
         }\
         #settings-button {\
             position: relative;\
-                top: 2px;\
+                top: 1px;\
         }\
         #settings-button .sk-tooltip {\
             left: 32px;\
@@ -370,10 +370,17 @@ SK.moduleConstructors.Settings.prototype.getCss = function() {
             color: #BBB;\
         }\
         .sk-button-content.settings {\
-            width: 18px;\
-            height: 15px;\
+            width: 20px;\
+            height: 17px;\
             background-image: url('" + GM_getResourceURL("settings") + "');\
-            background-position: 1px 0px;\
+            background-position: 2px 1px;\
+            opacity: 0.4;\
+        }\
+        .sk-button-content.settings:hover {\
+            opacity: 1;\
+        }\
+        .sk-button-content.settings:active {\
+            margin-top: 1px !important;\
         }\
         #settings-form {\
             position: relative;\
