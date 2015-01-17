@@ -402,7 +402,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         .sk-button {\
             position: relative;\
             display: inline-block !important;\
-            margin-left: 4px;\
+            margin-left: 3px;\
             vertical-align: top;\
             font-weight: bold;\
             text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);\
@@ -420,10 +420,13 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         }\
         .buttons.right {\
             position: relative;\
+            margin-left: 0px !important;\
             top: 10px;\
-            left: -4px;\
             line-height: 0;\
             font-size: 0;\
+        }\
+        .buttons.right .sk-button:first-child {\
+            margin-left: 0px;\
         }\
         .bloc-message-forum .bloc-options-msg {\
             margin-left: 3px;\
@@ -444,6 +447,9 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             margin-right: 10px;\
             margin-bottom: 8px;\
         }\
+        .buttons.bottom .sk-button {\
+            margin-left: 5px !important;\
+        }\
         .buttons.box {\
             width: 100%;\
         }\
@@ -455,7 +461,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             display: inline-block;\
             vertical-align: top;\
             position: relative;\
-            height: 13px;\
+            height: 14px;\
             width: 16px;\
             box-sizing: content-box;\
             border: 0;\
