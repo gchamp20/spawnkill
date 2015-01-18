@@ -227,6 +227,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
     var darkColor = SK.common.darkColor;
 
     var css = "\
+        .bloc-message-forum .txt-msg,\
         .conteneur-message .bloc-header {\
             overflow: visible !important;\
         }\
