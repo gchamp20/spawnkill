@@ -1115,7 +1115,9 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             .twitter-tweet {\
                 padding: 16px;\
                 padding-top: 8px;\
+                margin: 0px;\
                 border-top: 1px solid rgba(0, 0, 0, 0.1);\
+                border-left: none;\
                 line-height: 1.4em;\
                 font-size: 14px;\
                 font-weight: bold;\
