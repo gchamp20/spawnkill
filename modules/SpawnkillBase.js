@@ -436,14 +436,8 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             margin-left: 2px !important;\
         }\
         .buttons-row-wrapper {\
-            display: table-row;\
-        }\
-        .buttons.bottom,\
-        .buttons-cell-placeholder {\
-            display: table-cell;\
-        }\
-        .buttons.bottom {\
-            float: right;\
+            text-align: right;\
+            box-sizing: content-box;\
             margin-right: 10px;\
             margin-bottom: 8px;\
         }\
