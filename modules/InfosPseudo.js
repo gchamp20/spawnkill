@@ -403,7 +403,7 @@ SK.moduleConstructors.InfosPseudo.prototype.getTopicAuthor = function(callback) 
 
             SK.Util.ws(requestURL, function($firstPage) {
                 var contenu = $($firstPage.find("contenu").text());
-                topicAuthor = contenu.find(".pseudo").first().text().split(" ")[0].trim().toLowerCase();
+                topicAuthor = contenu.find(".pseudo").first().text().trim().split(/\s/)[0].toLowerCase();
 
                 //On enregistre l'info en localStorage
                 SK.Util.setValue(topicKey, topicAuthor);
@@ -429,6 +429,7 @@ SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function() {
 
             var $postPseudo = $(this);
             var postTextPseudo = $postPseudo.text().trim().toLowerCase();
+
             // Si l'auteur du message correspond à ce pseudonyme
             if (postTextPseudo === topicAuthor) {
                 //Crée le div contenant l'image de la couronne et le place avant le pseudo de l'auteur du topic
