@@ -38,10 +38,11 @@ SK.moduleConstructors.SpawnkillBase.prototype.init = function() {
  */
 SK.moduleConstructors.SpawnkillBase.prototype.initCommonVars = function() {
 
-    //Défini l'id du topic, si disponible
+    //Défini l'id du topic et du forum, si disponible
     if (SK.common.currentPage === SK.common.Pages.TOPIC_READ) {
         var currentURLSplit = document.URL.split("-");
         SK.common.topicId = currentURLSplit[1] + "-" + currentURLSplit[2];
+        SK.common.forumId = currentURLSplit[1];
     }
     else {
         SK.common.topicId = null;
@@ -227,6 +228,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
     var darkColor = SK.common.darkColor;
 
     var css = "\
+        .bloc-message-forum .txt-msg,\
         .conteneur-message .bloc-header {\
             overflow: visible !important;\
         }\
@@ -417,6 +419,10 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         .buttons.top {\
             position: relative;\
             top: 11px;\
+            left: -4px;\
+        }\
+        .buttons.top .sk-button {\
+            margin-left: 5px;\
         }\
         .buttons.right {\
             position: relative;\
@@ -436,14 +442,8 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             margin-left: 2px !important;\
         }\
         .buttons-row-wrapper {\
-            display: table-row;\
-        }\
-        .buttons.bottom,\
-        .buttons-cell-placeholder {\
-            display: table-cell;\
-        }\
-        .buttons.bottom {\
-            float: right;\
+            text-align: right;\
+            box-sizing: content-box;\
             margin-right: 10px;\
             margin-bottom: 8px;\
         }\

@@ -286,10 +286,9 @@ SK.Util = {
                 case "bottom":
                     // Les boutons du dessous ont besoin d'un wrapper en table-row
                     var $buttonsWrapper = $("<div>").addClass("buttons-row-wrapper");
-                    $buttonsWrapper.append($("<div>").addClass("buttons-cell-placeholder"));
                     $buttonsWrapper.append($buttons);
 
-                    $msg.find(".inner-head-content").after($buttonsWrapper);
+                    $msg.find(".conteneur-message").after($buttonsWrapper);
                     break;
                 case "right":
                     $msg.find(".bloc-options-msg").first().append($buttons);
