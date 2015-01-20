@@ -321,7 +321,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "youtube",
-        settingId: "embedVideos_disabled",
+        settingId: "embedVideos",
 
         // http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url
         // http://regex101.com/r/cJ5xN3/1 pour les tests de la regex
@@ -444,7 +444,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "pixule",
-        settingId: "embedSurveys_disabled",
+        settingId: "embedSurveys",
 
         regex: /^http:\/\/www\.pixule\.com.*\/(\d+).*$/,
 
@@ -482,7 +482,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "sondageio",
-        settingId: "embedSurveys_disabled",
+        settingId: "embedSurveys",
 
         regex: /^http:\/\/sondage\.io\/([\d]*).*$/,
 
@@ -519,7 +519,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "dailymotion",
-        settingId: "embedVideos_disabled",
+        settingId: "embedVideos",
 
         regex: /^http:\/\/www\.dailymotion\.com\/video\/([^_]*)/,
 
@@ -551,7 +551,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "vimeo",
-        settingId: "embedVideos_disabled",
+        settingId: "embedVideos",
 
         regex: /^http:\/\/vimeo.com\/(?:\w*\/)*(\d*)/,
 
@@ -583,7 +583,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
     this.mediaTypes.push(new SK.moduleConstructors.EmbedMedia.MediaType({
 
         id: "vine",
-        settingId: "embedVideos_disabled",
+        settingId: "embedVideos",
 
         regex: /(^(https?:\/\/vine.co\/v\/[a-zA-Z0-9]*)|(https?:\/\/v\.cdn\.vine\.co\/r\/videos\/[\w\.\-]+\.mp4))/,
 
@@ -925,12 +925,11 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         },
         default: "20",
     },
-    embedVideos_disabled: {
+    embedVideos: {
         title: "Intégration des vidéos",
         description: "Intégre les vidéos Youtube, DailyMotion, Vimeo et Vine aux posts.",
         type: "boolean",
-        default: false,
-        disabled: true,
+        default: true,
     },
     embedImages: {
         title: "Intégration des images",
@@ -938,12 +937,11 @@ SK.moduleConstructors.EmbedMedia.prototype.settings = {
         type: "boolean",
         default: true,
     },
-    embedSurveys_disabled: {
+    embedSurveys: {
         title: "Intégration des sondages",
         description: "Intégre les sondages Pixule et Sondage.io aux posts.",
         type: "boolean",
-        default: false,
-        disabled: true,
+        default: true,
     },
     embedRecords: {
         title: "Intégration des Vocaroos",
