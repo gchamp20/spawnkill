@@ -170,8 +170,9 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + "?mode=infos";
     var mpUrl = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + message.authorPseudo;
 
-    // Cette URL n'est plus la bonne depuis Respawn.
-    var topicsUrl = SK.Util.currentSimpleUrl() + "?type_search_in_forum=auteur_topic&search_in_forum=" + message.authorPseudo;
+    // On recrée le slug du forum pour l'url de recherche
+    var forumUrl = $(".bloc-pre-left .group-two a:last").attr("href");
+    var topicSearchUrl = "http://www.jeuxvideo.com/recherche" + forumUrl + "?type_search_in_forum=auteur_topic&search_in_forum=" + message.authorPseudo;
 
     var profileButtonOptions = {
         class: (message.author.gender && this.getSetting("enableSex")) ? message.author.gender : "unknown",
@@ -273,14 +274,14 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     if(this.getSetting("enableSearchTopics")) {
         SK.Util.addButton(message.$msg, {
             class: "searchTopics",
-            href: topicsUrl,
+            href: topicSearchUrl,
             index: 40,
             tooltip: {
                 text: "Rechercher les topics de " + message.authorPseudoWithCase
             },
             click: function(event) {
                 event.preventDefault();
-                var win = window.open(topicsUrl, "_blank");
+                var win = window.open(topicSearchUrl, "_blank");
                 win.focus();
             }
         });
@@ -587,7 +588,6 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         description: "Ajoute un bouton permettant de rechercher les topics créés par l'utilisateur dans le forum courant.",
         type: "boolean",
         default: false,
-        disabled: true,
     },
     modalAvatar: {
         title: "Charger l'avatar dans une modale",

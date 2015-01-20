@@ -38,10 +38,11 @@ SK.moduleConstructors.SpawnkillBase.prototype.init = function() {
  */
 SK.moduleConstructors.SpawnkillBase.prototype.initCommonVars = function() {
 
-    //Défini l'id du topic, si disponible
+    //Défini l'id du topic et du forum, si disponible
     if (SK.common.currentPage === SK.common.Pages.TOPIC_READ) {
         var currentURLSplit = document.URL.split("-");
         SK.common.topicId = currentURLSplit[1] + "-" + currentURLSplit[2];
+        SK.common.forumId = currentURLSplit[1];
     }
     else {
         SK.common.topicId = null;
