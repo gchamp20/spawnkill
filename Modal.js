@@ -52,9 +52,9 @@ SK.Modal = function(options) {
 
     //On ajoute les boutons à la modale
     var $buttons = $modal.find(".box.buttons");
-    for(var key in buttons) {
-        $buttons.prepend(buttons[key]);
-    }
+    buttons.forEach(function(button) {
+        $buttons.prepend(button);
+    });
 
     //Si besoin, on ajoute un bouton fermer à la modale
     if(hasCloseButton) {

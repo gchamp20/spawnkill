@@ -118,9 +118,9 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostInfos = function() {
                 //On enregistre les données dans le localStorage
                 author.saveLocalData();
 
-                for(var message in author.messages) {
-                    self.showMessageInfos(author.messages[message]);
-                }
+                author.messages.forEach(function(message) {
+                    self.showMessageInfos(message);
+                });
             }, 0);
         };
 

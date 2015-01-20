@@ -814,9 +814,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
             var messageId = $msg.attr("id");
 
             //On parcourt tous les types de medias
-            for(var i in self.mediaTypes) {
-
-                var mediaType = self.mediaTypes[i];
+            self.mediaTypes.some(function(mediaType) {
 
                 //On intégre seulement les medias activés
                 if(self.userSettings[mediaType.settingId]) {
@@ -862,10 +860,10 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                             }
                         }
 
-                        break;
+                        return true;
                     }
                 }
-            }
+            });
 
         }, this);
 

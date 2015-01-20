@@ -42,5 +42,5 @@ window.SK = {
     /**
      * Instances des modules activés
      */
-    modules: []
+    modules: {}
 };
