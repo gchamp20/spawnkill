@@ -339,7 +339,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
              * Retourne une version "embed" du lien, sinon null.
              */
             var getEmbedUrl = function(youtubeId, start) {
-                return "http://www.youtube.com/embed/" + youtubeId + (start !== 0 ? "?start=" + start : "");
+                return "http://www.youtube.com/embed/" + youtubeId + "?html5=1" + (start !== 0 ? "&start=" + start : "");
             };
 
             /**
@@ -347,7 +347,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
              */
             var createVideoElement = function (youtubeLink) {
                 var ratio = 16 / 9;
-                var videoWidth = $a.closest(".quote-message, .post").width() - 5;
+                var videoWidth = $a.closest("blockquote, .bloc-contenu").width() - 5;
                 var videoHeight = videoWidth / ratio;
 
                 var $el = $("<iframe>", {
@@ -499,7 +499,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
             }
             else {
                 var sondageLink = match[0];
-                var sondageWidth = Math.min(400, $a.parents(".post").width() - 5);
+                var sondageWidth = Math.min(400, $a.parents("blockquote, .bloc-contenu").width() - 5);
                 var sondageHeight = 300;
 
                 var $el = $("<iframe>", {
@@ -531,7 +531,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
             var dailymotionId = match[1];
             var dailymotionLink = "http://www.dailymotion.com/embed/video/" + dailymotionId;
             var ratio = 16 / 9;
-            var videoWidth = $a.closest(".quote-message, .post").width() - 5;
+            var videoWidth = $a.closest("blockquote, .bloc-contenu").width() - 5;
             var videoHeight = videoWidth / ratio;
 
             var $el = $("<iframe>", {
@@ -563,7 +563,7 @@ SK.moduleConstructors.EmbedMedia.prototype.initMediaTypes = function() {
             var vimeoId = match[1];
             var vimeoLink = "http://player.vimeo.com/video/" + vimeoId + "?title=0&byline=0&portrait=0&color=20B9EB";
             var ratio = 16 / 9;
-            var videoWidth = $a.closest(".quote-message, .post").width() - 5;
+            var videoWidth = $a.closest("blockquote, .bloc-contenu").width() - 5;
             var videoHeight = videoWidth / ratio;
 
             var $el = $("<iframe>", {
@@ -1090,7 +1090,8 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
                 background-color: #fff;\
                 border: 1px solid #666;\
                 border-radius: 4px;\
-                width: 128px; height: 94px;\
+                width: 128px;\
+                height: 94px;\
                 overflow: hidden;\
             }\
         ";
@@ -1115,7 +1116,9 @@ SK.moduleConstructors.EmbedMedia.prototype.getCss = function() {
             .twitter-tweet {\
                 padding: 16px;\
                 padding-top: 8px;\
+                margin: 0px;\
                 border-top: 1px solid rgba(0, 0, 0, 0.1);\
+                border-left: none;\
                 line-height: 1.4em;\
                 font-size: 14px;\
                 font-weight: bold;\
