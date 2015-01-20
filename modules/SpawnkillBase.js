@@ -419,6 +419,10 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         .buttons.top {\
             position: relative;\
             top: 11px;\
+            left: -4px;\
+        }\
+        .buttons.top .sk-button {\
+            margin-left: 5px;\
         }\
         .buttons.right {\
             position: relative;\
