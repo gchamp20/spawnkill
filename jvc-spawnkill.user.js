@@ -5,33 +5,33 @@
 // @namespace   http://www.spawnkill.fr
 // @include     http://*.jeuxvideo.com/*
 // @include     http://*.forumjv.com/*
-// @version     2.0.0.2
-// @require     jquery-2.1.1.min.js?v2.0.0.2
-// @require     jquery-plugins.js?v2.0.0.2
-// @require     base.js?v2.0.0.2
-// @require     Util.js?v2.0.0.2
-// @require     Message.js?v2.0.0.2
-// @require     Author.js?v2.0.0.2
-// @require     Button.js?v2.0.0.2
-// @require     SlideToggle.js?v2.0.0.2
-// @require     Modal.js?v2.0.0.2
-// @require     DropdownList.js?v2.0.0.2
-// @require     FaviconNotificationUpdater.js?v2.0.0.2
-// @require     SocketMessage.js?v2.0.0.2
-// @require     modules/Module.js?v2.0.0.2
-// @require     modules/SpawnkillBase.js?v2.0.0.2
-// @require     modules/Settings.js?v2.0.0.2
-// @----require     modules/SocketConnection.js?v2.0.0.2
-// @require     modules/Quote.js?v2.0.0.2
-// @require     modules/Shortcuts.js?v2.0.0.2
-// @require     modules/InfosPseudo.js?v2.0.0.2
-// @require     modules/HilightNewTopic.js?v2.0.0.2
-// @require     modules/LastPage.js?v2.0.0.2
-// @require     modules/EmbedMedia.js?v2.0.0.2
-// @require     modules/WarnOnNewPost.js?v2.0.0.2
-// @require     modules/AutoUpdate.js?v2.0.0.2
-// @require     modules/PemtHighlight.js?v2.0.0.2
-// @require     modules/Usability.js?v2.0.0.2
+// @version     2.0.0.3
+// @require     jquery-2.1.1.min.js?v2.0.0.3
+// @require     jquery-plugins.js?v2.0.0.3
+// @require     base.js?v2.0.0.3
+// @require     Util.js?v2.0.0.3
+// @require     Message.js?v2.0.0.3
+// @require     Author.js?v2.0.0.3
+// @require     Button.js?v2.0.0.3
+// @require     SlideToggle.js?v2.0.0.3
+// @require     Modal.js?v2.0.0.3
+// @require     DropdownList.js?v2.0.0.3
+// @require     FaviconNotificationUpdater.js?v2.0.0.3
+// @require     SocketMessage.js?v2.0.0.3
+// @require     modules/Module.js?v2.0.0.3
+// @require     modules/SpawnkillBase.js?v2.0.0.3
+// @require     modules/Settings.js?v2.0.0.3
+// @----require     modules/SocketConnection.js?v2.0.0.3
+// @require     modules/Quote.js?v2.0.0.3
+// @require     modules/Shortcuts.js?v2.0.0.3
+// @require     modules/InfosPseudo.js?v2.0.0.3
+// @require     modules/HilightNewTopic.js?v2.0.0.3
+// @require     modules/LastPage.js?v2.0.0.3
+// @require     modules/EmbedMedia.js?v2.0.0.3
+// @require     modules/WarnOnNewPost.js?v2.0.0.3
+// @require     modules/AutoUpdate.js?v2.0.0.3
+// @require     modules/PemtHighlight.js?v2.0.0.3
+// @require     modules/Usability.js?v2.0.0.3
 // @resource    close                 images/close.png
 // @resource    banImage              images/ban.png
 // @resource    newTopic              images/new-topic.png
@@ -86,7 +86,7 @@
 /* jshint unused: false */
 /* jshint multistr: true */
 /* jshint newcap: false */
-SK.VERSION = "v2.0.0.2";
+SK.VERSION = "v2.0.0.3";
 
 // On ne charge pas le script dans les iframes
 if (window.top === window.self) {
