@@ -156,6 +156,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.bindPopinEvent = function() {
                     var desiredWidth = parseInt($el.attr("data-popin-width")) || 800;
                     var desiredHeight = parseInt($el.attr("data-popin-height")) || 700;
                     var desiredScrollPosition = parseInt($el.attr("data-popin-scroll-position")) || 0;
+                    var onLoadCallback = SK.Util.getFunctionFromString($el.attr("data-popin-callback")) || $.noop;
                     var frameWidth = Math.min(desiredWidth,  $(window).width() - 80);
                     var frameHeight = Math.min(desiredHeight,  $(window).height() - 80);
 
@@ -174,6 +175,9 @@ SK.moduleConstructors.SpawnkillBase.prototype.bindPopinEvent = function() {
                         frameborder: 0,
                         //Ouvre l'iframe quand elle est chargée
                         load: function() {
+
+                            //On appelle l'éventuel callback
+                            onLoadCallback();
 
                             //On scrolle la frame à la position choisie
                             this.contentWindow.scrollTo(0, desiredScrollPosition);
