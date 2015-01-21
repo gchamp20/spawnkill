@@ -203,8 +203,8 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
         profileButtonOptions["data-popin"] = profileUrl;
         profileButtonOptions["data-popin-type"] = "iframe";
         profileButtonOptions["data-popin-width"] = 1000;
-        profileButtonOptions["data-popin-height"] = 660;
-        profileButtonOptions["data-popin-scroll-position"] = 64;
+        profileButtonOptions["data-popin-height"] = 720;
+        profileButtonOptions["data-popin-callback"] = "SK.modules.InfosPseudo.cleanProfileIframe";
         profileButtonOptions.index = 20;
         profileButtonOptions.title = " ";
         profileButtonOptions.href += "&popup=0";
@@ -441,6 +441,14 @@ SK.moduleConstructors.InfosPseudo.prototype.crownTopicAuthor = function() {
         });
     });
 
+};
+
+/**
+ * Supprime le header et le footer de l'iframe chargée dans une popin
+ * Permet d'obtenir des CDV plus "clean".
+ */
+SK.moduleConstructors.InfosPseudo.prototype.cleanProfileIframe = function() {
+    $(".popin-modal iframe").contents().find("header, footer, #jv-feedback").remove();
 };
 
 /**
