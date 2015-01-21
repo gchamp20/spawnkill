@@ -555,6 +555,26 @@ SK.Util = {
         }
 
         return decodeHTMLEntities(str);
+    },
+
+    /**
+     * Get function from string, with or without scopes (by Nicolas Gauthier)
+     * Example :
+     * "Noa.Rights.getUserRights" -> window["Noa"]["Rights"]["getUserRights"]
+     */
+    getFunctionFromString: function(string) {
+
+        var scope = window;
+        var scopeSplit = string.split(".");
+
+        for (var i = 0; i < scopeSplit.length - 1; i++) {
+            scope = scope[scopeSplit[i]];
+
+            if (typeof scope === "undefined") {
+                return;
+            }
+        }
+        return scope[scopeSplit[scopeSplit.length - 1]];
     }
 
 };
