@@ -221,6 +221,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
             "hsl(262, 60%, 52%)" : "Violet",
             "hsl(193, 68%, 33%)" : "Bleu",
             "hsl(88, 60%, 52%)" : "Vert",
+            "hsl(0, 78%, 35%)" : "Rouge",
         },
         default: "hsl(20, 100%, 62%)",
     }
