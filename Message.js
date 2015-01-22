@@ -21,7 +21,7 @@ SK.Message.prototype.init = function() {
 
     /* Récupère le texte présent dans le post $(.msg) passé en paramètre
     * Note : remplace les images par leur attribut alt */
-    var $message = this.$msg.find(".text-enrichi-forum").clone();
+    var $message = this.$msg.find(".txt-msg").clone();
 
     //On supprime les éventuelles citations
     $message.find("blockquote").remove();
