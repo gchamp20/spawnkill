@@ -5,8 +5,9 @@
 SK.moduleConstructors.InfosPseudo = SK.Module.new();
 
 SK.moduleConstructors.InfosPseudo.prototype.id = "InfosPseudo";
-SK.moduleConstructors.InfosPseudo.prototype.title = "Avatars et autres infos";
-SK.moduleConstructors.InfosPseudo.prototype.description = "Affiche les avatars des membres à gauche des posts ainsi que leur rangs et leur sexe. Ajoute aussi des boutons pour envoyer un MP ou copier le lien permanent.";
+SK.moduleConstructors.InfosPseudo.prototype.title = "Ajoute des actions et des informations aux posts";
+SK.moduleConstructors.InfosPseudo.prototype.description = "Affiche le sexe de l'auteur si disponible, " +
+    "un bouton pour copier le lien permanent ou encore un bouton pour voir les topics de l'auteur.";
 
 /**
  * Pseudos des auteurs présents sur la page.
@@ -18,7 +19,7 @@ SK.moduleConstructors.InfosPseudo.prototype.init = function() {
     var self = this;
 
     //Sur la page liste des sujets, on récupère les auteurs des topics
-    if(SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST)) {
+    if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST)) {
         if (this.getSetting("enableAuthorHighlight")) {
             this.getTopicListAuthors();
         }
