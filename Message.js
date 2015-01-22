@@ -30,7 +30,7 @@ SK.Message.prototype.init = function() {
     $message.find(".spawnkill-media-element").remove();
 
     //On remplace les smileys par des alt
-    $message.find("> img").each(function() {
+    $message.find("img[data-code]").each(function() {
         $(this).replaceWith(this.alt);
     });
 
