@@ -704,13 +704,6 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
     }
 
     css += "\
-        .msg [src='http://image.jeuxvideo.com/pics/forums/bt_forum_profil.gif'],\
-        .ancre > a:first-child {\
-          display: none !important;\
-        }\
-        .msg li.ancre {\
-            min-height: 15px;\
-        }\
         .sk-button-content.mp {\
             background-image: url('" + GM_getResourceURL("mp") + "');\
             background-color: #FCCB0C;\
