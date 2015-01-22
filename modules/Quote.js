@@ -53,7 +53,7 @@ SK.moduleConstructors.Quote.prototype.initPartialQuote = function() {
         window.setTimeout(function() {
 
             var selectionText = SK.Util.getPostSelection();
-            var $post = $(this).find(".text-enrichi-forum");
+            var $post = $(this).find(".txt-msg");
             var message = new SK.Message($post.parents(".bloc-message-forum"));
 
             //On supprime les liens noelshacks (qui posent problème à cause des miniatures)
@@ -221,13 +221,13 @@ SK.moduleConstructors.Quote.prototype.getCss = function() {
                 background-image: url('" + GM_getResourceURL("quote") + "');\
                 background-position: -1px -1px;\
             }\
-            .msg .post::-moz-selection,\
-            .msg .post *::-moz-selection {\
+            .conteneur-message .txt-msg::-moz-selection,\
+            .conteneur-message .txt-msg *::-moz-selection {\
                 background-color: " + mainColor + ";\
                 color: #FFF;\
             }\
-            .msg .post::selection,\
-            .msg .post *::selection {\
+            .conteneur-message .txt-msg::selection,\
+            .conteneur-message .txt-msg *::selection {\
                 background-color: " + mainColor + ";\
                 color: #FFF;\
             }\
