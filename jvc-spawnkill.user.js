@@ -21,7 +21,6 @@
 // @require     modules/Module.js?v2.0.0.3
 // @require     modules/SpawnkillBase.js?v2.0.0.3
 // @require     modules/Settings.js?v2.0.0.3
-// @----require     modules/SocketConnection.js?v2.0.0.3
 // @require     modules/Quote.js?v2.0.0.3
 // @require     modules/Shortcuts.js?v2.0.0.3
 // @require     modules/InfosPseudo.js?v2.0.0.3
