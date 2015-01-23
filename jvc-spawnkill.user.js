@@ -87,8 +87,11 @@
 /* jshint newcap: false */
 SK.VERSION = "v2.0.0.3";
 
+
+var inIframe = window.top !== window.self;
+
 // On ne charge pas le script dans les iframes
-if (window.top === window.self) {
+if (!inIframe) {
 
     var modulesStyle = "";
 
@@ -157,4 +160,19 @@ if (window.top === window.self) {
         }
 
     }, 50);
+}
+// Dans certains cas particuliers, on a besoin d'exécuter un peu de code dans une iframe
+else {
+
+    // On masque l'header, le footer et le bouton de feedback sur les CDV ouvertes dans les iframes
+    if (window.location.href.match(/http:\/\/www\.jeuxvideo\.com\/profil/)) {
+
+        SK.Util.addCss("\
+            header,\
+            footer,\
+            #jv-feedback {\
+                display: none !important;\
+            }\
+        ");
+    }
 }

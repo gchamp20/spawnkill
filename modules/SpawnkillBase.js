@@ -369,6 +369,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         .popin-modal iframe {\
             position: relative;\
             transition-duration: 300ms;\
+            font-size: 0px !important;\
         }\
         .popin-modal iframe.loading {\
             opacity: 0;\

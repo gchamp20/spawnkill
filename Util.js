@@ -564,17 +564,17 @@ SK.Util = {
      */
     getFunctionFromString: function(string) {
 
-        var scope = window;
-        var scopeSplit = string.split(".");
+        if (typeof string !== "string") {
+            return undefined;
+        }
 
-        for (var i = 0; i < scopeSplit.length - 1; i++) {
-            scope = scope[scopeSplit[i]];
+        return string.split(".").reduce(function(x, i) {
 
-            if (typeof scope === "undefined") {
+            if (i === "") {
                 return;
             }
-        }
-        return scope[scopeSplit[scopeSplit.length - 1]];
+            return x[i];
+        }, window);
     }
 
 };
