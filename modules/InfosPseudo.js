@@ -255,24 +255,6 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
         SK.Util.addButton(message.$msg, blockButtonOptions);
     }
 
-
-    //Bouton MP
-    if(this.getSetting("enablePrivateMessage")) {
-        SK.Util.addButton(message.$msg, {
-            class: "mp",
-            href: mpUrl,
-            index: 30,
-            tooltip: {
-                text: "Envoyer un MP"
-            },
-            click: function(event) {
-                event.preventDefault();
-                var win = window.open(mpUrl, "_blank");
-                win.focus();
-            }
-        });
-    }
-
     //Bouton rechercher topics
     if(this.getSetting("enableSearchTopics") && !message.author.profileUnavailable) {
         SK.Util.addButton(message.$msg, {
@@ -561,13 +543,6 @@ SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.settings = {
-    enablePrivateMessage: {
-        title: "Bouton de MP",
-        description: "Permet d'envoyer un MP à un utilisateur directement depuis un post.",
-        type: "boolean",
-        default: false,
-        disabled: true,
-    },
     enableSex: {
         title: "Affichage du sexe de l'auteur",
         description: "Affiche une photo de la... Hmm...Pardon. Change le style du bouton de CDV d'un auteur en fonction de son sexe.",
