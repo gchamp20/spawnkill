@@ -5,7 +5,7 @@
 SK.moduleConstructors.InfosPseudo = SK.Module.new();
 
 SK.moduleConstructors.InfosPseudo.prototype.id = "InfosPseudo";
-SK.moduleConstructors.InfosPseudo.prototype.title = "Ajoute des actions et des informations aux posts";
+SK.moduleConstructors.InfosPseudo.prototype.title = "Informations sur les posts";
 SK.moduleConstructors.InfosPseudo.prototype.description = "Affiche le sexe de l'auteur si disponible, " +
     "un bouton pour copier le lien permanent ou encore un bouton pour voir les topics de l'auteur.";
 
