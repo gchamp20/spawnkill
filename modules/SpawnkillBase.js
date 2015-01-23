@@ -156,6 +156,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.bindPopinEvent = function() {
                     var desiredWidth = parseInt($el.attr("data-popin-width")) || 800;
                     var desiredHeight = parseInt($el.attr("data-popin-height")) || 700;
                     var desiredScrollPosition = parseInt($el.attr("data-popin-scroll-position")) || 0;
+                    var onLoadCallback = SK.Util.getFunctionFromString($el.attr("data-popin-callback")) || $.noop;
                     var frameWidth = Math.min(desiredWidth,  $(window).width() - 80);
                     var frameHeight = Math.min(desiredHeight,  $(window).height() - 80);
 
@@ -174,6 +175,9 @@ SK.moduleConstructors.SpawnkillBase.prototype.bindPopinEvent = function() {
                         frameborder: 0,
                         //Ouvre l'iframe quand elle est chargée
                         load: function() {
+
+                            //On appelle l'éventuel callback
+                            onLoadCallback();
 
                             //On scrolle la frame à la position choisie
                             this.contentWindow.scrollTo(0, desiredScrollPosition);
@@ -214,6 +218,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         options: {
             "hsl(40, 90%, 52%)" : "Jaune",
             "hsl(20, 100%, 62%)": "Orange",
+            "hsl(0, 78%, 35%)" : "Rouge",
             "hsl(262, 60%, 52%)" : "Violet",
             "hsl(193, 68%, 33%)" : "Bleu",
             "hsl(88, 60%, 52%)" : "Vert",
@@ -364,6 +369,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         .popin-modal iframe {\
             position: relative;\
             transition-duration: 300ms;\
+            font-size: 0px !important;\
         }\
         .popin-modal iframe.loading {\
             opacity: 0;\

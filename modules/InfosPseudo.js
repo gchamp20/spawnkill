@@ -5,8 +5,9 @@
 SK.moduleConstructors.InfosPseudo = SK.Module.new();
 
 SK.moduleConstructors.InfosPseudo.prototype.id = "InfosPseudo";
-SK.moduleConstructors.InfosPseudo.prototype.title = "Avatars et autres infos";
-SK.moduleConstructors.InfosPseudo.prototype.description = "Affiche les avatars des membres à gauche des posts ainsi que leur rangs et leur sexe. Ajoute aussi des boutons pour envoyer un MP ou copier le lien permanent.";
+SK.moduleConstructors.InfosPseudo.prototype.title = "Informations sur les posts";
+SK.moduleConstructors.InfosPseudo.prototype.description = "Affiche le sexe de l'auteur si disponible, " +
+    "un bouton pour copier le lien permanent ou encore un bouton pour voir les topics de l'auteur.";
 
 /**
  * Pseudos des auteurs présents sur la page.
@@ -18,7 +19,7 @@ SK.moduleConstructors.InfosPseudo.prototype.init = function() {
     var self = this;
 
     //Sur la page liste des sujets, on récupère les auteurs des topics
-    if(SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST)) {
+    if (SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST)) {
         if (this.getSetting("enableAuthorHighlight")) {
             this.getTopicListAuthors();
         }
@@ -174,46 +175,48 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     var forumUrl = $(".bloc-pre-left .group-two a:last").attr("href");
     var topicSearchUrl = "http://www.jeuxvideo.com/recherche" + forumUrl + "?type_search_in_forum=auteur_topic&search_in_forum=" + message.authorPseudo;
 
-    var profileButtonOptions = {
-        class: (message.author.gender && this.getSetting("enableSex")) ? message.author.gender : "unknown",
-        href: profileUrl,
-        tooltip: {
-            text: "Voir la carte de visite"
-        },
-        click: function(event) {
+    if (!message.author.profileUnavailable) {
 
-            event.preventDefault();
-            //On ne bloque pas le Ctrl + Clic et le middle clic
-            if(!event.ctrlKey && event.which !== 2) {
+        var profileButtonOptions = {
+            class: (message.author.gender && this.getSetting("enableSex")) ? message.author.gender : "unknown",
+            href: profileUrl,
+            tooltip: {
+                text: "Voir la carte de visite"
+            },
+            click: function(event) {
 
-                //On n'ouvre la popup que si l'option modalProfile est désactivée
-                if(!self.getSetting("modalProfile")) {
+                event.preventDefault();
+                //On ne bloque pas le Ctrl + Clic et le middle clic
+                if(!event.ctrlKey && event.which !== 2) {
 
-                    window.open(profileUrl, "profil", "width=980,height=620,scrollbars=no,status=no");
+                    //On n'ouvre la popup que si l'option modalProfile est désactivée
+                    if(!self.getSetting("modalProfile")) {
+
+                        window.open(profileUrl, "profil", "width=1000,height=720,scrollbars=no,status=no");
+                    }
+                }
+                else {
+                    window.open(profileUrl, "_blank");
                 }
             }
-            else {
-                window.open(profileUrl, "_blank");
-            }
-        }
-    };
+        };
 
-    //Si l'option est activée, la CDV s'affichera dans une popin
-    if(this.getSetting("modalProfile")) {
-        profileButtonOptions["data-popin"] = profileUrl;
-        profileButtonOptions["data-popin-type"] = "iframe";
-        profileButtonOptions["data-popin-width"] = 1000;
-        profileButtonOptions["data-popin-height"] = 660;
-        profileButtonOptions["data-popin-scroll-position"] = 64;
-        profileButtonOptions.index = 20;
-        profileButtonOptions.title = " ";
-        profileButtonOptions.href += "&popup=0";
+        //Si l'option est activée, la CDV s'affichera dans une popin
+        if(this.getSetting("modalProfile")) {
+            profileButtonOptions["data-popin"] = profileUrl;
+            profileButtonOptions["data-popin-type"] = "iframe";
+            profileButtonOptions["data-popin-width"] = 1000;
+            profileButtonOptions["data-popin-height"] = 720;
+            profileButtonOptions.index = 20;
+            profileButtonOptions.title = " ";
+            profileButtonOptions.href += "&popup=0";
+        }
+
+        SK.Util.addButton(message.$msg, profileButtonOptions);
     }
 
-    SK.Util.addButton(message.$msg, profileButtonOptions);
-
     //Bouton ignorer
-    if(this.getSetting("enableBlockList")) {
+    if(this.getSetting("enableBlockList") && !message.author.profileUnavailable) {
 
         var blockButtonOptions = {
             class: "block minor minus",
@@ -252,26 +255,8 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
         SK.Util.addButton(message.$msg, blockButtonOptions);
     }
 
-
-    //Bouton MP
-    if(this.getSetting("enablePrivateMessage")) {
-        SK.Util.addButton(message.$msg, {
-            class: "mp",
-            href: mpUrl,
-            index: 30,
-            tooltip: {
-                text: "Envoyer un MP"
-            },
-            click: function(event) {
-                event.preventDefault();
-                var win = window.open(mpUrl, "_blank");
-                win.focus();
-            }
-        });
-    }
-
     //Bouton rechercher topics
-    if(this.getSetting("enableSearchTopics")) {
+    if(this.getSetting("enableSearchTopics") && !message.author.profileUnavailable) {
         SK.Util.addButton(message.$msg, {
             class: "searchTopics",
             href: topicSearchUrl,
@@ -558,13 +543,6 @@ SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.settings = {
-    enablePrivateMessage: {
-        title: "Bouton de MP",
-        description: "Permet d'envoyer un MP à un utilisateur directement depuis un post.",
-        type: "boolean",
-        default: false,
-        disabled: true,
-    },
     enableSex: {
         title: "Affichage du sexe de l'auteur",
         description: "Affiche une photo de la... Hmm...Pardon. Change le style du bouton de CDV d'un auteur en fonction de son sexe.",
@@ -696,13 +674,6 @@ SK.moduleConstructors.InfosPseudo.prototype.getCss = function() {
     }
 
     css += "\
-        .msg [src='http://image.jeuxvideo.com/pics/forums/bt_forum_profil.gif'],\
-        .ancre > a:first-child {\
-          display: none !important;\
-        }\
-        .msg li.ancre {\
-            min-height: 15px;\
-        }\
         .sk-button-content.mp {\
             background-image: url('" + GM_getResourceURL("mp") + "');\
             background-color: #FCCB0C;\
