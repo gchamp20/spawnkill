@@ -43,7 +43,7 @@ SK.Message.prototype.init = function() {
     this.authorPseudo = this.authorPseudoWithCase.toLowerCase();
 
     /* Retourne la date du post  */
-    var $dateBloc = this.$msg.find(".lien-jv");
+    var $dateBloc = this.$msg.find(".bloc-date-msg");
     var dateString = $dateBloc.text().trim();
 
     var match = dateString.match(/[\s]*(\d{1,2}(?:er)? [^\s]* \d{4}) à (\d{2}:\d{2}:\d{2})/);
