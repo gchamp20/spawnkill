@@ -175,45 +175,48 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     var forumUrl = $(".bloc-pre-left .group-two a:last").attr("href");
     var topicSearchUrl = "http://www.jeuxvideo.com/recherche" + forumUrl + "?type_search_in_forum=auteur_topic&search_in_forum=" + message.authorPseudo;
 
-    var profileButtonOptions = {
-        class: (message.author.gender && this.getSetting("enableSex")) ? message.author.gender : "unknown",
-        href: profileUrl,
-        tooltip: {
-            text: "Voir la carte de visite"
-        },
-        click: function(event) {
+    if (!message.author.profileUnavailable) {
 
-            event.preventDefault();
-            //On ne bloque pas le Ctrl + Clic et le middle clic
-            if(!event.ctrlKey && event.which !== 2) {
+        var profileButtonOptions = {
+            class: (message.author.gender && this.getSetting("enableSex")) ? message.author.gender : "unknown",
+            href: profileUrl,
+            tooltip: {
+                text: "Voir la carte de visite"
+            },
+            click: function(event) {
 
-                //On n'ouvre la popup que si l'option modalProfile est désactivée
-                if(!self.getSetting("modalProfile")) {
+                event.preventDefault();
+                //On ne bloque pas le Ctrl + Clic et le middle clic
+                if(!event.ctrlKey && event.which !== 2) {
 
-                    window.open(profileUrl, "profil", "width=1000,height=720,scrollbars=no,status=no");
+                    //On n'ouvre la popup que si l'option modalProfile est désactivée
+                    if(!self.getSetting("modalProfile")) {
+
+                        window.open(profileUrl, "profil", "width=1000,height=720,scrollbars=no,status=no");
+                    }
+                }
+                else {
+                    window.open(profileUrl, "_blank");
                 }
             }
-            else {
-                window.open(profileUrl, "_blank");
-            }
-        }
-    };
+        };
 
-    //Si l'option est activée, la CDV s'affichera dans une popin
-    if(this.getSetting("modalProfile")) {
-        profileButtonOptions["data-popin"] = profileUrl;
-        profileButtonOptions["data-popin-type"] = "iframe";
-        profileButtonOptions["data-popin-width"] = 1000;
-        profileButtonOptions["data-popin-height"] = 720;
-        profileButtonOptions.index = 20;
-        profileButtonOptions.title = " ";
-        profileButtonOptions.href += "&popup=0";
+        //Si l'option est activée, la CDV s'affichera dans une popin
+        if(this.getSetting("modalProfile")) {
+            profileButtonOptions["data-popin"] = profileUrl;
+            profileButtonOptions["data-popin-type"] = "iframe";
+            profileButtonOptions["data-popin-width"] = 1000;
+            profileButtonOptions["data-popin-height"] = 720;
+            profileButtonOptions.index = 20;
+            profileButtonOptions.title = " ";
+            profileButtonOptions.href += "&popup=0";
+        }
+
+        SK.Util.addButton(message.$msg, profileButtonOptions);
     }
 
-    SK.Util.addButton(message.$msg, profileButtonOptions);
-
     //Bouton ignorer
-    if(this.getSetting("enableBlockList")) {
+    if(this.getSetting("enableBlockList") && !message.author.profileUnavailable) {
 
         var blockButtonOptions = {
             class: "block minor minus",
@@ -271,7 +274,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
     }
 
     //Bouton rechercher topics
-    if(this.getSetting("enableSearchTopics")) {
+    if(this.getSetting("enableSearchTopics") && !message.author.profileUnavailable) {
         SK.Util.addButton(message.$msg, {
             class: "searchTopics",
             href: topicSearchUrl,

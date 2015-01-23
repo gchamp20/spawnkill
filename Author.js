@@ -7,6 +7,15 @@ SK.Author = function(pseudo) {
     this.version = SK.Author.VERSION;
     this.pseudoWithCase = pseudo;
     this.pseudo = pseudo.toLowerCase();
+
+    //Vrai en cas de profil banni/supprimé
+    if (this.pseudo === "pseudo supprimé") {
+        this.profileUnavailable = true;
+    }
+    else {
+        this.profileUnavailable = false;
+    }
+
     this.key = "authors." + pseudo;
     this.rank = "";
     this.messageCount = 0;
@@ -14,8 +23,6 @@ SK.Author = function(pseudo) {
     this.fullSizeAvatar = "";
     this.gender = "";
     this.profileLink = "";
-    //Vrai en cas de profil banni/supprimé
-    this.profileUnavailable = false;
     //"ban tempo", "ban def", "error" ou "removed"
     this.errorType = "";
     this.hasLocalData = false;
@@ -23,7 +30,7 @@ SK.Author = function(pseudo) {
 };
 
 /** Version du modèle. Permet de déprecier le cache si la structure change */
-SK.Author.VERSION = "2.5";
+SK.Author.VERSION = "2.6";
 
 /** Durée de validité du localStorage en jours */
 SK.Author.DATA_TTL = 4;
