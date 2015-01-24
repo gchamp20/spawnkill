@@ -3,7 +3,7 @@ Donateurs - SpawnKill
 Ci-dessous, les gens qui ont fait un don pour l'évolution du script ou qui m'ont payé une bière, merci à vous :+1:
 
 ## Ils ont fait un don pour l'évolution du script :+1:
-- Dimitri M. (`15.24€`)
+- Dimitri M. (`30.48€`)
 - 7suna (`144.65€`)
 
 ## Ils m'ont payé une bière :)
