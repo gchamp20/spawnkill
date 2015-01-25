@@ -880,7 +880,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
         var count = 0;
 
         //On parcourt tous les liens du post
-        $msg.find(".text-enrichi-forum:first a").each(function(id, a) {
+        $msg.find(".txt-msg a").each(function(id, a) {
 
             //Et on cherche chaque type de media
             queueCheckLinkForMedia($msg, $(a), {
