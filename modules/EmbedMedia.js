@@ -775,11 +775,11 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                 //On change l'état du bouton
                 if(show) {
                     $button.attr("data-action", "hide")
-                           .siblings(".tooltip").html(mediaType.hideButtonText);
+                           .siblings(".sk-tooltip").html(mediaType.hideButtonText);
                 }
                 else {
                     $button.attr("data-action", "show")
-                           .siblings(".tooltip").html(mediaType.showButtonText);
+                           .siblings(".sk-tooltip").html(mediaType.showButtonText);
                 }
 
                 //On affiche/cache les medias
