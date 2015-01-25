@@ -62,7 +62,7 @@ SK.Author.prototype.initFromCdv = function($cdv) {
         $cdv.find("couleur_pseudo").length > 0
     ) {
         this.rank = SK.Author.getRankFromColor($cdv.find("couleur_rang").text());
-        this.messageCount = parseInt($cdv.find("nb_messages").text()) || 0 ;
+        this.messageCount = parseInt($cdv.find("nb_messages").text()) || 0;
         this.avatar = $cdv.find("petite_image").text();
         this.fullSizeAvatar = $cdv.find("image").text();
 
