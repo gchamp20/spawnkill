@@ -231,6 +231,14 @@ SK.moduleConstructors.Quote.prototype.getCss = function() {
                 background-color: " + mainColor + ";\
                 color: #FFF;\
             }\
+            .conteneur-message .txt-msg blockquote *::-moz-selection,\
+            .conteneur-message .txt-msg blockquote::-moz-selection {\
+                background-color: #888;\
+            }\
+            .conteneur-message .txt-msg blockquote *::selection,\
+            .conteneur-message .txt-msg blockquote::selection {\
+                background-color: #888;\
+            }\
             .partial-quote {\
                 position: absolute;\
                 font-size: 0 !important;\
