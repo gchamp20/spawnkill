@@ -98,6 +98,18 @@ SK.moduleConstructors.Usability.prototype.settings = {
     },
 };
 
+SK.moduleConstructors.Usability.prototype.getCss = function() {
+    var css = "";
+
+    css += "\
+        .jv-editor .previsu-editor {\
+            cursor: not-allowed;\
+        }\
+    ";
+
+    return css;
+};
+
 SK.moduleConstructors.Usability.prototype.shouldBeActivated = function() {
     return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ, SK.common.Pages.TOPIC_LIST);
 };
