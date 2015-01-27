@@ -189,6 +189,7 @@ SK.moduleConstructors.Quote.prototype.addToResponseThenFocus = function(citation
     var response = $responseBox.val();
     $responseBox.val("");
     $responseBox.val(response);
+    $responseBox.keyup();
 
     //Scroll tout en bas du textarea
     $responseBox.scrollTop($responseBox[0].scrollHeight - $responseBox.height());

@@ -29,6 +29,12 @@ SK.moduleConstructors.Usability.prototype.init = function() {
     if (this.getSetting("focusOnNewMessage")) {
         this.bindFocusOnNewMessage();
     }
+
+    if (this.getSetting("betterMessageInput")) {
+
+        $("#message_topic").autoGrow();
+        this.overrideQuoteButton();
+    }
 };
 
 /**
@@ -83,6 +89,45 @@ SK.moduleConstructors.Usability.prototype.bindFocusOnNewMessage = function() {
     });
 };
 
+/**
+ * Remplace l'événement onclick du bouton de citation par un nouvel
+ * événement permettant de faire fonctionner autoGrow
+ */
+SK.moduleConstructors.Usability.prototype.overrideQuoteButton = function() {
+
+    this.queueFunction(function() {
+
+        unsafeWindow.$(".picto-msg-quote").off();
+        $(".picto-msg-quote").on("click", function() {
+            var $msg = $(this).parents(".bloc-message-forum");
+            var postId = $msg .attr("data-id");
+            var pseudo = $msg.find(".bloc-pseudo-msg").text().replace(/[\r\n]/g, "");
+            var date = $msg.find(".bloc-date-msg").text().replace(/[\r\n]/g, "").replace(/[\r\n]/g, "").replace(/#[0-9]+$/g, "");
+
+            $.ajax({
+                type: "POST",
+                url: "/forums/ajax_citation.php",
+                dataType: "json",
+                data: {
+                    id_message: postId,
+                    ajax_timestamp: $("#ajax_timestamp_liste_messages").val(),
+                    ajax_hash: $("#ajax_hash_liste_messages").val(),
+                },
+                success: function (data) {
+                    if (data.erreur.length === 0) {
+                        unsafeWindow.$("#message_topic")
+                            .insertStartLine("> Le " + date + " " + pseudo + " a écrit :\n>" + data.txt.split("\n").join("\n> ") + "\n\n")
+                            .get(0).dispatchEvent(new Event("keyup"))
+                        ;
+                        $("#message_topic").scrollThere();
+                    }
+                }
+            });
+        });
+    });
+};
+
+
 SK.moduleConstructors.Usability.prototype.settings = {
     refreshToLastPost: {
         title: "Rafraîchir au dernier message",
@@ -96,16 +141,24 @@ SK.moduleConstructors.Usability.prototype.settings = {
         type: "boolean",
         default: true,
     },
+    betterMessageInput: {
+        title: "Améliorer la saisie des messages",
+        description: "Redimensionne automatiquement la boîte de saisie des messages/topics et change le curseur au survol de la preview",
+        type: "boolean",
+        default: true,
+    }
 };
 
 SK.moduleConstructors.Usability.prototype.getCss = function() {
     var css = "";
 
-    css += "\
-        .jv-editor .previsu-editor {\
-            cursor: not-allowed;\
-        }\
-    ";
+    if (this.getSetting("betterMessageInput")) {
+        css += "\
+            .jv-editor .previsu-editor {\
+                cursor: not-allowed;\
+            }\
+        ";
+    }
 
     return css;
 };
