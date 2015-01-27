@@ -11,6 +11,7 @@
         "GM_getResourceURL": true,
         "GM_setClipboard": true,
         "GM_addStyle": true,
+        "unsafeWindow": true,
         "setInterval": true,
         "clearInterval": true,
         "setTimeout": true,
