@@ -175,6 +175,9 @@ SK.moduleConstructors.Usability.prototype.getCss = function() {
             .jv-editor .previsu-editor {\
                 cursor: not-allowed;\
             }\
+            .jv-editor .area-editor {\
+                min-height: 76px !important;\
+            }\
         ";
     }
 
