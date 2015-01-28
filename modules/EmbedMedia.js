@@ -775,11 +775,11 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
                 //On change l'état du bouton
                 if(show) {
                     $button.attr("data-action", "hide")
-                           .siblings(".tooltip").html(mediaType.hideButtonText);
+                           .siblings(".sk-tooltip").html(mediaType.hideButtonText);
                 }
                 else {
                     $button.attr("data-action", "show")
-                           .siblings(".tooltip").html(mediaType.showButtonText);
+                           .siblings(".sk-tooltip").html(mediaType.showButtonText);
                 }
 
                 //On affiche/cache les medias
@@ -880,7 +880,7 @@ SK.moduleConstructors.EmbedMedia.prototype.embedMedia = function() {
         var count = 0;
 
         //On parcourt tous les liens du post
-        $msg.find(".text-enrichi-forum:first a").each(function(id, a) {
+        $msg.find(".txt-msg a").each(function(id, a) {
 
             //Et on cherche chaque type de media
             queueCheckLinkForMedia($msg, $(a), {

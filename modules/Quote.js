@@ -189,6 +189,7 @@ SK.moduleConstructors.Quote.prototype.addToResponseThenFocus = function(citation
     var response = $responseBox.val();
     $responseBox.val("");
     $responseBox.val(response);
+    $responseBox.keyup();
 
     //Scroll tout en bas du textarea
     $responseBox.scrollTop($responseBox[0].scrollHeight - $responseBox.height());
@@ -202,7 +203,13 @@ SK.moduleConstructors.Quote.prototype.settings = {
         description: "Permet de ne citer qu'une partie d'un post en sélectionnant le texte avec la souris.",
         type: "boolean",
         default: true,
-    }
+    },
+    deleteNestedQuotes: {
+        title: "Ne permettre qu'un seul niveau de citation",
+        description: "Quand cette option est activée, un seul niveau de citation est affiché.",
+        type: "boolean",
+        default: false,
+    },
 };
 
 SK.moduleConstructors.Quote.prototype.shouldBeActivated = function() {
@@ -215,7 +222,7 @@ SK.moduleConstructors.Quote.prototype.getCss = function() {
 
     var mainColor = SK.common.mainColor;
 
-    if(this.getSetting("partialQuote")) {
+    if (this.getSetting("partialQuote")) {
         css += "\
             .sk-button-content.quote {\
                 background-image: url('" + GM_getResourceURL("quote") + "');\
@@ -230,6 +237,14 @@ SK.moduleConstructors.Quote.prototype.getCss = function() {
             .conteneur-message .txt-msg *::selection {\
                 background-color: " + mainColor + ";\
                 color: #FFF;\
+            }\
+            .conteneur-message .txt-msg blockquote *::-moz-selection,\
+            .conteneur-message .txt-msg blockquote::-moz-selection {\
+                background-color: #888;\
+            }\
+            .conteneur-message .txt-msg blockquote *::selection,\
+            .conteneur-message .txt-msg blockquote::selection {\
+                background-color: #888;\
             }\
             .partial-quote {\
                 position: absolute;\
@@ -255,6 +270,14 @@ SK.moduleConstructors.Quote.prototype.getCss = function() {
             }\
             .partial-quote:active::after {\
                 top: -14px;\
+            }\
+        ";
+    }
+
+    if (this.getSetting("deleteNestedQuotes")) {
+        css += "\
+            .txt-msg blockquote blockquote {\
+                display: none;\
             }\
         ";
     }
