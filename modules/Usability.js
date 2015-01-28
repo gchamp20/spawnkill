@@ -159,6 +159,12 @@ SK.moduleConstructors.Usability.prototype.settings = {
         type: "boolean",
         default: false,
     },
+    hideProspectBar: {
+        title: "Récupérer l'espace entre le menu et la page",
+        description: "Réduit l'espace vide entre l'entête de la page et son contenu",
+        type: "boolean",
+        default: true,
+    },
 };
 
 SK.moduleConstructors.Usability.prototype.getCss = function() {
@@ -190,6 +196,16 @@ SK.moduleConstructors.Usability.prototype.getCss = function() {
         css += "\
             #jv-feedback {\
                 display: none;\
+            }\
+        ";
+    }
+
+    if (this.getSetting("hideProspectBar")) {
+        css += "\
+            #prospect {\
+                min-height: 20px !important;\
+                height: 20px !important;\
+                visibility: hidden !important;\
             }\
         ";
     }
