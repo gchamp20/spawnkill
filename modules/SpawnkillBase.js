@@ -237,6 +237,12 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         .conteneur-message .bloc-header {\
             overflow: visible !important;\
         }\
+        .conteneur-message:last-child {\
+            padding-bottom: 25px\
+        }\
+        .bloc-message-forum {\
+            margin-bottom: 10px;\
+        }\
         #modals {\
             font-size: 12px;\
         }\
