@@ -212,7 +212,3 @@ SK.moduleConstructors.Usability.prototype.getCss = function() {
 
     return css;
 };
-
-SK.moduleConstructors.Usability.prototype.shouldBeActivated = function() {
-    return SK.Util.currentPageIn(SK.common.Pages.TOPIC_READ, SK.common.Pages.TOPIC_LIST);
-};
