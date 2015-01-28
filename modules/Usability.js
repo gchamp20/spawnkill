@@ -146,7 +146,13 @@ SK.moduleConstructors.Usability.prototype.settings = {
         description: "Redimensionne automatiquement la boîte de saisie des messages/topics et change le curseur au survol de la preview",
         type: "boolean",
         default: true,
-    }
+    },
+    hideTopBar: {
+        title: "Masquer la barre de navigation",
+        description: "Cache la barre de navigation en haut de la page quand on scrolle",
+        type: "boolean",
+        default: false,
+    },
 };
 
 SK.moduleConstructors.Usability.prototype.getCss = function() {
@@ -156,6 +162,20 @@ SK.moduleConstructors.Usability.prototype.getCss = function() {
         css += "\
             .jv-editor .previsu-editor {\
                 cursor: not-allowed;\
+            }\
+        ";
+    }
+
+    if (this.getSetting("hideTopBar")) {
+        css += "\
+            #header-bottom.affix .bloc-sticker {\
+                position: absolute !important;\
+            }\
+            .affix #navbar-jv {\
+                left: 0px !important;\
+            }\
+            #header-bottom.affix .a-back-home {\
+                display: none;\
             }\
         ";
     }
