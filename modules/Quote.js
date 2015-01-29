@@ -125,7 +125,7 @@ SK.moduleConstructors.Quote.prototype.addPartialQuoteButton = function(message, 
     $(".partial-quote").remove();
 
     //On ajoute/anime le bouton
-    message.$msg.append($partialQuoteButton);
+    message.$msg.prepend($partialQuoteButton);
     SK.Util.fetchStyle($partialQuoteButton);
     $partialQuoteButton.addClass("active");
 
@@ -163,7 +163,7 @@ SK.moduleConstructors.Quote.prototype.createCitationBlock = function(message) {
     $.each(lines, function(i, line) {
         lines[i] = "> " + line;
     }.bind(this));
-    lines.splice(0, 0, "> Le " + message.date + " à " + message.time + " " + message.authorPseudoWithCase + " a écrit :");
+    lines.splice(0, 0, "> Le " + message.date + " à " + message.time + " '''" + message.authorPseudoWithCase + "''' a écrit :");
     lines.push("\n");
 
     //On n'autorise pas les sauts de ligne consécutifs dans les citations
