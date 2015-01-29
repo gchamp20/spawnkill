@@ -125,7 +125,7 @@ SK.moduleConstructors.Quote.prototype.addPartialQuoteButton = function(message, 
     $(".partial-quote").remove();
 
     //On ajoute/anime le bouton
-    message.$msg.append($partialQuoteButton);
+    message.$msg.prepend($partialQuoteButton);
     SK.Util.fetchStyle($partialQuoteButton);
     $partialQuoteButton.addClass("active");
 
