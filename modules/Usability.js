@@ -116,7 +116,7 @@ SK.moduleConstructors.Usability.prototype.overrideQuoteButton = function() {
                 success: function (data) {
                     if (data.erreur.length === 0) {
                         unsafeWindow.$("#message_topic")
-                            .insertStartLine("> Le " + date + " " + pseudo + " a écrit :\n>" + data.txt.split("\n").join("\n> ") + "\n\n")
+                            .insertStartLine("> Le " + date + " '''" + pseudo + "''' a écrit :\n>" + data.txt.split("\n").join("\n> ") + "\n\n")
                             .get(0).dispatchEvent(new Event("keyup"))
                         ;
                         $("#message_topic").scrollThere();
