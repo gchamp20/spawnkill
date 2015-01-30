@@ -46,12 +46,11 @@ SK.moduleConstructors.LastPage.prototype.init = function() {
                 class: "last-page-link-wrp",
             },
             tooltip: {
-                text: "Lien vers la dernière page de ce topic",
+                text: "Copier le lien vers le dernier post de ce topic",
             },
             click: function(event) {
                 event.preventDefault();
-                location.hash = $(this).attr("href");
-                location.reload();
+                GM_setClipboard(location.href + $(this).attr("href"));
             }
         }));
     }
@@ -135,10 +134,10 @@ SK.moduleConstructors.LastPage.prototype.settings = {
         default: true,
     },
     lastPageBookmarkLink: {
-        title: "Raccourci vers la dernière page depuis le topic",
-        description: "Ajoute un lien \"Dernière page\" qui permet de mettre en raccourci la dernière page d'un topic.",
+        title: "Raccourci vers le dernier post depuis le topic",
+        description: "Ajoute un bouton qui permet de copier le lien vers le dernier post du topic à gauche de son titre.",
         type: "boolean",
-        default: true,
+        default: false,
     },
 };
 
