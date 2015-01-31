@@ -14,7 +14,7 @@ SK.moduleConstructors.Test.prototype.description = "Module de test";
 
 SK.moduleConstructors.Test.prototype.init = function() {
 
-    var faviconUpdater = new SK.FaviconNotificationUpdater("http://www.jeuxvideo.com/favicon.ico");
+    var faviconUpdater = new SK.FaviconNotificationUpdater(location.protocol + "//www.jeuxvideo.com/favicon.ico");
     var i = 0;
 
     setInterval(function() {

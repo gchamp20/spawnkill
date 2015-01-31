@@ -5,6 +5,8 @@
 // @namespace   http://www.spawnkill.fr
 // @include     http://*.jeuxvideo.com/*
 // @include     http://*.forumjv.com/*
+// @include     https://*.jeuxvideo.com/*
+// @include     https://*.forumjv.com/*
 // @version     2.0.1.2
 // @require     jquery-2.1.1.min.js?v2.0.1.2
 // @require     jquery-plugins.js?v2.0.1.2
@@ -165,7 +167,7 @@ if (!inIframe) {
 else {
 
     // On masque l'header, le footer et le bouton de feedback sur les CDV ouvertes dans les iframes
-    if (window.location.href.match(/http:\/\/www\.jeuxvideo\.com\/profil/)) {
+    if (window.location.href.match(/https?:\/\/www\.jeuxvideo\.com\/profil/)) {
 
         SK.Util.addCss("\
             header,\

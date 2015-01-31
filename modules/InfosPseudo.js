@@ -168,12 +168,11 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
 
     var self = this;
     var permalink = message.permalink;
-    var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + "?mode=infos";
-    var mpUrl = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + message.authorPseudo;
+    var profileUrl = location.protocol + "//www.jeuxvideo.com/profil/" + message.authorPseudo + "?mode=infos";
 
     // On recrée le slug du forum pour l'url de recherche
     var forumUrl = $(".bloc-pre-left .group-two a:last").attr("href");
-    var topicSearchUrl = "http://www.jeuxvideo.com/recherche" + forumUrl + "?type_search_in_forum=auteur_topic&search_in_forum=" + message.authorPseudo;
+    var topicSearchUrl = location.protocol + "//www.jeuxvideo.com/recherche" + forumUrl + "?type_search_in_forum=auteur_topic&search_in_forum=" + message.authorPseudo;
 
     if (!message.author.profileUnavailable) {
 
