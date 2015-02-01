@@ -62,12 +62,3 @@ SK.moduleConstructors.InfiniteSurveys.prototype.addMoreChoices = function() {
 SK.moduleConstructors.InfiniteSurveys.prototype.shouldBeActivated = function() {
 	return SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST);
 };
-
-SK.moduleConstructors.InfiniteSurveys.prototype.getCss = function() {
-
-	var css = "";
-
-	return css;
-};
-
-SK.moduleConstructors.InfiniteSurveys.prototype.settings = {};
