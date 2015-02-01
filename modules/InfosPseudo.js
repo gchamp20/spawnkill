@@ -603,7 +603,6 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
         default: false,
     },
     clearAuthorCache: {
-        title: "Vider le cache des auteurs",
         description: "Permet de vider le cache des auteurs pour voir votre nouvel avatar, par exemple.",
         type: "button",
         buttonLabel: "Vider le cache",

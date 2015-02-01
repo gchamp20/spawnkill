@@ -223,10 +223,6 @@ SK.moduleConstructors.Settings.prototype.getSettingsUI = function() {
                 $option.append(new SK.Button({
                     text: option.buttonLabel,
                     class: "large",
-                    tooltip : {
-                        text: option.title,
-                        position: "bottom"
-                    },
                     click: option.value
                 }));
             }
