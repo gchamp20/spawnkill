@@ -2,20 +2,20 @@
 /* jshint multistr: true */
 /* jshint newcap: false */
 
-SK.moduleConstructors.InfiniteSurveys = SK.Module.new();
+SK.moduleConstructors.BetterSurveys = SK.Module.new();
 
-SK.moduleConstructors.InfiniteSurveys.prototype.id = "InfiniteSurveys";
-SK.moduleConstructors.InfiniteSurveys.prototype.title = "Sondages à plus de 5 réponses";
-SK.moduleConstructors.InfiniteSurveys.prototype.description = "Possibilité d'ajouter des sondages ayant jusqu'à 10 réponses possibles";
-SK.moduleConstructors.InfiniteSurveys.prototype.required = false;
+SK.moduleConstructors.BetterSurveys.prototype.id = "BetterSurveys";
+SK.moduleConstructors.BetterSurveys.prototype.title = "Sondages à plus de 5 réponses";
+SK.moduleConstructors.BetterSurveys.prototype.description = "Possibilité d'ajouter des sondages ayant jusqu'à 10 réponses possibles";
+SK.moduleConstructors.BetterSurveys.prototype.required = false;
 
-SK.moduleConstructors.InfiniteSurveys.prototype.maxNumberOfChoices = 10;
+SK.moduleConstructors.BetterSurveys.prototype.maxNumberOfChoices = 10;
 
-SK.moduleConstructors.InfiniteSurveys.prototype.init = function() {
+SK.moduleConstructors.BetterSurveys.prototype.init = function() {
 	this.addMoreChoices();
 };
 
-SK.moduleConstructors.InfiniteSurveys.prototype.addMoreChoices = function() {
+SK.moduleConstructors.BetterSurveys.prototype.addMoreChoices = function() {
 
 	var self = this;
 
@@ -70,6 +70,6 @@ SK.moduleConstructors.InfiniteSurveys.prototype.addMoreChoices = function() {
 /**
  * Ce module n'est exécuté que sur la liste des sujets
  */
-SK.moduleConstructors.InfiniteSurveys.prototype.shouldBeActivated = function() {
+SK.moduleConstructors.BetterSurveys.prototype.shouldBeActivated = function() {
 	return SK.Util.currentPageIn(SK.common.Pages.TOPIC_LIST);
 };
