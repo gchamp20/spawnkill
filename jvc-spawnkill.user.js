@@ -32,6 +32,7 @@
 // @require     modules/WarnOnNewPost.js?v2.0.1.2
 // @require     modules/AutoUpdate.js?v2.0.1.2
 // @require     modules/PemtHighlight.js?v2.0.1.2
+// @require     modules/BetterSurveys.js?v2.0.1.2
 // @require     modules/Usability.js?v2.0.1.2
 // @resource    close                 images/close.png
 // @resource    banImage              images/ban.png
