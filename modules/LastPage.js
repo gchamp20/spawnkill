@@ -53,6 +53,15 @@ SK.moduleConstructors.LastPage.prototype.init = function() {
                 GM_setClipboard(location.href + $(this).attr("href"));
             }
         }));
+
+        // On permets aux tooltips de dépasser, sauf quand on vient de créer le topic
+        if ($("[data-modif-titre-sujet]").length === 0) {
+
+            $(".titre-head-bloc-forum").css({
+                overflow: "visible",
+                "margin-bottom": "26px",
+            });
+        }
     }
 };
 
@@ -179,10 +188,6 @@ SK.moduleConstructors.LastPage.prototype.getCss = function() {
 
     if (this.getSetting("lastPageBookmarkLink")) {
         css += "\
-            .titre-head-bloc-forum {\
-                overflow: visible !important;\
-                margin-bottom: 26px !important;\
-            }\
             .titre-bloc-forum {\
                 display: inline-block;\
                 width: calc(100% - 30px) !important;\
