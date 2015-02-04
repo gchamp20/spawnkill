@@ -264,11 +264,10 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             tooltip: {
                 text: "Rechercher les topics de " + message.authorPseudoWithCase
             },
-            click: function(event) {
-                event.preventDefault();
-                var win = window.open(topicSearchUrl, "_blank");
-                win.focus();
-            }
+            "data-popin": topicSearchUrl,
+            "data-popin-type": "iframe",
+            "data-popin-width": 680,
+            // "data-popin-height": 680,
         });
     }
 

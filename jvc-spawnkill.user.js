@@ -178,4 +178,41 @@ else {
             }\
         ");
     }
+
+    // Sur la page de recherche, on ne conserve que les résultats
+    else if (window.location.href.match(/https?:\/\/www\.jeuxvideo\.com\/recherche\/forums/)) {
+
+        // On supprime tous les scripts
+        $("script").remove();
+
+        SK.Util.addCss("\
+            body {\
+                overflow-x: hidden !important;\
+            }\
+            .forum-main-col {\
+                width: 100%\
+            }\
+            .conteneur-topic-pagi {\
+                border: none;\
+            }\
+            #content {\
+                padding: 0px !important;\
+            }\
+            .bloc-pre-left,\
+            .titre-head-bloc,\
+            .bloc-fil-ariane-crumb-forum,\
+            #forum-right-col,\
+            #prospect,\
+            #jv-feedback,\
+            header,\
+            footer {\
+                display: none !important;\
+            }\
+            .bloc-pre-pagi-forum {\
+                text-align: left;\
+            }\
+        ");
+    }
+
+
 }
