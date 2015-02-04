@@ -267,7 +267,8 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             "data-popin": topicSearchUrl,
             "data-popin-type": "iframe",
             "data-popin-width": 680,
-            // "data-popin-height": 680,
+            "data-popin-height": 420,
+            "data-popin-autoheight": 1,
         });
     }
 

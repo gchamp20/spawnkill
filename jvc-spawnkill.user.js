@@ -195,6 +195,9 @@ else {
             .conteneur-topic-pagi {\
                 border: none;\
             }\
+            .container-content {\
+                min-height: 0px !important;\
+            }\
             #content {\
                 padding: 0px !important;\
             }\
