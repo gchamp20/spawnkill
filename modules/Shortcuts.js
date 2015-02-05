@@ -234,6 +234,7 @@ SK.moduleConstructors.Shortcuts.prototype.showShortcutsOverlay = function() {
 
 SK.moduleConstructors.Shortcuts.prototype.settings = {
     showShortcutsOverlay: {
+        title: "Affiche les raccourcis claviers disponibles",
         description: "Affiche un overlay indiquant les raccourcis disponibles.",
         type: "button",
         buttonLabel: "Voir les raccourcis",

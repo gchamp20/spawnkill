@@ -277,6 +277,7 @@ SK.moduleConstructors.NouveauModule.prototype.settings = {
  */
 SK.moduleConstructors.NouveauModule.prototype.settings = {
 	actionId: {
+	    title: "Titre de l'action",
 	    description: "Description de l'action",
 	    type: "button",
 	    buttonLabel: "Label du bouton",
