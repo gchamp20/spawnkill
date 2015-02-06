@@ -238,7 +238,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
                     self.removeFromBlockList(message.authorPseudo);
 
                     // Affiche les posts de l'auteur
-                    self.showPostFrom(message.authorPseudo);
+                    self.showPostFrom(message);
                 }
                 // Masquage
                 else {
@@ -246,7 +246,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
                     self.addToBlockList(message.authorPseudo);
 
                     // Masque les posts de l'auteur
-                    self.hidePostFrom(message.authorPseudo);
+                    self.hidePostsForMessage(message);
 
                 }
             }
@@ -437,7 +437,7 @@ SK.moduleConstructors.InfosPseudo.prototype.hideBlockedPosts = function() {
         // Si l'auteur fait partie des auteurs bloqué
         if (SK.Util.getValue("blockedAuthors." + authorKey)) {
             // On masque ses posts
-            this.hidePostFrom(authorKey);
+            this.hidePostsForMessage(this.authors[authorKey].messages[0]);
         }
     }
 };
@@ -464,12 +464,12 @@ SK.moduleConstructors.InfosPseudo.prototype.removeFromBlockList = function(autho
  * @param {boolean} removePost Optionnel, defaut : false. Si true,
  *                  les posts sont totalement supprimés et pas masqués
  */
-SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo) {
+SK.moduleConstructors.InfosPseudo.prototype.hidePostsForMessage = function(message) {
     if (this.getSetting("fullyHideBlockedPosts")) {
-        this.togglePostFrom(authorPseudo, "removed");
+        this.togglePostsForMessage(message, "removed");
     }
     else {
-        this.togglePostFrom(authorPseudo, "hidden");
+        this.togglePostsForMessage(message, "hidden");
     }
 };
 
@@ -477,8 +477,8 @@ SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo
  * Supprime la class "sk-hidden" des posts de l'auteur passé en paramètre.
  * @param {String} authorPseudo pseudo de l'auteur à réafficher
  */
-SK.moduleConstructors.InfosPseudo.prototype.showPostFrom = function(authorPseudo) {
-    this.togglePostFrom(authorPseudo, "visible");
+SK.moduleConstructors.InfosPseudo.prototype.showPostFrom = function(message) {
+    this.togglePostsForMessage(message, "visible");
 };
 
 /**
@@ -487,9 +487,9 @@ SK.moduleConstructors.InfosPseudo.prototype.showPostFrom = function(authorPseudo
  * @param {String} authorPseudo pseudo de l'auteur à masquer ou afficher
  * @param {String} newState Nouvel état des posts "visible", "hidden", ou "removed"
  */
-SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseudo, newState) {
+SK.moduleConstructors.InfosPseudo.prototype.togglePostsForMessage = function(message, newState) {
 
-    var toToggle = this.authors[authorPseudo];
+    var toToggle = this.authors[message.authorPseudo];
 
     if (typeof toToggle !== "undefined") {
         for (var i in toToggle.messages) {
@@ -510,20 +510,20 @@ SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseu
                         .removeClass("plus")
                         .addClass("minus")
                     ;
-                    $tooltip.html("Masquer les posts de " + authorPseudo);
+                    $tooltip.html("Masquer les posts de " + message.authorPseudoWithCase);
                     break;
 
                 case "hidden":
                     $msg
                         .addClass("sk-hidden")
-                        .attr("title", "Cliquez sur le + à droite du post pour réafficher les posts de " + authorPseudo)
+                        .attr("title", "Cliquez sur le + à droite du post pour réafficher les posts de " + message.authorPseudoWithCase)
                     ;
                     $button
                         .attr("data-blocked", "1")
                         .removeClass("minus")
                         .addClass("plus")
                     ;
-                    $tooltip.html("Afficher les posts de " + authorPseudo);
+                    $tooltip.html("Afficher les posts de " + message.authorPseudoWithCase);
                     break;
 
                 case "removed":
