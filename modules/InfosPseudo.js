@@ -168,14 +168,14 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
 
     var self = this;
     var permalink = message.permalink;
-    var profileUrl = "http://www.jeuxvideo.com/profil/" + message.authorPseudo + "?mode=infos";
-    var mpUrl = "http://www.jeuxvideo.com/messages-prives/nouveau.php?all_dest=" + message.authorPseudo;
+    var profileUrl = location.protocol + "//www.jeuxvideo.com/profil/" + message.authorPseudo + "?mode=infos";
 
     // On recrée le slug du forum pour l'url de recherche
     var forumUrl = $(".bloc-pre-left .group-two a:last").attr("href");
-    var topicSearchUrl = "http://www.jeuxvideo.com/recherche" + forumUrl + "?type_search_in_forum=auteur_topic&search_in_forum=" + message.authorPseudo;
+    var topicSearchUrl = location.protocol + "//www.jeuxvideo.com/recherche" + forumUrl + "?type_search_in_forum=auteur_topic&search_in_forum=" + message.authorPseudo;
 
-    if (!message.author.profileUnavailable) {
+    // Bouton profil
+    if (this.getSetting("enableProfile") && !message.author.profileUnavailable) {
 
         var profileButtonOptions = {
             class: (message.author.gender && this.getSetting("enableSex")) ? message.author.gender : "unknown",
@@ -238,7 +238,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
                     self.removeFromBlockList(message.authorPseudo);
 
                     // Affiche les posts de l'auteur
-                    self.showPostFrom(message.authorPseudo);
+                    self.showPostFrom(message);
                 }
                 // Masquage
                 else {
@@ -246,7 +246,7 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
                     self.addToBlockList(message.authorPseudo);
 
                     // Masque les posts de l'auteur
-                    self.hidePostFrom(message.authorPseudo);
+                    self.hidePostsForMessage(message);
 
                 }
             }
@@ -264,11 +264,11 @@ SK.moduleConstructors.InfosPseudo.prototype.addPostButtons = function(message) {
             tooltip: {
                 text: "Rechercher les topics de " + message.authorPseudoWithCase
             },
-            click: function(event) {
-                event.preventDefault();
-                var win = window.open(topicSearchUrl, "_blank");
-                win.focus();
-            }
+            "data-popin": topicSearchUrl,
+            "data-popin-type": "iframe",
+            "data-popin-width": 680,
+            "data-popin-height": 420,
+            "data-popin-autoheight": 1,
         });
     }
 
@@ -437,7 +437,7 @@ SK.moduleConstructors.InfosPseudo.prototype.hideBlockedPosts = function() {
         // Si l'auteur fait partie des auteurs bloqué
         if (SK.Util.getValue("blockedAuthors." + authorKey)) {
             // On masque ses posts
-            this.hidePostFrom(authorKey);
+            this.hidePostsForMessage(this.authors[authorKey].messages[0]);
         }
     }
 };
@@ -464,12 +464,12 @@ SK.moduleConstructors.InfosPseudo.prototype.removeFromBlockList = function(autho
  * @param {boolean} removePost Optionnel, defaut : false. Si true,
  *                  les posts sont totalement supprimés et pas masqués
  */
-SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo) {
+SK.moduleConstructors.InfosPseudo.prototype.hidePostsForMessage = function(message) {
     if (this.getSetting("fullyHideBlockedPosts")) {
-        this.togglePostFrom(authorPseudo, "removed");
+        this.togglePostsForMessage(message, "removed");
     }
     else {
-        this.togglePostFrom(authorPseudo, "hidden");
+        this.togglePostsForMessage(message, "hidden");
     }
 };
 
@@ -477,8 +477,8 @@ SK.moduleConstructors.InfosPseudo.prototype.hidePostFrom = function(authorPseudo
  * Supprime la class "sk-hidden" des posts de l'auteur passé en paramètre.
  * @param {String} authorPseudo pseudo de l'auteur à réafficher
  */
-SK.moduleConstructors.InfosPseudo.prototype.showPostFrom = function(authorPseudo) {
-    this.togglePostFrom(authorPseudo, "visible");
+SK.moduleConstructors.InfosPseudo.prototype.showPostFrom = function(message) {
+    this.togglePostsForMessage(message, "visible");
 };
 
 /**
@@ -487,9 +487,9 @@ SK.moduleConstructors.InfosPseudo.prototype.showPostFrom = function(authorPseudo
  * @param {String} authorPseudo pseudo de l'auteur à masquer ou afficher
  * @param {String} newState Nouvel état des posts "visible", "hidden", ou "removed"
  */
-SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseudo, newState) {
+SK.moduleConstructors.InfosPseudo.prototype.togglePostsForMessage = function(message, newState) {
 
-    var toToggle = this.authors[authorPseudo];
+    var toToggle = this.authors[message.authorPseudo];
 
     if (typeof toToggle !== "undefined") {
         for (var i in toToggle.messages) {
@@ -510,20 +510,20 @@ SK.moduleConstructors.InfosPseudo.prototype.togglePostFrom = function(authorPseu
                         .removeClass("plus")
                         .addClass("minus")
                     ;
-                    $tooltip.html("Masquer les posts de " + authorPseudo);
+                    $tooltip.html("Masquer les posts de " + message.authorPseudoWithCase);
                     break;
 
                 case "hidden":
                     $msg
                         .addClass("sk-hidden")
-                        .attr("title", "Cliquez sur le + à droite du post pour réafficher les posts de " + authorPseudo)
+                        .attr("title", "Cliquez sur le + à droite du post pour réafficher les posts de " + message.authorPseudoWithCase)
                     ;
                     $button
                         .attr("data-blocked", "1")
                         .removeClass("minus")
                         .addClass("plus")
                     ;
-                    $tooltip.html("Afficher les posts de " + authorPseudo);
+                    $tooltip.html("Afficher les posts de " + message.authorPseudoWithCase);
                     break;
 
                 case "removed":
@@ -543,9 +543,21 @@ SK.moduleConstructors.InfosPseudo.prototype.shouldBeActivated = function() {
 };
 
 SK.moduleConstructors.InfosPseudo.prototype.settings = {
+    enableProfile: {
+        title: "Bouton de profil",
+        description: "Ajoute un bouton permettant d'accéder au profil de l'auteur à droite de son pseudo.",
+        type: "boolean",
+        default: true,
+    },
+    modalProfile: {
+        title: "Charger le profil dans une modale",
+        description: "Affiche le profil de l'auteur dans une fenêtre modale au clic.",
+        type: "boolean",
+        default: true,
+    },
     enableSex: {
         title: "Affichage du sexe de l'auteur",
-        description: "Affiche une photo de la... Hmm...Pardon. Change le style du bouton de CDV d'un auteur en fonction de son sexe.",
+        description: "Affiche une photo de la... Hmm...Pardon. Change la couleur du bouton profil d'un auteur en fonction de son sexe.",
         type: "boolean",
         default: true,
     },
@@ -570,12 +582,6 @@ SK.moduleConstructors.InfosPseudo.prototype.settings = {
     modalAvatar: {
         title: "Charger l'avatar dans une modale",
         description: "Agrandit l'avatar de l'auteur au clic.",
-        type: "boolean",
-        default: true,
-    },
-    modalProfile: {
-        title: "Charger la CDV dans une modale",
-        description: "Affiche le profil de l'auteur dans une fenêtre modale au clic.",
         type: "boolean",
         default: true,
     },

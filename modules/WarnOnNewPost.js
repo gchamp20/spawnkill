@@ -24,7 +24,7 @@ SK.moduleConstructors.WarnOnNewPost.prototype.init = function() {
 
     var self = this;
 
-    this.faviconUpdater = new SK.FaviconNotificationUpdater("http://www.jeuxvideo.com/favicon.ico");
+    this.faviconUpdater = new SK.FaviconNotificationUpdater(location.protocol + "//www.jeuxvideo.com/favicon.ico");
 
     //Si les notifications sonores sont activées, on charge le son en mémoire
     if(self.getSetting("playSoundOnNewPost")) {

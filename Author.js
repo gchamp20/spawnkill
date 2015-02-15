@@ -55,7 +55,7 @@ SK.Author.prototype.initFromData = function(data) {
 /* Charge les données de l'auteur à partir d"un élément $cdv (issu de l'API JVC) */
 SK.Author.prototype.initFromCdv = function($cdv) {
 
-    this.profileLink = "http://www.jeuxvideo.com/profil/" + this.pseudo + ".html";
+    this.profileLink = location.protocol + "//www.jeuxvideo.com/profil/" + this.pseudo + ".html";
 
     if($cdv.find("info_pseudo").length > 0 &&
         $cdv.find("petite_image").length > 0 &&
@@ -66,7 +66,7 @@ SK.Author.prototype.initFromCdv = function($cdv) {
         this.avatar = $cdv.find("petite_image").text();
         this.fullSizeAvatar = $cdv.find("image").text();
 
-        if(this.fullSizeAvatar === "http://image.jeuxvideo.com/avatars/default.jpg") {
+        if(this.fullSizeAvatar === location.protocol + "//image.jeuxvideo.com/avatars/default.jpg") {
             this.fullSizeAvatar = this.avatar;
         }
 

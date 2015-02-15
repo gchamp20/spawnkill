@@ -5,32 +5,35 @@
 // @namespace   http://www.spawnkill.fr
 // @include     http://*.jeuxvideo.com/*
 // @include     http://*.forumjv.com/*
-// @version     2.0.1.2
-// @require     jquery-2.1.1.min.js?v2.0.1.2
-// @require     jquery-plugins.js?v2.0.1.2
-// @require     base.js?v2.0.1.2
-// @require     Util.js?v2.0.1.2
-// @require     Message.js?v2.0.1.2
-// @require     Author.js?v2.0.1.2
-// @require     Button.js?v2.0.1.2
-// @require     SlideToggle.js?v2.0.1.2
-// @require     Modal.js?v2.0.1.2
-// @require     DropdownList.js?v2.0.1.2
-// @require     FaviconNotificationUpdater.js?v2.0.1.2
-// @require     SocketMessage.js?v2.0.1.2
-// @require     modules/Module.js?v2.0.1.2
-// @require     modules/SpawnkillBase.js?v2.0.1.2
-// @require     modules/Settings.js?v2.0.1.2
-// @require     modules/Quote.js?v2.0.1.2
-// @require     modules/Shortcuts.js?v2.0.1.2
-// @require     modules/InfosPseudo.js?v2.0.1.2
-// @require     modules/HilightNewTopic.js?v2.0.1.2
-// @require     modules/LastPage.js?v2.0.1.2
-// @require     modules/EmbedMedia.js?v2.0.1.2
-// @require     modules/WarnOnNewPost.js?v2.0.1.2
-// @require     modules/AutoUpdate.js?v2.0.1.2
-// @require     modules/PemtHighlight.js?v2.0.1.2
-// @require     modules/Usability.js?v2.0.1.2
+// @include     https://*.jeuxvideo.com/*
+// @include     https://*.forumjv.com/*
+// @version     2.1
+// @require     jquery-2.1.1.min.js?v2.1
+// @require     jquery-plugins.js?v2.1
+// @require     base.js?v2.1
+// @require     Util.js?v2.1
+// @require     Message.js?v2.1
+// @require     Author.js?v2.1
+// @require     Button.js?v2.1
+// @require     SlideToggle.js?v2.1
+// @require     Modal.js?v2.1
+// @require     DropdownList.js?v2.1
+// @require     FaviconNotificationUpdater.js?v2.1
+// @require     SocketMessage.js?v2.1
+// @require     modules/Module.js?v2.1
+// @require     modules/SpawnkillBase.js?v2.1
+// @require     modules/Settings.js?v2.1
+// @require     modules/Quote.js?v2.1
+// @require     modules/Shortcuts.js?v2.1
+// @require     modules/InfosPseudo.js?v2.1
+// @require     modules/HilightNewTopic.js?v2.1
+// @require     modules/LastPage.js?v2.1
+// @require     modules/EmbedMedia.js?v2.1
+// @require     modules/WarnOnNewPost.js?v2.1
+// @require     modules/AutoUpdate.js?v2.1
+// @require     modules/PemtHighlight.js?v2.1
+// @require     modules/BetterSurveys.js?v2.1
+// @require     modules/Usability.js?v2.1
 // @resource    close                 images/close.png
 // @resource    banImage              images/ban.png
 // @resource    newTopic              images/new-topic.png
@@ -85,7 +88,7 @@
 /* jshint unused: false */
 /* jshint multistr: true */
 /* jshint newcap: false */
-SK.VERSION = "v2.0.1.2";
+SK.VERSION = "v2.1";
 
 
 var inIframe = window.top !== window.self;
@@ -165,7 +168,7 @@ if (!inIframe) {
 else {
 
     // On masque l'header, le footer et le bouton de feedback sur les CDV ouvertes dans les iframes
-    if (window.location.href.match(/http:\/\/www\.jeuxvideo\.com\/profil/)) {
+    if (window.location.href.match(/https?:\/\/www\.jeuxvideo\.com\/profil/)) {
 
         SK.Util.addCss("\
             header,\
@@ -175,4 +178,44 @@ else {
             }\
         ");
     }
+
+    // Sur la page de recherche, on ne conserve que les résultats
+    else if (window.location.href.match(/https?:\/\/www\.jeuxvideo\.com\/recherche\/forums/)) {
+
+        // On supprime tous les scripts
+        $("script").remove();
+
+        SK.Util.addCss("\
+            body {\
+                overflow-x: hidden !important;\
+            }\
+            .forum-main-col {\
+                width: 100%\
+            }\
+            .conteneur-topic-pagi {\
+                border: none;\
+            }\
+            .container-content {\
+                min-height: 0px !important;\
+            }\
+            #content {\
+                padding: 0px !important;\
+            }\
+            .bloc-pre-left,\
+            .titre-head-bloc,\
+            .bloc-fil-ariane-crumb-forum,\
+            #forum-right-col,\
+            #prospect,\
+            #jv-feedback,\
+            header,\
+            footer {\
+                display: none !important;\
+            }\
+            .bloc-pre-pagi-forum {\
+                text-align: left;\
+            }\
+        ");
+    }
+
+
 }

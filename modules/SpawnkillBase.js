@@ -56,7 +56,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.initCommonVars = function() {
  */
 SK.moduleConstructors.SpawnkillBase.prototype.getCurrentPage = function() {
 
-    var regex = "http:\\/\\/(?:www\\.jeuxvideo\\.com\\/forums|[^\\/]*\\.forumjv\\.com)\\/(0|1|42)";
+    var regex = "https?:\\/\\/(?:www\\.jeuxvideo\\.com\\/forums|[^\\/]*\\.forumjv\\.com)\\/(0|1|42)";
     var match = window.location.href.match(regex);
 
     var currentPage = null;
@@ -159,6 +159,7 @@ SK.moduleConstructors.SpawnkillBase.prototype.bindPopinEvent = function() {
                     var onLoadCallback = SK.Util.getFunctionFromString($el.attr("data-popin-callback")) || $.noop;
                     var frameWidth = Math.min(desiredWidth,  $(window).width() - 80);
                     var frameHeight = Math.min(desiredHeight,  $(window).height() - 80);
+                    var autoheight = $el.attr("data-popin-autoheight");
 
                     $modalContent = $("<div>");
 
@@ -176,14 +177,50 @@ SK.moduleConstructors.SpawnkillBase.prototype.bindPopinEvent = function() {
                         //Ouvre l'iframe quand elle est chargée
                         load: function() {
 
-                            //On appelle l'éventuel callback
-                            onLoadCallback();
+                            var frame = this;
+                            var $frame = $(frame);
 
-                            //On scrolle la frame à la position choisie
-                            this.contentWindow.scrollTo(0, desiredScrollPosition);
+                            var onEndLoading = function() {
+                                //On appelle l'éventuel callback
+                                onLoadCallback();
 
-                            //On retire le loader pour afficher la frame
-                            $(this).removeClass("loading");
+                                //On scrolle la frame à la position choisie
+                                frame.contentWindow.scrollTo(0, desiredScrollPosition);
+
+                                //On retire le loader pour afficher la frame
+                                $frame.removeClass("loading");
+                            };
+
+                            // Si la frame est en autoheight, on la redimensionne
+                            if (autoheight) {
+
+
+                                // On calcule la nouvelle hauteur de la frame
+                                var $modal = $(".modal-box");
+                                var modalHeight = $modal.outerHeight();
+                                var screenHeight = $(window).height();
+                                var iframeHeight = $frame.height();
+                                var newIframeHeight = Math.min($frame.contents().find("html").outerHeight(),  screenHeight - 80);
+                                var modalBorder = modalHeight - iframeHeight;
+                                var newModalHeight = modalBorder + newIframeHeight;
+                                var newModalTop = screenHeight / 2 - newModalHeight / 2;
+
+                                $frame.animate({
+                                    height: newIframeHeight
+                                }, 200);
+
+                                $modal.animate({
+                                    top: newModalTop
+                                }, 200, function() {
+                                    setTimeout(function() {
+                                        onEndLoading();
+                                    }, 300);
+                                });
+                            }
+                            else {
+                                onEndLoading();
+                            }
+
                         }
                     }));
 
@@ -236,6 +273,9 @@ SK.moduleConstructors.SpawnkillBase.prototype.settings = {
         .bloc-message-forum .txt-msg,\
         .conteneur-message .bloc-header {\
             overflow: visible !important;\
+        }\
+        #bloc-commentaires .commentaire-liste .bloc-message-forum .txt-msg {\
+            overflow: hidden !important;\
         }\
         .conteneur-message .text-enrichi-forum:last-child p:last-child,\
         .info-edition-msg:last-child {\
